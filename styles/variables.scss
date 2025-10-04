@@ -1,0 +1,44 @@
+:root {
+  /* 🎨 Color */
+  --color-primary-light: #947368;
+  --color-primary-main: #87695e;
+  --color-primary-dark: #6e564d;
+  --color-primary-strong: #6e564de8;
+  --color-primary-medium: #6e564db8;
+  --color-primary-weak: #6e564d88;
+
+  --color-secondary-light: #a9b9d4;
+  --color-secondary-main: #5e6d87;
+  --color-secondary-dark: #232c3b;
+  --color-secondary-strong: #232c3be8;
+  --color-secondary-medium: #232c3bb8;
+  --color-secondary-weak: #232c3b88;
+
+  --color-dark-light: #4a4a4a;
+  --color-dark-main: #191919;
+  --color-dark-dark: #000000;
+  --color-dark-strong: #191919e8;
+  --color-dark-medium: #191919b8;
+  --color-dark-weak: #19191988;
+
+  --color-light-light: #f8f8f8;
+  --color-light-main: #f2f2f2;
+  --color-light-dark: #ededed;
+  --color-light-strong: #edededcf;
+  --color-light-weak: #ededed88;
+
+  --color-white: #ffffff;
+  --color-white-weak: #ffffff88;
+
+  /* 🧱 Border */
+  --border-radius-primary: 7px;
+  --border-radius-secondary: 3px;
+  --border-width: 3px;
+  --border-secondary: 2px;
+  --border-primary: 2px dashed var(--color-primary-light);
+
+  /* 🔤 Font */
+  --font-family-title: 'Cinzel', serif;
+  --font-family-text: 'Dosis', sans-serif;
+  --font-family-input: 'Vibur', cursive;
+}
