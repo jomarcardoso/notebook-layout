@@ -1,0 +1,45 @@
+.checkbox {
+  align-items: center;
+  color: var(--color-primary-light);
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  line-height: 1;
+  mix-blend-mode: multiply;
+  position: relative;
+  width: 44px;
+
+  input {
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    inset: 0;
+    margin: 0;
+    position: absolute;
+  }
+
+  .checkbox__icon {
+    align-items: center;
+    display: flex;
+    font-size: 32px;
+    justify-content: center;
+    pointer-events: none;
+    transition: opacity 150ms ease;
+
+    [stroke-linecap='round'] {
+      color: var(--color-dark-strong);
+    }
+
+    &--checked {
+      display: none;
+    }
+  }
+
+  input:checked ~ .checkbox__icon--checked {
+    display: flex;
+  }
+
+  input:checked ~ .checkbox__icon--unchecked {
+    display: none;
+  }
+}
