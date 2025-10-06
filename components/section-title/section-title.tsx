@@ -1,4 +1,5 @@
 import { FC, HTMLProps } from 'react';
+import './section-title.scss';
 
 interface Props {
   opaque?: boolean;

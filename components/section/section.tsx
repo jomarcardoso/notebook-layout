@@ -1,4 +1,4 @@
-import { SectionTitle } from 'components/section-title';
+import { SectionTitle } from '../section-title';
 import { FC, HTMLProps } from 'react';
 
 export interface SectionProps extends HTMLProps<HTMLDivElement> {

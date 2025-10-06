@@ -81,7 +81,7 @@
     }
 
     .field__input {
-      background-image: url('/images/textures/linned-sheet-texture.svg');
+      background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMxIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjI1IiB4Mj0iNSIgeTI9IjI1IiBzdHlsZT0ic3Ryb2tlOiM5NDczNjg7IHN0cm9rZS13aWR0aDoxIi8+PC9zdmc+');
       font-size: 21px;
     }
 
@@ -93,7 +93,7 @@
       .field__input {
         line-height: 44px;
         font-size: 25px;
-        background-image: url('/images/textures/linned-sheet-texture-large.svg');
+        background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ0IiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjMyIiB4Mj0iNSIgeTI9IjMyIiBzdHlsZT0ic3Ryb2tlOiM5NDczNjg7IHN0cm9rZS13aWR0aDoxIi8+PC9zdmc+');
       }
     }
   }
@@ -109,12 +109,12 @@
 
     &.field--multiline {
       .field__input {
-        background-image: url('/images/textures/linned-sheet-texture-focus.svg');
+        background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMxIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjI1IiB4Mj0iNSIgeTI9IjI1IiBzdHlsZT0ic3Ryb2tlOiM2RTU2NEQ7c3Ryb2tlLXdpZHRoOjEiLz48L3N2Zz4=');
       }
 
       &.field--large {
         .field__input {
-          background-image: url('/images/textures/linned-sheet-texture-focus-large.svg');
+          background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ0IiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjMyIiB4Mj0iNSIgeTI9IjMyIiBzdHlsZT0ic3Ryb2tlOiM2RTU2NEQ7IHN0cm9rZS13aWR0aDoxIi8+PC9zdmc+');
         }
       }
     }

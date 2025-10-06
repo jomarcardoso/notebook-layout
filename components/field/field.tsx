@@ -17,7 +17,8 @@ import {
 } from '@mui/base/TextareaAutosize';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import './field.scss';
-import { generateClasses } from 'utils/utils';
+import { generateClasses } from '../../utils/utils';
+import { AutoResizeTextarea } from '../../utils/auto-resize-textarea';
 
 interface Props {
   rootProps?: HTMLProps<HTMLDivElement>;
@@ -47,7 +48,7 @@ export const Field: FC<FieldProps> = ({
 }) => {
   const { id: inputId, onBlur, onFocus } = props;
   const [focused, setFocused] = useState(false);
-  const inputRef = useRef(null) as MutableRefObject<HTMLInputElement>;
+  const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const classes = generateClasses({
     field: true,
@@ -101,7 +102,7 @@ export const Field: FC<FieldProps> = ({
 
   const memoizedTextarea = useMemo(
     () => (
-      <TextareaAutosize
+      <AutoResizeTextarea
         className="field__input"
         minRows={1}
         {...(props as TextareaAutosizeProps)}
