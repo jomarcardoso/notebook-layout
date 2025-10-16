@@ -17,10 +17,8 @@ export const SectionCard: FC<SectionCardProps> = ({
   return (
     <section aria-labelledby={id} className="section-card" {...props}>
       {title && (
-        <strong className="section-card__title h2">
-          <div className="container" id={id}>
-            {title}
-          </div>
+        <strong className="section-card__title h2" id={id}>
+          {title}
         </strong>
       )}
       <div className="section-card__body">{children}</div>

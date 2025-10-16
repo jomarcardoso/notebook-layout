@@ -31,7 +31,9 @@ const meta = {
       <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
         <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <StoryFn />
-          <span style={{ fontFamily: 'var(--font-family-text)' }}>Example label</span>
+          <span style={{ fontFamily: 'var(--font-family-body)' }}>
+            Example label
+          </span>
         </label>
       </div>
     ),
@@ -51,7 +53,8 @@ export const DefaultChecked: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Use `defaultChecked` for uncontrolled forms where the initial state should be marked.',
+        story:
+          'Use `defaultChecked` for uncontrolled forms where the initial state should be marked.',
       },
     },
   },

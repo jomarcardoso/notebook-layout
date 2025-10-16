@@ -39,7 +39,8 @@ export const MissingSource: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'When no `src` is provided the component displays the fallback illustration instead of leaving an empty frame.',
+        story:
+          'When no `src` is provided the component displays the fallback illustration instead of leaving an empty frame.',
       },
     },
   },
@@ -54,7 +55,8 @@ export const CustomFallback: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Override `fallbackSrc` to tailor the placeholder illustration to your product.',
+        story:
+          'Override `fallbackSrc` to tailor the placeholder illustration to your product.',
       },
     },
   },
@@ -74,7 +76,7 @@ export const LoadError: Story = {
     return (
       <div style={{ display: 'grid', gap: '12px', justifyItems: 'center' }}>
         <Avatar {...args} onError={handleError} />
-        <span style={{ fontFamily: 'var(--font-family-text)' }}>
+        <span style={{ fontFamily: 'var(--font-family-body)' }}>
           Failed attempts: {attempts}
         </span>
       </div>

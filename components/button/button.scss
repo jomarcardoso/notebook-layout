@@ -7,7 +7,7 @@
   border-right-width: 4px;
   color: white;
   display: inline-flex;
-  font-family: var(--font-family-text);
+  font-family: var(--font-family-body);
   font-size: 16px;
   font-weight: bold;
   gap: 8px;
@@ -40,7 +40,8 @@
 
   &--on-light {
     background-color: white;
-    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+      0 1px 5px 0 rgb(0 0 0 / 12%);
     color: var(--color-dark-main);
 
     &:active {

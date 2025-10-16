@@ -1,3 +1,9 @@
 @forward 'variables';
+@forward 'resets';
+
 @forward 'typography';
 @forward 'themes';
+
+body {
+  font-family: var(--font-family-body);
+}

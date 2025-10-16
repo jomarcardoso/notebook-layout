@@ -39,7 +39,7 @@
 
     &::placeholder {
       color: var(--color-dark-light);
-      font-family: var(--font-family-text);
+      font-family: var(--font-family-body);
       letter-spacing: 1px;
     }
 
@@ -54,7 +54,7 @@
   }
 
   &__hint {
-    font-family: var(--font-family-text);
+    font-family: var(--font-family-body);
     margin-top: 2px;
     font-size: 13px;
   }
