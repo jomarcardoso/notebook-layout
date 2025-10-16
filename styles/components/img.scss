@@ -1,0 +1,18 @@
+.img {
+  border-radius: 1px;
+}
+
+.img-primary {
+  @extend .img;
+
+  box-shadow: var(--shadow-primary);
+  // clip-path: polygon(
+  //   0% 0%,
+  //   100% 0%,
+  //   100% 100%,
+  //   50% 100%,
+  //   50.9% 99.9%,
+  //   /* corte de 1 grau aproximado */ 0% 100%
+  // );
+  // transform: rotate(0.5deg);
+}
