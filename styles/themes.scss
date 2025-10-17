@@ -14,3 +14,8 @@
     pointer-events: none;
   }
 }
+
+.theme-primary {
+  background-color: var(--color-primary-main);
+  color: var(--color-white);
+}
