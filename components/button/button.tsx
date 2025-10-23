@@ -14,7 +14,6 @@ export const Button: FC<ButtonProps> = ({
   children,
   variant = 'primary',
   type = 'button',
-  contrast = 'white',
   fullWidth = false,
   ...props
 }) => {
@@ -23,8 +22,6 @@ export const Button: FC<ButtonProps> = ({
   classes += className ? ` ${className}` : '';
   classes += variant === 'secondary' ? ' button--secondary' : '';
   classes += fullWidth ? ' button--full' : '';
-  classes += contrast === 'light' ? ' button--on-light' : '';
-  classes += contrast === 'dark' ? ' button--on-dark' : '';
 
   return (
     <button className={classes} type={type} {...props}>

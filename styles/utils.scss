@@ -1,0 +1,32 @@
+@mixin isDesktop {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin isMobile {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
+@mixin isNotDisable {
+  &:not(:disabled, [aria-disable='true']) {
+    @content;
+  }
+}
+
+@mixin hover {
+  @include isNotDisable {
+    &:active {
+      @content;
+    }
+
+    @include isDesktop {
+      &:hover,
+      &:focus {
+        @content;
+      }
+    }
+  }
+}

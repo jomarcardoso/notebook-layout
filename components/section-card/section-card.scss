@@ -21,4 +21,10 @@
     padding: 28px 12px;
     background-color: white;
   }
+
+  @media (width > 768px) {
+    &__body {
+      padding: 16px;
+    }
+  }
 }

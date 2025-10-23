@@ -6,7 +6,7 @@
     color: var(--color-white);
     border-top-left-radius: var(--border-radius-secondary);
     border-top-right-radius: var(--border-radius-secondary);
-    background-color: var(--color-primary-light);
+    background-color: var(--color-primary-lighter);
     padding: 5px 24px 3px;
     align-self: flex-start;
     font-size: 15px;
@@ -17,7 +17,7 @@
   }
 
   &__box {
-    border: 2px dashed var(--color-primary-light);
+    border: 2px dashed var(--color-primary-lighter);
     display: flex;
     align-items: center;
     padding: 12px 10px 0;
@@ -38,13 +38,13 @@
     padding: 0;
 
     &::placeholder {
-      color: var(--color-dark-light);
+      color: var(--color-dark-lighter);
       font-family: var(--font-family-body);
       letter-spacing: 1px;
     }
 
     &::selection {
-      color: var(--color-dark-dark);
+      color: var(--color-dark-darker);
       background: var(--color-secondary-light);
     }
 
@@ -100,11 +100,11 @@
 
   &--focused {
     .field__box {
-      border-color: var(--color-primary-dark);
+      border-color: var(--color-primary-darker);
     }
 
     .field__label {
-      background-color: var(--color-primary-dark);
+      background-color: var(--color-primary-darker);
     }
 
     &.field--multiline {
