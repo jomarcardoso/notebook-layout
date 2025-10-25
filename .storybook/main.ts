@@ -11,10 +11,16 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
+  docs: {
+    autodocs: 'tag',
+  },
   viteFinal(config) {
     config.plugins = config.plugins || [];
     config.plugins.push(tsconfigPaths());
     return config;
+  },
+  typescript: {
+    reactDocgen: 'react-docgen-typescript',
   },
 };
 export default config;

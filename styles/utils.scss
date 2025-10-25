@@ -24,7 +24,7 @@
 
     @include isDesktop {
       &:hover,
-      &:focus {
+      &:focus-visible {
         @content;
       }
     }

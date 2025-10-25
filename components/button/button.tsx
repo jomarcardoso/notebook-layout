@@ -4,7 +4,6 @@ import './button.scss';
 interface Props {
   variant?: 'primary' | 'secondary';
   fullWidth?: boolean;
-  contrast?: 'white' | 'light' | 'dark';
 }
 
 export type ButtonProps = Props & ButtonHTMLAttributes<HTMLButtonElement>;
@@ -25,7 +24,7 @@ export const Button: FC<ButtonProps> = ({
 
   return (
     <button className={classes} type={type} {...props}>
-      {children}
+      <span className="button__content">{children}</span>
     </button>
   );
 };
