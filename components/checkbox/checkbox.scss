@@ -1,6 +1,6 @@
 .checkbox {
   align-items: center;
-  color: var(--color-primary-lighter);
+  color: var(--field-border);
   display: inline-flex;
   height: 44px;
   justify-content: center;
@@ -27,7 +27,7 @@
     transition: opacity 150ms ease;
 
     [stroke-linecap='round'] {
-      color: var(--color-dark-strong);
+      color: var(--field-color);
     }
 
     &--checked {

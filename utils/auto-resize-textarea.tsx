@@ -7,6 +7,11 @@ export const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = (
 ) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  // Filter non-DOM prop `minRows` to avoid React warning
+  const { minRows, style, onInput, ...rest } = props as AutoResizeTextareaProps & {
+    minRows?: number | string;
+  };
+
   const resize = useCallback(() => {
     const textarea = textareaRef.current;
     if (textarea) {
@@ -19,16 +24,18 @@ export const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = (
     resize();
   }, [props.value, resize]);
 
+  const initialRows = typeof minRows === 'string' ? parseInt(minRows, 10) || 1 : (minRows ?? 1);
+
   return (
     <textarea
-      {...props}
+      {...rest}
       ref={textareaRef}
-      rows={1}
+      rows={initialRows}
       onInput={(e) => {
         resize();
-        props.onInput?.(e);
+        onInput?.(e);
       }}
-      style={{ resize: 'none', overflow: 'hidden', ...props.style }}
+      style={{ resize: 'none', overflow: 'hidden', ...(style || {}) }}
     />
   );
 };

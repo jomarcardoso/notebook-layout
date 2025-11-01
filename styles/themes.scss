@@ -5,10 +5,10 @@
     0 1px 5px 0 rgb(0 0 0 / 12%);
 
   // action
-  --action-box-shadow: none;
+  --action-box-shadow: var(--box-shadow);
 
   // action primary
-  --action-primary-bg: var(--color-primary-main);
+  --action-primary-bg: var(--color-dark-main);
   --action-primary-color: var(--color-white);
   --action-primary-border: var(--action-primary-bg);
   --action-primary-style: solid;
@@ -17,13 +17,17 @@
   --action-primary-border-active: var(--action-primary-bg);
 
   // action secondary
-  --action-secondary-bg: var(--color-text);
-  --action-secondary-color: var(--color-white);
-  --action-secondary-border: var(--action-secondary-bg);
+  --action-secondary-bg: var(--color-white);
+  --action-secondary-color: var(--color-text);
+  --action-secondary-border: var(--color-text);
   --action-secondary-style: solid;
-  --action-secondary-bg-active: var(--color-text);
-  --action-secondary-color-active: var(--color-white);
-  --action-secondary-border-active: var(--action-secondary-bg);
+  --action-secondary-bg-active: var(--color-light-dark);
+  --action-secondary-color-active: var(--color-text);
+  --action-secondary-border-active: var(--color-text);
+
+  // field
+  --field-border: var(--color-primary-main);
+  --field-color: var(--color-dark-main);
 }
 
 :root {
@@ -47,13 +51,13 @@
   --action-box-shadow: var(--box-shadow);
 
   // action primary
-  --action-primary-bg: var(--color-text);
-  --action-primary-color: var(--color-primary-lighter);
-  --action-primary-border: var(--color-primary-lighter);
+  --action-primary-bg: var(--color-dark-main);
+  --action-primary-color: var(--color-white);
+  --action-primary-border: var(--action-primary-bg);
   --action-primary-style: solid;
-  --action-primary-bg-active: var(--color-text);
-  --action-primary-color-active: var(--color-primary-lighter);
-  --action-primary-border-active: var(--color-primary-lighter);
+  --action-primary-bg-active: var(--color-primary-main);
+  --action-primary-color-active: var(--color-white);
+  --action-primary-border-active: var(--action-primary-bg);
 
   // action secondary
   --action-secondary-bg: var(--color-white);
@@ -63,10 +67,39 @@
   --action-secondary-bg-active: var(--color-light-dark);
   --action-secondary-color-active: var(--color-text);
   --action-secondary-border-active: var(--color-text);
+
+  // field
+  --field-border: var(--color-primary-lighter);
+  --field-color: var(--color-dark-strong);
 }
 
 .theme-primary {
   --bg: var(--color-primary-main);
   --color-text: var(--color-white);
   --color-primary: var(--color-white-weak);
+
+  // action
+  --action-box-shadow: var(--box-shadow);
+
+  // action primary
+  --action-primary-bg: var(--color-dark-main);
+  --action-primary-color: var(--color-text);
+  --action-primary-border: var(--color-dark-main);
+  --action-primary-style: solid;
+  --action-primary-bg-active: var(--color-text);
+  --action-primary-color-active: var(--color-primary-lighter);
+  --action-primary-border-active: var(--color-primary-lighter);
+
+  // action secondary
+  --action-secondary-bg: var(--color-text);
+  --action-secondary-color: var(--color-dark-main);
+  --action-secondary-border: var(--color-dark-main);
+  --action-secondary-style: solid;
+  --action-secondary-bg-active: var(--color-light-dark);
+  --action-secondary-color-active: var(--color-text);
+  --action-secondary-border-active: var(--color-text);
+
+  // field
+  --field-border: var(--color-text);
+  --field-color: var(--color-text);
 }
