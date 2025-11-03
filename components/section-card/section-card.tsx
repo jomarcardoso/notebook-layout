@@ -1,4 +1,4 @@
-import { FC, HTMLProps, useId } from 'react';
+import { FC, HTMLProps } from 'react';
 import './section-card.scss';
 
 interface Props {
@@ -12,7 +12,7 @@ export const SectionCard: FC<SectionCardProps> = ({
   children,
   ...props
 }) => {
-  const id = useId();
+  const id = Math.random().toString(36).substring(2, 9);
 
   return (
     <section aria-labelledby={id} className="section-card" {...props}>
