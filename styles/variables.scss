@@ -50,5 +50,10 @@
   --shadow-primary-inset: inset 0 0 3px 0 rgb(0 0 0 / 20%);
 
   /* 🧩 Components */
-  --bar-height: 44px;
+  --action-size: 44px;
+  --bar-size: var(--action-size);
+
+  @media (orientation: landscape) {
+    --bar-size: 60px;
+  }
 }
