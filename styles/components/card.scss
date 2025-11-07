@@ -1,0 +1,44 @@
+@use '../themes.scss';
+
+.card {
+  // Extend base theme class defined in themes.scss
+  @extend .theme-base;
+
+  border-radius: var(--border-radius-default);
+  box-shadow: var(--shadow-primary);
+  display: grid;
+
+  grid-template-areas:
+    'card__header card__header'
+    'card__img card__body';
+  grid-template-columns: 4fr 5fr;
+
+  &__img {
+    grid-area: card__img;
+    padding: 16px 8px;
+    margin-top: -34px;
+
+    img {
+      box-shadow: var(--shadow-primary);
+    }
+  }
+
+  &__header {
+    grid-area: card__header;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
+    display: grid;
+    background-color: var(--color-primary-main);
+    color: var(--color-white);
+  }
+
+  &__title {
+    padding: 8px;
+    grid-column: 2;
+    font-family: var(--font-family-title);
+  }
+
+  &__body {
+    padding: 16px 8px;
+  }
+}
