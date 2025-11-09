@@ -12,6 +12,10 @@
   letter-spacing: 1px;
 }
 
+.h4 {
+  font-weight: bold;
+}
+
 .section-title {
   @extend .h2;
 
@@ -22,6 +26,7 @@
   mix-blend-mode: multiply;
   padding: 7px 14px;
   text-align: center;
+  width: 100%;
 }
 
 .link {

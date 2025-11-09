@@ -53,18 +53,18 @@
   --action-primary-color: var(--color-white);
   --action-primary-border: var(--action-primary-bg);
   --action-primary-style: solid;
-  --action-primary-bg-active: var(--color-primary-main);
+  --action-primary-bg-active: var(--color-dark-lighter);
   --action-primary-color-active: var(--color-white);
-  --action-primary-border-active: var(--action-primary-bg);
+  --action-primary-border-active: var(--action-primary-bg-active);
 
   // action secondary
   --action-secondary-bg: var(--color-white);
   --action-secondary-color: var(--color-text);
   --action-secondary-border: var(--color-text);
   --action-secondary-style: solid;
-  --action-secondary-bg-active: var(--color-light-dark);
-  --action-secondary-color-active: var(--color-text);
-  --action-secondary-border-active: var(--color-text);
+  --action-secondary-bg-active: var(--color-light-main);
+  --action-secondary-color-active: var(--color-dark-lighter);
+  --action-secondary-border-active: var(--color-dark-lighter);
 
   // field
   --field-border: var(--color-primary-lighter);

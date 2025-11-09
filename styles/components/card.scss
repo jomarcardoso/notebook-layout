@@ -1,20 +1,31 @@
 @use '../themes.scss';
 
 .card {
+  border-radius: var(--border-radius-secondary);
+  display: grid;
+  overflow: hidden;
+
+  &__img {
+    grid-area: card__img;
+  }
+
+  &__header {
+    grid-area: card__header;
+  }
+}
+
+.card:not(.slim-card) {
   // Extend base theme class defined in themes.scss
   @extend .theme-base;
 
-  border-radius: var(--border-radius-default);
   box-shadow: var(--shadow-primary);
-  display: grid;
 
   grid-template-areas:
     'card__header card__header'
     'card__img card__body';
-  grid-template-columns: 4fr 5fr;
+  grid-template-columns: 7fr 10fr;
 
-  &__img {
-    grid-area: card__img;
+  .card__img {
     padding: 16px 8px;
     margin-top: -34px;
 
@@ -23,8 +34,7 @@
     }
   }
 
-  &__header {
-    grid-area: card__header;
+  .card__header {
     grid-template-columns: subgrid;
     grid-column: 1 / -1;
     display: grid;
@@ -32,13 +42,31 @@
     color: var(--color-white);
   }
 
-  &__title {
-    padding: 8px;
+  .card__title {
+    padding: 6px 4px;
     grid-column: 2;
     font-family: var(--font-family-title);
+    font-size: 14px;
   }
 
-  &__body {
-    padding: 16px 8px;
+  .card__body {
+    grid-area: card__body;
+    padding: 16px 4px;
+  }
+}
+
+.slim-card {
+  padding: 8px;
+  border: 1px solid var(--color-dark-main);
+  grid-template-areas:
+    'card__img'
+    'card__header'
+    'card__body';
+
+  .card__title {
+    font-weight: bold;
+    padding: 8px 0;
+    text-align: center;
+    text-decoration: underline;
   }
 }

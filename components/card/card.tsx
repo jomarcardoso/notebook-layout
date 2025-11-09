@@ -1,13 +1,28 @@
 import { type FC, HTMLProps, type ReactNode } from 'react';
+import { generateClasses } from '../../utils/utils';
 
 export interface CardProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
   title: ReactNode;
   img: ReactNode;
+  variant?: 'default' | 'slim';
 }
 
-export const Card: FC<CardProps> = ({ title, img, children, ...props }) => {
+export const Card: FC<CardProps> = ({
+  title,
+  variant = 'default',
+  img,
+  children,
+  className = '',
+  ...props
+}) => {
+  const classes = generateClasses({
+    card: true,
+    'slim-card': variant === 'slim',
+    [className]: className,
+  });
+
   return (
-    <div className="card" {...props}>
+    <div className={classes} {...props}>
       {title && (
         <div className="card__header">
           <div className="card__title">{title}</div>

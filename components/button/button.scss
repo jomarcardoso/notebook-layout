@@ -39,11 +39,6 @@
     background-color: var(--action-primary-bg-active);
     border-color: var(--action-primary-border-active);
     color: var(--action-primary-color-active);
-    box-shadow: none;
-    padding-top: 2px;
-    padding-left: 14px;
-    border-top-width: calc(var(--border-width) + 2px);
-    border-left-width: calc(var(--border-width) + 2px);
   }
 
   &--secondary {
