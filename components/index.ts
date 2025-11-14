@@ -7,3 +7,4 @@ export * from './section';
 export * from './section-card';
 export * from './section-title';
 export * from './footer';
+export { default as Dialog } from './dialog/dialog';

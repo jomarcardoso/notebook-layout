@@ -17,7 +17,7 @@ import {
   TextareaAutosize,
   TextareaAutosizeProps,
 } from '@mui/base/TextareaAutosize';
-import { IoCloseCircleOutline } from 'react-icons/io5';
+import { CiCircleRemove } from 'react-icons/ci';
 import './field.scss';
 import { generateClasses } from '../../utils/utils';
 import { AutoResizeTextarea } from '../../utils/auto-resize-textarea';
@@ -138,7 +138,7 @@ export const Field: FC<FieldProps> = ({
               type="button"
               onClick={() => onErase()}
             >
-              <IoCloseCircleOutline className="field__icon" />
+              <CiCircleRemove className="field__icon" />
             </button>
           )}
         </label>

@@ -12,6 +12,10 @@
   &__header {
     grid-area: card__header;
   }
+
+  &__footer {
+    grid-area: card__footer;
+  }
 }
 
 .card:not(.slim-card) {
@@ -22,7 +26,8 @@
 
   grid-template-areas:
     'card__header card__header'
-    'card__img card__body';
+    'card__img card__body'
+    'card__footer card__footer';
   grid-template-columns: 7fr 10fr;
 
   .card__img {
@@ -51,7 +56,15 @@
 
   .card__body {
     grid-area: card__body;
-    padding: 16px 4px;
+    padding: 16px 4px 8px 4px;
+  }
+
+  .card__footer {
+    border-top: 1px solid var(--color-dark-main);
+    display: flex;
+    gap: 8px;
+    padding: 8px;
+    justify-content: flex-end;
   }
 }
 
@@ -61,7 +74,9 @@
   grid-template-areas:
     'card__img'
     'card__header'
-    'card__body';
+    'card__body'
+    'card_footer';
+  grid-template-rows: auto auto 1fr auto;
 
   .card__title {
     font-weight: bold;

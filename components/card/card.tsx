@@ -2,8 +2,9 @@ import { type FC, HTMLProps, type ReactNode } from 'react';
 import { generateClasses } from '../../utils/utils';
 
 export interface CardProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
-  title: ReactNode;
-  img: ReactNode;
+  title?: ReactNode;
+  img?: ReactNode;
+  footer?: ReactNode;
   variant?: 'default' | 'slim';
 }
 
@@ -11,6 +12,7 @@ export const Card: FC<CardProps> = ({
   title,
   variant = 'default',
   img,
+  footer,
   children,
   className = '',
   ...props
@@ -30,6 +32,7 @@ export const Card: FC<CardProps> = ({
       )}
       {img && <div className="card__img">{img}</div>}
       <div className="card__body">{children}</div>
+      {footer && <div className="card__footer">{footer}</div>}
     </div>
   );
 };
