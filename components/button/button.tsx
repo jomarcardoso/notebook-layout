@@ -1,10 +1,17 @@
-import { type FC, type ButtonHTMLAttributes, ElementType } from 'react';
+import {
+  type FC,
+  type ButtonHTMLAttributes,
+  ElementType,
+  useMemo,
+} from 'react';
 import './button.scss';
+import { generateClasses } from '../../utils/utils';
 
 interface Props {
   as?: ElementType;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'tertiary';
   fullWidth?: boolean;
+  size?: 'small' | 'medium' | 'large';
 }
 
 export type ButtonProps = Props &
@@ -18,13 +25,21 @@ export const Button: FC<ButtonProps> = ({
   children,
   variant = 'primary',
   type = 'button',
+  size = 'medium',
   fullWidth = false,
   ...props
 }) => {
-  let classes = 'button';
-  classes += className ? ` ${className}` : '';
-  classes += variant === 'secondary' ? ' button--secondary' : '';
-  classes += fullWidth ? ' button--full' : '';
+  const classes = useMemo(() => {
+    return generateClasses({
+      button: true,
+      'button--secondary': variant === 'secondary',
+      'button--tertiary': variant === 'tertiary',
+      'button--small': size === 'small',
+      'button--large': size === 'large',
+      'button--full': fullWidth,
+      [className]: className,
+    });
+  }, [className, fullWidth, size, variant]);
 
   return (
     <Component className={classes} type={type} {...props}>

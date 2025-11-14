@@ -50,13 +50,25 @@
   --shadow-primary-inset: inset 0 0 3px 0 rgb(0 0 0 / 20%);
 
   /* 🧩 Components */
-  --action-font-size: 16px;
+  --action-font-size: 1rem;
+  --action-small-font-size: 0.75rem;
   --action-size: 44px;
+  --action-small-size: 36px;
   --bar-size: var(--action-size);
+  --icon-size: 1.75rem;
 
   @media (orientation: landscape) {
-    --action-size: 36px;
-    --action-font-size: 14px;
     --bar-size: 60px;
   }
+
+  @media (pointer: fine) {
+    --action-size: 36px;
+    --action-small-size: 28px;
+    --action-font-size: 0.875rem;
+    --action-small-font-size: 0.75rem;
+  }
+
+  /* button */
+  --button-size: var(--action-size);
+  --button-font-size: var(--action-font-size);
 }

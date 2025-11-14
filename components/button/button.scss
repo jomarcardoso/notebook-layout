@@ -1,23 +1,27 @@
 @use '../../styles/utils';
 
 .button {
+  --size-difference: calc(
+    (((44px - (var(--button-size))) / 2) + var(--border-width)) * -1
+  );
+
   align-items: center;
   background-color: var(--action-primary-bg);
   border: var(--border-width) solid var(--action-primary-border);
-  border-bottom-width: 4px;
   border-radius: var(--border-radius-primary);
-  border-right-width: 4px;
   box-shadow: var(--box-shadow);
   color: var(--action-primary-color);
+  cursor: pointer;
   display: inline-flex;
   font-family: var(--font-family-body);
-  font-size: var(--action-font-size);
+  font-size: var(--button-font-size);
   font-weight: bold;
   gap: 8px;
   justify-content: center;
   letter-spacing: 0.5px;
-  min-height: var(--action-size);
+  min-height: var(--button-size);
   padding: 4px 16px;
+  position: relative;
   text-align: center;
   text-transform: uppercase;
 
@@ -33,6 +37,15 @@
     display: inline-flex;
     gap: 8px;
     justify-content: center;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: var(--size-difference);
+    left: var(--size-difference);
+    right: var(--size-difference);
+    bottom: var(--size-difference);
   }
 
   @include utils.hover {
@@ -53,7 +66,26 @@
     }
   }
 
+  &--tertiary {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--action-secondary-color);
+    box-shadow: none;
+    text-decoration: underline;
+
+    @include utils.hover {
+      background-color: var(--action-secondary-bg-active);
+      border-color: transparent;
+      color: var(--action-secondary-color-active);
+    }
+  }
+
   &--full {
     width: 100%;
+  }
+
+  &--small {
+    --button-font-size: var(--action-small-font-size);
+    --button-size: var(--action-small-size);
   }
 }
