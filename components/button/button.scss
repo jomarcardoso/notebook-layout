@@ -7,7 +7,7 @@
 
   align-items: center;
   background-color: var(--action-primary-bg);
-  border: var(--border-width) solid var(--action-primary-border);
+  border: var(--button-border-width) solid var(--action-primary-border);
   border-radius: var(--border-radius-primary);
   box-shadow: var(--box-shadow);
   color: var(--action-primary-color);
@@ -30,6 +30,20 @@
   svg {
     font-size: 1.3em;
     margin-left: -4px;
+  }
+
+  small {
+    font-size: 0.75em;
+    text-transform: lowercase;
+    width: 100%;
+  }
+
+  &:has(small) {
+    line-height: 1;
+
+    .button__content {
+      display: inline-block;
+    }
   }
 
   &__content {
@@ -87,5 +101,8 @@
   &--small {
     --button-font-size: var(--action-small-font-size);
     --button-size: var(--action-small-size);
+    --button-border-width: var(--border-width-secondary);
+
+    padding: 3px 14px;
   }
 }
