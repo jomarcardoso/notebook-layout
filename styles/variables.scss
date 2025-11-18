@@ -41,7 +41,7 @@
   --border-radius-primary: 7px;
   --border-radius-secondary: 3px;
   --border-width: 3px;
-  --border-secondary: 2px;
+  --border-width-secondary: 2px;
   --border-primary: 2px dashed var(--color-primary-lighter);
 
   /* 🌫️ Shadow */
@@ -71,4 +71,15 @@
   /* button */
   --button-size: var(--action-size);
   --button-font-size: var(--action-font-size);
+  --button-border-width: var(--border-width);
+}
+
+/* Theme variants via data-theme attribute */
+:root[data-theme='primary'] {
+  --color-primary-lighter: #947368;
+  --color-primary-main: #87695e;
+  --color-primary-darker: #6e564d;
+  --color-primary-strong: #6e564de8;
+  --color-primary-medium: #6e564db8;
+  --color-primary-weak: #6e564d88;
 }

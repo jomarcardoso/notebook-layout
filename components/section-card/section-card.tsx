@@ -1,4 +1,5 @@
-import { FC, HTMLProps } from 'react';
+'use client';
+import { FC, HTMLProps, useId } from 'react';
 import './section-card.scss';
 
 interface Props {
@@ -12,7 +13,9 @@ export const SectionCard: FC<SectionCardProps> = ({
   children,
   ...props
 }) => {
-  const id = Math.random().toString(36).substring(2, 9);
+  // useId garante estabilidade entre SSR e cliente, evitando hydration mismatch
+  const reactId = useId();
+  const id = reactId;
 
   return (
     <section aria-labelledby={id} className="section-card" {...props}>
