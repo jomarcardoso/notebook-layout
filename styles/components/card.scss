@@ -56,7 +56,8 @@
 
   .card__body {
     grid-area: card__body;
-    padding: 16px 4px 8px 4px;
+    padding: 8px 4px;
+    align-self: center;
   }
 
   .card__footer {
