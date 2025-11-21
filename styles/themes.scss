@@ -70,6 +70,12 @@
   --field-border: var(--color-primary-lighter);
   --field-color: var(--color-dark-strong);
 
+  // chip
+  --chip-mix-blend-mode: multiply;
+  --chip-border: var(--interactive-border);
+  --chip-bg-active: var(--color-primary-lighter);
+  --chip-color-active: var(--color-white);
+
   background: var(--bg);
   color: var(--color-text);
 }
@@ -107,6 +113,12 @@
   // field
   --field-border: var(--color-text);
   --field-color: var(--color-text);
+
+  // chip
+  --chip-mix-blend-mode: none;
+  --chip-border: 2px solid var(--color-white);
+  --chip-bg-active: var(--color-white);
+  --chip-color-active: var(--color-white);
 
   background: var(--bg);
   color: var(--color-text);

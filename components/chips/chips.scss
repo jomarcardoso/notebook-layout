@@ -1,7 +1,8 @@
 .chip {
   align-items: center;
   border-radius: var(--border-radius-primary);
-  border: 2px solid white;
+  border: var(--chip-border);
+  mix-blend-mode: var(--chip-mix-blend-mode);
   display: inline-flex;
   justify-content: center;
   line-height: 1;
@@ -20,17 +21,17 @@
   }
 
   &:has(input:checked) {
-    background-color: white;
-    color: var(--color-primary-darker);
+    background-color: var(--chip-bg-active);
+    color: var(--chip-color-active);
   }
 }
 
 .chips {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 
   &.-full > * {
-    flex: 1;
+    flex-grow: 1;
   }
 }
-

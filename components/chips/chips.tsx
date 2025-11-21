@@ -9,18 +9,16 @@ import {
 import './chips.scss';
 import { generateClasses } from '../../utils/utils';
 
-const NameContext = createContext<string>('');
+type ChipInputType = 'radio' | 'checkbox';
+const ChipConfigContext = createContext<{ name: string; type: ChipInputType }>({ name: '', type: 'radio' });
 
-export const Chip: FC<HTMLProps<HTMLInputElement>> = ({
-  children,
-  ...props
-}) => {
+export const Chip: FC<HTMLProps<HTMLInputElement>> = ({ children, ...props }) => {
   const id = useId();
-  const name = useContext(NameContext);
+  const { name, type } = useContext(ChipConfigContext);
 
   return (
     <li className="chip">
-      <input type="radio" name={name} {...props} id={id} />
+      <input type={type} name={name} {...props} id={id} />
       <label htmlFor={id}>{children}</label>
     </li>
   );
@@ -30,15 +28,10 @@ export interface ChipsProps extends HTMLProps<HTMLFieldSetElement> {
   full?: boolean;
   name: string;
   legend?: string;
+  type?: ChipInputType;
 }
 
-export const Chips: FC<ChipsProps> = ({
-  children,
-  full,
-  name = '',
-  legend = '',
-  ...props
-}) => {
+export const Chips: FC<ChipsProps> = ({ children, full, name = '', legend = '', type = 'radio', ...props }) => {
   const classes = generateClasses({
     chips: true,
     'mt-2': true,
@@ -46,11 +39,11 @@ export const Chips: FC<ChipsProps> = ({
   });
 
   return (
-    <NameContext.Provider value={name}>
+    <ChipConfigContext.Provider value={{ name, type }}>
       <fieldset {...props}>
         <legend>{legend}</legend>
         <ul className={classes}>{children}</ul>
       </fieldset>
-    </NameContext.Provider>
+    </ChipConfigContext.Provider>
   );
 };
