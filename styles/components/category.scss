@@ -1,0 +1,11 @@
+.category {
+  font-weight: bold;
+  text-align: center;
+  font-size: 0.9em;
+  display: grid;
+  gap: 4px;
+
+  img {
+    border-radius: 50%;
+  }
+}

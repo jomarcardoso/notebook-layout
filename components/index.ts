@@ -8,3 +8,4 @@ export * from './section-card';
 export * from './section-title';
 export * from './footer';
 export { default as Dialog } from './dialog/dialog';
+export * from './chips/chips';
