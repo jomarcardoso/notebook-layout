@@ -9,3 +9,4 @@ export * from './section-title';
 export * from './footer';
 export { default as Dialog } from './dialog/dialog';
 export * from './chips/chips';
+export * from './notebook-tabs';
