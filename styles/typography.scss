@@ -12,6 +12,14 @@
   letter-spacing: 1px;
 }
 
+.h3 {
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-family: var(--font-family-title);
+  font-weight: bold;
+  color: var(--color-primary-darker);
+}
+
 .h4 {
   font-weight: bold;
 }

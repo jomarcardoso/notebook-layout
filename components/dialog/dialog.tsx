@@ -28,9 +28,10 @@ const Dialog: FC<DialogProps> = ({
   noPadding,
   dense,
   className = '',
+  open: openProp,
   ...props
 }) => {
-  const { open: openProp, onClose } = props as any;
+  const { onClose } = props as any;
   const ref = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -73,7 +74,11 @@ const Dialog: FC<DialogProps> = ({
     >
       <div className="dialog__panel">
         {title && (
-          <h2 className="dialog__title" id="alert-dialog-title" {...titleProps}>
+          <h2
+            className="dialog__title h2"
+            id="alert-dialog-title"
+            {...titleProps}
+          >
             {title}
           </h2>
         )}
