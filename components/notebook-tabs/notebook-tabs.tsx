@@ -2,12 +2,8 @@ import type { FC, HTMLProps } from 'react';
 import './notebook-tabs.scss';
 import { generateClasses } from '../../utils/utils';
 
-export interface NotebookTabProps extends HTMLProps<HTMLLIElement> {
-  link?: string;
-}
-
 export interface NotebookTabsProps extends HTMLProps<HTMLDivElement> {
-  tabs: NotebookTabProps[];
+  tabs: HTMLProps<HTMLAnchorElement>[];
 }
 
 export const NotebookTabs: FC<NotebookTabsProps> = ({
@@ -15,6 +11,25 @@ export const NotebookTabs: FC<NotebookTabsProps> = ({
   className = '',
   ...props
 }) => {
+  function handleClick(
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    href?: string,
+  ) {
+    if (!href || !href.startsWith('#')) return;
+    // Ignore empty hash to avoid invalid selector errors
+    if (href === '#') return;
+
+    const target = document.querySelector(href) as HTMLElement | null;
+    if (!target) return;
+
+    event.preventDefault();
+    // target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.scrollingElement?.scrollTo({
+      top: target.offsetTop,
+      behavior: 'smooth',
+    });
+  }
+
   const classes = generateClasses({
     'notebook-tabs': true,
     [className]: className,
@@ -23,9 +38,15 @@ export const NotebookTabs: FC<NotebookTabsProps> = ({
   return (
     <nav className={classes} {...props}>
       <ul>
-        {tabs.map(({ children, link = '#', ...tabProps }, index) => (
-          <li key={String(children)} {...tabProps}>
-            <a href={link}>{children}</a>
+        {tabs.map(({ children, href = '#', ...tabProps }) => (
+          <li key={String(children)}>
+            <a
+              {...tabProps}
+              href={href}
+              onClick={(ev) => handleClick(ev, href)}
+            >
+              {children}
+            </a>
           </li>
         ))}
       </ul>

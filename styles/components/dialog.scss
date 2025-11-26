@@ -56,12 +56,8 @@ body:has(.dialog[open]) {
 }
 
 .dialog__title {
-  margin: 0;
-  font-family: var(--font-family-body);
-  font-weight: 600;
-  font-size: 1.15rem;
-  line-height: 1.6;
   padding: 16px 8px 8px;
+  text-align: center;
 }
 
 .dialog__content {

@@ -29,6 +29,7 @@
     'card__img card__body'
     'card__footer card__footer';
   grid-template-columns: 7fr 10fr;
+  grid-template-rows: 1fr auto auto;
 
   .card__img {
     padding: 16px 8px;
