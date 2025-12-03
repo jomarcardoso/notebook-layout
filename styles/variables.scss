@@ -68,18 +68,24 @@
     --action-small-font-size: 0.75rem;
   }
 
-  /* button */
-  --button-size: var(--action-size);
-  --button-font-size: var(--action-font-size);
-  --button-border-width: var(--border-width);
-}
+  // action
+  --action-box-shadow: var(--box-shadow);
 
-/* Theme variants via data-theme attribute */
-:root[data-theme='primary'] {
-  --color-primary-lighter: #947368;
-  --color-primary-main: #87695e;
-  --color-primary-darker: #6e564d;
-  --color-primary-strong: #6e564de8;
-  --color-primary-medium: #6e564db8;
-  --color-primary-weak: #6e564d88;
+  // action primary
+  --action-primary-bg: var(--color-dark-main);
+  --action-primary-color: var(--color-white);
+  --action-primary-border: var(--action-primary-bg);
+  --action-primary-style: solid;
+  --action-primary-bg-active: var(--color-dark-lighter);
+  --action-primary-color-active: var(--color-white);
+  --action-primary-border-active: var(--action-primary-bg-active);
+
+  // action secondary
+  --action-secondary-bg: var(--color-white);
+  --action-secondary-color: var(--color-text);
+  --action-secondary-border: var(--color-text);
+  --action-secondary-style: solid;
+  --action-secondary-bg-active: var(--color-light-main);
+  --action-secondary-color-active: var(--color-dark-lighter);
+  --action-secondary-border-active: var(--color-dark-lighter);
 }

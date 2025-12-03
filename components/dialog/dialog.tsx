@@ -84,7 +84,7 @@ const Dialog: FC<DialogProps> = ({
         )}
         {children && (
           <div
-            className="dialog__content"
+            className="dialog__content theme-light"
             id="alert-dialog-description"
             {...contentProps}
           >
