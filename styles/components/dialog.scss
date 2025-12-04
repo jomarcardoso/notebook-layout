@@ -56,8 +56,9 @@ body:has(.dialog[open]) {
 }
 
 .dialog__title {
-  padding: 16px 8px 8px;
+  padding: 8px;
   text-align: center;
+  min-height: var(--action-size);
 }
 
 .dialog__content {
@@ -74,6 +75,7 @@ body:has(.dialog[open]) {
   flex: 0 0 auto;
   gap: 8px;
   justify-content: flex-end;
+  min-height: var(--action-size);
   padding: 8px;
 }
 

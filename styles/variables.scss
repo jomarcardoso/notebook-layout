@@ -88,4 +88,19 @@
   --action-secondary-bg-active: var(--color-light-main);
   --action-secondary-color-active: var(--color-dark-lighter);
   --action-secondary-border-active: var(--color-dark-lighter);
+
+  // button
+  --button-size: var(--action-size);
+  --button-font-size: var(--action-font-size);
+  --button-border-width: var(--border-width);
+  --button-padding-y: 4px;
+  --button-padding-x: 16px;
+}
+
+.theme-small {
+  --button-font-size: var(--action-small-font-size);
+  --button-size: var(--action-small-size);
+  --button-border-width: var(--border-width-secondary);
+  --button-padding-y: 3px;
+  --button-padding-x: 14px;
 }

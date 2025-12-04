@@ -1,17 +1,12 @@
 @use '../../styles/utils';
 
 .button {
-  --button-size: var(--action-size);
-  --button-font-size: var(--action-font-size);
   --button-font-weight: bold;
   --button-text-transform: uppercase;
   --button-letter-spacing: 0.03125rem;
-  --button-border-width: var(--border-width);
-  --button-padding-y: 4px;
-  --button-padding-x: 16px;
   --button-padding: var(--button-padding-y) var(--button-padding-x);
 
-  --button__icon-font-size: 1.1em;
+  --button__icon-font-size: 1.2em;
   --button__icon-margin-left: -0.15rem;
 
   --button__small-font-size: 0.75em;
@@ -32,7 +27,7 @@
   font-family: var(--font-family-body);
   font-size: var(--button-font-size);
   font-weight: var(--button-font-weight);
-  gap: 8px;
+  gap: calc(var(--button-padding-y) * 2);
   justify-content: center;
   letter-spacing: var(--button-letter-spacing);
   min-height: var(--button-size);
@@ -100,15 +95,6 @@
 
   &--full {
     width: 100%;
-  }
-
-  &--small {
-    --button-font-size: var(--action-small-font-size);
-    --button-size: var(--action-small-size);
-    --button-border-width: var(--border-width-secondary);
-
-    --button--padding-y: 3px;
-    --button--padding-x: 14px;
   }
 
   &--tertiary {

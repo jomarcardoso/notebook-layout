@@ -19,6 +19,7 @@ export const Card: FC<CardProps> = ({
 }) => {
   const classes = generateClasses({
     card: true,
+    'theme-small': true,
     'slim-card': variant === 'slim',
     [className]: className,
   });

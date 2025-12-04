@@ -56,6 +56,7 @@ const Dialog: FC<DialogProps> = ({
 
   const classes = generateClasses({
     dialog: true,
+    'theme-small': true,
     '-no-padding': noPadding,
     '-dense': dense,
     [className]: className,
