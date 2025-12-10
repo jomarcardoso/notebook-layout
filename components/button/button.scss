@@ -102,14 +102,14 @@
 
     background-color: transparent;
     border-color: transparent;
-    color: var(--action-secondary-color);
+    color: var(--color-text);
     box-shadow: none;
     text-decoration: underline;
 
     @include utils.hover {
-      background-color: var(--action-secondary-bg-active);
+      background-color: color-mix(in srgb, currentColor 10%, transparent);
       border-color: transparent;
-      color: var(--action-secondary-color-active);
+      color: var(--color-text);
     }
   }
 }

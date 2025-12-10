@@ -25,6 +25,7 @@ const meta = {
     variant: 'primary',
     fullWidth: false,
     theme: 'theme-base',
+    sizeEnvironment: 'theme-medium',
   },
   argTypes: {
     theme: {
@@ -32,9 +33,15 @@ const meta = {
       options: ['theme-base', 'theme-light', 'theme-primary'],
       description: 'Selects which global theme class is applied to preview.',
     },
+    sizeEnvironment: {
+      control: 'radio',
+      options: ['theme-small', 'theme-medium', 'theme-large'],
+      description:
+        'Applies viewport sizing classes to the preview iframe for responsive checks.',
+    },
     variant: {
       control: 'radio',
-      options: ['primary', 'secondary'],
+      options: ['primary', 'secondary', 'tertiary'],
       description:
         'Switches between the primary (orange) and secondary (dark) palettes.',
     },
@@ -49,14 +56,16 @@ const meta = {
   },
   decorators: [
     (StoryFn, context) => {
-      const { theme } = context.args;
+      const { theme, sizeEnvironment } = context.args;
       const body = document.body;
 
       // Remove qualquer tema anterior
       body.classList.remove('theme-base', 'theme-light', 'theme-primary');
+      body.classList.remove('theme-small', 'theme-medium', 'theme-large');
 
       // Adiciona o novo tema
       body.classList.add(theme);
+      body.classList.add(sizeEnvironment);
 
       return <StoryFn />;
     },

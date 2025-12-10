@@ -1,0 +1,13 @@
+@use '../utils.scss';
+
+.mobile-only {
+  @include utils.isMobile {
+    @content;
+  }
+}
+
+.desktop-only {
+  @include utils.isDesktop {
+    @content;
+  }
+}

@@ -1,11 +1,11 @@
-@mixin isDesktop {
-  @media (hover: hover) and (pointer: fine) {
+@mixin isMobile {
+  @media (hover: none) and (pointer: coarse) {
     @content;
   }
 }
 
-@mixin isMobile {
-  @media (hover: none) and (pointer: coarse) {
+@mixin isDesktop {
+  @media (hover: hover) and (pointer: fine) {
     @content;
   }
 }
