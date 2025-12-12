@@ -1,10 +1,7 @@
 import { FC, HTMLProps, ReactNode } from 'node_modules/@types/react';
+import { Heading, HeadingProps } from './heading';
 
-export interface ModalProps extends Omit<HTMLProps<HTMLDivElement>, 'header'> {
-  title?: ReactNode;
-  titleProps?: HTMLProps<HTMLHeadingElement>;
-  subtitle?: ReactNode;
-  subtitleProps?: HTMLProps<HTMLParagraphElement>;
+interface Props extends Omit<HTMLProps<HTMLDivElement>, 'header'> {
   header?: ReactNode;
   headerProps?: HTMLProps<HTMLDivElement>;
   children?: ReactNode;
@@ -12,6 +9,8 @@ export interface ModalProps extends Omit<HTMLProps<HTMLDivElement>, 'header'> {
   footer: ReactNode;
   footerProps?: HTMLProps<HTMLDivElement>;
 }
+
+export type ModalProps = Props & HeadingProps;
 
 export const Modal: FC<ModalProps> = ({
   title = '',
@@ -25,17 +24,18 @@ export const Modal: FC<ModalProps> = ({
   footer = '',
   footerProps,
 }) => {
+  const headingProps: HeadingProps = {
+    title,
+    titleProps,
+    subtitle,
+    subtitleProps,
+    children: header,
+    ...headerProps,
+  };
+
   return (
     <div className="modal">
-      {(title || header) && (
-        <div {...headerProps} className="modal__header">
-          <h2 className="h2" id="alert-dialog-title" {...titleProps}>
-            {title || header}
-          </h2>
-
-          {subtitle && <p {...subtitleProps}>{subtitle}</p>}
-        </div>
-      )}
+      {(title || header) && <Heading {...headingProps} />}
       {children && (
         <div
           className="modal__body theme-light"
