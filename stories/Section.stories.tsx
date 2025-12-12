@@ -6,12 +6,12 @@ import { SectionCard } from '@components/section-card';
 const textBlock = (
   <div className="grid columns-1 g-2">
     <p>
-      Estrutura usada para separar conteudos em paginas de receita, aplicando
-      o mesmo espaco das paginas ilustradas.
+      Estrutura usada para separar conteudos em paginas de receita, aplicando o
+      mesmo espaco das paginas ilustradas.
     </p>
     <p>
-      Combine com `SectionTitle`, `SectionCard` ou `Field` para manter o
-      layout coerente em diferentes contextos.
+      Combine com `SectionTitle`, `SectionCard` ou `Field` para manter o layout
+      coerente em diferentes contextos.
     </p>
   </div>
 );
@@ -29,7 +29,7 @@ const meta = {
     },
   },
   args: {
-    title: 'Resumo da receita',
+    header: 'Resumo da receita',
     children: textBlock,
   },
   argTypes: {
@@ -59,7 +59,7 @@ export const Default: Story = {};
 export const OnWhiteBackground: Story = {
   args: {
     onBgWhite: true,
-    title: 'Chamado em fundo claro',
+    header: 'Chamado em fundo claro',
   },
   parameters: {
     docs: {
@@ -73,7 +73,7 @@ export const OnWhiteBackground: Story = {
 
 export const WithoutTitle: Story = {
   args: {
-    title: '',
+    header: '',
   },
   parameters: {
     docs: {
@@ -86,11 +86,11 @@ export const WithoutTitle: Story = {
 
 export const WithInteractiveContent: Story = {
   args: {
-    title: 'Detalhes da etapa',
+    header: 'Detalhes da etapa',
   },
   render: (args) => (
     <Section {...args}>
-      <SectionCard title="Informacoes principais">
+      <SectionCard header="Informacoes principais">
         <div className="grid columns-1 g-2">
           <Field label="Titulo" placeholder="Bolo de chocolate" />
           <Field

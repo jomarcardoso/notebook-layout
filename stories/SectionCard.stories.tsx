@@ -21,7 +21,7 @@ const meta = {
   component: SectionCard,
   tags: ['autodocs'],
   args: {
-    title: 'Informacoes em destaque',
+    header: 'Informacoes em destaque',
     children: defaultBody,
   },
   parameters: {
@@ -36,7 +36,7 @@ const meta = {
   argTypes: {
     children: { control: false },
     className: { control: false },
-    title: {
+    header: {
       control: 'text',
       description: 'Texto exibido na faixa superior do cartao.',
     },
@@ -58,12 +58,13 @@ export const Default: Story = {};
 
 export const WithoutTitle: Story = {
   args: {
-    title: undefined,
+    header: undefined,
   },
   parameters: {
     docs: {
       description: {
-        story: 'O corpo pode ser renderizado sem cabecalho quando o destaque nao for necessario.',
+        story:
+          'O corpo pode ser renderizado sem cabecalho quando o destaque nao for necessario.',
       },
     },
   },
@@ -71,7 +72,7 @@ export const WithoutTitle: Story = {
 
 export const WithFormFields: Story = {
   args: {
-    title: 'Campos do passo',
+    header: 'Campos do passo',
   },
   render: (args) => (
     <SectionCard {...args}>
@@ -90,7 +91,8 @@ export const WithFormFields: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Exemplo de combinacao direta com Fields para montar um bloco de formulario.',
+        story:
+          'Exemplo de combinacao direta com Fields para montar um bloco de formulario.',
       },
     },
   },

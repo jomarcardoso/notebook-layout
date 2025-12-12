@@ -1,3 +1,5 @@
+@use '../utils.scss';
+
 .dialog {
   background-color: transparent;
   display: none;
@@ -8,6 +10,10 @@
   max-width: 100%; // reset
   max-height: 100%; // reset
   align-items: flex-end;
+
+  .modal {
+    max-height: 80vh;
+  }
 }
 
 .dialog[open] {
@@ -39,52 +45,17 @@ body:has(.dialog[open]) {
   }
 }
 
-.dialog__panel {
-  background: #fff;
-  color: #191919;
-  width: min(calc(100vw - 8px), 640px);
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--border-radius-primary);
-
-  /* simple open animation */
-  opacity: 0;
-  transform: translateY(16px);
-  animation: dialog-in 180ms ease-out forwards;
-}
-
-.dialog__title {
-  padding: 8px;
-  text-align: center;
-  min-height: var(--action-size);
-  flex-shrink: 0;
-}
-
-.dialog__content {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  padding: 8px;
-  font-size: 1rem;
-  box-shadow: var(--shadow-primary-inset);
-}
-
-.dialog__footer {
-  align-items: center;
-  display: flex;
-  flex: 0 0 auto;
-  gap: 8px;
-  justify-content: flex-end;
-  min-height: var(--action-size);
-  padding: 8px;
-  flex-shrink: 0;
-}
-
-.dialog.-no-padding .dialog__content {
+.dialog.-no-padding .modal__body {
   padding: 0;
 }
 
 .dialog.-dense {
   max-height: 92vh;
+}
+
+@include utils.isDesktop {
+  .dialog {
+    align-items: center;
+    justify-content: center;
+  }
 }

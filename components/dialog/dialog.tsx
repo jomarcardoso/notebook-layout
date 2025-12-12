@@ -7,30 +7,44 @@ import {
   useRef,
 } from 'react';
 import { generateClasses } from '../../utils/utils';
+import { Modal, type ModalProps } from '../modal';
 
-export interface DialogProps extends HTMLProps<HTMLDialogElement> {
-  titleProps?: HTMLProps<HTMLHeadingElement>;
-  contentProps?: HTMLProps<HTMLDivElement>;
-  actions: ReactNode;
-  actionsProps?: HTMLProps<HTMLDivElement>;
+export interface DialogProps extends ModalProps {
+  header?: ReactNode;
+  headerProps?: HTMLProps<HTMLHeadingElement>;
+
   children?: ReactNode;
+  bodyProps?: HTMLProps<HTMLDivElement>;
+
+  footer: ReactNode;
+  footerProps?: HTMLProps<HTMLDivElement>;
+
   noPadding?: boolean;
   dense?: boolean;
 }
 
-const Dialog: FC<DialogProps> = ({
-  title = '',
-  titleProps,
+export const Dialog: FC<DialogProps> = ({
+  header = '',
+  headerProps,
   children = '',
-  contentProps,
-  actions = '',
-  actionsProps,
+  bodyProps,
+  footer = '',
+  footerProps,
   noPadding,
   dense,
   className = '',
   open: openProp,
   ...props
 }) => {
+  const modalProps = {
+    header,
+    headerProps,
+    children,
+    bodyProps,
+    footer,
+    footerProps,
+  };
+
   const { onClose } = props as any;
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -73,31 +87,7 @@ const Dialog: FC<DialogProps> = ({
       }}
       {...props}
     >
-      <div className="dialog__panel">
-        {title && (
-          <h2
-            className="dialog__title h2"
-            id="alert-dialog-title"
-            {...titleProps}
-          >
-            {title}
-          </h2>
-        )}
-        {children && (
-          <div
-            className="dialog__content theme-light"
-            id="alert-dialog-description"
-            {...contentProps}
-          >
-            {children}
-          </div>
-        )}
-        <div className="dialog__footer" {...actionsProps}>
-          {actions}
-        </div>
-      </div>
+      <Modal {...modalProps} />
     </dialog>
   );
 };
-
-export default Dialog;

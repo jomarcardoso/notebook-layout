@@ -2,13 +2,13 @@ import { SectionTitle } from '../section-title';
 import { FC, HTMLProps } from 'react';
 
 export interface SectionProps extends HTMLProps<HTMLDivElement> {
-  title?: string;
+  header?: string;
   onBgWhite?: boolean;
 }
 
 export const Section: FC<SectionProps> = ({
   onBgWhite = false,
-  title = '',
+  header: title = '',
   children,
   ...props
 }) => {

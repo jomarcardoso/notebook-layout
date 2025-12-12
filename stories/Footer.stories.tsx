@@ -1,5 +1,10 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
-import { IoAddCircleOutline, IoCreateOutline, IoShareOutline, IoTrashOutline } from 'react-icons/io5';
+import {
+  IoAddCircleOutline,
+  IoCreateOutline,
+  IoShareOutline,
+  IoTrashOutline,
+} from 'react-icons/io5';
 import { Footer } from '@components/footer';
 
 const meta = {
@@ -20,10 +25,10 @@ const meta = {
     open: false,
     theme: 'theme-primary',
     items: [
-      { icon: <IoAddCircleOutline />, title: 'Adicionar', onClick: () => {} },
-      { icon: <IoCreateOutline />, title: 'Editar', onClick: () => {} },
-      { icon: <IoShareOutline />, title: 'Compartilhar', onClick: () => {} },
-      { icon: <IoTrashOutline />, title: 'Remover', onClick: () => {} },
+      { icon: <IoAddCircleOutline />, header: 'Adicionar', onClick: () => {} },
+      { icon: <IoCreateOutline />, header: 'Editar', onClick: () => {} },
+      { icon: <IoShareOutline />, header: 'Compartilhar', onClick: () => {} },
+      { icon: <IoTrashOutline />, header: 'Remover', onClick: () => {} },
     ],
   },
   argTypes: {
@@ -32,8 +37,14 @@ const meta = {
       options: ['theme-base', 'theme-light', 'theme-primary'],
       description: 'Selects which global theme class is applied to preview.',
     },
-    footerMenu: { control: 'boolean', description: 'Renders the expanded menu style.' },
-    open: { control: 'boolean', description: 'Applies the open state background.' },
+    footerMenu: {
+      control: 'boolean',
+      description: 'Renders the expanded menu style.',
+    },
+    open: {
+      control: 'boolean',
+      description: 'Applies the open state background.',
+    },
     items: { control: false },
     className: { control: false },
   },
@@ -44,7 +55,14 @@ const meta = {
       body.classList.remove('theme-base', 'theme-light', 'theme-primary');
       body.classList.add(theme);
       return (
-        <div style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+        <div
+          style={{
+            minHeight: '60vh',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }}
+        >
           <StoryFn />
         </div>
       );

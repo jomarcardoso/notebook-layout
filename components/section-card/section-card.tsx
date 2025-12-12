@@ -9,7 +9,7 @@ interface Props {
 export type SectionCardProps = HTMLProps<HTMLDivElement> & Props;
 
 export const SectionCard: FC<SectionCardProps> = ({
-  title = '',
+  header: title = '',
   children,
   ...props
 }) => {
