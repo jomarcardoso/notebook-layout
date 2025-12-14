@@ -1,0 +1,13 @@
+.progress-indicator {
+  display: inline-grid;
+  gap: 8px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    color: var(--color-text);
+    justify-content: space-between;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

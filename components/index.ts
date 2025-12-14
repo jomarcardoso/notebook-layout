@@ -13,3 +13,4 @@ export * from './dialog/dialog';
 export * from './chips/chips';
 export * from './notebook-tabs';
 export * from './progressbar';
+export * from './progress-indicator';
