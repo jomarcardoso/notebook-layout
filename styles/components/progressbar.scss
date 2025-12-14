@@ -1,0 +1,31 @@
+@use '../variables';
+
+.progressbar {
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 2px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-text);
+  box-shadow: var(--shadow-primary-inset);
+  overflow: hidden;
+
+  &::-webkit-progress-bar {
+    background-color: inherit;
+    border-radius: inherit;
+    box-shadow: inherit;
+  }
+
+  &::-webkit-progress-value {
+    background-color: var(--color-primary-darker);
+    border-radius: inherit;
+    transition: width 160ms ease-out;
+  }
+
+  &::-moz-progress-bar {
+    background-color: var(--color-primary-darker);
+    border-radius: inherit;
+    box-shadow: var(--shadow-primary-inset);
+    transition: width 160ms ease-out;
+  }
+}

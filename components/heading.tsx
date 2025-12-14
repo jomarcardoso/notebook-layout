@@ -5,6 +5,8 @@ export interface HeadingProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
   titleProps?: HTMLProps<HTMLHeadingElement>;
   subtitle?: ReactNode;
   subtitleProps?: HTMLProps<HTMLParagraphElement>;
+  indicator?: ReactNode;
+  indicatorProps?: HTMLProps<HTMLDivElement>;
 }
 
 export const Heading: FC<HeadingProps> = ({
@@ -12,6 +14,8 @@ export const Heading: FC<HeadingProps> = ({
   titleProps,
   subtitle = '',
   subtitleProps,
+  indicator = '',
+  indicatorProps,
   children = '',
   ...props
 }) => {
@@ -22,6 +26,8 @@ export const Heading: FC<HeadingProps> = ({
       </h2>
 
       {subtitle && <p {...subtitleProps}>{subtitle}</p>}
+
+      {indicator && <div {...indicatorProps}>{indicator}</div>}
     </div>
   );
 };
