@@ -1,0 +1,25 @@
+.heading {
+  display: grid;
+  grid-template-areas:
+    'heading__title . heading__indicator'
+    'heading__subtitle . heading__indicator';
+  flex-shrink: 0;
+  min-height: var(--action-size);
+  padding: 8px;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+
+  h1,
+  h2,
+  h3 {
+    grid-area: heading__title;
+  }
+
+  p {
+    grid-area: heading__subtitle;
+  }
+
+  &__indicator {
+    grid-area: heading__indicator;
+  }
+}

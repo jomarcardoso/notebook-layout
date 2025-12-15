@@ -20,14 +20,18 @@ export const Heading: FC<HeadingProps> = ({
   ...props
 }) => {
   return (
-    <div {...props} className="modal__header">
+    <div {...props} className="heading">
       <h2 className="h2" id="alert-dialog-title" {...titleProps}>
         {title || children}
       </h2>
 
       {subtitle && <p {...subtitleProps}>{subtitle}</p>}
 
-      {indicator && <div {...indicatorProps}>{indicator}</div>}
+      {indicator && (
+        <div className="heading__indicator" {...indicatorProps}>
+          {indicator}
+        </div>
+      )}
     </div>
   );
 };

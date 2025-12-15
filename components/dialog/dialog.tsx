@@ -16,11 +16,13 @@ export interface DialogProps extends ModalProps {
   children?: ReactNode;
   bodyProps?: HTMLProps<HTMLDivElement>;
 
-  footer: ReactNode;
+  footer?: ReactNode;
   footerProps?: HTMLProps<HTMLDivElement>;
 
   noPadding?: boolean;
   dense?: boolean;
+
+  blank?: boolean;
 }
 
 export const Dialog: FC<DialogProps> = ({
@@ -34,6 +36,7 @@ export const Dialog: FC<DialogProps> = ({
   dense,
   className = '',
   open: openProp,
+  blank = false,
   ...props
 }) => {
   const modalProps = {
@@ -87,7 +90,7 @@ export const Dialog: FC<DialogProps> = ({
       }}
       {...props}
     >
-      <Modal {...modalProps} />
+      {!blank ? <Modal {...modalProps} /> : children}
     </dialog>
   );
 };

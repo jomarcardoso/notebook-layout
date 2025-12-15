@@ -6,7 +6,7 @@ interface Props extends Omit<HTMLProps<HTMLDivElement>, 'header'> {
   headerProps?: HTMLProps<HTMLDivElement>;
   children?: ReactNode;
   bodyProps?: HTMLProps<HTMLDivElement>;
-  footer: ReactNode;
+  footer?: ReactNode;
   footerProps?: HTMLProps<HTMLDivElement>;
 }
 
@@ -17,6 +17,8 @@ export const Modal: FC<ModalProps> = ({
   titleProps,
   subtitle = '',
   subtitleProps,
+  indicator = '',
+  indicatorProps,
   header = '',
   headerProps,
   children = '',
@@ -29,7 +31,8 @@ export const Modal: FC<ModalProps> = ({
     titleProps,
     subtitle,
     subtitleProps,
-    children: header,
+    indicator,
+    indicatorProps,
     ...headerProps,
   };
 

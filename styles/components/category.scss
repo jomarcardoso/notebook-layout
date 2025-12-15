@@ -1,9 +1,11 @@
 .category {
   font-weight: bold;
   text-align: center;
-  font-size: 0.9em;
+  font-size: var(--category-font-size);
   display: grid;
   gap: 4px;
+  word-break: break-word;
+  width: var(--category-width);
 
   img {
     border-radius: 50%;

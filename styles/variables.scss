@@ -89,18 +89,37 @@
   --action-secondary-color-active: var(--color-dark-lighter);
   --action-secondary-border-active: var(--color-dark-lighter);
 
+  // typography
+  --font-size: 1rem;
+  --h2-font-size: 1.375rem;
+
   // button
   --button-size: var(--action-size);
   --button-font-size: var(--action-font-size);
   --button-border-width: var(--border-width);
   --button-padding-y: 4px;
   --button-padding-x: 16px;
+
+  // category
+  --category-width: 102px;
+  --category-font-size: 0.875rem;
 }
 
 .theme-small {
+  // typography
+  --font-size: 0.875rem;
+  --h2-font-size: 1.25rem;
+
+  // button
   --button-font-size: var(--action-small-font-size);
   --button-size: var(--action-small-size);
   --button-border-width: var(--border-width-secondary);
   --button-padding-y: 3px;
   --button-padding-x: 14px;
+
+  // category
+  --category-width: 86px;
+  --category-font-size: 0.75rem;
+
+  font-size: var(--font-size);
 }

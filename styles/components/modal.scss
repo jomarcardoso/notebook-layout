@@ -12,31 +12,6 @@
   transform: translateY(16px);
   animation: dialog-in 180ms ease-out forwards;
 
-  &__header {
-    display: grid;
-    grid-template-areas:
-      'modal-header__title . modal__indicator'
-      'modal-header__subtitle . modal__indicator';
-    flex-shrink: 0;
-    min-height: var(--action-size);
-    padding: 8px;
-    text-align: center;
-
-    h1,
-    h2,
-    h3 {
-      grid-area: modal-header__title;
-    }
-
-    p {
-      grid-area: modal-header__subtitle;
-    }
-  }
-
-  &__indicator {
-    grid-area: modal__indicator;
-  }
-
   &__body {
     flex: 1 1 auto;
     overflow-y: auto;
