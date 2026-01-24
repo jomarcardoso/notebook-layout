@@ -7,11 +7,11 @@
     border-top-left-radius: var(--border-radius-secondary);
     border-top-right-radius: var(--border-radius-secondary);
     background-color: var(--color-primary-lighter);
-    padding: 5px 24px 3px;
+    padding: var(--field__label-padding);
     align-self: flex-start;
-    font-size: 15px;
+    font-size: var(--field__label-font-size);
     font-family: var(--font-family-title);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.0625rem;
     mix-blend-mode: multiply;
     transition: background-color 0.2s ease-in-out;
   }
@@ -20,7 +20,7 @@
     border: var(--interactive-border);
     display: flex;
     align-items: center;
-    padding: 12px 10px 0;
+    padding: calc(var(--field-padding) + 2px) var(--field-padding) 0;
     border-radius: var(--border-radius-primary);
     border-top-left-radius: 0;
     transition: border-color 0.2s ease-in-out;
@@ -30,7 +30,7 @@
     background-color: transparent;
     font-family: var(--font-family-input);
     line-height: 31px;
-    font-size: 23px;
+    font-size: var(--field-font-size);
     color: var(--color-dark-main);
     resize: none;
     width: 100%;
@@ -77,7 +77,7 @@
 
     .field__box {
       border: 0;
-      padding: 12px 0 0;
+      padding: calc(var(--field-padding) + 2px) 0 0;
     }
 
     .field__input {
@@ -128,7 +128,7 @@
 
   &--no-breakline {
     .field__box {
-      padding: 10px;
+      padding: var(--field-padding);
     }
   }
 }

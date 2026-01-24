@@ -1,11 +1,11 @@
+@use '../utils.scss';
+
 .modal {
   background: #fff;
   border-radius: var(--border-radius-primary);
-  color: #191919;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  width: min(calc(100vw - 8px), 640px);
 
   /* simple open animation */
   opacity: 0;
@@ -29,5 +29,14 @@
     min-height: var(--action-size);
     padding: 8px;
     flex-shrink: 0;
+  }
+
+  @include utils.isMobile {
+    width: calc(100vw - 8px);
+  }
+
+  @include utils.isDesktop {
+    box-shadow: var(--box-shadow);
+    border: 2px solid var(--color-text);
   }
 }

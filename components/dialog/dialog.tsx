@@ -10,6 +10,7 @@ import { generateClasses } from '../../utils/utils';
 import { Modal, type ModalProps } from '../modal';
 
 export interface DialogProps extends ModalProps {
+  title?: ReactNode;
   header?: ReactNode;
   headerProps?: HTMLProps<HTMLHeadingElement>;
 
@@ -26,6 +27,7 @@ export interface DialogProps extends ModalProps {
 }
 
 export const Dialog: FC<DialogProps> = ({
+  title = '',
   header = '',
   headerProps,
   children = '',
@@ -40,6 +42,7 @@ export const Dialog: FC<DialogProps> = ({
   ...props
 }) => {
   const modalProps = {
+    title,
     header,
     headerProps,
     children,

@@ -27,7 +27,6 @@ export const Modal: FC<ModalProps> = ({
   footerProps,
 }) => {
   const headingProps: HeadingProps = {
-    title,
     titleProps,
     subtitle,
     subtitleProps,
@@ -37,8 +36,10 @@ export const Modal: FC<ModalProps> = ({
   };
 
   return (
-    <div className="modal">
-      {(title || header) && <Heading {...headingProps} />}
+    <div className="modal theme-small">
+      {(title || header) && (
+        <Heading {...headingProps}>{title || header}</Heading>
+      )}
       {children && (
         <div
           className="modal__body theme-light"

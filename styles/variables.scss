@@ -45,8 +45,9 @@
   --interactive-border: 2px dashed var(--color-primary-lighter);
 
   /* 🌫️ Shadow */
-  --shadow-primary: 0 2px 4px -1px rgb(0 0 0 / 20%),
-    0 4px 5px 0 rgb(0 0 0 / 14%), 0 1px 10px 0 rgb(0 0 0 / 12%);
+  --shadow-primary:
+    0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 1px 10px 0 rgb(0 0 0 / 12%);
   --shadow-primary-inset: inset 0 0 3px 0 rgb(0 0 0 / 20%);
 
   /* 🧩 Components */
@@ -100,6 +101,12 @@
   --button-padding-y: 4px;
   --button-padding-x: 16px;
 
+  // field
+  --field-padding: 10px;
+  --field-font-size: 1.4375rem;
+  --field__label-font-size: 15px;
+  --field__label-padding: 5px 24px 3px;
+
   // category
   --category-width: 102px;
   --category-font-size: 0.875rem;
@@ -116,6 +123,12 @@
   --button-border-width: var(--border-width-secondary);
   --button-padding-y: 3px;
   --button-padding-x: 14px;
+
+  // field
+  --field-padding: 3px;
+  --field-font-size: 1.0625rem;
+  --field__label-font-size: 13px;
+  --field__label-padding: 3px 16px 2px;
 
   // category
   --category-width: 86px;
