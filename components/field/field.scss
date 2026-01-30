@@ -29,7 +29,7 @@
   &__input {
     background-color: transparent;
     font-family: var(--font-family-input);
-    line-height: 31px;
+    line-height: var(--field-line-height);
     font-size: var(--field-font-size);
     color: var(--color-dark-main);
     resize: none;
@@ -70,6 +70,16 @@
   }
 
   &--multiline {
+    --field-line-color: var(--color-primary-lighter);
+    --field-line-step: var(--field-line-height);
+    --field-line-offset-x: 3px;
+    --field-line-offset-adjust: 3px;
+    --field-line-offset: calc(25px - var(--field-line-offset-adjust));
+    --field-line-thickness: 1px;
+    --field-line-dash-length: 6px;
+    --field-line-dash-gap: 6px;
+    --field-box-padding-top: calc(var(--field-padding) + 2px);
+
     .field__label {
       align-self: stretch;
       text-align: center;
@@ -77,23 +87,75 @@
 
     .field__box {
       border: 0;
-      padding: calc(var(--field-padding) + 2px) 0 0;
+      padding: var(--field-box-padding-top) 0 0;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: var(--field-box-padding-top) var(--field-line-offset-x) 0;
+        pointer-events: none;
+        z-index: 0;
+        background-image: repeating-linear-gradient(
+          to right,
+          var(--field-line-color) 0,
+          var(--field-line-color) var(--field-line-dash-length),
+          transparent var(--field-line-dash-length),
+          transparent calc(
+            var(--field-line-dash-length) + var(--field-line-dash-gap)
+          )
+        );
+        background-size: calc(
+            var(--field-line-dash-length) + var(--field-line-dash-gap)
+          )
+          100%;
+        background-repeat: repeat;
+        -webkit-mask-image: repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent calc(
+            var(--field-line-offset) - var(--field-line-thickness)
+          ),
+          #000 calc(var(--field-line-offset) - var(--field-line-thickness)),
+          #000 var(--field-line-offset),
+          transparent var(--field-line-offset),
+          transparent var(--field-line-step)
+        );
+        -webkit-mask-size: 100% var(--field-line-step);
+        -webkit-mask-repeat: repeat;
+        mask-image: repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent calc(
+            var(--field-line-offset) - var(--field-line-thickness)
+          ),
+          #000 calc(var(--field-line-offset) - var(--field-line-thickness)),
+          #000 var(--field-line-offset),
+          transparent var(--field-line-offset),
+          transparent var(--field-line-step)
+        );
+        mask-size: 100% var(--field-line-step);
+        mask-repeat: repeat;
+      }
     }
 
     .field__input {
-      background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMxIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjI1IiB4Mj0iNSIgeTI9IjI1IiBzdHlsZT0ic3Ryb2tlOiM5NDczNjg7IHN0cm9rZS13aWR0aDoxIi8+PC9zdmc+');
-      font-size: 21px;
+      background: transparent;
+      position: relative;
+      z-index: 1;
     }
 
     &.field--large {
       .field__box {
-        padding-top: 24px;
+        --field-box-padding-top: 24px;
+        padding-top: var(--field-box-padding-top);
       }
 
       .field__input {
+        --field-line-step: 44px;
+        --field-line-offset: calc(32px - var(--field-line-offset-adjust));
         line-height: 44px;
         font-size: 25px;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ0IiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjMyIiB4Mj0iNSIgeTI9IjMyIiBzdHlsZT0ic3Ryb2tlOiM5NDczNjg7IHN0cm9rZS13aWR0aDoxIi8+PC9zdmc+');
       }
     }
   }
@@ -108,13 +170,10 @@
     }
 
     &.field--multiline {
-      .field__input {
-        background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjMxIiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjI1IiB4Mj0iNSIgeTI9IjI1IiBzdHlsZT0ic3Ryb2tlOiM2RTU2NEQ7c3Ryb2tlLXdpZHRoOjEiLz48L3N2Zz4=');
-      }
+      --field-line-color: var(--color-primary-darker);
 
       &.field--large {
         .field__input {
-          background-image: url('data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjQ0IiB3aWR0aD0iOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48bGluZSB4MT0iMCIgeTE9IjMyIiB4Mj0iNSIgeTI9IjMyIiBzdHlsZT0ic3Ryb2tlOiM2RTU2NEQ7IHN0cm9rZS13aWR0aDoxIi8+PC9zdmc+');
         }
       }
     }

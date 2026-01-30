@@ -70,8 +70,8 @@
     content: '';
     position: absolute;
     top: var(--size-difference);
-    left: var(--size-difference);
-    right: var(--size-difference);
+    left: 0;
+    right: 0;
     bottom: var(--size-difference);
   }
 
