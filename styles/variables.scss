@@ -107,6 +107,15 @@
   --field-line-height: 31px;
   --field__label-font-size: 15px;
   --field__label-padding: 5px 24px 3px;
+  --field-line-color: var(--color-primary-lighter);
+  --field-line-step: var(--field-line-height);
+  --field-line-offset-x: 3px;
+  --field-line-offset-adjust: 3px;
+  --field-line-offset: calc(25px - var(--field-line-offset-adjust));
+  --field-line-thickness: 2px;
+  --field-line-dash-length: 6px;
+  --field-line-dash-gap: 6px;
+  --field-box-padding-top: calc(var(--field-padding) + 2px);
 
   // category
   --category-width: 102px;
@@ -127,10 +136,19 @@
 
   // field
   --field-padding: 3px;
-  --field-font-size: 1.0625rem;
-  --field-line-height: 27px;
+  --field-font-size: 1.125rem;
+  --field-line-height: 1.75rem;
   --field__label-font-size: 13px;
   --field__label-padding: 3px 16px 2px;
+  --field-line-color: var(--color-primary-lighter);
+  --field-line-step: var(--field-line-height);
+  --field-line-offset-x: 3px;
+  --field-line-offset-adjust: 3px;
+  --field-line-offset: calc(26px - var(--field-line-offset-adjust));
+  --field-line-thickness: 1px;
+  --field-line-dash-length: 6px;
+  --field-line-dash-gap: 6px;
+  --field-box-padding-top: calc(var(--field-padding) + 2px);
 
   // category
   --category-width: 86px;

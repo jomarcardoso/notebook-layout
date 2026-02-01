@@ -24,6 +24,7 @@
     border-radius: var(--border-radius-primary);
     border-top-left-radius: 0;
     transition: border-color 0.2s ease-in-out;
+    overflow: hidden;
   }
 
   &__input {
@@ -53,6 +54,19 @@
     }
   }
 
+  &__list {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--field-line-height);
+  }
+
+  &__list-item {
+    height: var(--field-line-height);
+    width: var(--field-line-height);
+    padding: 4px 3px 2px;
+  }
+
   &__hint {
     font-family: var(--font-family-body);
     margin-top: 2px;
@@ -69,17 +83,17 @@
     height: 26px;
   }
 
-  &--multiline {
-    --field-line-color: var(--color-primary-lighter);
-    --field-line-step: var(--field-line-height);
-    --field-line-offset-x: 3px;
-    --field-line-offset-adjust: 3px;
-    --field-line-offset: calc(25px - var(--field-line-offset-adjust));
-    --field-line-thickness: 1px;
-    --field-line-dash-length: 6px;
-    --field-line-dash-gap: 6px;
-    --field-box-padding-top: calc(var(--field-padding) + 2px);
+  &--list {
+    .field__box {
+      position: relative;
+    }
 
+    .field__input {
+      padding-left: calc(var(--field-line-height) + 4px);
+    }
+  }
+
+  &--multiline {
     .field__label {
       align-self: stretch;
       text-align: center;
@@ -101,9 +115,8 @@
           var(--field-line-color) 0,
           var(--field-line-color) var(--field-line-dash-length),
           transparent var(--field-line-dash-length),
-          transparent calc(
-            var(--field-line-dash-length) + var(--field-line-dash-gap)
-          )
+          transparent
+            calc(var(--field-line-dash-length) + var(--field-line-dash-gap))
         );
         background-size: calc(
             var(--field-line-dash-length) + var(--field-line-dash-gap)
@@ -113,9 +126,8 @@
         -webkit-mask-image: repeating-linear-gradient(
           to bottom,
           transparent 0,
-          transparent calc(
-            var(--field-line-offset) - var(--field-line-thickness)
-          ),
+          transparent
+            calc(var(--field-line-offset) - var(--field-line-thickness)),
           #000 calc(var(--field-line-offset) - var(--field-line-thickness)),
           #000 var(--field-line-offset),
           transparent var(--field-line-offset),
@@ -126,9 +138,8 @@
         mask-image: repeating-linear-gradient(
           to bottom,
           transparent 0,
-          transparent calc(
-            var(--field-line-offset) - var(--field-line-thickness)
-          ),
+          transparent
+            calc(var(--field-line-offset) - var(--field-line-thickness)),
           #000 calc(var(--field-line-offset) - var(--field-line-thickness)),
           #000 var(--field-line-offset),
           transparent var(--field-line-offset),

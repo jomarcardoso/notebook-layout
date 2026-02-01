@@ -29,6 +29,8 @@ interface Props {
   multiline?: boolean;
   breakline?: boolean;
   hint?: ReactNode;
+  listStyle?: string;
+  listStyleImage?: string | Array<string | null | undefined>;
   onErase?(): void;
   size?: 'large';
 }
@@ -44,6 +46,8 @@ export const Field: FC<FieldProps> = ({
   rootProps,
   label,
   hint = '',
+  listStyle,
+  listStyleImage,
   className = '',
   size,
   ...props
@@ -52,10 +56,140 @@ export const Field: FC<FieldProps> = ({
   const [focused, setFocused] = useState(false);
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
+  const normalizeListStyleImage = useCallback((value?: string | null) => {
+    if (!value) return '';
+    const trimmed = value.trim();
+    if (!trimmed) return '';
+    const urlMatch = trimmed.match(/^url\((.*)\)$/i);
+    if (!urlMatch) return trimmed;
+    return urlMatch[1].trim().replace(/^['"]|['"]$/g, '');
+  }, []);
+
+  const toAlpha = useCallback((value: number) => {
+    let n = value;
+    let result = '';
+    while (n > 0) {
+      n -= 1;
+      result = String.fromCharCode(97 + (n % 26)) + result;
+      n = Math.floor(n / 26);
+    }
+    return result || 'a';
+  }, []);
+
+  const toRoman = useCallback((value: number) => {
+    let n = value;
+    if (n <= 0) return '';
+    const map = [
+      { value: 1000, symbol: 'M' },
+      { value: 900, symbol: 'CM' },
+      { value: 500, symbol: 'D' },
+      { value: 400, symbol: 'CD' },
+      { value: 100, symbol: 'C' },
+      { value: 90, symbol: 'XC' },
+      { value: 50, symbol: 'L' },
+      { value: 40, symbol: 'XL' },
+      { value: 10, symbol: 'X' },
+      { value: 9, symbol: 'IX' },
+      { value: 5, symbol: 'V' },
+      { value: 4, symbol: 'IV' },
+      { value: 1, symbol: 'I' },
+    ];
+    let result = '';
+    for (const item of map) {
+      while (n >= item.value) {
+        result += item.symbol;
+        n -= item.value;
+      }
+    }
+    return result || 'I';
+  }, []);
+
+  const formatListMarker = useCallback(
+    (style: string, index: number) => {
+      const normalized = style.trim().toLowerCase();
+      switch (normalized) {
+        case 'disc':
+          return '•';
+        case 'circle':
+          return '○';
+        case 'square':
+          return '■';
+        case 'decimal':
+          return `${index}.`;
+        case 'decimal-leading-zero':
+          return `${index < 10 ? `0${index}` : index}.`;
+        case 'lower-alpha':
+        case 'lower-latin':
+          return `${toAlpha(index)}.`;
+        case 'upper-alpha':
+        case 'upper-latin':
+          return `${toAlpha(index).toUpperCase()}.`;
+        case 'lower-roman':
+          return `${toRoman(index).toLowerCase()}.`;
+        case 'upper-roman':
+          return `${toRoman(index).toUpperCase()}.`;
+        case 'none':
+          return '';
+        default:
+          return '•';
+      }
+    },
+    [toAlpha, toRoman],
+  );
+
+  const listStyleType = listStyle?.trim() || '';
+
+  const listLineCount = useMemo(() => {
+    if (!breakline && !multiline) return 1;
+    const rawValue =
+      (typeof props.value === 'string' && props.value) ||
+      (typeof props.defaultValue === 'string' && props.defaultValue) ||
+      '';
+    const count = rawValue ? rawValue.split(/\r?\n/).length : 1;
+    return Math.max(1, count);
+  }, [breakline, multiline, props.defaultValue, props.value]);
+
+  const listMarkers = useMemo(() => {
+    if (Array.isArray(listStyleImage)) {
+      return listStyleImage.map((value, index) => {
+        const url = normalizeListStyleImage(value);
+        const fallback =
+          !url && listStyleType && listStyleType !== 'none'
+            ? formatListMarker(listStyleType, index + 1)
+            : '';
+        return { image: url || null, text: fallback };
+      });
+    }
+
+    if (typeof listStyleImage === 'string') {
+      const url = normalizeListStyleImage(listStyleImage);
+      if (!url) return [];
+      return Array.from({ length: listLineCount }, () => ({
+        image: url,
+        text: '',
+      }));
+    }
+
+    if (!listStyleType || listStyleType === 'none') return [];
+    return Array.from({ length: listLineCount }, (_, index) => ({
+      image: null,
+      text: formatListMarker(listStyleType, index + 1),
+    }));
+  }, [
+    formatListMarker,
+    listLineCount,
+    listStyleImage,
+    listStyleType,
+    normalizeListStyleImage,
+  ]);
+
+  const hasListMarkers = listMarkers.length > 0;
+
   const classes = generateClasses({
     field: true,
     'field--large': size === 'large',
     'field--multiline': multiline,
+    'field--list': hasListMarkers,
     'field--focused': focused,
     'field--no-label': !label,
     'field--no-erasable': !onErase,
@@ -131,6 +265,26 @@ export const Field: FC<FieldProps> = ({
           </label>
         )}
         <label htmlFor={inputId} className="field__box">
+          {hasListMarkers && (
+            <ul className="field__list" aria-hidden="true">
+              {listMarkers.map((marker, index) => (
+                <li
+                  className="field__list-item"
+                  key={`${index}-${marker.image ?? marker.text}`}
+                >
+                  {marker.image ? (
+                    <img
+                      className="field__list-image"
+                      src={marker.image}
+                      alt=""
+                    />
+                  ) : marker.text ? (
+                    <span className="field__list-marker">{marker.text}</span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
           {breakline ? memoizedTextarea : memoizedInput}
           {onErase && (props.value || inputRef?.current?.value) && (
             <button
@@ -152,6 +306,8 @@ export const Field: FC<FieldProps> = ({
       inputId,
       label,
       labelProps,
+      listMarkers,
+      hasListMarkers,
       memoizedInput,
       memoizedTextarea,
       onErase,
