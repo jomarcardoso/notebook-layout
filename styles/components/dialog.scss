@@ -4,24 +4,23 @@
   background-color: transparent;
   display: none;
   border: none;
-  width: calc(100vw - 8px);
-  height: calc(100vh - 8px);
   padding: 0;
   max-width: 100%; // reset
   max-height: 100%; // reset
   align-items: flex-end;
 
   .modal {
-    max-height: 80vh;
+    width: 100%;
   }
-}
 
-.dialog[open] {
-  display: grid;
-}
+  @media (orientation: portrait) {
+    width: calc(100vw - 8px);
+    height: calc(100vh - 8px);
 
-body:has(.dialog[open]) {
-  overflow: hidden;
+    .modal {
+      max-height: 88vh;
+    }
+  }
 }
 
 @keyframes dialog-in {
@@ -53,9 +52,23 @@ body:has(.dialog[open]) {
   max-height: 92vh;
 }
 
+@include utils.isMobile {
+  body:has(.dialog[open]) {
+    overflow: hidden;
+  }
+
+  .dialog[open] {
+    display: grid;
+  }
+}
+
 @include utils.isDesktop {
   .dialog {
     align-items: center;
     justify-content: center;
+  }
+
+  .dialog[open] {
+    display: block;
   }
 }

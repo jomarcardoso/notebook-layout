@@ -6,7 +6,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { generateClasses } from '../../utils/utils';
+import { generateClasses, getOrientation } from '../../utils/utils';
 import { Modal, type ModalProps } from '../modal';
 
 export interface DialogProps extends ModalProps {
@@ -58,7 +58,13 @@ export const Dialog: FC<DialogProps> = ({
     const dialog = ref.current;
     if (!dialog) return;
     if (openProp) {
-      if (!dialog.open) dialog.showModal();
+      if (!dialog.open) {
+        if (getOrientation() === 'landscape') {
+          dialog.show();
+        } else {
+          dialog.showModal();
+        }
+      }
     } else if (dialog.open) {
       dialog.close();
     }

@@ -11,3 +11,8 @@ export function generateClasses(
     }, '')
     .trim();
 }
+
+export function getOrientation() {
+  // If width > height, it is landscape, otherwise portrait or square
+  return window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+}
