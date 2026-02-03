@@ -9,7 +9,8 @@ interface Props {
 export type SectionCardProps = HTMLProps<HTMLDivElement> & Props;
 
 export const SectionCard: FC<SectionCardProps> = ({
-  header: title = '',
+  header,
+  title = '',
   children,
   ...props
 }) => {
@@ -19,9 +20,9 @@ export const SectionCard: FC<SectionCardProps> = ({
 
   return (
     <section aria-labelledby={id} className="section-card" {...props}>
-      {title && (
+      {(header || title) && (
         <strong className="section-card__title h2" id={id}>
-          {title}
+          {header || title}
         </strong>
       )}
       <div className="section-card__body">{children}</div>
