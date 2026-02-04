@@ -13,10 +13,7 @@ import {
   useMemo,
   useCallback,
 } from 'react';
-import {
-  TextareaAutosize,
-  TextareaAutosizeProps,
-} from '@mui/base/TextareaAutosize';
+import { TextareaAutosizeProps } from '@mui/base/TextareaAutosize';
 import { CiCircleRemove } from 'react-icons/ci';
 import './field.scss';
 import { generateClasses } from '../../utils/utils';
@@ -40,7 +37,7 @@ export type FieldProps = (TextareaAutosizeProps | HTMLProps<HTMLInputElement>) &
 
 export const Field: FC<FieldProps> = ({
   multiline = false,
-  breakline = true,
+  breakline = false,
   onErase,
   labelProps,
   rootProps,
@@ -52,6 +49,7 @@ export const Field: FC<FieldProps> = ({
   size,
   ...props
 }) => {
+  const toBeTextarea = breakline || multiline;
   const { id: inputId, onBlur, onFocus } = props;
   const [focused, setFocused] = useState(false);
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -285,7 +283,7 @@ export const Field: FC<FieldProps> = ({
               ))}
             </ul>
           )}
-          {breakline ? memoizedTextarea : memoizedInput}
+          {toBeTextarea ? memoizedTextarea : memoizedInput}
           {onErase && (props.value || inputRef?.current?.value) && (
             <button
               className="field__action"
@@ -300,7 +298,7 @@ export const Field: FC<FieldProps> = ({
       </div>
     ),
     [
-      breakline,
+      toBeTextarea,
       classes,
       hint,
       inputId,
