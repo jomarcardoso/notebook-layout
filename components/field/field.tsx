@@ -5,6 +5,7 @@ import {
   HTMLProps,
   ReactNode,
   useState,
+  useEffect,
   ChangeEventHandler,
   ChangeEvent,
   FormEvent,
@@ -30,10 +31,22 @@ interface Props {
   listStyleImage?: string | Array<string | null | undefined>;
   onErase?(): void;
   size?: 'large';
+  bg?: ReactNode;
 }
 
 export type FieldProps = (TextareaAutosizeProps | HTMLProps<HTMLInputElement>) &
   Props;
+
+const normalizeFieldValue = (
+  value?: string | number | readonly string[] | null,
+): string => {
+  if (typeof value === 'string') return value.trim();
+  if (typeof value === 'number') return String(value);
+  if (Array.isArray(value)) {
+    return value.filter(Boolean).join('');
+  }
+  return '';
+};
 
 export const Field: FC<FieldProps> = ({
   multiline = false,
@@ -47,11 +60,21 @@ export const Field: FC<FieldProps> = ({
   listStyleImage,
   className = '',
   size,
+  bg,
   ...props
 }) => {
   const toBeTextarea = breakline || multiline;
   const { id: inputId, onBlur, onFocus } = props;
   const [focused, setFocused] = useState(false);
+  const [hasValue, setHasValue] = useState(() =>
+    Boolean(normalizeFieldValue(props.value ?? props.defaultValue)),
+  );
+  useEffect(() => {
+    setHasValue(Boolean(normalizeFieldValue(props.value ?? props.defaultValue)));
+  }, [props.value, props.defaultValue]);
+  const updateValueFlag = (value: string | number | readonly string[] | undefined | null) => {
+    setHasValue(Boolean(normalizeFieldValue(value)));
+  };
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const normalizeListStyleImage = useCallback((value?: string | null) => {
@@ -183,6 +206,7 @@ export const Field: FC<FieldProps> = ({
 
   const hasListMarkers = listMarkers.length > 0;
 
+  const shouldShowBg = Boolean(bg) && !focused && !hasValue;
   const classes = generateClasses({
     field: true,
     'field--large': size === 'large',
@@ -192,6 +216,7 @@ export const Field: FC<FieldProps> = ({
     'field--no-label': !label,
     'field--no-erasable': !onErase,
     'field--no-breakline': !breakline,
+    'field--bg-visible': shouldShowBg,
     [className]: className,
   });
 
@@ -205,19 +230,26 @@ export const Field: FC<FieldProps> = ({
             FormEvent<HTMLInputElement>,
         );
       }
+      updateValueFlag(event.currentTarget.value);
     },
-    [props],
+    [props.onChange],
   );
 
-  const handleFocus = useCallback((event: Event) => {
-    onFocus?.(event as any);
-    setFocused(true);
-  }, []);
+  const handleFocus = useCallback(
+    (event: Event) => {
+      onFocus?.(event as any);
+      setFocused(true);
+    },
+    [onFocus],
+  );
 
-  const handleBlur = useCallback((event: Event) => {
-    onBlur?.(event as any);
-    setFocused(false);
-  }, []);
+  const handleBlur = useCallback(
+    (event: Event) => {
+      onBlur?.(event as any);
+      setFocused(false);
+    },
+    [onBlur],
+  );
 
   const memoizedInput = useMemo(
     () => (
@@ -283,6 +315,11 @@ export const Field: FC<FieldProps> = ({
               ))}
             </ul>
           )}
+          {bg ? (
+            <div className="field__bg" aria-hidden="true">
+              {bg}
+            </div>
+          ) : null}
           {toBeTextarea ? memoizedTextarea : memoizedInput}
           {onErase && (props.value || inputRef?.current?.value) && (
             <button

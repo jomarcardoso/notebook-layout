@@ -25,6 +25,34 @@
     border-top-left-radius: 0;
     transition: border-color 0.2s ease-in-out;
     overflow: hidden;
+    position: relative;
+  }
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    mix-blend-mode: multiply;
+
+    svg {
+      height: 92%;
+      width: 100%;
+    }
+  }
+
+  &--bg-visible {
+    .field__bg {
+      opacity: 1;
+    }
   }
 
   &__input {
@@ -37,6 +65,8 @@
     width: 100%;
     border: 0;
     padding: 0;
+    position: relative;
+    z-index: 1;
 
     &::placeholder {
       color: var(--color-dark-lighter);
