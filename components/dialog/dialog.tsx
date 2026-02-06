@@ -72,6 +72,27 @@ export const Dialog: FC<DialogProps> = ({
 
   useEffect(() => {
     const dialog = ref.current;
+    if (!dialog || !openProp) return;
+    if (typeof window === 'undefined') return;
+
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    if (!isDesktop) return;
+
+    let frame: number;
+    const scrollToTop = () => {
+      const rect = dialog.getBoundingClientRect();
+
+      window.scrollTo({
+        top: window.scrollY + rect.top,
+        behavior: 'smooth',
+      });
+    };
+    frame = window.requestAnimationFrame(scrollToTop);
+    return () => window.cancelAnimationFrame(frame);
+  }, [openProp]);
+
+  useEffect(() => {
+    const dialog = ref.current;
     if (!dialog) return;
     const handleClose = (ev: Event) => {
       if (typeof onClose === 'function') onClose(ev);
