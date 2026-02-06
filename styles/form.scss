@@ -9,3 +9,13 @@
     width: 100%;
   }
 }
+
+.fieldset {
+  legend {
+    font-weight: bold;
+  }
+
+  > p {
+    margin-bottom: 8px;
+  }
+}
