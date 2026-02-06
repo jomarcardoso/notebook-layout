@@ -46,9 +46,10 @@
   }
 
   small {
-    font-size: var(--button__small-font-size);
+    font-size: max(var(--button__small-font-size, 0.75em), 0.75rem);
     text-transform: var(--button__small-text-transform);
     width: 100%;
+    font-weight: normal;
   }
 
   &:has(small) {
