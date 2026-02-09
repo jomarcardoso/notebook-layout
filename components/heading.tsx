@@ -1,4 +1,4 @@
-import { FC, HTMLProps, ReactNode } from 'node_modules/@types/react';
+import { FC, HTMLProps, ReactNode } from 'react';
 
 export interface HeadingProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
   title?: ReactNode;

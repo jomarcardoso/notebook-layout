@@ -1,7 +1,7 @@
-import { FC, HTMLProps, ReactNode } from 'node_modules/@types/react';
+import { FC, HTMLProps, ReactNode } from 'react';
 import { Heading, HeadingProps } from './heading';
 
-interface Props extends Omit<HTMLProps<HTMLDivElement>, 'header'> {
+interface Props extends Omit<HTMLProps<HTMLDivElement>, 'header' | 'title'> {
   header?: ReactNode;
   headerProps?: HTMLProps<HTMLDivElement>;
   children?: ReactNode;

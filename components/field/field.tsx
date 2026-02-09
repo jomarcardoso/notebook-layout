@@ -10,7 +10,6 @@ import {
   ChangeEvent,
   FormEvent,
   useRef,
-  MutableRefObject,
   useMemo,
   useCallback,
 } from 'react';
@@ -75,7 +74,7 @@ export const Field: FC<FieldProps> = ({
   const updateValueFlag = (value: string | number | readonly string[] | undefined | null) => {
     setHasValue(Boolean(normalizeFieldValue(value)));
   };
-  const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const normalizeListStyleImage = useCallback((value?: string | null) => {
     if (!value) return '';

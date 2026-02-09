@@ -7,10 +7,15 @@ import {
   useRef,
 } from 'react';
 import { generateClasses, getOrientation } from '../../utils/utils';
-import { Modal, type ModalProps } from '../modal';
+import { Modal } from '../modal';
 
-export interface DialogProps extends ModalProps {
+export interface DialogProps extends Omit<HTMLProps<HTMLDialogElement>, 'title'> {
   title?: ReactNode;
+  titleProps?: HTMLProps<HTMLHeadingElement>;
+  subtitle?: ReactNode;
+  subtitleProps?: HTMLProps<HTMLParagraphElement>;
+  indicator?: ReactNode;
+  indicatorProps?: HTMLProps<HTMLDivElement>;
   header?: ReactNode;
   headerProps?: HTMLProps<HTMLHeadingElement>;
 
@@ -28,6 +33,11 @@ export interface DialogProps extends ModalProps {
 
 export const Dialog: FC<DialogProps> = ({
   title = '',
+  titleProps,
+  subtitle = '',
+  subtitleProps,
+  indicator = '',
+  indicatorProps,
   header = '',
   headerProps,
   children = '',
@@ -43,6 +53,11 @@ export const Dialog: FC<DialogProps> = ({
 }) => {
   const modalProps = {
     title,
+    titleProps,
+    subtitle,
+    subtitleProps,
+    indicator,
+    indicatorProps,
     header,
     headerProps,
     children,
