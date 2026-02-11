@@ -51,6 +51,7 @@
   --shadow-primary-inset: inset 0 0 3px 0 rgb(0 0 0 / 20%);
 
   // sizing
+  --gap: 8px;
   --gutter-x: 8px;
   --gutter-y: 8px;
 
@@ -68,7 +69,8 @@
 
   @media (orientation: landscape) {
     --bar-size: 60px;
-    --gutter: 16px;
+    --gutter-x: 16px;
+    --gap: 16px;
   }
 
   @media (pointer: fine) {
@@ -136,6 +138,11 @@
   --font-size: 0.875rem;
   --h2-font-size: 1.25rem;
 
+  // sizing
+  --gap: 6px;
+  --gutter-x: 6px;
+  --gutter-y: 6px;
+
   // button
   --button-font-size: var(--action-small-font-size);
   --button-size: var(--action-small-size);
@@ -164,4 +171,15 @@
   --category-font-size: 0.75rem;
 
   font-size: var(--font-size);
+
+  @media screen and (min-width: 360px) {
+    --gap: 8px;
+    --gutter-x: 8px;
+    --gutter-y: 8px;
+  }
+
+  @media (orientation: landscape) {
+    --gap: 12px;
+    --gutter-x: 12px;
+  }
 }

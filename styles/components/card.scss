@@ -29,12 +29,12 @@
     'card__img card__body'
     'card__footer card__footer';
   grid-template-columns: 7fr 10fr;
-  grid-template-columns: min(200px, calc(100% * 7 / 17)) 1fr;
+  grid-template-columns: min(200px, calc(100% * 7 / 21)) 1fr;
   grid-template-rows: 1fr auto auto;
 
   .card__img {
-    padding: 16px 8px;
-    margin-top: -34px;
+    padding: 14px 0 14px var(--gutter-x);
+    margin-top: -30px;
 
     img {
       box-shadow: var(--shadow-primary);
@@ -50,7 +50,7 @@
   }
 
   .card__title {
-    padding: 6px 4px;
+    padding: var(--gutter-y) var(--gutter-x);
     grid-column: 2;
     font-family: var(--font-family-title);
     font-size: 14px;
@@ -58,7 +58,7 @@
 
   .card__body {
     grid-area: card__body;
-    padding: 8px 4px;
+    padding: var(--gutter-y) var(--gutter-x);
     align-self: center;
   }
 
@@ -68,7 +68,7 @@
     border-top: 1px solid var(--color-dark-main);
     display: flex;
     gap: 8px;
-    padding: 8px;
+    padding: var(--gutter-y) var(--gutter-x);
     justify-content: flex-end;
   }
 
