@@ -50,6 +50,10 @@
     0 1px 10px 0 rgb(0 0 0 / 12%);
   --shadow-primary-inset: inset 0 0 3px 0 rgb(0 0 0 / 20%);
 
+  // sizing
+  --gutter-x: 8px;
+  --gutter-y: 8px;
+
   /* 🧩 Components */
   --action-font-size: 1rem;
   --action-small-font-size: 0.75rem;
@@ -58,8 +62,13 @@
   --bar-size: var(--action-size);
   --icon-size: 1.75rem;
 
+  @media screen and (min-width: 360px) {
+    --gutter-x: 12px;
+  }
+
   @media (orientation: landscape) {
     --bar-size: 60px;
+    --gutter: 16px;
   }
 
   @media (pointer: fine) {
