@@ -18,6 +18,12 @@
     padding: 8px;
     font-size: 1rem;
     box-shadow: var(--shadow-primary-inset);
+    /* iOS momentum scroll */
+    -webkit-overflow-scrolling: touch;
+    /* Impede scroll chaining / "puxar" a página por trás */
+    overscroll-behavior: contain;
+    /* Opcional: melhora toque em iOS em alguns casos */
+    touch-action: pan-y;
   }
 
   &__footer {
