@@ -7,11 +7,6 @@
   flex-direction: column;
   overflow: hidden;
 
-  /* simple open animation */
-  opacity: 0;
-  transform: translateY(16px);
-  animation: dialog-in 180ms ease-out forwards;
-
   &__body {
     flex: 1 1 auto;
     overflow-y: auto;

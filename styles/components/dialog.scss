@@ -23,6 +23,10 @@
   }
 }
 
+.dialog[open] {
+  display: grid;
+}
+
 @keyframes dialog-in {
   to {
     opacity: 1;
@@ -66,10 +70,6 @@
     width: 100%;
     left: 0;
     right: 0;
-  }
-
-  .dialog[open] {
-    display: grid;
   }
 }
 
