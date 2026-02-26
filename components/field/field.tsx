@@ -13,7 +13,6 @@ import {
   useMemo,
   useCallback,
 } from 'react';
-import { TextareaAutosizeProps } from '@mui/base/TextareaAutosize';
 import { CiCircleRemove } from 'react-icons/ci';
 import './field.scss';
 import { generateClasses } from '../../utils/utils';
@@ -33,8 +32,7 @@ interface Props {
   bg?: ReactNode;
 }
 
-export type FieldProps = (TextareaAutosizeProps | HTMLProps<HTMLInputElement>) &
-  Props;
+export type FieldProps = HTMLProps<HTMLInputElement> & Props;
 
 const normalizeFieldValue = (
   value?: string | number | readonly string[] | null,
@@ -69,9 +67,13 @@ export const Field: FC<FieldProps> = ({
     Boolean(normalizeFieldValue(props.value ?? props.defaultValue)),
   );
   useEffect(() => {
-    setHasValue(Boolean(normalizeFieldValue(props.value ?? props.defaultValue)));
+    setHasValue(
+      Boolean(normalizeFieldValue(props.value ?? props.defaultValue)),
+    );
   }, [props.value, props.defaultValue]);
-  const updateValueFlag = (value: string | number | readonly string[] | undefined | null) => {
+  const updateValueFlag = (
+    value: string | number | readonly string[] | undefined | null,
+  ) => {
     setHasValue(Boolean(normalizeFieldValue(value)));
   };
   const inputRef = useRef<HTMLInputElement | null>(null);
