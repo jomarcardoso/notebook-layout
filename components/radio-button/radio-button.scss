@@ -1,0 +1,45 @@
+.radio-button {
+  align-items: center;
+  color: var(--field-border);
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  line-height: 1;
+  mix-blend-mode: multiply;
+  position: relative;
+  width: 32px;
+
+  input {
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    inset: 0;
+    margin: 0;
+    position: absolute;
+  }
+
+  .radio-button__icon {
+    align-items: center;
+    display: flex;
+    font-size: 24px;
+    justify-content: center;
+    pointer-events: none;
+    transition: opacity 150ms ease;
+
+    [stroke-linecap='round'] {
+      color: var(--field-color);
+    }
+
+    &--checked {
+      display: none;
+    }
+  }
+
+  input:checked ~ .radio-button__icon--checked {
+    display: flex;
+  }
+
+  input:checked ~ .radio-button__icon--unchecked {
+    display: none;
+  }
+}
