@@ -7,6 +7,7 @@ import {
   useRef,
 } from 'react';
 import { generateClasses, getOrientation } from '../../utils/utils';
+import { isMobile } from '../../utils/media';
 import { Modal } from '../modal';
 
 const DIALOG_HISTORY_STATE_KEY = '__dialogHistory';
@@ -19,7 +20,10 @@ const readDialogHistoryMarkerId = (state: unknown): string | null => {
   return typeof markerId === 'string' ? markerId : null;
 };
 
-export interface DialogProps extends Omit<HTMLProps<HTMLDialogElement>, 'title'> {
+export interface DialogProps extends Omit<
+  HTMLProps<HTMLDialogElement>,
+  'title'
+> {
   title?: ReactNode;
   titleProps?: HTMLProps<HTMLHeadingElement>;
   subtitle?: ReactNode;
@@ -162,9 +166,7 @@ export const Dialog: FC<DialogProps> = ({
     if (!dialog || !openProp) return;
     if (typeof window === 'undefined') return;
 
-    const isTouchDevice = window.matchMedia(
-      '(hover: none) and (pointer: coarse)',
-    ).matches;
+    const isTouchDevice = isMobile();
     if (!isTouchDevice) return;
 
     const modal =
