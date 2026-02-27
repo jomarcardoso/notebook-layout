@@ -52,6 +52,7 @@
 
   // sizing
   --gap: 8px;
+  --bs-gap: var(--gap);
   --gutter-x: 8px;
   --gutter-y: 8px;
 
@@ -73,6 +74,7 @@
     --bar-size: 60px;
     --gutter-x: 16px;
     --gap: 16px;
+    --bs-gap: var(--gap);
   }
 
   @media (pointer: fine) {
@@ -142,6 +144,7 @@
 
   // sizing
   --gap: 6px;
+  --bs-gap: var(--gap);
   --gutter-x: 6px;
   --gutter-y: 6px;
 
@@ -176,12 +179,14 @@
 
   @media screen and (min-width: 360px) {
     --gap: 8px;
+    --bs-gap: var(--gap);
     --gutter-x: 8px;
     --gutter-y: 8px;
   }
 
   @media (orientation: landscape) {
     --gap: 12px;
+    --bs-gap: var(--gap);
     --gutter-x: 12px;
   }
 }

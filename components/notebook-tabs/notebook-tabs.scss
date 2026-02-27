@@ -1,4 +1,9 @@
+@use '../../styles/helpers/media.scss' as *;
+@use '../../styles/utils.scss' as *;
+
 .notebook-tabs {
+  @extend .mobile-only;
+
   left: 0;
   position: fixed;
   top: 50%;
@@ -30,5 +35,11 @@
       color: white;
       font-weight: bold;
     }
+  }
+}
+
+*:has(> .notebook-tabs) {
+  @include isMobile {
+    padding-left: calc(20px + var(--gutter-x)) !important;
   }
 }

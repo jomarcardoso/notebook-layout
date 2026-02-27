@@ -11,6 +11,30 @@ export interface NotebookTabsProps extends HTMLProps<HTMLDivElement> {
   useScrollspy?: boolean;
 }
 
+function getVisibleElementByHash(href: string): HTMLElement | null {
+  if (!href.startsWith('#') || href === '#') return null;
+
+  const rawId = href.slice(1);
+  if (!rawId) return null;
+
+  const escapedId =
+    typeof CSS !== 'undefined' && typeof CSS.escape === 'function'
+      ? CSS.escape(rawId)
+      : rawId.replace(/([^a-zA-Z0-9_-])/g, '\\$1');
+
+  const nodes = Array.from(
+    document.querySelectorAll<HTMLElement>(`#${escapedId}`),
+  );
+
+  if (!nodes.length) return null;
+
+  const visibleNode = nodes.find((node) =>
+    Boolean(node.offsetParent || node.getClientRects().length),
+  );
+
+  return visibleNode ?? nodes[0] ?? null;
+}
+
 export const NotebookTabs: FC<NotebookTabsProps> = ({
   tabs = [],
   useScrollspy = true,
@@ -25,11 +49,8 @@ export const NotebookTabs: FC<NotebookTabsProps> = ({
         if (!id || !href.startsWith('#') || href === '#') return null;
 
         const menuId = String(id);
-        const contentId = href.slice(1);
-        if (!contentId) return null;
-
         const elMenu = document.getElementById(menuId);
-        const elContent = document.getElementById(contentId);
+        const elContent = getVisibleElementByHash(href);
         if (!elMenu || !elContent) return null;
 
         return { elMenu, elContent };
@@ -52,7 +73,7 @@ export const NotebookTabs: FC<NotebookTabsProps> = ({
     // Ignore empty hash to avoid invalid selector errors
     if (href === '#') return;
 
-    const target = document.getElementById(href.slice(1));
+    const target = getVisibleElementByHash(href);
     if (!target) return;
 
     event.preventDefault();

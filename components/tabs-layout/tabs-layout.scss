@@ -1,0 +1,30 @@
+@use '../../styles/themes.scss' as *;
+@use '../../styles/helpers/media.scss' as *;
+@use '../../styles/utils.scss' as *;
+
+.tabs-layout__mobile {
+  @extend .mobile-only;
+}
+
+.tabs-layout__desktop {
+  @extend .desktop-only;
+}
+
+.tabs-layout__content {
+  width: 100%;
+}
+
+.tabs-layout__section {
+  display: grid;
+}
+
+@include isDesktop {
+  .tabs-layout__content {
+    @include theme-base;
+    box-shadow: var(--shadow-primary);
+  }
+
+  .tabs-layout__section[data-tabs-layout-active='false'] {
+    display: none;
+  }
+}
