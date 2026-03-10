@@ -16,3 +16,7 @@
 @forward 'components/modal';
 @forward 'components/progressbar';
 @forward 'components/progress-indicator';
+
+hr {
+  border-bottom: var(--border);
+}

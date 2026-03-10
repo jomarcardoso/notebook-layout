@@ -1,3 +1,5 @@
+'use client';
+
 import type { FC, HTMLProps } from 'react';
 import { useEffect } from 'react';
 import './notebook-tabs.scss';
