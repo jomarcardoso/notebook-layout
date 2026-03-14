@@ -1,6 +1,9 @@
 import { useRef, useEffect, useCallback, TextareaHTMLAttributes } from 'react';
 
-type AutoResizeTextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement>;
+export type AutoResizeTextareaProps =
+  TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    minRows?: number | string;
+  };
 
 export const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = (
   props,

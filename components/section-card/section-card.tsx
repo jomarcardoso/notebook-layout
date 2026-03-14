@@ -1,9 +1,10 @@
 'use client';
-import { FC, HTMLProps, useId } from 'react';
+import { FC, HTMLProps, ReactNode, useId } from 'react';
 import './section-card.scss';
 
 interface Props {
   title?: string;
+  header?: ReactNode;
 }
 
 export type SectionCardProps = HTMLProps<HTMLDivElement> & Props;

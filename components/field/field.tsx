@@ -3,12 +3,13 @@
 import {
   FC,
   HTMLProps,
+  type InputHTMLAttributes,
+  type TextareaHTMLAttributes,
+  type FocusEventHandler,
   ReactNode,
   useState,
   useEffect,
   ChangeEventHandler,
-  ChangeEvent,
-  FormEvent,
   useRef,
   useMemo,
   useCallback,
@@ -32,7 +33,22 @@ interface Props {
   bg?: ReactNode;
 }
 
-export type FieldProps = HTMLProps<HTMLInputElement> & Props;
+type FieldNativeProps = Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'onChange' | 'onBlur' | 'onFocus'
+> &
+  Omit<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    'onChange' | 'onBlur' | 'onFocus'
+  >;
+
+export type FieldProps = FieldNativeProps &
+  Props & {
+    onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onFocus?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    minRows?: number | string;
+  };
 
 const normalizeFieldValue = (
   value?: string | number | readonly string[] | null,
@@ -226,27 +242,28 @@ export const Field: FC<FieldProps> = ({
   >(
     (event) => {
       if (props.onChange) {
-        props.onChange(
-          event as ChangeEvent<HTMLTextAreaElement> &
-            FormEvent<HTMLInputElement>,
-        );
+        props.onChange(event);
       }
       updateValueFlag(event.currentTarget.value);
     },
     [props.onChange],
   );
 
-  const handleFocus = useCallback(
-    (event: Event) => {
-      onFocus?.(event as any);
+  const handleFocus = useCallback<
+    FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  >(
+    (event) => {
+      onFocus?.(event);
       setFocused(true);
     },
     [onFocus],
   );
 
-  const handleBlur = useCallback(
-    (event: Event) => {
-      onBlur?.(event as any);
+  const handleBlur = useCallback<
+    FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  >(
+    (event) => {
+      onBlur?.(event);
       setFocused(false);
     },
     [onBlur],
@@ -257,9 +274,9 @@ export const Field: FC<FieldProps> = ({
       <input
         type="text"
         className="field__input"
-        {...(props as HTMLProps<HTMLInputElement>)}
-        onFocus={handleFocus as any}
-        onBlur={handleBlur as any}
+        {...(props as InputHTMLAttributes<HTMLInputElement>)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         onChange={handleChange}
         ref={inputRef}
       />
@@ -272,9 +289,9 @@ export const Field: FC<FieldProps> = ({
       <AutoResizeTextarea
         className="field__input"
         minRows={1}
-        {...(props as TextareaAutosizeProps)}
-        onFocus={handleFocus as any}
-        onBlur={handleBlur as any}
+        {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         onChange={handleChange}
       />
     ),

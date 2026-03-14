@@ -73,7 +73,7 @@
   }
 
   @media (orientation: landscape) {
-    @include themes.theme-light;
+    border: var(--border);
   }
 }
 

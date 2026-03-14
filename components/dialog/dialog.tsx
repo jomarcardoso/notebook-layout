@@ -1,5 +1,6 @@
 'use client';
 import {
+  DialogHTMLAttributes,
   type FC,
   type HTMLProps,
   type ReactNode,
@@ -21,7 +22,7 @@ const readDialogHistoryMarkerId = (state: unknown): string | null => {
 };
 
 export interface DialogProps extends Omit<
-  HTMLProps<HTMLDialogElement>,
+  DialogHTMLAttributes<HTMLDialogElement>,
   'title'
 > {
   title?: ReactNode;
