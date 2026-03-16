@@ -40,7 +40,7 @@
   }
 
   .tabs__input:focus-visible + .tabs__tab {
-    outline: var(--interactive-border);
+    outline: var(--field-border);
     outline-offset: -2px;
   }
 

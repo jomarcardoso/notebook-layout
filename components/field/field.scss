@@ -17,7 +17,7 @@
   }
 
   &__box {
-    border: var(--interactive-border);
+    border: var(--field-border);
     display: flex;
     align-items: center;
     padding: calc(var(--field-padding) + 2px) var(--field-padding) 0;

@@ -1,0 +1,46 @@
+@use '../../styles/utils.scss';
+
+.choice {
+  display: grid;
+  grid-template-areas: var(--choice-gta);
+  border: var(--field-border);
+  border-radius: var(--border-radius-primary);
+  width: 160px;
+  text-align: center;
+  padding: 8px;
+  gap: var(--gap);
+  cursor: pointer;
+
+  &__img {
+    grid-area: choice__img;
+    font-size: 3.5rem;
+    color: var(--color-primary-main);
+    line-height: 1;
+  }
+
+  &__title {
+    grid-area: choice__title;
+    border: var(--choice__title-border);
+    padding: 8px;
+    border-radius: var(--border-radius-secondary);
+    text-transform: uppercase;
+    text-decoration: var(--choice__title-text-decorations);
+    background-color: var(--color-white);
+  }
+
+  &__desc {
+    grid-area: choice__desc;
+  }
+
+  @include utils.hover {
+    border-color: var(--field--active-border-color);
+
+    .choice__img {
+      color: var(--color-primary-darker);
+    }
+
+    .choice__title {
+      background-color: var(--choice--active__title-bg);
+    }
+  }
+}

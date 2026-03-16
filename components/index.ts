@@ -3,6 +3,7 @@ export * from './button';
 export * from './card';
 export * from './checkbox';
 export * from './radio-button';
+export * from './choice';
 export * from './field';
 export * from './section';
 export * from './section-card';

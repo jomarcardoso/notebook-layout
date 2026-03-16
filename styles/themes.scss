@@ -7,11 +7,19 @@
     0 1px 5px 0 rgb(0 0 0 / 12%);
 
   // field
-  --field-border: var(--color-primary-main);
-  --field-color: var(--color-dark-main);
+  --field--active-border-color: var(--color-dark-lighter);
+  --field-border-color: var(--color-dark-main);
+  --field-border: 1px solid var(--field-border-color);
+  --field-color: var(--color-dark-darker);
 
   // user-box
   --user-box-border: 2px solid var(--color-primary-main);
+
+  // choice
+  --choice-gta: 'choice__img' 'choice__title' 'choice__desc';
+  --choice__title-border: none;
+  --choice__title-text-decorations: underline;
+  --choice--active__title-bg: var(--color-white);
 
   background: var(--bg);
   color: var(--color-text);
@@ -31,17 +39,25 @@
   --border: 2px solid var(--color-primary-lighter);
 
   // field
-  --field-border: var(--color-primary-lighter);
+  --field--active-border-color: var(--color-primary-darker);
+  --field-border-color: var(--color-primary-lighter);
+  --field-border: 2px dashed var(--field-border-color);
   --field-color: var(--color-dark-strong);
 
   // chip
   --chip-mix-blend-mode: multiply;
-  --chip-border: var(--interactive-border);
+  --chip-border: var(--field-border);
   --chip-bg-active: var(--color-primary-lighter);
   --chip-color-active: var(--color-white);
 
   // user-box
-  --user-box-border: var(--interactive-border);
+  --user-box-border: var(--field-border);
+
+  // choice
+  --choice-gta: 'choice__img' 'choice__desc' 'choice__title';
+  --choice__title-border: 1px solid var(--color-dark-main);
+  --choice__title-text-decorations: none;
+  --choice--active__title-bg: var(--action-secondary-bg-active);
 
   background: var(--bg);
   color: var(--color-text);
@@ -57,7 +73,8 @@
   --color-primary: var(--color-white-weak);
 
   // field
-  --field-border: var(--color-text);
+  --field-border-color: var(--color-text);
+  --field-border: 1px solid var(--field-border-color);
   --field-color: var(--color-text);
 
   // chip
