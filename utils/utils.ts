@@ -16,3 +16,20 @@ export function getOrientation() {
   // If width > height, it is landscape, otherwise portrait or square
   return window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
 }
+
+export interface ScrollToTopOptions {
+  top?: number;
+  behavior?: ScrollBehavior;
+}
+
+export function scrollToTop({
+  top = 0,
+  behavior = 'smooth',
+}: ScrollToTopOptions = {}) {
+  if (typeof window === 'undefined') return;
+
+  window.scrollTo({
+    top,
+    behavior,
+  });
+}

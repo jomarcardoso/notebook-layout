@@ -7,7 +7,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { generateClasses, getOrientation } from '../../utils/utils';
+import { generateClasses, getOrientation, scrollToTop } from '../../utils/utils';
 import { isMobile } from '../../utils/media';
 import { Modal } from '../modal';
 
@@ -149,16 +149,13 @@ export const Dialog: FC<DialogProps> = ({
     const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
     if (!isDesktop) return;
 
-    let frame: number;
-    const scrollToTop = () => {
+    const frame = window.requestAnimationFrame(() => {
       const rect = dialog.getBoundingClientRect();
 
-      window.scrollTo({
+      scrollToTop({
         top: window.scrollY + rect.top,
-        behavior: 'smooth',
       });
-    };
-    frame = window.requestAnimationFrame(scrollToTop);
+    });
     return () => window.cancelAnimationFrame(frame);
   }, [openProp]);
 

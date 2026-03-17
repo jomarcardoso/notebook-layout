@@ -37,6 +37,7 @@ interface SectionLikeProps extends HTMLProps<HTMLElement> {
 interface SectionTab {
   id: string;
   safeId: string;
+  label: string;
 }
 
 function sanitizeId(value: string): string {
@@ -126,10 +127,13 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
       .map((section) => {
         const sectionId = String(section.props.id ?? '').trim();
         if (!sectionId) return null;
+        const sectionLabel =
+          String(section.props['aria-label'] ?? '').trim() || sectionId;
 
         return {
           id: sectionId,
           safeId: sanitizeId(sectionId),
+          label: sectionLabel,
         };
       })
       .filter((section): section is SectionTab => Boolean(section));
@@ -176,16 +180,16 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
     : desktopValue;
 
   const generatedMobileTabs: NotebookTabsProps['tabs'] = sectionTabs.map(
-    ({ id, safeId }) => ({
-      children: id,
+    ({ id, safeId, label }) => ({
+      children: label,
       href: `#${id}`,
       id: `to-${safeId}`,
     }),
   );
 
   const generatedDesktopTabs: TabsProps['tabs'] = sectionTabs.map(
-    ({ id, safeId }) => ({
-      label: id,
+    ({ id, safeId, label }) => ({
+      label,
       value: id,
       id: `tab-${safeId}`,
     }),

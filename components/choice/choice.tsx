@@ -2,7 +2,10 @@ import './choice.scss';
 import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
 import { generateClasses } from '../../utils/utils';
 
-export interface ChoiceProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ChoiceProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'title'
+> {
   img?: ReactNode;
   title: ReactNode;
 }

@@ -3,7 +3,7 @@
 import type { FC, HTMLProps } from 'react';
 import { useEffect } from 'react';
 import './notebook-tabs.scss';
-import { generateClasses } from '../../utils/utils';
+import { generateClasses, scrollToTop } from '../../utils/utils';
 import { scrollspy } from 'ovos';
 
 export type NotebookTabProps = HTMLProps<HTMLAnchorElement>;
@@ -80,9 +80,8 @@ export const NotebookTabs: FC<NotebookTabsProps> = ({
 
     event.preventDefault();
     // target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    document.scrollingElement?.scrollTo({
+    scrollToTop({
       top: target.offsetTop,
-      behavior: 'smooth',
     });
   }
 
