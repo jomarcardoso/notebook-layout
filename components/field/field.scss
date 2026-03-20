@@ -3,10 +3,13 @@
   flex-direction: column;
 
   &__label {
-    color: var(--color-white);
-    border-top-left-radius: var(--border-radius-secondary);
-    border-top-right-radius: var(--border-radius-secondary);
-    background-color: var(--color-primary-lighter);
+    font-weight: var(--field__label-fw);
+    border: var(--field__label-border);
+    border-bottom: 0;
+    color: var(--field__label-color);
+    border-top-left-radius: var(--border-radius-primary);
+    border-top-right-radius: var(--border-radius-primary);
+    background-color: var(--field__label-bg);
     padding: var(--field__label-padding);
     align-self: flex-start;
     font-size: var(--field__label-font-size);
@@ -60,7 +63,7 @@
     font-family: var(--font-family-input);
     line-height: var(--field-line-height);
     font-size: var(--field-font-size);
-    color: var(--color-dark-main);
+    color: var(--field-color);
     resize: none;
     width: 100%;
     border: 0;
@@ -130,7 +133,9 @@
     }
 
     .field__box {
-      border: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border: var(--field--multiline-border);
       padding: var(--field-box-padding-top) 0 0;
       position: relative;
 

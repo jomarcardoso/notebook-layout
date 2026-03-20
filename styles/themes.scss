@@ -10,9 +10,17 @@
   --field--active-border-color: var(--color-dark-lighter);
   --field-border-color: var(--color-dark-main);
   --field-border: 1px solid var(--field-border-color);
-  --field-color: var(--color-dark-darker);
+  --field-color: var(--color-blue-pen);
+  --field-line-color: var(--color-dark-lighter);
+  --field-line-dash-gap: 0px;
+  --field-line-thickness: 0.5px;
+  --field__label-border: var(--border);
+  --field__label-color: var(--color-text);
+  --field__label-bg: transparent;
+  --field__label-padding: 6px 24px 4px;
+  --field__label-fw: bold;
+  --field--multiline-border: var(--border); // user-box
 
-  // user-box
   --user-box-border: 2px solid var(--color-primary-main);
 
   // choice
@@ -43,6 +51,15 @@
   --field-border-color: var(--color-primary-lighter);
   --field-border: 2px dashed var(--field-border-color);
   --field-color: var(--color-dark-strong);
+  --field-line-color: var(--color-primary-lighter);
+  --field-line-dash-gap: 6px;
+  --field-line-thickness: 1px;
+  --field__label-border: none;
+  --field__label-color: var(--color-white);
+  --field__label-bg: var(--color-primary-lighter);
+  --field__label-padding: 5px 24px 3px;
+  --field__label-fw: normal;
+  --field--multiline-border: 0;
 
   // chip
   --chip-mix-blend-mode: multiply;
@@ -76,6 +93,9 @@
   --field-border-color: var(--color-text);
   --field-border: 1px solid var(--field-border-color);
   --field-color: var(--color-text);
+  --field-line-color: var(--color-light-weak);
+  --field-line-dash-gap: 6px;
+  --field-line-thickness: 1px;
 
   // chip
   --chip-mix-blend-mode: none;

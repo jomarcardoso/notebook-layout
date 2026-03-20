@@ -2,6 +2,7 @@
   /* 🎨 Base Colors */
   --color-white: #ffffff;
   --color-white-weak: #ffffff88;
+  --color-blue-pen: #005bac;
 
   --color-light-light: #f8f8f8;
   --color-light-main: #f2f2f2;
@@ -54,6 +55,7 @@
   --bs-gap: var(--gap);
   --gutter-x: 8px;
   --gutter-y: 8px;
+  --gutter: var(--gutter-y) var(--gutter-x);
 
   /* 🧩 Components */
   --action-font-size: 1rem;
@@ -67,11 +69,13 @@
 
   @media screen and (min-width: 360px) {
     --gutter-x: 12px;
+    --gutter: var(--gutter-y) var(--gutter-x);
   }
 
   @media (orientation: landscape) {
     --bar-size: 60px;
     --gutter-x: 16px;
+    --gutter: var(--gutter-y) var(--gutter-x);
     --gap: 16px;
     --bs-gap: var(--gap);
   }
@@ -120,15 +124,11 @@
   --field-font-size: 1.4375rem;
   --field-line-height: 31px;
   --field__label-font-size: 15px;
-  --field__label-padding: 5px 24px 3px;
-  --field-line-color: var(--color-primary-lighter);
   --field-line-step: var(--field-line-height);
   --field-line-offset-x: 3px;
-  --field-line-offset-adjust: 3px;
+  --field-line-offset-adjust: 2px;
   --field-line-offset: calc(25px - var(--field-line-offset-adjust));
-  --field-line-thickness: 2px;
   --field-line-dash-length: 6px;
-  --field-line-dash-gap: 6px;
   --field-box-padding-top: calc(var(--field-padding) + 2px);
 
   // category
@@ -146,6 +146,7 @@
   --bs-gap: var(--gap);
   --gutter-x: 6px;
   --gutter-y: 6px;
+  --gutter: var(--gutter-y) var(--gutter-x);
 
   // button
   --button-font-size: var(--action-small-font-size);
@@ -181,11 +182,13 @@
     --bs-gap: var(--gap);
     --gutter-x: 8px;
     --gutter-y: 8px;
+    --gutter: var(--gutter-y) var(--gutter-x);
   }
 
   @media (orientation: landscape) {
     --gap: 12px;
     --bs-gap: var(--gap);
     --gutter-x: 12px;
+    --gutter: var(--gutter-y) var(--gutter-x);
   }
 }
