@@ -10,6 +10,8 @@ export * from './section-card';
 export * from './section-title';
 export * from './footer';
 export * from './heading';
+export * from './intro';
+export * from './intro-and-tabs';
 export * from './modal';
 export * from './dialog/dialog';
 export * from './chips/chips';

@@ -1,6 +1,7 @@
 @use './utils.scss';
 
 .h1 {
+  text-transform: capitalize;
   font-family: var(--font-family-title);
   font-size: 28px;
   line-height: 1.2;
@@ -51,4 +52,8 @@
 
 .link {
   text-decoration: underline;
+}
+
+.p {
+  max-width: 200ch;
 }

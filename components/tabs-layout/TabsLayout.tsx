@@ -199,6 +199,8 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
   const resolvedDesktopTabs = hasAutoSections
     ? generatedDesktopTabs
     : desktopTabs;
+  const shouldRenderMobileTabs = resolvedMobileTabs.length > 1;
+  const shouldRenderDesktopTabs = resolvedDesktopTabs.length > 1;
 
   const classes = generateClasses({
     'tabs-layout': true,
@@ -233,7 +235,7 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
 
   return (
     <div className={classes} {...props}>
-      {resolvedMobileTabs.length > 0 && (
+      {shouldRenderMobileTabs && (
         <NotebookTabs
           tabs={resolvedMobileTabs}
           className={mobileClasses}
@@ -241,7 +243,7 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
         />
       )}
 
-      {resolvedDesktopTabs.length > 0 && (
+      {shouldRenderDesktopTabs && (
         <Tabs
           {...desktopRestProps}
           tabs={resolvedDesktopTabs}

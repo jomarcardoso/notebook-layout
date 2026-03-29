@@ -22,6 +22,7 @@
   .tabs-layout__content {
     @include theme-base;
     box-shadow: var(--shadow-primary);
+    height: 100%;
   }
 
   .tabs-layout__section[data-tabs-layout-active='false'] {

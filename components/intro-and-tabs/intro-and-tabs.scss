@@ -1,0 +1,9 @@
+.intro-and-tabs {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .tabs-layout {
+    flex-grow: 1;
+  }
+}
