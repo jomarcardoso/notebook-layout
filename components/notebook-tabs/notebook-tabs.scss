@@ -2,7 +2,7 @@
 @use '../../styles/utils.scss' as *;
 
 .notebook-tabs {
-  @extend .mobile-only;
+  @extend .portrait-only;
 
   left: 0;
   position: fixed;
@@ -35,11 +35,5 @@
       color: white;
       font-weight: bold;
     }
-  }
-}
-
-*:has(> .notebook-tabs) {
-  @include isMobile {
-    padding-left: calc(20px + var(--gutter-x)) !important;
   }
 }

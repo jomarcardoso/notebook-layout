@@ -1,16 +1,26 @@
 import './choice.scss';
-import type { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ElementType,
+  FC,
+  ReactNode,
+} from 'react';
 import { generateClasses } from '../../utils/utils';
 
-export interface ChoiceProps extends Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
-  'title'
-> {
+interface Props {
+  as?: ElementType;
   img?: ReactNode;
   title: ReactNode;
+  href?: string;
 }
 
+export type ChoiceProps = Props &
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> &
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'title'>;
+
 export const Choice: FC<ChoiceProps> = ({
+  as: Component = 'button',
   type = 'button',
   className = '',
   img = '',
@@ -23,11 +33,14 @@ export const Choice: FC<ChoiceProps> = ({
     [className]: !!className,
   });
 
+  const componentProps =
+    Component === 'button' ? { type, ...props } : props;
+
   return (
-    <button type={type} className={classes} {...props}>
+    <Component className={classes} {...componentProps}>
       {title && <strong className="choice__title">{title}</strong>}
       {img && <span className="choice__img">{img}</span>}
       {children && <span className="choice__desc">{children}</span>}
-    </button>
+    </Component>
   );
 };

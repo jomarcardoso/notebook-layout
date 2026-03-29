@@ -11,3 +11,15 @@
     display: none;
   }
 }
+
+.portrait-only {
+  @media (orientation: landscape) {
+    display: none;
+  }
+}
+
+.landscape-only {
+  @media (orientation: portrait) {
+    display: none;
+  }
+}

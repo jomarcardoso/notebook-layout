@@ -3,11 +3,11 @@
 @use '../../styles/utils.scss' as *;
 
 .tabs-layout__mobile {
-  @extend .mobile-only;
+  @extend .portrait-only;
 }
 
 .tabs-layout__desktop {
-  @extend .desktop-only;
+  @extend .landscape-only;
 }
 
 .tabs-layout__content {
@@ -18,7 +18,7 @@
   display: grid;
 }
 
-@include isDesktop {
+@media (orientation: landscape) {
   .tabs-layout__content {
     @include theme-base;
     box-shadow: var(--shadow-primary);
