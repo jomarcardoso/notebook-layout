@@ -1,13 +1,18 @@
 @use '../utils.scss';
 
 .dialog {
+  --dialog-visual-viewport-height: 100dvh;
+  --dialog-keyboard-inset: 0px;
   background-color: transparent;
   display: none;
   border: none;
   padding: 0;
   max-width: 100%; // reset
   max-height: 100%; // reset
+  min-height: 0;
   align-items: flex-end;
+  overflow: hidden;
+  overscroll-behavior: contain;
 
   .modal {
     width: 100%;
@@ -15,10 +20,13 @@
 
   @media (orientation: portrait) {
     width: calc(100vw - 8px);
-    height: calc(100dvh - 8px);
+    height: calc(var(--dialog-visual-viewport-height, 100dvh) - 8px);
 
     .modal {
-      max-height: 88dvh;
+      max-height: min(
+        88dvh,
+        calc(var(--dialog-visual-viewport-height, 100dvh) - 16px)
+      );
     }
   }
 }
@@ -58,18 +66,14 @@
 }
 
 @include utils.isMobile {
-  html:has(.dialog[open]),
-  body:has(.dialog[open]) {
+  html.scroll-blocked {
     overflow: hidden;
     height: 100%;
     overscroll-behavior: none;
   }
 
-  body:has(.dialog[open]) {
-    position: fixed;
-    width: 100%;
-    left: 0;
-    right: 0;
+  body.scroll-blocked {
+    overscroll-behavior: none;
   }
 }
 

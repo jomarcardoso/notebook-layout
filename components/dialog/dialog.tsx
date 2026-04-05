@@ -7,9 +7,16 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { generateClasses, getOrientation, scrollToTop } from '../../utils/utils';
+import {
+  blockScroll,
+  generateClasses,
+  getOrientation,
+  scrollToTop,
+} from '../../utils/utils';
 import { isMobile } from '../../utils/media';
 import { Modal } from '../modal';
+import { useDialogCloseGesture } from './use-dialog-close-gesture';
+import { useDialogFieldReveal } from './use-dialog-field-reveal';
 
 const DIALOG_HISTORY_STATE_KEY = '__dialogHistory';
 
@@ -89,6 +96,9 @@ export const Dialog: FC<DialogProps> = ({
   const hasHistoryEntryRef = useRef(false);
   const closingFromHistoryRef = useRef(false);
 
+  useDialogCloseGesture({ dialogRef: ref, open: openProp });
+  useDialogFieldReveal({ dialogRef: ref, open: openProp });
+
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
@@ -160,118 +170,10 @@ export const Dialog: FC<DialogProps> = ({
   }, [openProp]);
 
   useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog || !openProp) return;
-    if (typeof window === 'undefined') return;
+    if (!openProp) return;
+    if (!isMobile()) return;
 
-    const isTouchDevice = isMobile();
-    if (!isTouchDevice) return;
-
-    const modal =
-      dialog.querySelector<HTMLElement>('.modal') ??
-      (dialog.firstElementChild instanceof HTMLElement
-        ? dialog.firstElementChild
-        : null);
-    if (!modal) return;
-
-    let startY = 0;
-    let offsetY = 0;
-    let canDrag = false;
-    let dragging = false;
-    let startedInsideBody = false;
-    let resetTimer: number | undefined;
-
-    const clearResetTimer = () => {
-      if (typeof resetTimer === 'number') {
-        window.clearTimeout(resetTimer);
-        resetTimer = undefined;
-      }
-    };
-
-    const resetModalStyles = () => {
-      clearResetTimer();
-      modal.style.transition = '';
-      modal.style.transform = '';
-      modal.style.willChange = '';
-    };
-
-    const restoreModalPosition = () => {
-      modal.style.transition = 'transform 180ms ease-out';
-      modal.style.transform = 'translateY(0)';
-      resetTimer = window.setTimeout(() => {
-        resetModalStyles();
-      }, 200);
-    };
-
-    const handleTouchStart = (event: TouchEvent) => {
-      if (event.touches.length !== 1) return;
-      const target = event.target instanceof Element ? event.target : null;
-      const body = target?.closest('.modal__body') as HTMLElement | null;
-      startedInsideBody = Boolean(body);
-
-      if (body && body.scrollTop > 0) {
-        canDrag = false;
-        dragging = false;
-        return;
-      }
-
-      canDrag = true;
-      dragging = false;
-      startY = event.touches[0].clientY;
-      offsetY = 0;
-      clearResetTimer();
-      modal.style.transition = 'none';
-      modal.style.willChange = 'transform';
-    };
-
-    const handleTouchMove = (event: TouchEvent) => {
-      if (!canDrag || event.touches.length !== 1) return;
-      const currentY = event.touches[0].clientY;
-      const nextOffset = Math.max(0, currentY - startY);
-      if (nextOffset <= 0) return;
-
-      const target = event.target instanceof Element ? event.target : null;
-      const body = target?.closest('.modal__body') as HTMLElement | null;
-      if (startedInsideBody && body && body.scrollTop > 0) return;
-
-      dragging = true;
-      offsetY = nextOffset;
-      modal.style.transform = `translateY(${Math.round(nextOffset * 0.95)}px)`;
-      if (event.cancelable) event.preventDefault();
-    };
-
-    const finishDrag = () => {
-      if (!canDrag) return;
-
-      canDrag = false;
-      const threshold = Math.min(180, modal.clientHeight * 0.22);
-
-      if (dragging && offsetY >= threshold) {
-        resetModalStyles();
-        dialog.close();
-      } else if (dragging) {
-        restoreModalPosition();
-      } else {
-        resetModalStyles();
-      }
-
-      dragging = false;
-      offsetY = 0;
-      startedInsideBody = false;
-    };
-
-    dialog.addEventListener('touchstart', handleTouchStart, { passive: true });
-    dialog.addEventListener('touchmove', handleTouchMove, { passive: false });
-    dialog.addEventListener('touchend', finishDrag);
-    dialog.addEventListener('touchcancel', finishDrag);
-
-    return () => {
-      dialog.removeEventListener('touchstart', handleTouchStart);
-      dialog.removeEventListener('touchmove', handleTouchMove);
-      dialog.removeEventListener('touchend', finishDrag);
-      dialog.removeEventListener('touchcancel', finishDrag);
-      resetModalStyles();
-    };
+    return blockScroll();
   }, [openProp]);
 
   useEffect(() => {
@@ -302,7 +204,6 @@ export const Dialog: FC<DialogProps> = ({
 
   const classes = generateClasses({
     dialog: true,
-    'theme-small': true,
     '-no-padding': noPadding,
     '-dense': dense,
     [className]: className,
