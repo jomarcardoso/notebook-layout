@@ -61,6 +61,7 @@
   &__input {
     background-color: transparent;
     font-family: var(--font-family-input);
+    font-weight: 400;
     line-height: var(--field-line-height);
     font-size: var(--field-font-size);
     color: var(--field-color);
@@ -212,16 +213,11 @@
     }
 
     .field__label {
-      background-color: var(--color-primary-darker);
+      background-color: var(--field--active__label-bg);
     }
 
     &.field--multiline {
       --field-line-color: var(--color-primary-darker);
-
-      &.field--large {
-        .field__input {
-        }
-      }
     }
   }
 

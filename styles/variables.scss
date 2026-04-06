@@ -35,7 +35,7 @@
   /* 🔤 Typography */
   --font-family-title: 'Cinzel', serif;
   --font-family-body: 'Dosis', sans-serif;
-  --font-family-input: 'Vibur', cursive;
+  --font-family-input: 'Playwrite PE Variable', cursive;
 
   /* 🧱 Border */
   --border-radius-default: 1px;
@@ -120,13 +120,13 @@
   --button-padding-x: 16px;
 
   // field
-  --field-padding: 10px;
-  --field-font-size: 1.4375rem;
+  --field-padding: 4px;
+  --field-font-size: 1.125rem;
   --field-line-height: 31px;
   --field__label-font-size: 15px;
   --field-line-step: var(--field-line-height);
   --field-line-offset-x: 3px;
-  --field-line-offset-adjust: 2px;
+  --field-line-offset-adjust: -2px;
   --field-line-offset: calc(25px - var(--field-line-offset-adjust));
   --field-line-dash-length: 6px;
   --field-box-padding-top: calc(var(--field-padding) + 2px);
