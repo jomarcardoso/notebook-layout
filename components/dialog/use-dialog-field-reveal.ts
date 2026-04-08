@@ -75,6 +75,16 @@ const isTextEntryElement = (
 ): element is HTMLTextAreaElement | HTMLInputElement =>
   element instanceof HTMLTextAreaElement || element instanceof HTMLInputElement;
 
+const getContentEditableHost = (element: HTMLElement | null): HTMLElement | null =>
+  element?.closest('[contenteditable="true"]') ?? null;
+
+export const shouldRevealFieldTarget = (
+  element: HTMLElement | null,
+): element is HTMLTextAreaElement | HTMLInputElement =>
+  Boolean(element) &&
+  !getContentEditableHost(element) &&
+  isTextEntryElement(element);
+
 const getEditableCaretViewportRect = (
   element: HTMLTextAreaElement | HTMLInputElement,
 ): VerticalViewportRect | null => {
@@ -215,7 +225,9 @@ export function useDialogFieldReveal({
           ? candidate
           : getActiveElementInsideDialog();
 
-      if (!target || !modalBody.contains(target)) return;
+      if (!target || !modalBody.contains(target) || !shouldRevealFieldTarget(target)) {
+        return;
+      }
 
       clearScheduled();
 
