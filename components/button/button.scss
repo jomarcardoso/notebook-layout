@@ -10,7 +10,7 @@
   --button__icon-margin-left: -0.15rem;
 
   --button__small-font-size: 0.75em;
-  --button__small-text-transform: lowercase;
+  --button__small-text-transform: none;
 
   --size-difference: calc(
     (((44px - (var(--button-size))) / 2) + var(--border-width)) * -1

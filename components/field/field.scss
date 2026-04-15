@@ -7,8 +7,8 @@
     border: var(--field__label-border);
     border-bottom: 0;
     color: var(--field__label-color);
-    border-top-left-radius: var(--border-radius-primary);
-    border-top-right-radius: var(--border-radius-primary);
+    border-top-left-radius: var(--field-border-radius);
+    border-top-right-radius: var(--field-border-radius);
     background-color: var(--field__label-bg);
     padding: var(--field__label-padding);
     align-self: flex-start;
@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     padding: calc(var(--field-padding) + 2px) var(--field-padding) 0;
-    border-radius: var(--border-radius-primary);
+    border-radius: var(--field-border-radius);
     border-top-left-radius: 0;
     transition: border-color 0.2s ease-in-out;
     overflow: hidden;
@@ -223,7 +223,7 @@
 
   &--no-label {
     .field__box {
-      border-radius: var(--border-radius-primary);
+      border-radius: var(--field-border-radius);
     }
   }
 

@@ -7,6 +7,8 @@
 
   &__img {
     grid-area: card__img;
+    display: flex;
+    flex-direction: column;
   }
 
   &__header {
@@ -35,10 +37,17 @@
   .card__img {
     padding: 14px 0 14px var(--gutter-x);
     margin-top: -30px;
+    gap: calc(var(--gutter-y) / 2);
 
     img {
       box-shadow: var(--shadow-primary);
     }
+  }
+
+  .card__img-description {
+    font-size: 0.9375em;
+    font-weight: bold;
+    text-align: center;
   }
 
   .card__header {

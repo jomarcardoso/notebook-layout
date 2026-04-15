@@ -7,6 +7,7 @@
     0 1px 5px 0 rgb(0 0 0 / 12%);
 
   // field
+  --field-border-radius: var(--border-radius-secondary);
   --field--active__label-bg: var(--action-secondary-bg-active);
   --field--active-border-color: var(--color-dark-lighter);
   --field-border-color: var(--color-dark-main);
@@ -48,6 +49,7 @@
   --border: 2px solid var(--color-primary-lighter);
 
   // field
+  --field-border-radius: var(--border-radius-primary);
   --field--active__label-bg: var(--color-primary-darker);
   --field--active-border-color: var(--color-primary-darker);
   --field-border-color: var(--color-primary-lighter);

@@ -45,10 +45,11 @@
   --border-width-secondary: 2px;
 
   /* 🌫️ Shadow */
+  --shadow-color: rgb(0 0 0 / 20%);
   --shadow-primary:
-    0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 2px 4px -1px var(--shadow-color), 0 4px 5px 0 rgb(0 0 0 / 14%),
     0 1px 10px 0 rgb(0 0 0 / 12%);
-  --shadow-primary-inset: inset 0 0 3px 0 rgb(0 0 0 / 20%);
+  --shadow-primary-inset: inset 0 0 3px 0 var(--shadow-color);
 
   // sizing
   --gap: 8px;
@@ -58,14 +59,14 @@
   --gutter: var(--gutter-y) var(--gutter-x);
 
   /* 🧩 Components */
-  --action-font-size: 1rem;
+  --action-font-size: 0.9375rem;
   --action-small-font-size: 0.75rem;
   --action-size: 44px;
   --action-small-size: 36px;
   --bar-size: var(--action-size);
   --icon-size: 1.75rem;
 
-  font-size: clamp(14px, 4vw, 18px);
+  font-size: 100%;
 
   @media screen and (min-width: 360px) {
     --gutter-x: 12px;
@@ -81,7 +82,7 @@
   }
 
   @media (pointer: fine) {
-    --action-size: 36px;
+    --action-size: 42px;
     --action-small-size: 28px;
     --action-font-size: 0.875rem;
     --action-small-font-size: 0.75rem;
@@ -116,7 +117,7 @@
   --button-size: var(--action-size);
   --button-font-size: var(--action-font-size);
   --button-border-width: var(--border-width);
-  --button-padding-y: 4px;
+  --button-padding-y: 2px;
   --button-padding-x: 16px;
 
   // field
@@ -152,7 +153,7 @@
   --button-font-size: var(--action-small-font-size);
   --button-size: var(--action-small-size);
   --button-border-width: var(--border-width-secondary);
-  --button-padding-y: 3px;
+  --button-padding-y: 1px;
   --button-padding-x: 14px;
 
   // field
@@ -175,7 +176,7 @@
   --category-width: 86px;
   --category-font-size: 0.75rem;
 
-  font-size: clamp(12px, 3.6vw, 16px);
+  font-size: clamp(14px, 3.6vw, 14px);
 
   @media screen and (min-width: 360px) {
     --gap: 8px;

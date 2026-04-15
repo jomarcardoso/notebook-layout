@@ -23,6 +23,18 @@
     @include theme-base;
     box-shadow: var(--shadow-primary);
     height: 100%;
+    position: relative;
+
+    &::before {
+      // it hides tabs shadow
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background-color: inherit;
+    }
   }
 
   .tabs-layout__section[data-tabs-layout-active='false'] {
