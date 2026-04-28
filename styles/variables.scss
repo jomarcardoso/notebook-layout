@@ -132,6 +132,40 @@
   --field-line-dash-length: 6px;
   --field-box-padding-top: calc(var(--field-padding) + 2px);
 
+  // table
+  --table-font-family: var(--font-family-body);
+  --table-font-size: 15px;
+  --table-line-height: 1.35;
+  --table-layout: fixed;
+  --table-text-align: left;
+  --table-min-width: 100%;
+  --table-caption-font-family: var(--font-family-title);
+  --table-caption-font-size: 19px;
+  --table-caption-font-size-light: 17px;
+  --table-caption-padding: 11px 14px;
+  --table-caption-padding-light: 7px 14px;
+  --table-caption-border-radius: 0;
+  --table-caption-border-radius-light: var(--border-radius-secondary);
+  --table-caption-mix-blend-mode: normal;
+  --table-caption-mix-blend-mode-light: multiply;
+  --table-cell-height: 44px;
+  --table-cell-padding-block: 8px;
+  --table-cell-padding-inline: 6px;
+  --table-cell-padding-inline-light: 3px;
+  --table-cell-vertical-align: middle;
+  --table-row-border-width: 0.5px;
+  --table-head-border-width: 0.5px;
+  --table-head-border-width-light: 1.5px;
+  --table-head-font-weight: bold;
+  --table-cell-font-weight: normal;
+  --table-section-padding: 8px;
+  --table-section-font-family: var(--font-family-body);
+  --table-section-font-weight: 600;
+  --table-code-font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  --table-container-border-radius: var(--border-radius-secondary);
+
   // category
   --category-width: 102px;
   --category-font-size: 0.875rem;

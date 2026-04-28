@@ -31,6 +31,24 @@
   --choice__title-text-decorations: underline;
   --choice--active__title-bg: var(--color-white);
 
+  // table
+  --table-color: var(--color-text);
+  --table-border-color: #666;
+  --table-caption-bg: transparent;
+  --table-caption-color: var(--color-text);
+  --table-caption-bg-light: var(--color-primary-lighter);
+  --table-caption-color-light: var(--color-white);
+  --table-section-bg: var(--color-light-main);
+  --table-section-color: var(--color-text);
+  --table-accent-color: var(--color-primary-darker);
+  --table-code-color: inherit;
+  --table-container-bg: transparent;
+  --table-container-border: 0;
+  --table-container-shadow: none;
+  --table-container-bg-light: var(--color-white-weak);
+  --table-container-border-light: 1px solid var(--color-primary-lighter);
+  --table-container-shadow-light: none;
+
   background: var(--bg);
   color: var(--color-text);
 }
@@ -80,6 +98,19 @@
   --choice__title-text-decorations: none;
   --choice--active__title-bg: var(--action-secondary-bg-active);
 
+  // table
+  --table-border-color: var(--color-primary-lighter);
+  --table-section-bg: color-mix(
+    in srgb,
+    var(--color-white) 84%,
+    var(--color-primary-lighter)
+  );
+  --table-section-color: var(--color-dark-darker);
+  --table-accent-color: var(--color-primary-darker);
+  --table-code-color: var(--color-dark-strong);
+  --table-container-bg: var(--color-white-weak);
+  --table-container-border: 1px solid var(--color-primary-lighter);
+
   background: var(--bg);
   color: var(--color-text);
 }
@@ -109,6 +140,18 @@
 
   // user-box
   --user-box-border: 2px solid white;
+
+  // table
+  --table-color: var(--color-text);
+  --table-border-color: var(--color-white-weak);
+  --table-caption-color: var(--color-white);
+  --table-caption-bg-light: var(--color-secondary-main);
+  --table-caption-color-light: var(--color-white);
+  --table-section-bg: var(--color-primary-darker);
+  --table-section-color: var(--color-white);
+  --table-accent-color: var(--color-secondary-light);
+  --table-code-color: var(--color-white);
+  --table-container-border: 1px solid var(--color-white-weak);
 
   background: var(--bg);
   color: var(--color-text);

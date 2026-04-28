@@ -9,6 +9,10 @@
     grid-area: card__img;
     display: flex;
     flex-direction: column;
+
+    img {
+      background-color: var(--color-white);
+    }
   }
 
   &__header {
