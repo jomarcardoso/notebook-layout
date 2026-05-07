@@ -2,17 +2,10 @@
 @use '../../styles/utils.scss' as *;
 
 .notebook-tabs {
-  @extend .portrait-only;
-
-  left: 0;
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
   text-transform: uppercase;
   font-size: 0.75rem;
   text-orientation: upright;
   z-index: 1;
-
   letter-spacing: -1px;
   line-height: 1;
 

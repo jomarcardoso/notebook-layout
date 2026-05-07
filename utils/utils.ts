@@ -1,3 +1,12 @@
+import {
+  Children,
+  cloneElement,
+  HTMLProps,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+} from 'react';
+
 export function generateClasses(
   object: Record<string, boolean | string | undefined | null>,
 ): string {
@@ -169,4 +178,84 @@ export function blockScroll(): () => void {
 
     window.scrollTo(blockScrollState.scrollX, blockScrollState.scrollY);
   };
+}
+
+export function filterElementsByTagName(
+  allElements: ReactNode,
+  elementName: keyof HTMLElementTagNameMap,
+): ReactElement[] {
+  const filteredElements: ReactElement[] = [];
+
+  function traverse(nodes: ReactNode): void {
+    Children.forEach(nodes, (node) => {
+      if (!isValidElement(node)) return;
+
+      if (
+        typeof node.type === 'string' &&
+        node.type.toLowerCase() === elementName
+      ) {
+        filteredElements.push(node);
+        return;
+      }
+
+      if ((node.props as any)?.children) {
+        traverse((node.props as any).children);
+      }
+    });
+  }
+
+  traverse(allElements);
+  return filteredElements;
+}
+
+export function sanitizeId(value: string): string {
+  return value.trim().replace(/\s+/g, '-').toLowerCase();
+}
+
+export function checkNodeTagName(
+  node: ReactElement<HTMLElement, string | React.JSXElementConstructor<any>>,
+  elementName: keyof HTMLElementTagNameMap,
+) {
+  return (
+    typeof node.type === 'string' && node.type.toLowerCase() === elementName
+  );
+}
+
+function joinClasses(...classes: Array<string | undefined>): string {
+  return classes.filter(Boolean).join(' ').trim();
+}
+
+export interface SectionLikeProps extends HTMLProps<HTMLElement> {
+  id?: string;
+  children?: ReactNode;
+  'data-tabs-layout-active'?: string;
+}
+
+export function decorateSections(
+  nodes: ReactNode,
+  sectionIds: Set<string>,
+  activeSectionId?: string,
+): ReactNode {
+  return Children.map(nodes, (node) => {
+    if (!isValidElement<SectionLikeProps>(node)) return node;
+
+    if (checkNodeTagName(node as any, 'section')) {
+      const sectionId = String(node.props.id ?? '').trim();
+      if (!sectionIds.has(sectionId)) return node;
+
+      return cloneElement(node, {
+        'data-tabs-layout-active': String(sectionId === activeSectionId),
+      });
+    }
+
+    if (!node.props?.children) return node;
+
+    return cloneElement(node, {
+      children: decorateSections(
+        node.props.children,
+        sectionIds,
+        activeSectionId,
+      ),
+    });
+  });
 }

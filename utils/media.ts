@@ -1,5 +1,8 @@
+export const PORTRAIT_ORIENTATION_MEDIA_QUERY = '(orientation: portrait)';
+
 export const COARSE_POINTER_NO_HOVER_MEDIA_QUERY =
   '(hover: none) and (pointer: coarse)';
+
 export const FINE_POINTER_HOVER_MEDIA_QUERY =
   '(hover: hover) and (pointer: fine)';
 
@@ -13,6 +16,9 @@ const matchesMediaQuery = (query: string): boolean => {
 
   return window.matchMedia(query).matches;
 };
+
+export const isPortrait = (): boolean =>
+  matchesMediaQuery(PORTRAIT_ORIENTATION_MEDIA_QUERY);
 
 export const isMobile = (): boolean =>
   matchesMediaQuery(COARSE_POINTER_NO_HOVER_MEDIA_QUERY);

@@ -108,5 +108,3 @@ export const NotebookTabs: FC<NotebookTabsProps> = ({
     </nav>
   );
 };
-
-export default NotebookTabs;

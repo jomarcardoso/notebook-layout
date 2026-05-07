@@ -1,5 +1,5 @@
 'use client';
-import type { FC, HTMLProps, ReactElement, ReactNode } from 'react';
+import type { FC, HTMLProps, ReactNode, ReactElement } from 'react';
 import {
   Children,
   cloneElement,
@@ -8,13 +8,18 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { generateClasses } from '../../utils/utils';
+import {
+  checkNodeTagName as checkNodeTagName,
+  decorateSections,
+  generateClasses,
+} from '../../utils/utils';
 import {
   NotebookTabs,
   type NotebookTabsProps,
 } from '../notebook-tabs/notebook-tabs';
 import { Tabs, type TabsProps } from '../tabs/Tabs';
 import './tabs-layout.scss';
+import { useSectionsChildren } from '../../hooks/use-sections-children';
 
 type NotebookTabsBaseProps = Omit<NotebookTabsProps, 'tabs' | 'className'>;
 type TabsBaseProps = Omit<TabsProps, 'tabs' | 'className'>;
@@ -26,82 +31,6 @@ export interface TabsLayoutProps extends HTMLProps<HTMLDivElement> {
   desktopProps?: TabsBaseProps;
   mobileClassName?: string;
   desktopClassName?: string;
-}
-
-interface SectionLikeProps extends HTMLProps<HTMLElement> {
-  id?: string;
-  children?: ReactNode;
-  'data-tabs-layout-active'?: string;
-}
-
-interface SectionTab {
-  id: string;
-  safeId: string;
-  label: string;
-}
-
-function sanitizeId(value: string): string {
-  return value.trim().replace(/\s+/g, '-').toLowerCase();
-}
-
-function joinClasses(...classes: Array<string | undefined>): string {
-  return classes.filter(Boolean).join(' ').trim();
-}
-
-function getSectionElements(
-  children: ReactNode,
-): ReactElement<SectionLikeProps>[] {
-  const sections: ReactElement<SectionLikeProps>[] = [];
-
-  function traverse(nodes: ReactNode): void {
-    Children.forEach(nodes, (node) => {
-      if (!isValidElement<SectionLikeProps>(node)) return;
-
-      if (
-        typeof node.type === 'string' &&
-        node.type.toLowerCase() === 'section'
-      ) {
-        sections.push(node);
-        return;
-      }
-
-      if (node.props?.children) {
-        traverse(node.props.children);
-      }
-    });
-  }
-
-  traverse(children);
-  return sections;
-}
-
-function decorateSections(
-  nodes: ReactNode,
-  sectionIds: Set<string>,
-  activeSectionId: string,
-): ReactNode {
-  return Children.map(nodes, (node) => {
-    if (!isValidElement<SectionLikeProps>(node)) return node;
-
-    const isSectionTag =
-      typeof node.type === 'string' && node.type.toLowerCase() === 'section';
-
-    if (isSectionTag) {
-      const sectionId = String(node.props.id ?? '').trim();
-      if (!sectionIds.has(sectionId)) return node;
-
-      return cloneElement(node, {
-        className: joinClasses(node.props.className, 'tabs-layout__section'),
-        'data-tabs-layout-active': String(sectionId === activeSectionId),
-      });
-    }
-
-    if (!node.props?.children) return node;
-
-    return cloneElement(node, {
-      children: decorateSections(node.props.children, sectionIds, activeSectionId),
-    });
-  });
 }
 
 export const TabsLayout: FC<TabsLayoutProps> = ({
@@ -122,23 +51,7 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
     ...desktopRestProps
   } = desktopProps ?? {};
 
-  const sectionTabs = useMemo<SectionTab[]>(() => {
-    return getSectionElements(children)
-      .map((section) => {
-        const sectionId = String(section.props.id ?? '').trim();
-        if (!sectionId) return null;
-        const sectionLabel =
-          String(section.props['aria-label'] ?? '').trim() || sectionId;
-
-        return {
-          id: sectionId,
-          safeId: sanitizeId(sectionId),
-          label: sectionLabel,
-        };
-      })
-      .filter((section): section is SectionTab => Boolean(section));
-  }, [children]);
-
+  const sectionTabs = useSectionsChildren(children);
   const hasAutoSections = sectionTabs.length > 0;
   const sectionIds = sectionTabs.map(({ id }) => id);
   const sectionIdsKey = sectionIds.join('|');
@@ -222,7 +135,11 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
   });
 
   const contentNode = hasAutoSections
-    ? decorateSections(children, new Set(sectionIds), String(activeDesktopSection ?? ''))
+    ? decorateSections(
+        children,
+        new Set(sectionIds),
+        String(activeDesktopSection ?? ''),
+      )
     : children;
 
   function handleDesktopChange(nextValue: string): void {

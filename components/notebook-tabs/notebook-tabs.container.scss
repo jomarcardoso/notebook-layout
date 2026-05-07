@@ -1,0 +1,35 @@
+@use '../../styles/themes.scss';
+
+.notebook-tabs-container {
+  display: flex;
+
+  .notebook-tabs {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: calc(100vh - var(--bar-size));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  @media (orientation: landscape) {
+    flex-direction: row-reverse;
+
+    .notebook-tabs {
+      transform: translateX(100%);
+      width: 0;
+    }
+
+    &__content {
+      @include themes.theme-base();
+
+      z-index: 1;
+      box-shadow: var(--shadow-primary);
+    }
+  }
+}
