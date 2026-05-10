@@ -36,7 +36,7 @@ export const Modal: FC<ModalProps> = ({
   };
 
   return (
-    <div className="modal">
+    <div className="modal theme-base">
       {(title || header) && (
         <Heading {...headingProps}>{title || header}</Heading>
       )}

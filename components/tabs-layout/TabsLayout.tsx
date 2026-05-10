@@ -1,18 +1,7 @@
 'use client';
-import type { FC, HTMLProps, ReactNode, ReactElement } from 'react';
-import {
-  Children,
-  cloneElement,
-  isValidElement,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import {
-  checkNodeTagName as checkNodeTagName,
-  decorateSections,
-  generateClasses,
-} from '../../utils/utils';
+import type { FC, HTMLProps, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
+import { decorateSections, generateClasses } from '../../utils/utils';
 import {
   NotebookTabs,
   type NotebookTabsProps,

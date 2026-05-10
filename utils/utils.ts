@@ -236,6 +236,8 @@ export function decorateSections(
   sectionIds: Set<string>,
   activeSectionId?: string,
 ): ReactNode {
+  const shouldTrackActiveSection = typeof activeSectionId === 'string';
+
   return Children.map(nodes, (node) => {
     if (!isValidElement<SectionLikeProps>(node)) return node;
 
@@ -243,7 +245,10 @@ export function decorateSections(
       const sectionId = String(node.props.id ?? '').trim();
       if (!sectionIds.has(sectionId)) return node;
 
+      if (!shouldTrackActiveSection) return node;
+
       return cloneElement(node, {
+        className: joinClasses(node.props.className, 'tabs-layout__section'),
         'data-tabs-layout-active': String(sectionId === activeSectionId),
       });
     }

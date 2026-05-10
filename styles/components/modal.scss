@@ -1,7 +1,7 @@
 @use '../utils.scss';
 
 .modal {
-  background: #fff;
+  box-shadow: var(--shadow-primary);
   border-radius: var(--border-radius-primary);
   display: flex;
   flex-direction: column;
