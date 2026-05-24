@@ -33,3 +33,7 @@ ion-icon,
     --icon-size: 2.25rem;
   }
 }
+
+.logo {
+  width: calc(var(--bar-size) - var(--gutter-y));
+}

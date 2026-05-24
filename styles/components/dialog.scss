@@ -80,11 +80,6 @@
   .dialog {
     align-items: center;
     justify-content: center;
-    height: calc(100dvh - 48px);
-
-    .modal {
-      height: 100%;
-    }
   }
 
   .dialog[open] {

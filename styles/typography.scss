@@ -13,7 +13,7 @@
   font-size: var(--h2-font-size);
   line-height: 1.2;
   letter-spacing: 1px;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .h3 {
@@ -56,4 +56,8 @@
 
 .p {
   max-width: 200ch;
+
+  &.-large {
+    font-size: 1.25em;
+  }
 }

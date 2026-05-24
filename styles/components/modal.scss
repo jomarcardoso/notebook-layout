@@ -22,8 +22,6 @@
     box-shadow: var(--shadow-primary-inset);
     /* iOS momentum scroll */
     -webkit-overflow-scrolling: touch;
-    /* Impede scroll chaining / "puxar" a página por trás */
-    overscroll-behavior: contain;
     scroll-padding-bottom: calc(24px + var(--dialog-keyboard-inset, 0px));
     /* Opcional: melhora toque em iOS em alguns casos */
     touch-action: pan-y;

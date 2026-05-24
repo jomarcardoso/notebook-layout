@@ -1,0 +1,92 @@
+.carousel {
+  --carousel-gap: var(--gap, 8px);
+
+  --carousel-banner-bg: var(--color-light-main, #f2f2f2);
+
+  --carousel-thumb-bg: var(--color-light-main, #f2f2f2);
+  --carousel-thumb-border-width: var(--border-width-secondary, 2px);
+  --carousel-thumb-border-color: transparent;
+  --carousel-thumb-border-color-active: var(--color-primary-darker, #6e564d);
+  --carousel-thumb-opacity: 0.72;
+
+  --carousel-focus-color: var(--color-dark-main, #191919);
+
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--carousel-gap);
+
+  &__banner {
+    width: 100%;
+    overflow: hidden;
+    background: var(--carousel-banner-bg);
+
+    > * {
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &__thumbs {
+    display: flex;
+    gap: var(--carousel-gap);
+    overflow-x: auto;
+    padding-block: 2px calc(var(--carousel-gap) / 2);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+  }
+
+  &__thumb {
+    border: var(--carousel-thumb-border-width) solid
+      var(--carousel-thumb-border-color);
+    padding: 0;
+    overflow: hidden;
+    background: var(--carousel-thumb-bg);
+    cursor: pointer;
+    opacity: var(--carousel-thumb-opacity);
+    scroll-snap-align: start;
+    font: inherit;
+    transition:
+      opacity 160ms ease,
+      border-color 160ms ease,
+      transform 160ms ease,
+      box-shadow 160ms ease;
+    width: 80px;
+    flex-shrink: 0;
+
+    > * {
+      width: 100%;
+      height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--carousel-focus-color);
+      outline-offset: 3px;
+    }
+
+    &--active {
+      opacity: 1;
+      border-color: var(--carousel-thumb-border-color-active);
+      box-shadow: var(--shadow-primary-inset, none);
+    }
+  }
+}
