@@ -28,21 +28,23 @@ export const Card: FC<CardProps> = ({
 
   return (
     <article className={classes} {...props}>
-      {title && (
-        <div className="card__header">
-          <div className="card__title">{title}</div>
-        </div>
-      )}
-      {(img || imgDescription) && (
-        <div className="card__img">
-          {img}
-          {imgDescription && (
-            <div className="card__img-description">{imgDescription}</div>
-          )}
-        </div>
-      )}
-      <div className="card__body">{children}</div>
-      {footer && <div className="card__footer">{footer}</div>}
+      <div className="card__content">
+        {title && (
+          <div className="card__header">
+            <div className="card__title">{title}</div>
+          </div>
+        )}
+        {(img || imgDescription) && (
+          <div className="card__img">
+            {img}
+            {imgDescription && (
+              <div className="card__img-description">{imgDescription}</div>
+            )}
+          </div>
+        )}
+        <div className="card__body">{children}</div>
+        {footer && <div className="card__footer">{footer}</div>}
+      </div>
     </article>
   );
 };

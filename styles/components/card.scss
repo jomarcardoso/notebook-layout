@@ -1,9 +1,13 @@
-@use '../themes.scss';
+@use '../utils/themes' as *;
 
 .card {
-  border-radius: var(--border-radius-secondary);
-  display: grid;
-  overflow: hidden;
+  container-type: inline-size;
+
+  &__content {
+    border-radius: var(--border-radius-secondary);
+    display: grid;
+    overflow: hidden;
+  }
 
   &__img {
     grid-area: card__img;
@@ -25,22 +29,23 @@
 }
 
 .card:not(.slim-card) {
-  // Extend base theme class defined in themes.scss
-  @extend .theme-base;
+  .card__content {
+    @include theme-base;
 
-  box-shadow: var(--shadow-primary);
+    box-shadow: var(--shadow-primary);
+    border: var(--card-border);
 
-  grid-template-areas:
-    'card__header card__header'
-    'card__img card__body'
-    'card__footer card__footer';
-  grid-template-columns: 7fr 10fr;
-  grid-template-columns: min(200px, calc(100% * 7 / 21)) 1fr;
-  grid-template-rows: 1fr auto auto;
+    grid-template-areas:
+      'card__header card__header'
+      'card__img card__body'
+      'card__footer card__footer';
+    grid-template-columns: 7fr 10fr;
+    grid-template-columns: min(200px, calc(100% * 7 / 21)) 1fr;
+    grid-template-rows: 1fr auto auto;
+  }
 
   .card__img {
     padding: 14px 0 14px var(--gutter-x);
-    margin-top: -30px;
     gap: calc(var(--gutter-y) / 2);
 
     img {
@@ -55,9 +60,6 @@
   }
 
   .card__header {
-    grid-template-columns: subgrid;
-    grid-column: 1 / -1;
-    display: grid;
     background-color: var(--color-primary-main);
     color: var(--color-white);
   }
@@ -76,17 +78,26 @@
   }
 
   .card__footer {
-    @extend .theme-base;
+    @include theme-base;
 
     border-top: 1px solid var(--color-dark-main);
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     padding: var(--gutter-y) var(--gutter-x);
     justify-content: flex-end;
   }
 
-  @media (orientation: landscape) {
-    border: var(--border);
+  @container (min-width: 280px) {
+    .card__header {
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+      display: grid;
+    }
+
+    .card__img {
+      margin-top: -30px;
+    }
   }
 }
 

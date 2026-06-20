@@ -1,13 +1,13 @@
 .radio-button {
   align-items: center;
-  color: var(--field-border-color);
+  color: var(--field-color);
   display: inline-flex;
-  height: 32px;
+  height: var(--action-size);
   justify-content: center;
   line-height: 1;
   mix-blend-mode: multiply;
   position: relative;
-  width: 32px;
+  width: var(--action-size);
 
   input {
     appearance: none;

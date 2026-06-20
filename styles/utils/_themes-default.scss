@@ -1,0 +1,189 @@
+@mixin theme-base {
+  // Tema base neutro usado como fallback.
+  // Mantém leitura em alto contraste e usa azul caneta em campos de escrita.
+  --bg: var(--color-white);
+  --color-text: var(--color-dark-main);
+  --border: 1px solid var(--color-dark-main);
+  --box-shadow:
+    0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+
+  // field
+  // Campos usam azul caneta para conteúdo escrito e preto/marrom para estrutura.
+  --field-border-radius: var(--border-radius-secondary);
+  --field--active__label-bg: var(--action-secondary-bg-active);
+  --field--active-border-color: var(--color-dark-lighter);
+  --field-border-color: var(--color-dark-main);
+  --field-border: 1px solid var(--field-border-color);
+  --field-color: var(--color-blue-pen);
+  --field-line-color: var(--color-dark-lighter);
+  --field-line-dash-gap: 0px;
+  --field-line-thickness: 0.5px;
+  --field__label-border: var(--border);
+  --field__label-color: var(--color-text);
+  --field__label-bg: transparent;
+  --field__label-padding: 6px 24px 4px;
+  --field__label-fw: bold;
+  --field--multiline-border: var(--border); // user-box
+
+  --user-box-border: 2px solid var(--color-primary-main);
+
+  // choice
+  --choice-gta: 'choice__img' 'choice__title' 'choice__desc';
+  --choice__title-border: none;
+  --choice__title-text-decorations: underline;
+  --choice--active__title-bg: var(--color-white);
+
+  // table
+  // Tabelas mantêm estrutura escura; variações light recebem marrom para sabor de caderno.
+  --table-color: var(--color-text);
+  --table-border-color: #666;
+  --table-caption-bg: transparent;
+  --table-caption-color: var(--color-text);
+  --table-caption-bg-light: var(--color-primary-lighter);
+  --table-caption-color-light: var(--color-white);
+  --table-section-bg: var(--color-light-main);
+  --table-section-color: var(--color-text);
+  --table-accent-color: var(--color-primary-darker);
+  --table-code-color: inherit;
+  --table-container-bg: transparent;
+  --table-container-border: 0;
+  --table-container-shadow: none;
+  --table-container-bg-light: var(--color-white-weak);
+  --table-container-border-light: 1px solid var(--color-primary-lighter);
+  --table-container-shadow-light: none;
+
+  // card
+  --card-border: var(--border);
+
+  background: var(--bg);
+  color: var(--color-text);
+}
+
+@mixin theme-light {
+  /* Cor base do papel. #fff é o limite visual máximo de clareza. */
+  --paper-background-color: #fff;
+
+  /* PNG neutro da textura. */
+  --paper-texture-image: url('/img/paper-texture.png');
+
+  /* Tamanho/repetição originais da textura. */
+  --paper-texture-size: 500px 593px;
+  --paper-texture-repeat: repeat;
+
+  /*
+   * Mantém a textura como sombra/fibra sobre o papel.
+   * Branco na textura não altera o fundo; cinzas escurecem suavemente.
+   */
+  --paper-texture-blend-mode: multiply;
+
+  --color-text: var(
+    --color-dark-darker
+  ); // Texto principal quase preto para alto contraste
+  --border: 2px solid var(--color-primary-lighter); // Borda marrom forte sobre papel claro.
+
+  // field
+  // Visual de formulário como anotação em caderno: linha/borda marrom e texto azul caneta.
+  --field-border-radius: var(--border-radius-primary);
+  --field--active__label-bg: var(--color-primary-darker);
+  --field--active-border-color: var(--color-primary-darker);
+  --field-border-color: var(--color-primary-lighter);
+  --field-border: 2px dashed var(--field-border-color);
+  --field-color: var(
+    --color-blue-pen
+  ); // Conteúdo escrito: mantém a metáfora de caneta.
+  --field-line-color: var(
+    --color-primary-lighter
+  ); // Linhas do caderno em marrom legível.
+  --field-line-dash-gap: 6px;
+  --field-line-thickness: 1px;
+  --field__label-border: none;
+  --field__label-color: var(--color-white);
+  --field__label-bg: var(--color-primary-lighter);
+  --field__label-padding: 5px 24px 3px;
+  --field__label-fw: normal;
+  --field--multiline-border: 0;
+
+  // chip
+  // Chips ativos usam marrom com texto branco; chips neutros herdando borda de campo.
+  --chip-mix-blend-mode: multiply;
+  --chip-border: var(--field-border);
+  --chip-bg-active: var(--color-primary-lighter);
+  --chip-color-active: var(--color-white);
+
+  // user-box
+  --user-box-border: var(--field-border);
+
+  // choice
+  --choice-gta: 'choice__img' 'choice__desc' 'choice__title';
+  --choice__title-border: 1px solid var(--color-dark-main);
+  --choice__title-text-decorations: none;
+  --choice--active__title-bg: var(--action-secondary-bg-active);
+
+  // table
+  // Tabelas no tema claro parecem papel organizado: borda marrom e seções levemente quentes.
+  --table-border-color: var(--color-primary-lighter);
+  --table-section-bg: color-mix(
+    in srgb,
+    var(--color-white) 84%,
+    var(--color-primary-lighter)
+  );
+  --table-section-color: var(--color-dark-darker);
+  --table-accent-color: var(--color-primary-darker);
+  --table-code-color: var(--color-dark-strong);
+  --table-container-bg: var(--color-white-weak);
+  --table-container-border: 1px solid var(--color-primary-lighter);
+
+  // card
+  --card-border: 0;
+
+  background-color: var(--paper-background-color);
+  background-image: var(--paper-texture-image);
+  background-repeat: var(--paper-texture-repeat);
+  background-size: var(--paper-texture-size);
+  background-blend-mode: var(--paper-texture-blend-mode);
+  color: var(--color-text);
+}
+
+@mixin theme-primary {
+  // Tema marrom cheio: usado para blocos de marca, destaque e estados densos.
+  // Texto branco passa bem no novo primary-main.
+  --bg: var(--color-primary-main);
+  --color-text: var(--color-white);
+  --color-primary: var(--color-white-weak);
+
+  // field
+  --field-border-color: var(--color-text);
+  --field-border: 1px solid var(--field-border-color);
+  --field-color: var(--color-text);
+  --field-line-color: var(--color-light-weak);
+  --field-line-dash-gap: 6px;
+  --field-line-thickness: 1px;
+
+  // chip
+  --chip-mix-blend-mode: none;
+  --chip-border: 2px solid var(--color-white);
+  --chip-bg-active: var(--color-white);
+  --chip-color-active: var(
+    --color-primary-darker
+  ); // Texto escuro no chip branco; branco sobre branco é decoração invisível, baita ideia ruim.
+
+  // user-box
+  --user-box-border: 2px solid white;
+
+  // table
+  // No fundo marrom, o azul aparece só como acento; não misturar azul e marrom para texto pequeno.
+  --table-color: var(--color-text);
+  --table-border-color: var(--color-white-weak);
+  --table-caption-color: var(--color-white);
+  --table-caption-bg-light: var(--color-secondary-main);
+  --table-caption-color-light: var(--color-white);
+  --table-section-bg: var(--color-primary-darker);
+  --table-section-color: var(--color-white);
+  --table-accent-color: var(--color-secondary-light);
+  --table-code-color: var(--color-white);
+  --table-container-border: 1px solid var(--color-white-weak);
+
+  background: var(--bg);
+  color: var(--color-text);
+}

@@ -1,0 +1,191 @@
+@mixin variables {
+  /* 🎨 Base Colors
+   * Paleta pensada para tema de caderno de receitas em alto contraste.
+   * O fundo claro principal acompanha a textura PNG do caderno, perto de #f2f2f2.
+   */
+  --color-white: #ffffff; // Superfícies limpas, cards e texto sobre fundos escuros.
+  --color-white-weak: #ffffff88; // Overlay branco translúcido sobre textura/painéis.
+  --color-blue-pen: #005bac; // Azul fixo de caneta: inputs, links, foco e detalhes de anotação.
+
+  /* Papel / superfícies claras
+   * Evita cinzas médios para manter o visual mais preto-e-branco e legível.
+   */
+  --color-light-light: #ffffff; // Superfície clara máxima: cards e áreas de leitura.
+  --color-light-main: #f2f2f2; // Cor base do papel/textura do caderno.
+  --color-light-dark: #e6e6e6; // Linha clara sutil; não usar para borda estrutural importante.
+  --color-light-strong: #f2f2f2cf; // Fundo de papel com alta opacidade.
+  --color-light-weak: #f2f2f288; // Fundo de papel translúcido para camadas leves.
+
+  /* Tinta / texto escuro
+   * Preto quase puro para leitura; sem cinza médio tímido fingindo que ajuda.
+   */
+  --color-dark-lighter: #2a2a2a; // Borda/ícone escuro menos agressivo, ainda com bom contraste.
+  --color-dark-main: #111111; // Texto principal e ações fortes.
+  --color-dark-darker: #050505; // Ênfase máxima e títulos quando precisar bater o martelo.
+  --color-dark-strong: #111111e8; // Texto escuro com transparência alta.
+  --color-dark-medium: #111111cc; // Texto secundário ainda legível; evitar para corpo pequeno.
+  --color-dark-weak: #11111166; // Disabled, hints e divisórias discretas.
+
+  /* 🌿 Brand Colors
+   * Primary = marrom de caderno/couro/café.
+   * Mantém contraste forte sobre o papel claro e funciona com texto branco.
+   */
+  --color-primary-lighter: #826251; // Marrom de borda, labels e chips ativos; claro só dentro da família.
+  --color-primary-main: #826251; // Marrom principal do produto.
+  --color-primary-darker: #7d5f4f; // Marrom profundo para hover, tema primary e áreas densas.
+  --color-primary-strong: #826251e8; // Primary translúcido forte.
+  --color-primary-medium: #826251cc; // Primary translúcido médio para overlays.
+  --color-primary-weak: #82625188; // Primary translúcido fraco; usar com cuidado em texto.
+
+  /* Secondary = azul caneta.
+   * Serve para interação, foco, links, edição e sensação de anotação manuscrita.
+   */
+  --color-secondary-light: #e7eef8; // Fundo leve de seleção/chip; não usar como texto.
+  --color-secondary-main: var(--color-blue-pen); // Azul caneta oficial.
+  --color-secondary-dark: #003f78; // Hover/active azul e texto azul mais forte.
+  --color-secondary-darker: #002b52; // Estado pressionado ou contraste extra em tema claro.
+  --color-secondary-strong: #003f78e8; // Secondary translúcido forte.
+  --color-secondary-medium: #005bacc4; // Secondary translúcido médio.
+  --color-secondary-weak: #005bac88; // Secondary translúcido fraco para detalhes, nunca corpo pequeno.
+
+  /* 🔤 Typography */
+  --font-family-title: 'Cinzel', serif;
+  --font-family-body: 'Dosis', sans-serif;
+  --font-family-input: 'Playwrite PE Variable', cursive;
+
+  /* 🧱 Border */
+  --border-radius-default: 1px;
+  --border-radius-primary: 7px;
+  --border-radius-secondary: 3px;
+  --border-width: 3px;
+  --border-width-secondary: 2px;
+
+  /* 🌫️ Shadow */
+  --shadow-color: rgb(0 0 0 / 20%);
+  --shadow-primary:
+    0 2px 4px -1px var(--shadow-color), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 1px 10px 0 rgb(0 0 0 / 12%);
+  --shadow-primary-inset: inset 0 0 3px 0 var(--shadow-color);
+
+  // sizing
+  --gap: 8px;
+  --bs-gap: var(--gap);
+  --padding-x: 8px;
+  --gutter-x: var(--padding-x); // legacy
+  --padding-y: 8px;
+  --gutter-y: var(--padding-y); // legacy
+  --padding: var(--padding-y) var(--padding-x);
+  --gutter: var(--padding); // legacy
+
+  /* 🧩 Components */
+  --action-font-size: 0.9375rem;
+  --action-small-font-size: 0.75rem;
+  --action-size: 44px;
+  --action-small-size: 36px;
+  --bar-size: var(--action-size);
+  --icon-size: 1.75rem;
+
+  font-size: 100%;
+
+  @media screen and (min-width: 360px) {
+    --gutter-x: 12px;
+    --gutter: var(--gutter-y) var(--gutter-x);
+  }
+
+  @media (orientation: landscape) {
+    --bar-size: 60px;
+    --gutter-x: 16px;
+    --gutter: var(--gutter-y) var(--gutter-x);
+    --gap: 16px;
+    --bs-gap: var(--gap);
+  }
+
+  @media (pointer: fine) {
+    --action-size: 42px;
+    --action-small-size: 28px;
+    --action-font-size: 0.875rem;
+    --action-small-font-size: 0.75rem;
+  }
+
+  // action
+  --action-box-shadow: var(--box-shadow);
+
+  // action primary
+  --action-primary-bg: var(--color-dark-main);
+  --action-primary-color: var(--color-white);
+  --action-primary-border: var(--action-primary-bg);
+  --action-primary-style: solid;
+  --action-primary-bg-active: var(--color-dark-lighter);
+  --action-primary-color-active: var(--color-white);
+  --action-primary-border-active: var(--action-primary-bg-active);
+
+  // action secondary
+  --action-secondary-bg: var(--color-white);
+  --action-secondary-color: var(--color-text);
+  --action-secondary-border: var(--color-text);
+  --action-secondary-style: solid;
+  --action-secondary-bg-active: var(--color-light-main);
+  --action-secondary-color-active: var(--color-dark-lighter);
+  --action-secondary-border-active: var(--color-dark-lighter);
+
+  // typography
+  --font-size: 1rem;
+  --h2-font-size: 1.5rem;
+
+  // button
+  --button-size: var(--action-size);
+  --button-font-size: var(--action-font-size);
+  --button-border-width: var(--border-width);
+  --button-padding-y: 2px;
+  --button-padding-x: 16px;
+
+  // field
+  --field-padding: 4px;
+  --field-font-size: 1.125rem;
+  --field-line-height: 31px;
+  --field__label-font-size: 15px;
+  --field-line-step: var(--field-line-height);
+  --field-line-offset-x: 3px;
+  --field-line-offset-adjust: -2px;
+  --field-line-offset: calc(25px - var(--field-line-offset-adjust));
+  --field-line-dash-length: 6px;
+  --field-box-padding-top: calc(var(--field-padding) + 2px);
+
+  // table
+  --table-font-family: var(--font-family-body);
+  --table-font-size: 15px;
+  --table-line-height: 1.35;
+  --table-layout: fixed;
+  --table-text-align: left;
+  --table-min-width: 100%;
+  --table-caption-font-family: var(--font-family-title);
+  --table-caption-font-size: 19px;
+  --table-caption-font-size-light: 17px;
+  --table-caption-padding: 11px 14px;
+  --table-caption-padding-light: 7px 14px;
+  --table-caption-border-radius: 0;
+  --table-caption-border-radius-light: var(--border-radius-secondary);
+  --table-caption-mix-blend-mode: normal;
+  --table-caption-mix-blend-mode-light: multiply;
+  --table-cell-height: 44px;
+  --table-cell-padding-block: 8px;
+  --table-cell-padding-inline: 6px;
+  --table-cell-padding-inline-light: 3px;
+  --table-cell-vertical-align: middle;
+  --table-row-border-width: 0.5px;
+  --table-head-border-width: 0.5px;
+  --table-head-border-width-light: 1.5px;
+  --table-head-font-weight: bold;
+  --table-cell-font-weight: normal;
+  --table-section-padding: 8px;
+  --table-section-font-family: var(--font-family-body);
+  --table-section-font-weight: 600;
+  --table-code-font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  --table-container-border-radius: var(--border-radius-secondary);
+
+  // category
+  --category-width: 102px;
+  --category-font-size: 0.875rem;
+}
