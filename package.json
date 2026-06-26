@@ -5,8 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate:paper-textures": "node scripts/generate-paper-texture.mjs img/paper-texture.png img/paper-texture-subtle.png 0.02 && node scripts/generate-paper-texture.mjs img/paper-texture.png img/paper-texture-default.png 0.08 && node scripts/generate-paper-texture.mjs img/paper-texture.png img/paper-texture-strong.png 0.12",
-    "generate:paper-textures-old": "node scripts/generate-paper-texture.mjs img/paper-texture-old.png img/paper-texture-old-subtle.png 0.02 && node scripts/generate-paper-texture.mjs img/paper-texture-old.png img/paper-texture-old-default.png 0.08 && node scripts/generate-paper-texture.mjs img/paper-texture-old.png img/paper-texture-old-strong.png 0.12",
+    "generate:paper-textures": "node scripts/generate-texture-bg.mjs",
     "prestorybook": "npm run generate:paper-textures",
     "prebuild-storybook": "npm run generate:paper-textures",
     "start": "npm run storybook",

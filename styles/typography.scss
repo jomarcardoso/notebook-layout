@@ -1,60 +1,156 @@
-@use './utils.scss';
+/*
+ * Hierarquia tipográfica do caderno.
+ *
+ * A regra visual é deliberadamente simples:
+ * - h1: título editorial da página/receita, marrom e serifado.
+ * - h2, h3 e h4: títulos de seção, azuis e com linguagem de caneta.
+ * - texto de corpo: grafite, definido pelo tema.
+ *
+ * Nenhuma cor é gravada aqui. Cada tema escolhe os tokens
+ * --typography-*-color, então uma variação futura pode trocar a paleta
+ * sem reescrever a tipografia.
+ */
 
 .h1 {
-  text-transform: capitalize;
-  font-family: var(--font-family-title);
-  font-size: 28px;
-  line-height: 1.2;
-  letter-spacing: 1px;
+  color: var(--typography-page-title-color, var(--color-heading-strong));
+  font-family: var(
+    --typography-page-title-font-family,
+    var(--font-family-heading)
+  );
+  font-size: var(--typography-page-title-font-size, var(--h1-font-size));
+  font-weight: var(--typography-page-title-font-weight, 600);
+  letter-spacing: var(--typography-page-title-letter-spacing, -0.02em);
+  line-height: var(--typography-page-title-line-height, 1.12);
+  text-align: var(--typography-page-title-text-align, start);
+  text-transform: var(--typography-page-title-text-transform, none);
 }
 
 .h2 {
-  font-family: var(--font-family-title);
-  font-size: var(--h2-font-size);
-  line-height: 1.2;
-  letter-spacing: 1px;
-  font-weight: bold;
+  color: var(--typography-section-title-color, var(--color-handwritten-text));
+  font-family: var(
+    --typography-section-title-font-family,
+    var(--font-family-handwritten)
+  );
+  font-size: var(--typography-section-title-font-size, var(--h2-font-size));
+  font-weight: var(--typography-section-title-font-weight, 500);
+  letter-spacing: var(--typography-section-title-letter-spacing, 0);
+  line-height: var(--typography-section-title-line-height, 1.25);
+  text-align: var(--typography-section-title-text-align, start);
+  text-transform: var(--typography-section-title-text-transform, none);
 }
 
 .h3 {
-  font-size: 18px;
-  letter-spacing: 2px;
-  font-family: var(--font-family-title);
-  font-weight: 900;
-  // color: var(--color-primary-darker);
+  color: var(
+    --typography-subsection-title-color,
+    var(--typography-section-title-color, var(--color-handwritten-text))
+  );
+  font-family: var(
+    --typography-subsection-title-font-family,
+    var(--font-family-handwritten)
+  );
+  font-size: var(--typography-subsection-title-font-size, var(--h3-font-size));
+  font-weight: var(--typography-subsection-title-font-weight, 500);
+  letter-spacing: var(--typography-subsection-title-letter-spacing, 0);
+  line-height: var(--typography-subsection-title-line-height, 1.3);
+  text-align: var(--typography-subsection-title-text-align, start);
+  text-transform: var(--typography-subsection-title-text-transform, none);
 }
 
 .h4 {
-  font-weight: bold;
+  color: var(
+    --typography-minor-title-color,
+    var(--typography-section-title-color, var(--color-handwritten-text))
+  );
+  font-family: var(
+    --typography-minor-title-font-family,
+    var(--font-family-body)
+  );
+  font-size: var(--typography-minor-title-font-size, 1rem);
+  font-weight: var(--typography-minor-title-font-weight, 700);
+  letter-spacing: var(--typography-minor-title-letter-spacing, 0.01em);
+  line-height: var(--typography-minor-title-line-height, 1.3);
+  text-align: var(--typography-minor-title-text-align, start);
+  text-transform: var(--typography-minor-title-text-transform, none);
 }
 
+/* Aliases semânticos para os próximos componentes e páginas.
+ * Eles evitam usar h2 como gambiarra visual em elementos que não são h2. */
+.recipe-title,
+.page-title {
+  color: var(--typography-page-title-color, var(--color-heading-strong));
+  font-family: var(
+    --typography-page-title-font-family,
+    var(--font-family-heading)
+  );
+  font-size: var(--typography-page-title-font-size, var(--h1-font-size));
+  font-weight: var(--typography-page-title-font-weight, 600);
+  letter-spacing: var(--typography-page-title-letter-spacing, -0.02em);
+  line-height: var(--typography-page-title-line-height, 1.12);
+  text-align: var(--typography-page-title-text-align, start);
+  text-transform: var(--typography-page-title-text-transform, none);
+}
+
+.handwritten-title,
+.section-heading {
+  color: var(--typography-section-title-color, var(--color-handwritten-text));
+  font-family: var(
+    --typography-section-title-font-family,
+    var(--font-family-handwritten)
+  );
+  font-size: var(--typography-section-title-font-size, var(--h2-font-size));
+  font-weight: var(--typography-section-title-font-weight, 500);
+  letter-spacing: var(--typography-section-title-letter-spacing, 0);
+  line-height: var(--typography-section-title-line-height, 1.25);
+  text-align: var(--typography-section-title-text-align, start);
+  text-transform: var(--typography-section-title-text-transform, none);
+}
+
+/*
+ * Antes este componente virava uma faixa marrom sólida.
+ * Agora ele representa as rubricas escritas a caneta das referências:
+ * texto azul, sem caixa pesada e com uma linha de caderno abaixo.
+ */
 .section-title {
-  @extend .h2;
+  @extend .section-heading;
 
-  background-color: var(--color-primary-lighter);
-  border-radius: var(--border-radius-secondary);
-  color: white;
-  font-size: 17px;
-  mix-blend-mode: multiply;
-  padding: 7px 14px;
+  background: var(--typography-section-title-background, transparent);
+  border: 0;
+  border-bottom: var(--typography-section-title-rule, 0 solid transparent);
+  border-radius: var(--typography-section-title-border-radius, 0);
+  display: inline-block;
+  max-width: 100%;
+  padding: var(--typography-section-title-padding, 0 0 0.2em);
+  text-decoration: var(--typography-section-title-decoration, none);
+  width: fit-content;
+}
+
+/* Utilitários opt-in. Não exigem alterar a API atual dos componentes. */
+.section-title.-center,
+.handwritten-title.-center,
+.section-heading.-center {
+  margin-inline: auto;
   text-align: center;
-  width: 100%;
+}
 
-  @include utils.isDesktop {
-    width: auto;
-    min-width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 5px 16px;
-    max-width: min-content;
-  }
+.section-title.-plain {
+  border-bottom: 0;
 }
 
 .link {
+  color: var(--color-link, var(--color-secondary-main));
   text-decoration: underline;
+  text-decoration-color: currentcolor;
+  text-underline-offset: 0.14em;
+
+  &:active,
+  &:hover {
+    color: var(--color-link-active, var(--color-secondary-dark));
+  }
 }
 
 .p {
+  color: var(--color-text);
+  line-height: var(--body-line-height, 1.45);
   max-width: 200ch;
 
   &.-large {

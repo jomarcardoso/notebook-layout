@@ -53,6 +53,61 @@
   --font-family-body: 'Dosis', sans-serif;
   --font-family-input: 'Playwrite PE Variable', cursive;
 
+  /*
+   * Roles semânticos de tipografia.
+   *
+   * Os valores abaixo preservam exatamente a hierarquia legada enquanto
+   * permitem que cada tema altere a linguagem visual por papel, sem o
+   * typography.scss precisar conhecer cores ou fontes de cada tema.
+   */
+
+  // h1 / título principal
+  --typography-page-title-font-family: var(--font-family-title);
+  --typography-page-title-font-size: 28px;
+  --typography-page-title-line-height: 1.2;
+  --typography-page-title-letter-spacing: 1px;
+  --typography-page-title-font-weight: inherit;
+  --typography-page-title-text-transform: capitalize;
+  --typography-page-title-text-align: start;
+
+  // h2 / título de seção
+  --typography-section-title-font-family: var(--font-family-title);
+  --typography-section-title-font-size: var(--h2-font-size);
+  --typography-section-title-line-height: 1.2;
+  --typography-section-title-letter-spacing: 1px;
+  --typography-section-title-font-weight: bold;
+  --typography-section-title-text-transform: none;
+  --typography-section-title-text-align: start;
+
+  // h3 / subtítulo
+  --typography-subsection-title-font-family: var(--font-family-title);
+  --typography-subsection-title-font-size: 18px;
+  --typography-subsection-title-line-height: normal;
+  --typography-subsection-title-letter-spacing: 2px;
+  --typography-subsection-title-font-weight: 900;
+  --typography-subsection-title-text-transform: none;
+  --typography-subsection-title-text-align: start;
+
+  // h4 / título menor
+  // O estilo legado só definia font-weight. Os demais valores ficam neutros
+  // para preservar herança e tamanho atuais.
+  --typography-minor-title-font-family: inherit;
+  --typography-minor-title-font-size: 1em;
+  --typography-minor-title-line-height: normal;
+  --typography-minor-title-letter-spacing: normal;
+  --typography-minor-title-font-weight: bold;
+  --typography-minor-title-text-transform: none;
+  --typography-minor-title-text-align: start;
+
+  // .section-title / superfície de seção legada
+  --typography-section-title-surface-font-size: 17px;
+  --typography-section-title-surface-padding: 7px 14px;
+  --typography-section-title-surface-padding-desktop: 5px 16px;
+  --typography-section-title-surface-text-align: center;
+  --typography-section-title-surface-width: 100%;
+  --typography-section-title-surface-min-width-desktop: 50%;
+  --typography-section-title-surface-max-width-desktop: min-content;
+
   /* 🧱 Border */
   --border-radius-default: 1px;
   --border-radius-primary: 7px;

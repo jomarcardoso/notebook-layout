@@ -4,14 +4,14 @@
   @include theme-base;
 }
 
-:root {
-  @extend .theme-base;
-}
-
 .theme-light {
   @include theme-light;
 }
 
 .theme-primary {
   @include theme-primary;
+}
+
+:root {
+  @extend .theme-light;
 }

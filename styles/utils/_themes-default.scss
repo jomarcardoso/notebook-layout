@@ -1,3 +1,5 @@
+@use './texture-bg' as *;
+
 @mixin theme-base {
   // Tema base neutro usado como fallback.
   // Mantém leitura em alto contraste e usa azul caneta em campos de escrita.
@@ -7,6 +9,41 @@
   --box-shadow:
     0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
     0 1px 5px 0 rgb(0 0 0 / 12%);
+
+  // typography
+  /*
+   * Tema base mantém a aparência legada: títulos em tinta escura, sem
+   * linguagem editorial marrom nem seções manuscritas azuis.
+   * Tamanhos, pesos e espaçamentos permanecem os tokens definidos em
+   * variables.scss.
+   */
+  --typography-page-title-color: var(--color-text);
+  --typography-page-title-strong-color: var(--color-dark-darker);
+  --typography-page-title-background: transparent;
+  --typography-page-title-decoration: none;
+
+  --typography-section-title-color: var(--color-text);
+  --typography-section-title-strong-color: var(--color-dark-darker);
+  --typography-section-title-background: transparent;
+  --typography-section-title-decoration: none;
+  --typography-section-title-rule: none;
+
+  --typography-subsection-title-color: var(--color-text);
+  --typography-subsection-title-strong-color: var(--color-dark-darker);
+  --typography-subsection-title-background: transparent;
+  --typography-subsection-title-decoration: none;
+
+  --typography-minor-title-color: var(--color-text);
+  --typography-minor-title-strong-color: var(--color-dark-darker);
+  --typography-minor-title-background: transparent;
+  --typography-minor-title-decoration: none;
+
+  // .section-title preserva a faixa marrom atual do tema padrão.
+  --typography-section-title-surface-bg: var(--color-primary-lighter);
+  --typography-section-title-surface-color: var(--color-white);
+  --typography-section-title-surface-border: none;
+  --typography-section-title-surface-radius: var(--border-radius-secondary);
+  --typography-section-title-surface-mix-blend-mode: multiply;
 
   // field
   // Campos usam azul caneta para conteúdo escrito e preto/marrom para estrutura.
@@ -65,7 +102,8 @@
   --paper-background-color: #fff;
 
   /* PNG neutro da textura. */
-  --paper-texture-image: url('/img/paper-texture.png');
+  // --paper-texture-image: url('/img/paper-texture.png');
+  @include texture-bg-paper-texture;
 
   /* Tamanho/repetição originais da textura. */
   --paper-texture-size: 500px 593px;

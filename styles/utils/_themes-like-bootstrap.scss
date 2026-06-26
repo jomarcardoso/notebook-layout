@@ -1,80 +1,77 @@
+@use './texture-bg' as *;
+
 @mixin theme-base {
-  // Tema base neutro usado como fallback.
-  --bg: var(--color-white);
-  --color-text: var(--color-dark-main);
+  /*
+   * Neutral fallback.
+   * It remains readable without the notebook-paper background and provides
+   * complete defaults for isolated components and Storybook stories.
+   */
+  --bg: var(--surface-canvas);
+  --color-text: var(--color-ink-graphite);
+  --color-text-secondary: var(--color-dark-lighter);
+  --color-text-muted: var(--color-dark-medium);
   --color-heading: var(--color-title);
   --color-heading-strong: var(--color-title-strong);
-  --border: 1px solid var(--color-dark-main);
+  --color-handwritten-text: var(--color-handwritten);
+
+  /* Typography roles
+   * h1 is editorial and brown on paper. h2–h4 are the blue ink hierarchy.
+   * Components only consume these semantic tokens, which keeps new themes cheap.
+   */
+  --typography-page-title-font-family: var(--font-family-heading);
+  --typography-page-title-font-size: var(--h1-font-size);
+  --typography-page-title-font-weight: 600;
+  --typography-page-title-letter-spacing: -0.02em;
+  --typography-page-title-line-height: 1.12;
+  --typography-page-title-text-align: start;
+  --typography-page-title-text-transform: none;
+  --typography-page-title-color: var(--color-heading-strong);
+
+  --typography-section-title-font-family: var(--font-family-handwritten);
+  --typography-section-title-font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  --typography-section-title-font-weight: 500;
+  --typography-section-title-letter-spacing: 0;
+  --typography-section-title-line-height: 1.25;
+  --typography-section-title-text-align: start;
+  --typography-section-title-text-transform: none;
+  --typography-section-title-color: var(--color-handwritten-text);
+  --typography-section-title-background: transparent;
+  --typography-section-title-border-radius: 0;
+  --typography-section-title-decoration: none;
+  --typography-section-title-padding: 0 0 0.2em;
+  --typography-section-title-rule: 2px solid var(--recipe-section-rule-color);
+
+  --typography-subsection-title-font-family: var(--font-family-handwritten);
+  --typography-subsection-title-font-size: clamp(1.1rem, 2vw, 1.35rem);
+  --typography-subsection-title-font-weight: 500;
+  --typography-subsection-title-letter-spacing: 0;
+  --typography-subsection-title-line-height: 1.3;
+  --typography-subsection-title-text-align: start;
+  --typography-subsection-title-text-transform: none;
+  --typography-subsection-title-color: var(--color-handwritten-text);
+
+  --typography-minor-title-font-family: var(--font-family-body);
+  --typography-minor-title-font-size: 1rem;
+  --typography-minor-title-font-weight: 700;
+  --typography-minor-title-letter-spacing: 0.01em;
+  --typography-minor-title-line-height: 1.3;
+  --typography-minor-title-text-align: start;
+  --typography-minor-title-text-transform: none;
+  --typography-minor-title-color: var(--color-handwritten-text);
+  --border: var(--outline-default);
   --box-shadow:
-    0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%),
-    0 1px 5px 0 rgb(0 0 0 / 12%);
+    0 3px 1px -2px rgb(55 43 35 / 20%), 0 2px 2px 0 rgb(55 43 35 / 14%),
+    0 1px 5px 0 rgb(55 43 35 / 12%);
 
-  // field
-  --field-border-radius: var(--border-radius-secondary);
-  --field--active__label-bg: var(--action-secondary-bg-active);
-  --field--active-border-color: var(--color-dark-lighter);
-  --field-border-color: var(--color-dark-main);
-  --field-border: 1px solid var(--field-border-color);
-  --field-color: var(--color-blue-pen);
-  --field-line-color: var(--color-dark-lighter);
-  --field-line-dash-gap: 0px;
-  --field-line-thickness: 0.5px;
-  --field__label-border: var(--border);
-  --field__label-color: var(--color-text);
-  --field__label-bg: transparent;
-  --field__label-padding: 6px 24px 4px;
-  --field__label-fw: bold;
-  --field--multiline-border: var(--border);
+  /* Paper surface */
+  --paper-background-color: var(--surface-canvas);
+  --paper-texture-image: none;
+  --paper-texture-size: auto;
+  --paper-texture-repeat: no-repeat;
+  --paper-texture-position: top left;
+  --paper-texture-blend-mode: normal;
 
-  --user-box-border: 2px solid var(--color-primary-main);
-
-  // choice
-  --choice-gta: 'choice__img' 'choice__title' 'choice__desc';
-  --choice__title-border: none;
-  --choice__title-text-decorations: underline;
-  --choice--active__title-bg: var(--color-white);
-
-  // table
-  --table-color: var(--color-text);
-  --table-border-color: var(--color-dark-lighter);
-  --table-caption-bg: transparent;
-  --table-caption-color: var(--color-heading);
-  --table-caption-bg-light: var(--color-primary-lighter);
-  --table-caption-color-light: var(--color-white);
-  --table-section-bg: var(--color-light-main);
-  --table-section-color: var(--color-text);
-  --table-accent-color: var(--color-primary-darker);
-  --table-code-color: inherit;
-  --table-container-bg: transparent;
-  --table-container-border: 0;
-  --table-container-shadow: none;
-  --table-container-bg-light: var(--color-white-weak);
-  --table-container-border-light: 1px solid var(--color-primary-lighter);
-  --table-container-shadow-light: none;
-
-  // card
-  --card-border: var(--border);
-
-  background: var(--bg);
-  color: var(--color-text);
-}
-
-@mixin theme-light {
-  // Papel claro com textura. O arquivo deve ser transparente quando houver
-  // necessidade de variar livremente a cor base do papel.
-  --paper-background-color: #ffffff;
-  --paper-texture-image: url('/img/paper-texture-old-strong.png');
-  --paper-texture-size: 500px 593px;
-  --paper-texture-repeat: repeat;
-  --paper-texture-blend-mode: multiply;
-
-  // Grafite para leitura; marrom reservado a títulos e estrutura editorial.
-  --color-text: var(--color-dark-main);
-  --color-heading: var(--color-title);
-  --color-heading-strong: var(--color-title-strong);
-  --border: 2px solid var(--color-primary-lighter);
-
-  // O tema claro reafirma o CTA azul, evitando depender do tema pai.
+  /* Actions */
   --action-primary-bg: var(--color-secondary-main);
   --action-primary-color: var(--color-white);
   --action-primary-border: var(--color-secondary-main);
@@ -82,73 +79,330 @@
   --action-primary-color-active: var(--color-white);
   --action-primary-border-active: var(--color-secondary-dark);
 
-  // field
-  // Texto digitado mantém a metáfora de caneta; estrutura e labels são marrons.
-  --field-border-radius: var(--border-radius-primary);
-  --field--active__label-bg: var(--color-primary-darker);
-  --field--active-border-color: var(--color-primary-darker);
+  --action-secondary-bg: var(--color-white);
+  --action-secondary-color: var(--color-primary-main);
+  --action-secondary-border: var(--color-primary-lighter);
+  --action-secondary-bg-active: var(--surface-muted);
+  --action-secondary-color-active: var(--color-primary-darker);
+  --action-secondary-border-active: var(--color-primary-main);
+
+  --action-tertiary-bg: transparent;
+  --action-tertiary-color: var(--color-secondary-main);
+  --action-tertiary-bg-active: var(--color-secondary-light);
+  --action-tertiary-color-active: var(--color-secondary-dark);
+
+  /* Fields */
+  --field-border-radius: var(--border-radius-secondary);
+  /* The current Field keeps one label color in all states. Keep its label
+   * transparent until Field consumes --field-focus-label-color in the focused state. */
+  --field--active__label-bg: transparent;
+  --field--active-border-color: var(--field-focus-border-color);
   --field-border-color: var(--color-primary-lighter);
-  --field-border: 2px dashed var(--field-border-color);
+  --field-border: 1px solid var(--field-border-color);
   --field-color: var(--color-blue-pen);
-  --field-line-color: var(--color-primary-lighter);
-  --field-line-dash-gap: 6px;
+  --field-line-color: var(--notebook-rule-color);
+  --field-line-dash-gap: 0px;
+  --field-line-thickness: 0.5px;
+  --field__label-border: none;
+  --field__label-color: var(--color-primary-main);
+  --field__label-bg: transparent;
+  --field__label-padding: 6px 0 4px;
+  --field__label-fw: 700;
+  --field--multiline-border: var(--field-border);
+  --field-placeholder-color: var(--color-dark-lighter);
+  --field-hint-color: var(--color-dark-lighter);
+
+  /* User box */
+  --user-box-border: 2px solid var(--color-primary-main);
+
+  /* Choice */
+  --choice-gta: 'choice__img' 'choice__title' 'choice__desc';
+  --choice__title-border: none;
+  --choice__title-text-decorations: none;
+  --choice--active__title-bg: var(--choice-bg-active);
+
+  /* Tables */
+  --table-color: var(--color-text);
+  --table-border-color: var(--color-primary-lighter);
+  --table-caption-bg: transparent;
+  --table-caption-color: var(--color-heading);
+  --table-caption-bg-light: var(--color-primary-main);
+  --table-caption-color-light: var(--color-white);
+  --table-section-bg: var(--surface-muted);
+  --table-section-color: var(--color-text);
+  --table-accent-color: var(--color-secondary-main);
+  --table-code-color: inherit;
+  --table-container-bg: transparent;
+  --table-container-border: var(--outline-subtle);
+  --table-container-shadow: none;
+  --table-container-bg-light: var(--surface-raised);
+  --table-container-border-light: var(--outline-default);
+  --table-container-shadow-light: none;
+
+  /* Cards */
+  --card-bg: var(--surface-raised);
+  --card-border: var(--outline-default);
+  --card-header-bg: transparent;
+  --card-header-color: var(--color-heading);
+  --card-title-color: var(--color-heading);
+  --card-footer-bg: transparent;
+  --card-footer-border-color: var(--divider-color);
+
+  background: var(--bg);
+  color: var(--color-text);
+}
+
+@mixin theme-light {
+  /*
+   * Notebook paper theme.
+   * `paper-texture-old-strong.png` should be the alpha-based generated texture.
+   * It is intentionally composed as a normal background layer, not with a
+   * pseudo-element. Use `multiply` only when temporarily using a legacy opaque
+   * image; the generated transparent PNG should keep this value as `normal`.
+   */
+  @include texture-bg-paper-texture;
+
+  --paper-background-color: #fffdf8;
+  --paper-texture-size: 500px 593px;
+  --paper-texture-repeat: repeat;
+  --paper-texture-position: top left;
+  --paper-texture-blend-mode: normal;
+
+  /* Reading and editorial hierarchy */
+  --bg: var(--paper-background-color);
+  --color-text: var(--color-dark-main);
+  --color-text-secondary: var(--color-dark-lighter);
+  --color-text-muted: var(--color-dark-medium);
+  --color-heading: var(--color-title);
+  --color-heading-strong: var(--color-title-strong);
+  --color-handwritten-text: var(--color-handwritten);
+
+  /* Light notebook typography.
+   * Recipe/page name: brown editorial serif.
+   * Every lower heading: blue handwritten ink.
+   */
+  --typography-page-title-font-family: var(--font-family-heading);
+  --typography-page-title-font-size: var(--h1-font-size);
+  --typography-page-title-font-weight: 600;
+  --typography-page-title-letter-spacing: -0.02em;
+  --typography-page-title-line-height: 1.12;
+  --typography-page-title-text-align: center;
+  --typography-page-title-text-transform: none;
+  --typography-page-title-color: var(--color-title-strong);
+
+  --typography-section-title-font-family: var(--font-family-handwritten);
+  --typography-section-title-font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  --typography-section-title-font-weight: 500;
+  --typography-section-title-letter-spacing: 0;
+  --typography-section-title-line-height: 1.25;
+  --typography-section-title-text-align: start;
+  --typography-section-title-text-transform: none;
+  --typography-section-title-color: var(--color-secondary-main);
+  --typography-section-title-background: transparent;
+  --typography-section-title-border-radius: 0;
+  --typography-section-title-decoration: none;
+  --typography-section-title-padding: 0 0 0.2em;
+  --typography-section-title-rule: 2px solid var(--color-secondary-main);
+
+  --typography-subsection-title-font-family: var(--font-family-handwritten);
+  --typography-subsection-title-font-size: clamp(1.15rem, 2vw, 1.4rem);
+  --typography-subsection-title-font-weight: 500;
+  --typography-subsection-title-letter-spacing: 0;
+  --typography-subsection-title-line-height: 1.3;
+  --typography-subsection-title-text-align: start;
+  --typography-subsection-title-text-transform: none;
+  --typography-subsection-title-color: var(--color-secondary-main);
+
+  --typography-minor-title-font-family: var(--font-family-body);
+  --typography-minor-title-font-size: 1rem;
+  --typography-minor-title-font-weight: 700;
+  --typography-minor-title-letter-spacing: 0.01em;
+  --typography-minor-title-line-height: 1.3;
+  --typography-minor-title-text-align: start;
+  --typography-minor-title-text-transform: none;
+  --typography-minor-title-color: var(--color-secondary-main);
+
+  --border: 1px solid var(--color-primary-lighter);
+  --divider-color: rgb(117 71 47 / 20%);
+
+  /* Primary CTA remains blue in the light notebook theme. */
+  --action-primary-bg: var(--color-secondary-main);
+  --action-primary-color: var(--color-white);
+  --action-primary-border: var(--color-secondary-main);
+  --action-primary-bg-active: var(--color-secondary-dark);
+  --action-primary-color-active: var(--color-white);
+  --action-primary-border-active: var(--color-secondary-dark);
+
+  /* Secondary actions are white paper with a brown editorial outline. */
+  --action-secondary-bg: rgb(255 255 255 / 74%);
+  --action-secondary-color: var(--color-primary-main);
+  --action-secondary-border: var(--color-primary-lighter);
+  --action-secondary-bg-active: #f8f2ec;
+  --action-secondary-color-active: var(--color-primary-darker);
+  --action-secondary-border-active: var(--color-primary-main);
+
+  --action-tertiary-bg: transparent;
+  --action-tertiary-color: var(--color-secondary-main);
+  --action-tertiary-bg-active: var(--color-secondary-light);
+  --action-tertiary-color-active: var(--color-secondary-dark);
+
+  /* Fields: label and outline use brown; written content, focus and selection use blue. */
+  --field-border-radius: var(--border-radius-primary);
+  /* Current Field cannot change label foreground on focus yet. */
+  --field--active__label-bg: transparent;
+  --field--active-border-color: var(--field-focus-border-color);
+  --field-border-color: var(--color-primary-lighter);
+  --field-border: 1px solid var(--field-border-color);
+  --field-color: var(--color-blue-pen);
+  --field-line-color: var(--notebook-rule-color);
+  --field-line-dash-gap: 0px;
   --field-line-thickness: 1px;
   --field__label-border: none;
-  --field__label-color: var(--color-white);
-  --field__label-bg: var(--color-primary-lighter);
-  --field__label-padding: 5px 24px 3px;
-  --field__label-fw: normal;
+  --field__label-color: var(--color-primary-main);
+  --field__label-bg: transparent;
+  --field__label-padding: 5px 0 4px;
+  --field__label-fw: 700;
   --field--multiline-border: 0;
+  --field-placeholder-color: var(--color-dark-lighter);
+  --field-hint-color: var(--color-dark-lighter);
+  --field-focus-border-color: var(--color-secondary-main);
+  --field-focus-label-bg: var(--color-secondary-main);
+  --field-focus-line-color: var(--color-secondary-main);
+  --field-action-color: var(--color-secondary-main);
 
-  // chip
-  --chip-mix-blend-mode: multiply;
-  --chip-border: var(--field-border);
-  --chip-bg-active: var(--color-primary-lighter);
+  /* Chip, choice and tab states reserve blue for selection. */
+  --chip-mix-blend-mode: normal;
+  --chip-border: 1px solid var(--chip-border-color);
+  --chip-bg: rgb(255 255 255 / 50%);
+  --chip-color: var(--color-primary-main);
+  --chip-border-color: var(--color-primary-lighter);
+  --chip-bg-active: var(--color-secondary-main);
   --chip-color-active: var(--color-white);
+  --chip-border-color-active: var(--color-secondary-main);
 
-  // user-box
-  --user-box-border: var(--field-border);
-
-  // choice
+  --choice-bg: rgb(255 255 255 / 40%);
+  --choice-color: var(--color-dark-main);
+  --choice-border-color: var(--color-primary-lighter);
+  --choice-bg-active: var(--color-secondary-light);
+  --choice-color-active: var(--color-secondary-dark);
+  --choice-border-color-active: var(--color-secondary-main);
   --choice-gta: 'choice__img' 'choice__desc' 'choice__title';
-  --choice__title-border: 1px solid var(--color-primary-main);
+  --choice__title-border: none;
   --choice__title-text-decorations: none;
-  --choice--active__title-bg: var(--action-secondary-bg-active);
+  --choice--active__title-bg: transparent;
 
-  // table
-  --table-border-color: var(--color-primary-lighter);
-  --table-section-bg: color-mix(
-    in srgb,
-    var(--color-white) 84%,
-    var(--color-primary-lighter)
-  );
-  --table-section-color: var(--color-dark-darker);
-  --table-accent-color: var(--color-primary-darker);
-  --table-code-color: var(--color-dark-strong);
-  --table-container-bg: var(--color-white-weak);
-  --table-container-border: 1px solid var(--color-primary-lighter);
+  --tab-bg: rgb(255 255 255 / 36%);
+  --tab-color: var(--color-primary-main);
+  --tab-border-color: var(--color-primary-lighter);
+  --tab-bg-active: rgb(255 255 255 / 84%);
+  --tab-color-active: var(--color-secondary-main);
+  --tab-border-color-active: var(--color-secondary-main);
 
-  // card
+  --progress-track-bg: rgb(51 47 43 / 12%);
+  --progress-value-bg: var(--color-secondary-main);
+  --progress-label-color: var(--color-secondary-main);
+
+  /* Cards are future-ready for surface-first, not brown-banner-first, composition. */
+  --surface-canvas: var(--paper-background-color);
+  --surface-raised: rgb(255 255 255 / 82%);
+  --surface-subtle: #fbf7f1;
+  --surface-muted: #f5ede5;
+  --surface-inverse: var(--color-primary-main);
+  --outline-subtle: 1px solid rgb(117 71 47 / 18%);
+  --outline-default: 1px solid var(--color-primary-lighter);
+  --outline-strong: 2px solid var(--color-primary-main);
+
+  --card-bg: var(--surface-raised);
   --card-border: 0;
+  --card-border-color: var(--color-primary-lighter);
+  --card-header-bg: transparent;
+  --card-header-color: var(--color-heading);
+  --card-title-color: var(--color-heading);
+  --card-footer-bg: transparent;
+  --card-footer-border-color: var(--divider-color);
+
+  /* Recipe and notebook-specific future elements */
+  --recipe-meta-bg: rgb(255 255 255 / 66%);
+  --recipe-meta-border-color: rgb(0 91 172 / 22%);
+  --recipe-note-color: var(--color-handwritten);
+  --recipe-section-title-color: var(--color-handwritten);
+  --recipe-section-rule-color: var(--color-secondary-main);
+
+  --nav-bg: rgb(255 255 255 / 86%);
+  --nav-border-color: var(--divider-color);
+  --nav-item-color: var(--color-primary-main);
+  --nav-item-color-active: var(--color-secondary-main);
+  --nav-item-bg-active: var(--color-secondary-light);
 
   background-color: var(--paper-background-color);
   background-image: var(--paper-texture-image);
   background-repeat: var(--paper-texture-repeat);
   background-size: var(--paper-texture-size);
+  background-position: var(--paper-texture-position);
   background-blend-mode: var(--paper-texture-blend-mode);
   color: var(--color-text);
 }
 
 @mixin theme-primary {
-  // Tema marrom cheio para blocos de marca e áreas densas.
+  /*
+   * Dense brown theme for covers, headers and branded panels.
+   * Blue cannot provide sufficient text/button contrast on this brown surface,
+   * so the local primary action intentionally becomes white.
+   */
   --bg: var(--color-primary-main);
   --color-text: var(--color-white);
+  --color-text-secondary: var(--color-white-weak);
+  --color-text-muted: rgb(255 255 255 / 68%);
   --color-heading: var(--color-white);
   --color-heading-strong: var(--color-white);
-  --color-primary: var(--color-white-weak);
+  --color-handwritten-text: var(--color-secondary-light);
 
-  // Azul sobre marrom não separa bem o suficiente como botão. Neste tema
-  // denso, a ação primária usa branco para preservar contraste claro.
+  /* On dense brown, page title remains white and blue headings become light blue
+   * so contrast stays usable instead of performing accessibility theatre. */
+  --typography-page-title-font-family: var(--font-family-heading);
+  --typography-page-title-font-size: var(--h1-font-size);
+  --typography-page-title-font-weight: 600;
+  --typography-page-title-letter-spacing: -0.02em;
+  --typography-page-title-line-height: 1.12;
+  --typography-page-title-text-align: center;
+  --typography-page-title-text-transform: none;
+  --typography-page-title-color: var(--color-white);
+
+  --typography-section-title-font-family: var(--font-family-handwritten);
+  --typography-section-title-font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  --typography-section-title-font-weight: 500;
+  --typography-section-title-letter-spacing: 0;
+  --typography-section-title-line-height: 1.25;
+  --typography-section-title-text-align: start;
+  --typography-section-title-text-transform: none;
+  --typography-section-title-color: var(--color-secondary-light);
+  --typography-section-title-background: transparent;
+  --typography-section-title-border-radius: 0;
+  --typography-section-title-decoration: none;
+  --typography-section-title-padding: 0 0 0.2em;
+  --typography-section-title-rule: 2px solid var(--color-secondary-light);
+
+  --typography-subsection-title-font-family: var(--font-family-handwritten);
+  --typography-subsection-title-font-size: clamp(1.15rem, 2vw, 1.4rem);
+  --typography-subsection-title-font-weight: 500;
+  --typography-subsection-title-letter-spacing: 0;
+  --typography-subsection-title-line-height: 1.3;
+  --typography-subsection-title-text-align: start;
+  --typography-subsection-title-text-transform: none;
+  --typography-subsection-title-color: var(--color-secondary-light);
+
+  --typography-minor-title-font-family: var(--font-family-body);
+  --typography-minor-title-font-size: 1rem;
+  --typography-minor-title-font-weight: 700;
+  --typography-minor-title-letter-spacing: 0.01em;
+  --typography-minor-title-line-height: 1.3;
+  --typography-minor-title-text-align: start;
+  --typography-minor-title-text-transform: none;
+  --typography-minor-title-color: var(--color-secondary-light);
+
+  --border: 1px solid var(--color-white-weak);
+  --divider-color: rgb(255 255 255 / 28%);
+
   --action-primary-bg: var(--color-white);
   --action-primary-color: var(--color-primary-darker);
   --action-primary-border: var(--color-white);
@@ -156,26 +410,70 @@
   --action-primary-color-active: var(--color-secondary-darker);
   --action-primary-border-active: var(--color-secondary-light);
 
-  // field
-  --field-border-color: var(--color-text);
+  --action-secondary-bg: transparent;
+  --action-secondary-color: var(--color-white);
+  --action-secondary-border: var(--color-white);
+  --action-secondary-bg-active: rgb(255 255 255 / 14%);
+  --action-secondary-color-active: var(--color-white);
+  --action-secondary-border-active: var(--color-white);
+
+  --action-tertiary-bg: transparent;
+  --action-tertiary-color: var(--color-white);
+  --action-tertiary-bg-active: rgb(255 255 255 / 14%);
+  --action-tertiary-color-active: var(--color-white);
+
+  --field-border-radius: var(--border-radius-secondary);
+  --field-border-color: var(--color-white);
   --field-border: 1px solid var(--field-border-color);
-  --field-color: var(--color-text);
+  --field-color: var(--color-white);
   --field-line-color: var(--color-light-weak);
   --field-line-dash-gap: 6px;
   --field-line-thickness: 1px;
+  --field__label-border: none;
+  --field__label-color: var(--color-white);
+  --field__label-bg: transparent;
+  --field__label-padding: 6px 0 4px;
+  --field__label-fw: 700;
+  --field--active__label-bg: transparent;
+  --field--active-border-color: var(--color-white);
+  --field--multiline-border: 1px solid var(--color-white-weak);
+  --field-placeholder-color: var(--color-white-weak);
+  --field-hint-color: var(--color-white-weak);
+  --field-focus-border-color: var(--color-white);
+  --field-focus-label-bg: var(--color-white);
+  --field-focus-line-color: var(--color-secondary-light);
+  --field-action-color: var(--color-white);
 
-  // chip
-  --chip-mix-blend-mode: none;
-  --chip-border: 2px solid var(--color-white);
+  --chip-mix-blend-mode: normal;
+  --chip-border: 1px solid var(--color-white);
+  --chip-bg: transparent;
+  --chip-color: var(--color-white);
+  --chip-border-color: var(--color-white);
   --chip-bg-active: var(--color-white);
   --chip-color-active: var(--color-primary-darker);
+  --chip-border-color-active: var(--color-white);
 
-  // user-box
-  --user-box-border: 2px solid var(--color-white);
+  --choice-bg: transparent;
+  --choice-color: var(--color-white);
+  --choice-border-color: var(--color-white);
+  --choice-bg-active: var(--color-white);
+  --choice-color-active: var(--color-primary-darker);
+  --choice-border-color-active: var(--color-white);
 
-  // table
+  --tab-bg: transparent;
+  --tab-color: var(--color-white);
+  --tab-border-color: var(--color-white-weak);
+  --tab-bg-active: var(--color-white);
+  --tab-color-active: var(--color-primary-darker);
+  --tab-border-color-active: var(--color-white);
+
+  --progress-track-bg: rgb(255 255 255 / 26%);
+  --progress-value-bg: var(--color-secondary-light);
+  --progress-label-color: var(--color-white);
+
   --table-color: var(--color-text);
   --table-border-color: var(--color-white-weak);
+  --table-caption-bg: transparent;
   --table-caption-color: var(--color-white);
   --table-caption-bg-light: var(--color-secondary-main);
   --table-caption-color-light: var(--color-white);
@@ -183,7 +481,36 @@
   --table-section-color: var(--color-white);
   --table-accent-color: var(--color-secondary-light);
   --table-code-color: var(--color-white);
+  --table-container-bg: transparent;
   --table-container-border: 1px solid var(--color-white-weak);
+  --table-container-bg-light: rgb(255 255 255 / 12%);
+  --table-container-border-light: 1px solid var(--color-white-weak);
+
+  --surface-canvas: var(--color-primary-main);
+  --surface-raised: var(--color-primary-darker);
+  --surface-subtle: rgb(255 255 255 / 12%);
+  --surface-muted: rgb(255 255 255 / 16%);
+  --surface-inverse: var(--color-white);
+  --outline-subtle: 1px solid var(--color-white-weak);
+  --outline-default: 1px solid var(--color-white);
+  --outline-strong: 2px solid var(--color-white);
+
+  --card-bg: var(--color-primary-darker);
+  --card-border: 1px solid var(--color-white-weak);
+  --card-border-color: var(--color-white-weak);
+  --card-header-bg: transparent;
+  --card-header-color: var(--color-white);
+  --card-title-color: var(--color-white);
+  --card-footer-bg: transparent;
+  --card-footer-border-color: var(--divider-color);
+
+  --nav-bg: var(--color-primary-main);
+  --nav-border-color: var(--divider-color);
+  --nav-item-color: var(--color-white);
+  --nav-item-color-active: var(--color-secondary-light);
+  --nav-item-bg-active: rgb(255 255 255 / 12%);
+
+  --user-box-border: 2px solid var(--color-white);
 
   background: var(--bg);
   color: var(--color-text);

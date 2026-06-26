@@ -1,89 +1,102 @@
 @mixin variables {
-  /* 🎨 Base Colors
-   * Paleta de caderno de receitas em alto contraste.
-   * O papel continua claro; tinta, títulos e ações possuem papéis distintos.
+  /*
+   * Base palette
+   *
+   * The product has two distinct visual roles that must not be conflated:
+   * - brown is the notebook's editorial identity: headings, labels, outlines;
+   * - blue is the ink and interactive identity: actions, focus, links, progress.
+   *
+   * The historical `primary` color tokens remain brown for compatibility.
+   * Components must use `--action-primary-*` for the primary CTA instead.
    */
-  --color-white: #ffffff; // Superfícies limpas, cards e texto sobre fundos densos.
-  --color-white-weak: #ffffff88; // Camadas claras translúcidas sobre papel/painéis.
-  --color-blue-pen: #005bac; // Azul fixo de caneta: ação principal, links, foco e escrita.
 
-  /* Papel / superfícies claras */
-  --color-light-light: #ffffff; // Superfície clara máxima: cards e áreas de leitura.
-  --color-light-main: #f2f2f2; // Cor base do papel/textura do caderno.
-  --color-light-dark: #e6e6e6; // Linha clara sutil; não usar para estrutura importante.
-  --color-light-strong: #f2f2f2cf; // Papel com alta opacidade.
-  --color-light-weak: #f2f2f288; // Papel translúcido para camadas leves.
+  /* Paper and neutral surfaces */
+  --color-white: #ffffff; // Raised paper, cards and text over dense backgrounds.
+  --color-white-weak: #ffffffcc; // Semi-opaque white for translucent surfaces.
+  --color-light-light: #ffffff; // Maximum light surface.
+  --color-light-main: #f2f2f2; // Neutral notebook paper fallback.
+  --color-light-dark: #e7e1da; // Subtle warm separator; never a structural border.
+  --color-light-strong: #f2f2f2e8; // High-opacity paper layer.
+  --color-light-weak: #f2f2f2a6; // Low-opacity paper layer.
 
-  /* Tinta grafite
-   * Corpo de texto deixa de ser preto absoluto: continua muito legível,
-   * mas fica menos duro sobre o papel e mais próximo de grafite.
-   */
-  --color-dark-lighter: #4a4a4a; // Ícones, bordas e texto secundário forte.
-  --color-dark-main: #2b2b2b; // Texto principal em grafite.
-  --color-dark-darker: #171717; // Ênfase máxima, código e texto muito denso.
-  --color-dark-strong: #2b2b2be8; // Grafite com transparência alta.
-  --color-dark-medium: #2b2b2bcc; // Texto auxiliar ainda legível.
-  --color-dark-weak: #2b2b2b66; // Disabled, hints e divisórias discretas.
+  /* Graphite ink for reading */
+  --color-dark-lighter: #5f5751; // Secondary text, icons and quiet outlines.
+  --color-dark-main: #332f2b; // Main body text in warm graphite.
+  --color-dark-darker: #1d1917; // Highest emphasis and dense text.
+  --color-dark-strong: #332f2be8; // High-opacity graphite.
+  --color-dark-medium: #332f2bb8; // Supporting text.
+  --color-dark-weak: #332f2b66; // Disabled content and low-priority dividers.
 
-  /* 🌿 Marrom editorial
-   * O marrom deixa de ser a ação principal. Ele representa a identidade do
-   * caderno: títulos, labels, bordas, chips e elementos de organização.
-   */
-  --color-primary-lighter: #826251; // Bordas, labels e chips; ainda contrasta com branco.
-  --color-primary-main: #7b513c; // Marrom editorial para títulos e identidade do produto.
-  --color-primary-darker: #5b392b; // Hover marrom, títulos fortes e áreas mais densas.
-  --color-primary-strong: #7b513ce8; // Marrom translúcido forte.
-  --color-primary-medium: #7b513ccc; // Marrom translúcido médio.
-  --color-primary-weak: #7b513c88; // Marrom translúcido fraco.
+  /* Notebook brown: editorial hierarchy and structural details */
+  --color-primary-lighter: #8a624b; // Borders, labels and passive notebook details.
+  --color-primary-main: #75472f; // Editorial brown for headings and identity.
+  --color-primary-darker: #5b392b; // Strong headings, dense brown surfaces and hover.
+  --color-primary-strong: #75472fe8; // High-opacity brown.
+  --color-primary-medium: #75472fcc; // Medium-opacity brown.
+  --color-primary-weak: #75472f88; // Low-opacity brown.
 
-  /* Tokens semânticos de título.
-   * h1–h6 e componentes de heading devem consumir estes tokens, não a cor
-   * de texto do corpo, para que títulos continuem explicitamente marrons.
-   */
+  /* Blue pen: interaction, editing, completion and handwritten annotations */
+  --color-blue-pen: #005bac; // Fixed product ink blue.
+  --color-secondary-light: #e7eef8; // Soft blue selection/background.
+  --color-secondary-main: var(--color-blue-pen); // Main interactive blue.
+  --color-secondary-dark: #003f78; // Hover/active blue.
+  --color-secondary-darker: #002b52; // Pressed blue and high emphasis.
+  --color-secondary-strong: #003f78e8; // High-opacity blue.
+  --color-secondary-medium: #005bacc4; // Medium-opacity blue.
+  --color-secondary-weak: #005bac80; // Low-opacity blue.
+
+  /* Semantic color aliases for future components */
+  --color-ink-graphite: var(--color-dark-main);
+  --color-ink-brown: var(--color-primary-main);
+  --color-ink-blue: var(--color-secondary-main);
   --color-title: var(--color-primary-main);
   --color-title-strong: var(--color-primary-darker);
+  --color-handwritten: var(--color-secondary-main);
+  --color-link: var(--color-secondary-main);
+  --color-link-active: var(--color-secondary-dark);
 
-  /* Secondary = azul caneta.
-   * É a cor de interação: CTA, foco, links, edição e confirmação.
-   */
-  --color-secondary-light: #e7eef8; // Fundo de seleção/chip; não usar como texto.
-  --color-secondary-main: var(--color-blue-pen); // Azul caneta oficial.
-  --color-secondary-dark: #003f78; // Hover/active e texto azul forte.
-  --color-secondary-darker: #002b52; // Pressionado e contraste extra.
-  --color-secondary-strong: #003f78e8; // Azul translúcido forte.
-  --color-secondary-medium: #005bacc4; // Azul translúcido médio.
-  --color-secondary-weak: #005bac88; // Azul translúcido fraco para detalhes.
+  /* Typography families */
+  --font-family-title: 'Cinzel', serif; // Existing editorial heading family.
+  --font-family-body: 'Dosis', sans-serif; // Labels, body copy and controls.
+  --font-family-input: 'Playwrite PE Variable', cursive; // Typed-as-handwritten content.
 
-  /* 🔤 Typography */
-  --font-family-title: 'Cinzel', serif;
-  --font-family-body: 'Dosis', sans-serif;
-  --font-family-input: 'Playwrite PE Variable', cursive;
+  /* Future semantic typography hooks. Components may adopt these gradually. */
+  --font-family-heading: var(--font-family-title);
+  --font-family-label: var(--font-family-body);
+  --font-family-action: var(--font-family-body);
+  --font-family-handwritten: var(--font-family-input);
+  --heading-letter-spacing: 0.015em;
+  --label-letter-spacing: 0;
+  --action-letter-spacing: 0.01em;
+  --action-text-transform: none;
+  --handwritten-letter-spacing: 0;
 
-  /* 🧱 Border */
+  /* Border and shape */
   --border-radius-default: 1px;
   --border-radius-primary: 7px;
   --border-radius-secondary: 3px;
   --border-width: 3px;
   --border-width-secondary: 2px;
+  --outline-width: 1px;
 
-  /* 🌫️ Shadow */
-  --shadow-color: rgb(0 0 0 / 20%);
+  /* Shadows */
+  --shadow-color: rgb(55 43 35 / 20%);
   --shadow-primary:
-    0 2px 4px -1px var(--shadow-color), 0 4px 5px 0 rgb(0 0 0 / 14%),
-    0 1px 10px 0 rgb(0 0 0 / 12%);
+    0 2px 4px -1px var(--shadow-color), 0 4px 5px 0 rgb(55 43 35 / 14%),
+    0 1px 10px 0 rgb(55 43 35 / 12%);
   --shadow-primary-inset: inset 0 0 3px 0 var(--shadow-color);
 
-  // sizing
+  /* Layout sizing */
   --gap: 8px;
   --bs-gap: var(--gap);
   --padding-x: 8px;
-  --gutter-x: var(--padding-x); // legacy
+  --gutter-x: var(--padding-x); // Legacy alias.
   --padding-y: 8px;
-  --gutter-y: var(--padding-y); // legacy
+  --gutter-y: var(--padding-y); // Legacy alias.
   --padding: var(--padding-y) var(--padding-x);
-  --gutter: var(--padding); // legacy
+  --gutter: var(--padding); // Legacy alias.
 
-  /* 🧩 Components */
+  /* General component sizing */
   --action-font-size: 0.9375rem;
   --action-small-font-size: 0.75rem;
   --action-size: 44px;
@@ -113,11 +126,11 @@
     --action-small-font-size: 0.75rem;
   }
 
-  // action
+  /* Existing action contract
+   * Primary action is intentionally blue. Brown remains editorial, not CTA.
+   */
   --action-box-shadow: var(--box-shadow);
 
-  // action primary
-  // Azul caneta agora é o CTA padrão do produto.
   --action-primary-bg: var(--color-secondary-main);
   --action-primary-color: var(--color-white);
   --action-primary-border: var(--color-secondary-main);
@@ -126,27 +139,43 @@
   --action-primary-color-active: var(--color-white);
   --action-primary-border-active: var(--color-secondary-dark);
 
-  // action secondary
   --action-secondary-bg: var(--color-white);
-  --action-secondary-color: var(--color-dark-main);
-  --action-secondary-border: var(--color-dark-main);
+  --action-secondary-color: var(--color-primary-main);
+  --action-secondary-border: var(--color-primary-lighter);
   --action-secondary-style: solid;
-  --action-secondary-bg-active: var(--color-light-main);
-  --action-secondary-color-active: var(--color-dark-lighter);
-  --action-secondary-border-active: var(--color-dark-lighter);
+  --action-secondary-bg-active: #f8f2ec;
+  --action-secondary-color-active: var(--color-primary-darker);
+  --action-secondary-border-active: var(--color-primary-main);
 
-  // typography
-  --font-size: 1rem;
-  --h2-font-size: 1.5rem;
+  --action-tertiary-bg: transparent;
+  --action-tertiary-color: var(--color-secondary-main);
+  --action-tertiary-bg-active: var(--color-secondary-light);
+  --action-tertiary-color-active: var(--color-secondary-dark);
 
-  // button
+  /* Future button tokens. Existing Button currently uses action tokens. */
   --button-size: var(--action-size);
   --button-font-size: var(--action-font-size);
-  --button-border-width: var(--border-width);
+  --button-font-family: var(--font-family-action);
+  --button-font-weight: 700;
+  --button-text-transform: var(--action-text-transform);
+  --button-letter-spacing: var(--action-letter-spacing);
+  --button-border-width: var(--border-width-secondary);
   --button-padding-y: 2px;
   --button-padding-x: 16px;
+  --button-primary-shadow: 0 2px 0 rgb(0 43 82 / 24%);
+  --button-secondary-shadow: none;
+  --button-tertiary-shadow: none;
 
-  // field
+  /* Typography sizing */
+  --font-size: 1rem;
+  --h1-font-size: clamp(1.75rem, 3vw, 2.5rem);
+  --h2-font-size: 1.5rem;
+  --h3-font-size: 1.125rem;
+  --body-line-height: 1.45;
+  --label-font-size: 0.9375rem;
+  --caption-font-size: 0.8125rem;
+
+  /* Existing field contract */
   --field-padding: 4px;
   --field-font-size: 1.125rem;
   --field-line-height: 31px;
@@ -158,14 +187,27 @@
   --field-line-dash-length: 6px;
   --field-box-padding-top: calc(var(--field-padding) + 2px);
 
-  // table
+  /* Future field tokens. These preserve the notebook form language. */
+  --field-label-font-family: var(--font-family-label);
+  --field-label-letter-spacing: var(--label-letter-spacing);
+  --field-placeholder-color: var(--color-dark-lighter);
+  --field-hint-color: var(--color-dark-lighter);
+  --field-focus-border-color: var(--color-secondary-main);
+  --field-focus-label-bg: var(--color-secondary-main);
+  --field-focus-label-color: var(--color-white);
+  --field-focus-line-color: var(--color-secondary-main);
+  --field-action-color: var(--color-secondary-main);
+  --field-selection-bg: var(--color-secondary-light);
+  --field-selection-color: var(--color-dark-darker);
+
+  /* Tables */
   --table-font-family: var(--font-family-body);
   --table-font-size: 15px;
   --table-line-height: 1.35;
   --table-layout: fixed;
   --table-text-align: left;
   --table-min-width: 100%;
-  --table-caption-font-family: var(--font-family-title);
+  --table-caption-font-family: var(--font-family-heading);
   --table-caption-font-size: 19px;
   --table-caption-font-size-light: 17px;
   --table-caption-padding: 11px 14px;
@@ -173,7 +215,7 @@
   --table-caption-border-radius: 0;
   --table-caption-border-radius-light: var(--border-radius-secondary);
   --table-caption-mix-blend-mode: normal;
-  --table-caption-mix-blend-mode-light: multiply;
+  --table-caption-mix-blend-mode-light: normal;
   --table-cell-height: 44px;
   --table-cell-padding-block: 8px;
   --table-cell-padding-inline: 6px;
@@ -182,8 +224,8 @@
   --table-row-border-width: 0.5px;
   --table-head-border-width: 0.5px;
   --table-head-border-width-light: 1.5px;
-  --table-head-font-weight: bold;
-  --table-cell-font-weight: normal;
+  --table-head-font-weight: 700;
+  --table-cell-font-weight: 400;
   --table-section-padding: 8px;
   --table-section-font-family: var(--font-family-body);
   --table-section-font-weight: 600;
@@ -192,7 +234,70 @@
     'Courier New', monospace;
   --table-container-border-radius: var(--border-radius-secondary);
 
-  // category
+  /* Future component tokens
+   * They are intentionally defined before component refactors, so future work
+   * can consume semantic names rather than adding more hard-coded colors.
+   */
+  --surface-canvas: var(--color-light-main);
+  --surface-raised: var(--color-white);
+  --surface-subtle: #fbf8f4;
+  --surface-muted: #f4eee8;
+  --surface-inverse: var(--color-primary-main);
+  --outline-subtle: 1px solid var(--color-light-dark);
+  --outline-default: 1px solid var(--color-primary-lighter);
+  --outline-strong: 2px solid var(--color-primary-main);
+  --divider-color: rgb(117 71 47 / 22%);
+
+  --card-bg: var(--surface-raised);
+  --card-border-color: var(--color-primary-lighter);
+  --card-header-bg: transparent;
+  --card-header-color: var(--color-title);
+  --card-title-color: var(--color-title);
+  --card-footer-bg: transparent;
+  --card-footer-border-color: var(--divider-color);
+
+  --chip-bg: transparent;
+  --chip-color: var(--color-primary-main);
+  --chip-border-color: var(--color-primary-lighter);
+  --chip-bg-active: var(--color-secondary-main);
+  --chip-color-active: var(--color-white);
+  --chip-border-color-active: var(--color-secondary-main);
+
+  --choice-bg: transparent;
+  --choice-color: var(--color-dark-main);
+  --choice-border-color: var(--color-primary-lighter);
+  --choice-bg-active: var(--color-secondary-light);
+  --choice-color-active: var(--color-secondary-dark);
+  --choice-border-color-active: var(--color-secondary-main);
+
+  --tab-bg: transparent;
+  --tab-color: var(--color-primary-main);
+  --tab-border-color: var(--color-primary-lighter);
+  --tab-bg-active: var(--color-white);
+  --tab-color-active: var(--color-secondary-main);
+  --tab-border-color-active: var(--color-secondary-main);
+
+  --progress-track-bg: rgb(51 47 43 / 12%);
+  --progress-value-bg: var(--color-secondary-main);
+  --progress-label-color: var(--color-secondary-main);
+
+  --nav-bg: var(--surface-raised);
+  --nav-border-color: var(--divider-color);
+  --nav-item-color: var(--color-primary-main);
+  --nav-item-color-active: var(--color-secondary-main);
+  --nav-item-bg-active: var(--color-secondary-light);
+
+  --recipe-meta-bg: var(--surface-subtle);
+  --recipe-meta-border-color: var(--color-light-dark);
+  --recipe-note-color: var(--color-handwritten);
+  --recipe-section-title-color: var(--color-handwritten);
+  --recipe-section-rule-color: var(--color-secondary-main);
+
+  --notebook-rule-color: rgb(0 91 172 / 36%);
+  --notebook-margin-color: rgb(117 71 47 / 32%);
+  --notebook-binding-color: var(--color-primary-darker);
+
+  /* Category */
   --category-width: 102px;
   --category-font-size: 0.875rem;
 }

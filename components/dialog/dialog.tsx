@@ -1,19 +1,14 @@
 'use client';
 import {
-  DialogHTMLAttributes,
+  type DialogHTMLAttributes,
   type FC,
   type HTMLProps,
   type ReactNode,
+  useCallback,
   useEffect,
   useRef,
 } from 'react';
-import {
-  blockScroll,
-  generateClasses,
-  getOrientation,
-  scrollToTop,
-} from '../../utils/utils';
-import { isMobile } from '../../utils/media';
+import { blockScroll, generateClasses, scrollToTop } from '../../utils/utils';
 import { Modal } from '../modal';
 import { useDialogCloseGesture } from './use-dialog-close-gesture';
 import { useDialogFieldReveal } from './use-dialog-field-reveal';
@@ -22,9 +17,13 @@ const DIALOG_HISTORY_STATE_KEY = '__dialogHistory';
 
 const readDialogHistoryMarkerId = (state: unknown): string | null => {
   if (typeof state !== 'object' || state === null) return null;
+
   const value = (state as Record<string, unknown>)[DIALOG_HISTORY_STATE_KEY];
+
   if (typeof value !== 'object' || value === null) return null;
+
   const markerId = (value as Record<string, unknown>).id;
+
   return typeof markerId === 'string' ? markerId : null;
 };
 
@@ -49,8 +48,8 @@ export interface DialogProps extends Omit<
 
   noPadding?: boolean;
   dense?: boolean;
-
   blank?: boolean;
+  overlay?: 'auto' | 'off' | 'on';
 }
 
 export const Dialog: FC<DialogProps> = ({
@@ -70,7 +69,9 @@ export const Dialog: FC<DialogProps> = ({
   dense,
   className = '',
   open: openProp,
+  onClose,
   blank = false,
+  overlay = 'auto',
   ...props
 }) => {
   const modalProps = {
@@ -88,13 +89,34 @@ export const Dialog: FC<DialogProps> = ({
     footerProps,
   };
 
-  const { onClose } = props as any;
   const ref = useRef<HTMLDialogElement>(null);
+  const unblockScrollRef = useRef<(() => void) | null>(null);
+
   const historyMarkerIdRef = useRef(
     `dialog-${Math.random().toString(36).slice(2, 10)}`,
   );
   const hasHistoryEntryRef = useRef(false);
   const closingFromHistoryRef = useRef(false);
+
+  const releaseScroll = useCallback(() => {
+    const release = unblockScrollRef.current;
+
+    unblockScrollRef.current = null;
+    release?.();
+  }, []);
+
+  const isDesktop = useCallback(() => {
+    if (typeof window === 'undefined') return false;
+
+    return window.matchMedia('(min-width: 1024px)').matches;
+  }, []);
+
+  const shouldUseOverlay = useCallback(() => {
+    if (overlay === 'on') return true;
+    if (overlay === 'off') return false;
+
+    return !isDesktop();
+  }, [isDesktop, overlay]);
 
   useDialogCloseGesture({ dialogRef: ref, open: openProp });
   useDialogFieldReveal({ dialogRef: ref, open: openProp });
@@ -102,18 +124,34 @@ export const Dialog: FC<DialogProps> = ({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (openProp) {
-      if (!dialog.open) {
-        if (getOrientation() === 'landscape') {
-          dialog.show();
-        } else {
-          dialog.showModal();
-        }
+
+    if (!openProp) {
+      if (dialog.open) {
+        dialog.close();
       }
-    } else if (dialog.open) {
-      dialog.close();
+
+      releaseScroll();
+      return;
     }
-  }, [openProp]);
+
+    if (dialog.open) return;
+
+    if (shouldUseOverlay()) {
+      dialog.showModal();
+
+      releaseScroll();
+      unblockScrollRef.current = blockScroll();
+      return;
+    }
+
+    dialog.show();
+  }, [openProp, releaseScroll, shouldUseOverlay]);
+
+  useEffect(() => {
+    return () => {
+      releaseScroll();
+    };
+  }, [releaseScroll]);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -134,30 +172,35 @@ export const Dialog: FC<DialogProps> = ({
         },
         '',
       );
+
       hasHistoryEntryRef.current = true;
       closingFromHistoryRef.current = false;
     }
 
     const handlePopState = () => {
       if (!dialog.open || !hasHistoryEntryRef.current) return;
+
       const activeMarkerId = readDialogHistoryMarkerId(window.history.state);
+
       if (activeMarkerId === markerId) return;
+
       closingFromHistoryRef.current = true;
       hasHistoryEntryRef.current = false;
       dialog.close();
     };
 
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, [openProp]);
 
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog || !openProp) return;
     if (typeof window === 'undefined') return;
-
-    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
-    if (!isDesktop) return;
+    if (!isDesktop()) return;
 
     const frame = window.requestAnimationFrame(() => {
       const rect = dialog.getBoundingClientRect();
@@ -166,20 +209,16 @@ export const Dialog: FC<DialogProps> = ({
         top: window.scrollY + rect.top,
       });
     });
-    return () => window.cancelAnimationFrame(frame);
-  }, [openProp]);
 
-  useEffect(() => {
-    if (!openProp) return;
-    if (!isMobile()) return;
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [isDesktop, openProp]);
 
-    return blockScroll();
-  }, [openProp]);
+  const handleClose = useCallback(
+    (event: React.SyntheticEvent<HTMLDialogElement>) => {
+      releaseScroll();
 
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog) return;
-    const handleClose = (ev: Event) => {
       if (typeof window !== 'undefined' && hasHistoryEntryRef.current) {
         if (closingFromHistoryRef.current) {
           closingFromHistoryRef.current = false;
@@ -188,6 +227,7 @@ export const Dialog: FC<DialogProps> = ({
           const markerId = readDialogHistoryMarkerId(window.history.state);
 
           hasHistoryEntryRef.current = false;
+
           if (markerId === historyMarkerIdRef.current) {
             window.history.back();
           }
@@ -196,11 +236,10 @@ export const Dialog: FC<DialogProps> = ({
         closingFromHistoryRef.current = false;
       }
 
-      if (typeof onClose === 'function') onClose(ev);
-    };
-    dialog.addEventListener('close', handleClose);
-    return () => dialog.removeEventListener('close', handleClose);
-  }, [onClose]);
+      onClose?.(event);
+    },
+    [onClose, releaseScroll],
+  );
 
   const classes = generateClasses({
     dialog: true,
@@ -208,6 +247,7 @@ export const Dialog: FC<DialogProps> = ({
     '-dense': dense,
     [className]: className,
   });
+
   return (
     <dialog
       ref={ref}
@@ -215,8 +255,11 @@ export const Dialog: FC<DialogProps> = ({
       aria-describedby="alert-dialog-description"
       className={classes}
       role="dialog"
-      onClick={(e) => {
-        if (e.target === ref.current) ref.current?.close();
+      onClose={handleClose}
+      onClick={(event) => {
+        if (event.target === ref.current) {
+          ref.current?.close();
+        }
       }}
       {...props}
     >
