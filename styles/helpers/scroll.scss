@@ -1,6 +1,6 @@
 .horizontal-scroll {
   display: flex;
-  gap: var(--gap);
+  align-items: stretch;
 
   @media (orientation: portrait) {
     &:has(> *:not(:only-child)) {

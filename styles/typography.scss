@@ -12,97 +12,73 @@
  */
 
 .h1 {
-  color: var(--typography-page-title-color, var(--color-heading-strong));
-  font-family: var(
-    --typography-page-title-font-family,
-    var(--font-family-heading)
-  );
-  font-size: var(--typography-page-title-font-size, var(--h1-font-size));
-  font-weight: var(--typography-page-title-font-weight, 600);
-  letter-spacing: var(--typography-page-title-letter-spacing, -0.02em);
-  line-height: var(--typography-page-title-line-height, 1.12);
-  text-align: var(--typography-page-title-text-align, start);
-  text-transform: var(--typography-page-title-text-transform, none);
+  color: var(--h1-color, var(--color-heading-strong));
+  font-family: var(--h1-font-family, var(--font-family-heading));
+  font-size: var(--h1-font-size, var(--h1-font-size));
+  font-weight: var(--h1-font-weight, 600);
+  letter-spacing: var(--h1-letter-spacing, -0.02em);
+  line-height: var(--h1-line-height, 1.12);
+  text-align: var(--h1-text-align, start);
+  text-transform: var(--h1-text-transform, none);
 }
 
 .h2 {
-  color: var(--typography-section-title-color, var(--color-handwritten-text));
-  font-family: var(
-    --typography-section-title-font-family,
-    var(--font-family-handwritten)
-  );
-  font-size: var(--typography-section-title-font-size, var(--h2-font-size));
-  font-weight: var(--typography-section-title-font-weight, 500);
-  letter-spacing: var(--typography-section-title-letter-spacing, 0);
-  line-height: var(--typography-section-title-line-height, 1.25);
-  text-align: var(--typography-section-title-text-align, start);
-  text-transform: var(--typography-section-title-text-transform, none);
+  color: var(--h2-color, var(--color-handwritten-text));
+  font-family: var(--h2-font-family, var(--font-family-handwritten));
+  font-size: var(--h2-font-size, var(--h2-font-size));
+  font-weight: var(--h2-font-weight, 500);
+  letter-spacing: var(--h2-letter-spacing, 0);
+  line-height: var(--h2-line-height, 1.25);
+  text-align: var(--h2-text-align, start);
+  text-transform: var(--h2-text-transform, none);
 }
 
 .h3 {
-  color: var(
-    --typography-subsection-title-color,
-    var(--typography-section-title-color, var(--color-handwritten-text))
-  );
-  font-family: var(
-    --typography-subsection-title-font-family,
-    var(--font-family-handwritten)
-  );
-  font-size: var(--typography-subsection-title-font-size, var(--h3-font-size));
-  font-weight: var(--typography-subsection-title-font-weight, 500);
-  letter-spacing: var(--typography-subsection-title-letter-spacing, 0);
-  line-height: var(--typography-subsection-title-line-height, 1.3);
-  text-align: var(--typography-subsection-title-text-align, start);
-  text-transform: var(--typography-subsection-title-text-transform, none);
+  color: var(--h3-color, var(--h2-color, var(--color-handwritten-text)));
+  font-family: var(--h3-font-family, var(--font-family-handwritten));
+  font-size: var(--h3-font-size, var(--h3-font-size));
+  font-weight: var(--h3-font-weight, 500);
+  letter-spacing: var(--h3-letter-spacing, 0);
+  line-height: var(--h3-line-height, 1.3);
+  text-align: var(--h3-text-align, start);
+  text-transform: var(--h3-text-transform, none);
 }
 
 .h4 {
-  color: var(
-    --typography-minor-title-color,
-    var(--typography-section-title-color, var(--color-handwritten-text))
-  );
-  font-family: var(
-    --typography-minor-title-font-family,
-    var(--font-family-body)
-  );
-  font-size: var(--typography-minor-title-font-size, 1rem);
-  font-weight: var(--typography-minor-title-font-weight, 700);
-  letter-spacing: var(--typography-minor-title-letter-spacing, 0.01em);
-  line-height: var(--typography-minor-title-line-height, 1.3);
-  text-align: var(--typography-minor-title-text-align, start);
-  text-transform: var(--typography-minor-title-text-transform, none);
+  color: var(--h4-color, var(--h2-color, var(--color-handwritten-text)));
+  font-family: var(--h4-font-family, var(--font-family-body));
+  font-size: var(--h4-font-size, 1rem);
+  font-weight: var(--h4-font-weight, 700);
+  letter-spacing: var(--h4-letter-spacing, 0.01em);
+  line-height: var(--h4-line-height, 1.3);
+  text-align: var(--h4-text-align, start);
+  text-transform: var(--h4-text-transform, none);
 }
 
 /* Aliases semânticos para os próximos componentes e páginas.
  * Eles evitam usar h2 como gambiarra visual em elementos que não são h2. */
 .recipe-title,
 .page-title {
-  color: var(--typography-page-title-color, var(--color-heading-strong));
-  font-family: var(
-    --typography-page-title-font-family,
-    var(--font-family-heading)
-  );
-  font-size: var(--typography-page-title-font-size, var(--h1-font-size));
-  font-weight: var(--typography-page-title-font-weight, 600);
-  letter-spacing: var(--typography-page-title-letter-spacing, -0.02em);
-  line-height: var(--typography-page-title-line-height, 1.12);
-  text-align: var(--typography-page-title-text-align, start);
-  text-transform: var(--typography-page-title-text-transform, none);
+  color: var(--h1-color, var(--color-heading-strong));
+  font-family: var(--h1-font-family, var(--font-family-heading));
+  font-size: var(--h1-font-size, var(--h1-font-size));
+  font-weight: var(--h1-font-weight, 600);
+  letter-spacing: var(--h1-letter-spacing, -0.02em);
+  line-height: var(--h1-line-height, 1.12);
+  text-align: var(--h1-text-align, start);
+  text-transform: var(--h1-text-transform, none);
 }
 
 .handwritten-title,
 .section-heading {
-  color: var(--typography-section-title-color, var(--color-handwritten-text));
-  font-family: var(
-    --typography-section-title-font-family,
-    var(--font-family-handwritten)
-  );
-  font-size: var(--typography-section-title-font-size, var(--h2-font-size));
-  font-weight: var(--typography-section-title-font-weight, 500);
-  letter-spacing: var(--typography-section-title-letter-spacing, 0);
-  line-height: var(--typography-section-title-line-height, 1.25);
-  text-align: var(--typography-section-title-text-align, start);
-  text-transform: var(--typography-section-title-text-transform, none);
+  color: var(--h2-color, var(--color-handwritten-text));
+  font-family: var(--h2-font-family, var(--font-family-handwritten));
+  font-size: var(--h2-font-size, var(--h2-font-size));
+  font-weight: var(--h2-font-weight, 500);
+  letter-spacing: var(--h2-letter-spacing, 0);
+  line-height: var(--h2-line-height, 1.25);
+  text-align: var(--h2-text-align, start);
+  text-transform: var(--h2-text-transform, none);
 }
 
 /*
@@ -113,14 +89,14 @@
 .section-title {
   @extend .section-heading;
 
-  background: var(--typography-section-title-background, transparent);
+  background: var(--h2-background, transparent);
   border: 0;
-  border-bottom: var(--typography-section-title-rule, 0 solid transparent);
-  border-radius: var(--typography-section-title-border-radius, 0);
+  border-bottom: var(--h2-rule, 0 solid transparent);
+  border-radius: var(--h2-border-radius, 0);
   display: inline-block;
   max-width: 100%;
-  padding: var(--typography-section-title-padding, 0 0 0.2em);
-  text-decoration: var(--typography-section-title-decoration, none);
+  padding: var(--h2-padding, 0 0 0.2em);
+  text-decoration: var(--h2-decoration, none);
   width: fit-content;
 }
 

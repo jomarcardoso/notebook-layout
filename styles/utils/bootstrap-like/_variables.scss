@@ -13,9 +13,9 @@
   /* Paper and neutral surfaces */
   --color-white: #ffffff; // Raised paper, cards and text over dense backgrounds.
   --color-white-weak: #ffffffcc; // Semi-opaque white for translucent surfaces.
-  --color-light-light: #ffffff; // Maximum light surface.
+  --color-light-lighter: #ffffff; // Maximum light surface.
   --color-light-main: #f2f2f2; // Neutral notebook paper fallback.
-  --color-light-dark: #e7e1da; // Subtle warm separator; never a structural border.
+  --color-light-darker: #e7e1da; // Subtle warm separator; never a structural border.
   --color-light-strong: #f2f2f2e8; // High-opacity paper layer.
   --color-light-weak: #f2f2f2a6; // Low-opacity paper layer.
 
@@ -58,7 +58,8 @@
   /* Typography families */
   --font-family-title: 'Cinzel', serif; // Existing editorial heading family.
   --font-family-body: 'Dosis', sans-serif; // Labels, body copy and controls.
-  --font-family-input: 'Playwrite PE Variable', cursive; // Typed-as-handwritten content.
+  --font-family-input:
+    'Playwrite PE Variable', cursive; // Typed-as-handwritten content.
 
   /* Future semantic typography hooks. Components may adopt these gradually. */
   --font-family-heading: var(--font-family-title);
@@ -76,7 +77,7 @@
   --border-radius-primary: 7px;
   --border-radius-secondary: 3px;
   --border-width: 3px;
-  --border-width-secondary: 2px;
+  --border-width: 2px;
   --outline-width: 1px;
 
   /* Shadows */
@@ -90,11 +91,11 @@
   --gap: 8px;
   --bs-gap: var(--gap);
   --padding-x: 8px;
-  --gutter-x: var(--padding-x); // Legacy alias.
+  --padding-x: var(--padding-x); // Legacy alias.
   --padding-y: 8px;
-  --gutter-y: var(--padding-y); // Legacy alias.
+  --padding-y: var(--padding-y); // Legacy alias.
   --padding: var(--padding-y) var(--padding-x);
-  --gutter: var(--padding); // Legacy alias.
+  --padding: var(--padding); // Legacy alias.
 
   /* General component sizing */
   --action-font-size: 0.9375rem;
@@ -107,14 +108,14 @@
   font-size: 100%;
 
   @media screen and (min-width: 360px) {
-    --gutter-x: 12px;
-    --gutter: var(--gutter-y) var(--gutter-x);
+    --padding-x: 12px;
+    --padding: var(--padding-y) var(--padding-x);
   }
 
   @media (orientation: landscape) {
     --bar-size: 60px;
-    --gutter-x: 16px;
-    --gutter: var(--gutter-y) var(--gutter-x);
+    --padding-x: 16px;
+    --padding: var(--padding-y) var(--padding-x);
     --gap: 16px;
     --bs-gap: var(--gap);
   }
@@ -145,7 +146,7 @@
   --action-secondary-style: solid;
   --action-secondary-bg-active: #f8f2ec;
   --action-secondary-color-active: var(--color-primary-darker);
-  --action-secondary-border-active: var(--color-primary-main);
+  --action-secondary-border-color-active: var(--color-primary-main);
 
   --action-tertiary-bg: transparent;
   --action-tertiary-color: var(--color-secondary-main);
@@ -159,7 +160,7 @@
   --button-font-weight: 700;
   --button-text-transform: var(--action-text-transform);
   --button-letter-spacing: var(--action-letter-spacing);
-  --button-border-width: var(--border-width-secondary);
+  --button-border-width: var(--border-width);
   --button-padding-y: 2px;
   --button-padding-x: 16px;
   --button-primary-shadow: 0 2px 0 rgb(0 43 82 / 24%);
@@ -243,7 +244,7 @@
   --surface-subtle: #fbf8f4;
   --surface-muted: #f4eee8;
   --surface-inverse: var(--color-primary-main);
-  --outline-subtle: 1px solid var(--color-light-dark);
+  --outline-subtle: 1px solid var(--color-light-darker);
   --outline-default: 1px solid var(--color-primary-lighter);
   --outline-strong: 2px solid var(--color-primary-main);
   --divider-color: rgb(117 71 47 / 22%);

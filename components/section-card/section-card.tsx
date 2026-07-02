@@ -23,7 +23,7 @@ export const SectionCard: FC<SectionCardProps> = ({
     <section aria-labelledby={id} className="section-card" {...props}>
       {(header || title) && (
         <strong className="section-card__title h2" id={id}>
-          {header || title}
+          <div>{header || title}</div>
         </strong>
       )}
       <div className="section-card__body">{children}</div>

@@ -12,14 +12,14 @@
   // sizing
   --gap: 6px;
   --bs-gap: var(--gap);
-  --gutter-x: 6px;
-  --gutter-y: 6px;
-  --gutter: var(--gutter-y) var(--gutter-x);
+  --padding-x: 6px;
+  --padding-y: 6px;
+  --padding: var(--padding-y) var(--padding-x);
 
   // button
   --button-font-size: var(--action-small-font-size);
   --button-size: var(--action-small-size);
-  --button-border-width: var(--border-width-secondary);
+  --button-border-width: var(--border-width);
   --button-padding-y: 1px;
   --button-padding-x: 14px;
 
@@ -48,15 +48,15 @@
   @media screen and (min-width: 360px) {
     --gap: 8px;
     --bs-gap: var(--gap);
-    --gutter-x: 8px;
-    --gutter-y: 8px;
-    --gutter: var(--gutter-y) var(--gutter-x);
+    --padding-x: 8px;
+    --padding-y: 8px;
+    --padding: var(--padding-y) var(--padding-x);
   }
 
   @media (orientation: landscape) {
     --gap: 12px;
     --bs-gap: var(--gap);
-    --gutter-x: 12px;
-    --gutter: var(--gutter-y) var(--gutter-x);
+    --padding-x: 12px;
+    --padding: var(--padding-y) var(--padding-x);
   }
 }

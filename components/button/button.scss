@@ -18,9 +18,9 @@
 
   align-items: center;
   background-color: var(--action-primary-bg);
-  border: var(--button-border-width) solid var(--action-primary-border);
+  border: var(--action-primary-border);
   border-radius: var(--border-radius-primary);
-  box-shadow: var(--box-shadow);
+  box-shadow: var(--action-shadow);
   color: var(--action-primary-color);
   cursor: pointer;
   display: inline-flex;
@@ -86,12 +86,12 @@
 
   &--secondary {
     background-color: var(--action-secondary-bg);
-    border-color: var(--action-secondary-border);
+    border: var(--action-secondary-border);
     color: var(--action-secondary-color);
 
     @include utils.hover {
       background-color: var(--action-secondary-bg-active);
-      border-color: var(--action-secondary-border-active);
+      border-color: var(--action-secondary-border-color-active);
       color: var(--action-secondary-color-active);
     }
   }
@@ -106,7 +106,6 @@
     background-color: transparent;
     border-color: transparent;
     color: var(--color-text);
-    box-shadow: none;
     text-decoration: underline;
 
     @include utils.hover {

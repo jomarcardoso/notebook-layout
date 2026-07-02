@@ -1,4 +1,4 @@
-@use './texture-bg' as *;
+@use '../texture-bg' as *;
 
 @mixin theme-base {
   /*
@@ -18,46 +18,46 @@
    * h1 is editorial and brown on paper. h2–h4 are the blue ink hierarchy.
    * Components only consume these semantic tokens, which keeps new themes cheap.
    */
-  --typography-page-title-font-family: var(--font-family-heading);
-  --typography-page-title-font-size: var(--h1-font-size);
-  --typography-page-title-font-weight: 600;
-  --typography-page-title-letter-spacing: -0.02em;
-  --typography-page-title-line-height: 1.12;
-  --typography-page-title-text-align: start;
-  --typography-page-title-text-transform: none;
-  --typography-page-title-color: var(--color-heading-strong);
+  --h1-font-family: var(--font-family-heading);
+  --h1-font-size: var(--h1-font-size);
+  --h1-font-weight: 600;
+  --h1-letter-spacing: -0.02em;
+  --h1-line-height: 1.12;
+  --h1-text-align: start;
+  --h1-text-transform: none;
+  --h1-color: var(--color-heading-strong);
 
-  --typography-section-title-font-family: var(--font-family-handwritten);
-  --typography-section-title-font-size: clamp(1.35rem, 2.4vw, 1.8rem);
-  --typography-section-title-font-weight: 500;
-  --typography-section-title-letter-spacing: 0;
-  --typography-section-title-line-height: 1.25;
-  --typography-section-title-text-align: start;
-  --typography-section-title-text-transform: none;
-  --typography-section-title-color: var(--color-handwritten-text);
-  --typography-section-title-background: transparent;
-  --typography-section-title-border-radius: 0;
-  --typography-section-title-decoration: none;
-  --typography-section-title-padding: 0 0 0.2em;
-  --typography-section-title-rule: 2px solid var(--recipe-section-rule-color);
+  --h2-font-family: var(--font-family-handwritten);
+  --h2-font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+  --h2-font-weight: 500;
+  --h2-letter-spacing: 0;
+  --h2-line-height: 1.25;
+  --h2-text-align: start;
+  --h2-text-transform: none;
+  --h2-color: var(--color-handwritten-text);
+  --h2-background: transparent;
+  --h2-border-radius: 0;
+  --h2-decoration: none;
+  --h2-padding: 0 0 0.2em;
+  --h2-rule: 2px solid var(--recipe-section-rule-color);
 
-  --typography-subsection-title-font-family: var(--font-family-handwritten);
-  --typography-subsection-title-font-size: clamp(1.1rem, 2vw, 1.35rem);
-  --typography-subsection-title-font-weight: 500;
-  --typography-subsection-title-letter-spacing: 0;
-  --typography-subsection-title-line-height: 1.3;
-  --typography-subsection-title-text-align: start;
-  --typography-subsection-title-text-transform: none;
-  --typography-subsection-title-color: var(--color-handwritten-text);
+  --h3-font-family: var(--font-family-handwritten);
+  --h3-font-size: clamp(1.1rem, 2vw, 1.35rem);
+  --h3-font-weight: 500;
+  --h3-letter-spacing: 0;
+  --h3-line-height: 1.3;
+  --h3-text-align: start;
+  --h3-text-transform: none;
+  --h3-color: var(--color-handwritten-text);
 
-  --typography-minor-title-font-family: var(--font-family-body);
-  --typography-minor-title-font-size: 1rem;
-  --typography-minor-title-font-weight: 700;
-  --typography-minor-title-letter-spacing: 0.01em;
-  --typography-minor-title-line-height: 1.3;
-  --typography-minor-title-text-align: start;
-  --typography-minor-title-text-transform: none;
-  --typography-minor-title-color: var(--color-handwritten-text);
+  --h4-font-family: var(--font-family-body);
+  --h4-font-size: 1rem;
+  --h4-font-weight: 700;
+  --h4-letter-spacing: 0.01em;
+  --h4-line-height: 1.3;
+  --h4-text-align: start;
+  --h4-text-transform: none;
+  --h4-color: var(--color-handwritten-text);
   --border: var(--outline-default);
   --box-shadow:
     0 3px 1px -2px rgb(55 43 35 / 20%), 0 2px 2px 0 rgb(55 43 35 / 14%),
@@ -84,7 +84,7 @@
   --action-secondary-border: var(--color-primary-lighter);
   --action-secondary-bg-active: var(--surface-muted);
   --action-secondary-color-active: var(--color-primary-darker);
-  --action-secondary-border-active: var(--color-primary-main);
+  --action-secondary-border-color-active: var(--color-primary-main);
 
   --action-tertiary-bg: transparent;
   --action-tertiary-color: var(--color-secondary-main);
@@ -181,46 +181,46 @@
    * Recipe/page name: brown editorial serif.
    * Every lower heading: blue handwritten ink.
    */
-  --typography-page-title-font-family: var(--font-family-heading);
-  --typography-page-title-font-size: var(--h1-font-size);
-  --typography-page-title-font-weight: 600;
-  --typography-page-title-letter-spacing: -0.02em;
-  --typography-page-title-line-height: 1.12;
-  --typography-page-title-text-align: center;
-  --typography-page-title-text-transform: none;
-  --typography-page-title-color: var(--color-title-strong);
+  --h1-font-family: var(--font-family-heading);
+  --h1-font-size: var(--h1-font-size);
+  --h1-font-weight: 600;
+  --h1-letter-spacing: -0.02em;
+  --h1-line-height: 1.12;
+  --h1-text-align: center;
+  --h1-text-transform: none;
+  --h1-color: var(--color-title-strong);
 
-  --typography-section-title-font-family: var(--font-family-handwritten);
-  --typography-section-title-font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-  --typography-section-title-font-weight: 500;
-  --typography-section-title-letter-spacing: 0;
-  --typography-section-title-line-height: 1.25;
-  --typography-section-title-text-align: start;
-  --typography-section-title-text-transform: none;
-  --typography-section-title-color: var(--color-secondary-main);
-  --typography-section-title-background: transparent;
-  --typography-section-title-border-radius: 0;
-  --typography-section-title-decoration: none;
-  --typography-section-title-padding: 0 0 0.2em;
-  --typography-section-title-rule: 2px solid var(--color-secondary-main);
+  --h2-font-family: var(--font-family-handwritten);
+  --h2-font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  --h2-font-weight: 500;
+  --h2-letter-spacing: 0;
+  --h2-line-height: 1.25;
+  --h2-text-align: start;
+  --h2-text-transform: none;
+  --h2-color: var(--color-secondary-main);
+  --h2-background: transparent;
+  --h2-border-radius: 0;
+  --h2-decoration: none;
+  --h2-padding: 0 0 0.2em;
+  --h2-rule: 2px solid var(--color-secondary-main);
 
-  --typography-subsection-title-font-family: var(--font-family-handwritten);
-  --typography-subsection-title-font-size: clamp(1.15rem, 2vw, 1.4rem);
-  --typography-subsection-title-font-weight: 500;
-  --typography-subsection-title-letter-spacing: 0;
-  --typography-subsection-title-line-height: 1.3;
-  --typography-subsection-title-text-align: start;
-  --typography-subsection-title-text-transform: none;
-  --typography-subsection-title-color: var(--color-secondary-main);
+  --h3-font-family: var(--font-family-handwritten);
+  --h3-font-size: clamp(1.15rem, 2vw, 1.4rem);
+  --h3-font-weight: 500;
+  --h3-letter-spacing: 0;
+  --h3-line-height: 1.3;
+  --h3-text-align: start;
+  --h3-text-transform: none;
+  --h3-color: var(--color-secondary-main);
 
-  --typography-minor-title-font-family: var(--font-family-body);
-  --typography-minor-title-font-size: 1rem;
-  --typography-minor-title-font-weight: 700;
-  --typography-minor-title-letter-spacing: 0.01em;
-  --typography-minor-title-line-height: 1.3;
-  --typography-minor-title-text-align: start;
-  --typography-minor-title-text-transform: none;
-  --typography-minor-title-color: var(--color-secondary-main);
+  --h4-font-family: var(--font-family-body);
+  --h4-font-size: 1rem;
+  --h4-font-weight: 700;
+  --h4-letter-spacing: 0.01em;
+  --h4-line-height: 1.3;
+  --h4-text-align: start;
+  --h4-text-transform: none;
+  --h4-color: var(--color-secondary-main);
 
   --border: 1px solid var(--color-primary-lighter);
   --divider-color: rgb(117 71 47 / 20%);
@@ -239,7 +239,7 @@
   --action-secondary-border: var(--color-primary-lighter);
   --action-secondary-bg-active: #f8f2ec;
   --action-secondary-color-active: var(--color-primary-darker);
-  --action-secondary-border-active: var(--color-primary-main);
+  --action-secondary-border-color-active: var(--color-primary-main);
 
   --action-tertiary-bg: transparent;
   --action-tertiary-color: var(--color-secondary-main);
@@ -359,46 +359,46 @@
 
   /* On dense brown, page title remains white and blue headings become light blue
    * so contrast stays usable instead of performing accessibility theatre. */
-  --typography-page-title-font-family: var(--font-family-heading);
-  --typography-page-title-font-size: var(--h1-font-size);
-  --typography-page-title-font-weight: 600;
-  --typography-page-title-letter-spacing: -0.02em;
-  --typography-page-title-line-height: 1.12;
-  --typography-page-title-text-align: center;
-  --typography-page-title-text-transform: none;
-  --typography-page-title-color: var(--color-white);
+  --h1-font-family: var(--font-family-heading);
+  --h1-font-size: var(--h1-font-size);
+  --h1-font-weight: 600;
+  --h1-letter-spacing: -0.02em;
+  --h1-line-height: 1.12;
+  --h1-text-align: center;
+  --h1-text-transform: none;
+  --h1-color: var(--color-white);
 
-  --typography-section-title-font-family: var(--font-family-handwritten);
-  --typography-section-title-font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-  --typography-section-title-font-weight: 500;
-  --typography-section-title-letter-spacing: 0;
-  --typography-section-title-line-height: 1.25;
-  --typography-section-title-text-align: start;
-  --typography-section-title-text-transform: none;
-  --typography-section-title-color: var(--color-secondary-light);
-  --typography-section-title-background: transparent;
-  --typography-section-title-border-radius: 0;
-  --typography-section-title-decoration: none;
-  --typography-section-title-padding: 0 0 0.2em;
-  --typography-section-title-rule: 2px solid var(--color-secondary-light);
+  --h2-font-family: var(--font-family-handwritten);
+  --h2-font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  --h2-font-weight: 500;
+  --h2-letter-spacing: 0;
+  --h2-line-height: 1.25;
+  --h2-text-align: start;
+  --h2-text-transform: none;
+  --h2-color: var(--color-secondary-light);
+  --h2-background: transparent;
+  --h2-border-radius: 0;
+  --h2-decoration: none;
+  --h2-padding: 0 0 0.2em;
+  --h2-rule: 2px solid var(--color-secondary-light);
 
-  --typography-subsection-title-font-family: var(--font-family-handwritten);
-  --typography-subsection-title-font-size: clamp(1.15rem, 2vw, 1.4rem);
-  --typography-subsection-title-font-weight: 500;
-  --typography-subsection-title-letter-spacing: 0;
-  --typography-subsection-title-line-height: 1.3;
-  --typography-subsection-title-text-align: start;
-  --typography-subsection-title-text-transform: none;
-  --typography-subsection-title-color: var(--color-secondary-light);
+  --h3-font-family: var(--font-family-handwritten);
+  --h3-font-size: clamp(1.15rem, 2vw, 1.4rem);
+  --h3-font-weight: 500;
+  --h3-letter-spacing: 0;
+  --h3-line-height: 1.3;
+  --h3-text-align: start;
+  --h3-text-transform: none;
+  --h3-color: var(--color-secondary-light);
 
-  --typography-minor-title-font-family: var(--font-family-body);
-  --typography-minor-title-font-size: 1rem;
-  --typography-minor-title-font-weight: 700;
-  --typography-minor-title-letter-spacing: 0.01em;
-  --typography-minor-title-line-height: 1.3;
-  --typography-minor-title-text-align: start;
-  --typography-minor-title-text-transform: none;
-  --typography-minor-title-color: var(--color-secondary-light);
+  --h4-font-family: var(--font-family-body);
+  --h4-font-size: 1rem;
+  --h4-font-weight: 700;
+  --h4-letter-spacing: 0.01em;
+  --h4-line-height: 1.3;
+  --h4-text-align: start;
+  --h4-text-transform: none;
+  --h4-color: var(--color-secondary-light);
 
   --border: 1px solid var(--color-white-weak);
   --divider-color: rgb(255 255 255 / 28%);
@@ -415,7 +415,7 @@
   --action-secondary-border: var(--color-white);
   --action-secondary-bg-active: rgb(255 255 255 / 14%);
   --action-secondary-color-active: var(--color-white);
-  --action-secondary-border-active: var(--color-white);
+  --action-secondary-border-color-active: var(--color-white);
 
   --action-tertiary-bg: transparent;
   --action-tertiary-color: var(--color-white);

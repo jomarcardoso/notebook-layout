@@ -17,14 +17,14 @@
 
   a {
     writing-mode: vertical-lr;
-    background-color: white;
+    background-color: var(--notebook-tabs-bg);
     border-bottom-right-radius: var(--border-radius-primary);
     border-top-right-radius: var(--border-radius-primary);
     box-shadow: var(--shadow-primary);
     padding: 8px 5px 12px 3px;
 
     &.ovo-active {
-      background-color: var(--color-primary-darker);
+      background-color: var(--notebook-tabs-bg-active);
       color: white;
       font-weight: bold;
     }

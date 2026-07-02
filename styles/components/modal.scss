@@ -19,7 +19,6 @@
       8px + max(var(--dialog-keyboard-inset, 0px), env(safe-area-inset-bottom))
     );
     font-size: 1rem;
-    box-shadow: var(--shadow-primary-inset);
     /* iOS momentum scroll */
     -webkit-overflow-scrolling: touch;
     scroll-padding-bottom: calc(24px + var(--dialog-keyboard-inset, 0px));
@@ -44,6 +43,6 @@
 
   @include utils.isDesktop {
     box-shadow: var(--box-shadow);
-    border: 2px solid var(--color-text);
+    border: var(--border);
   }
 }

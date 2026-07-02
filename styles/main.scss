@@ -1,8 +1,10 @@
+@use './utils/theme' as *;
+
 @forward 'variables';
 @forward 'resets';
 
 @forward 'typography';
-@forward 'themes';
+@forward 'themes/theme-white';
 
 @forward 'helpers/media';
 @forward 'helpers/scroll';
@@ -18,6 +20,26 @@
 @forward 'components/progressbar';
 @forward 'components/progress-indicator';
 
+.theme-base {
+  @include theme-base;
+}
+
+.theme-light {
+  @include theme-light;
+}
+
+.theme-primary {
+  @include theme-primary;
+}
+
+:root {
+  @extend .theme-light;
+}
+
 hr {
   border-bottom: var(--border);
+}
+
+*:disabled {
+  cursor: not-allowed;
 }

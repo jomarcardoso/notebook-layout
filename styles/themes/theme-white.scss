@@ -1,0 +1,9 @@
+@use '../utils/theme-white/theme' as *;
+
+.modal {
+  @include theme-primary;
+
+  &__body {
+    @include theme-light;
+  }
+}

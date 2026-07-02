@@ -1,4 +1,4 @@
-@use './texture-bg' as *;
+@use '../texture-bg' as *;
 
 @mixin theme-base {
   // Tema base neutro usado como fallback.
@@ -17,33 +17,33 @@
    * Tamanhos, pesos e espaçamentos permanecem os tokens definidos em
    * variables.scss.
    */
-  --typography-page-title-color: var(--color-text);
-  --typography-page-title-strong-color: var(--color-dark-darker);
-  --typography-page-title-background: transparent;
-  --typography-page-title-decoration: none;
+  --h1-color: var(--color-text);
+  --h1-strong-color: var(--color-dark-darker);
+  --h1-background: transparent;
+  --h1-decoration: none;
 
-  --typography-section-title-color: var(--color-text);
-  --typography-section-title-strong-color: var(--color-dark-darker);
-  --typography-section-title-background: transparent;
-  --typography-section-title-decoration: none;
-  --typography-section-title-rule: none;
+  --h2-color: var(--color-text);
+  --h2-strong-color: var(--color-dark-darker);
+  --h2-background: transparent;
+  --h2-decoration: none;
+  --h2-rule: none;
 
-  --typography-subsection-title-color: var(--color-text);
-  --typography-subsection-title-strong-color: var(--color-dark-darker);
-  --typography-subsection-title-background: transparent;
-  --typography-subsection-title-decoration: none;
+  --h3-color: var(--color-text);
+  --h3-strong-color: var(--color-dark-darker);
+  --h3-background: transparent;
+  --h3-decoration: none;
 
-  --typography-minor-title-color: var(--color-text);
-  --typography-minor-title-strong-color: var(--color-dark-darker);
-  --typography-minor-title-background: transparent;
-  --typography-minor-title-decoration: none;
+  --h4-color: var(--color-text);
+  --h4-strong-color: var(--color-dark-darker);
+  --h4-background: transparent;
+  --h4-decoration: none;
 
   // .section-title preserva a faixa marrom atual do tema padrão.
-  --typography-section-title-surface-bg: var(--color-primary-lighter);
-  --typography-section-title-surface-color: var(--color-white);
-  --typography-section-title-surface-border: none;
-  --typography-section-title-surface-radius: var(--border-radius-secondary);
-  --typography-section-title-surface-mix-blend-mode: multiply;
+  --h2-surface-bg: var(--color-primary-lighter);
+  --h2-surface-color: var(--color-white);
+  --h2-surface-border: none;
+  --h2-surface-radius: var(--border-radius-secondary);
+  --h2-surface-mix-blend-mode: multiply;
 
   // field
   // Campos usam azul caneta para conteúdo escrito e preto/marrom para estrutura.

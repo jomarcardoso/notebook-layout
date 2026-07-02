@@ -1,0 +1,334 @@
+@mixin variables {
+  /* 🎨 Base Colors
+   * Paleta pensada para tema de caderno de receitas em alto contraste.
+   * O fundo claro principal acompanha a textura PNG do caderno, perto de #f2f2f2.
+   */
+  --color-white: #ffffff; // Superfícies limpas, cards e texto sobre fundos escuros.
+  --color-white-weak: #fbf9f6; // Overlay branco translúcido sobre textura/painéis.
+  --color-blue-pen: #005bac; // Azul fixo de caneta: inputs, links, foco e detalhes de anotação.
+
+  /* Papel / superfícies claras
+   * Evita cinzas médios para manter o visual mais preto-e-branco e legível.
+   */
+  --color-light-lighter: #fdfaf4; // Superfície clara máxima: cards e áreas de leitura.
+  --color-light-main: #f8f4ec; // Cor base do papel/textura do caderno.
+  --color-light-darker: #e3dacf; // Linha clara sutil; não usar para borda estrutural importante.
+  --color-light-strong: #f2f2f2cf; // Fundo de papel com alta opacidade.
+  --color-light-weak: #f2f2f288; // Fundo de papel translúcido para camadas leves.
+
+  /* Tinta / texto escuro
+   * Preto quase puro para leitura; sem cinza médio tímido fingindo que ajuda.
+   */
+  --color-dark-lighter: #403831; // Borda/ícone escuro menos agressivo, ainda com bom contraste.
+  --color-dark-main: #28211c; // Texto principal e ações fortes.
+  --color-dark-darker: #140b08; // Ênfase máxima e títulos quando precisar bater o martelo.
+  --color-dark-strong: #111111e8; // Texto escuro com transparência alta.
+  --color-dark-medium: #111111cc; // Texto secundário ainda legível; evitar para corpo pequeno.
+  --color-dark-weak: #11111166; // Disabled, hints e divisórias discretas.
+
+  /* 🌿 Brand Colors
+   * Primary = marrom de caderno/couro/café.
+   * Mantém contraste forte sobre o papel claro e funciona com texto branco.
+   */
+  --color-primary-lighter: #806147; // Marrom de borda, labels e chips ativos; claro só dentro da família.
+  --color-primary-main: #5f3212; // Marrom principal do produto.
+  --color-primary-darker: #4c2711; // Marrom profundo para hover, tema primary e áreas densas.
+  --color-primary-strong: #5f3212e8; // Primary translúcido forte.
+  --color-primary-medium: #5f3212cc; // Primary translúcido médio para overlays.
+  --color-primary-weak: #5f321288; // Primary translúcido fraco; usar com cuidado em texto.
+
+  /* Secondary = azul caneta.
+   * Serve para interação, foco, links, edição e sensação de anotação manuscrita.
+   */
+  --color-secondary-light: #e7eef8; // Fundo leve de seleção/chip; não usar como texto.
+  --color-secondary-main: #425668;
+  --color-secondary-dark: #003f78; // Hover/active azul e texto azul mais forte.
+  --color-secondary-darker: #002b52; // Estado pressionado ou contraste extra em tema claro.
+  --color-secondary-strong: #003f78e8; // Secondary translúcido forte.
+  --color-secondary-medium: #005bacc4; // Secondary translúcido médio.
+  --color-secondary-weak: #005bac88; // Secondary translúcido fraco para detalhes, nunca corpo pequeno.
+
+  /* 🔤 Typography */
+  --font-family-title: 'Cinzel', serif;
+  --font-family-body: 'Dosis', sans-serif;
+  // --font-family-input: 'Playwrite PE Variable', cursive;
+  --font-family-input: var(--font-family-body);
+
+  // Basis
+  --color-text: var(--color-dark-main);
+  --color-text-secondary: var(--color-dark-lighter);
+  --color-active: var(--color-primary-main);
+  --color-active-contrast: var(--color-white);
+
+  // typography
+  /*
+   * Tema base mantém a aparência legada: títulos em tinta escura, sem
+   * linguagem editorial marrom nem seções manuscritas azuis.
+   * Tamanhos, pesos e espaçamentos permanecem os tokens definidos em
+   * variables.scss.
+   */
+  --h1-color: var(--color-text);
+  --h1-strong-color: var(--color-dark-darker);
+  --h1-background: transparent;
+  --h1-decoration: none;
+
+  --h2-color: var(--color-text);
+  --h2-strong-color: var(--color-dark-darker);
+  --h2-background: transparent;
+  --h2-decoration: none;
+  --h2-rule: none;
+
+  --h3-color: var(--color-primary-darker);
+  --h3-strong-color: var(--color-dark-darker);
+  --h3-background: transparent;
+  --h3-decoration: none;
+
+  --h4-color: var(--color-text);
+  --h4-strong-color: var(--color-dark-darker);
+  --h4-background: transparent;
+  --h4-decoration: none;
+
+  // .section-title preserva a faixa marrom atual do tema padrão.
+  --h2-surface-bg: var(--color-primary-lighter);
+  --h2-surface-color: var(--color-white);
+  --h2-surface-border: none;
+  --h2-surface-radius: var(--border-radius-secondary);
+  --h2-surface-mix-blend-mode: multiply;
+
+  /*
+   * Roles semânticos de tipografia.
+   *
+   * Os valores abaixo preservam exatamente a hierarquia legada enquanto
+   * permitem que cada tema altere a linguagem visual por papel, sem o
+   * typography.scss precisar conhecer cores ou fontes de cada tema.
+   */
+
+  // h1 / título principal
+  --h1-font-family: var(--font-family-title);
+  --h1-font-size: 28px;
+  --h1-line-height: 1.2;
+  --h1-letter-spacing: 1px;
+  --h1-font-weight: inherit;
+  --h1-text-transform: capitalize;
+  --h1-text-align: start;
+
+  // h2 / título de seção
+  --h2-font-family: var(--font-family-title);
+  --h2-font-size: var(--h2-font-size);
+  --h2-line-height: 1.2;
+  --h2-letter-spacing: 1px;
+  --h2-font-weight: bold;
+  --h2-text-transform: none;
+  --h2-text-align: start;
+
+  // h3 / subtítulo
+  --h3-font-family: var(--font-family-title);
+  --h3-font-size: 18px;
+  --h3-line-height: normal;
+  --h3-letter-spacing: 2px;
+  --h3-font-weight: 900;
+  --h3-text-transform: none;
+  --h3-text-align: start;
+
+  // h4 / título menor
+  // O estilo legado só definia font-weight. Os demais valores ficam neutros
+  // para preservar herança e tamanho atuais.
+  --h4-font-family: inherit;
+  --h4-font-size: 1em;
+  --h4-line-height: normal;
+  --h4-letter-spacing: normal;
+  --h4-font-weight: bold;
+  --h4-text-transform: none;
+  --h4-text-align: start;
+
+  // .section-title / superfície de seção legada
+  --h2-surface-font-size: 17px;
+  --h2-surface-padding: 7px 14px;
+  --h2-surface-padding-desktop: 5px 16px;
+  --h2-surface-text-align: center;
+  --h2-surface-width: 100%;
+  --h2-surface-min-width-desktop: 50%;
+  --h2-surface-max-width-desktop: min-content;
+
+  /* 🧱 Border */
+  --border-radius-default: 1px;
+  --border-radius-primary: 6px;
+  --border-radius-secondary: 3px;
+  --border-width: 1px;
+  --border-color: var(--color-light-darker);
+  --border: var(--border-width) solid var(--border-color);
+
+  /* 🌫️ Shadow */
+  --shadow-color: var(--color-dark-weak);
+  --shadow-primary:
+    0 2px 4px -1px var(--shadow-color), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 1px 10px 0 rgb(0 0 0 / 12%);
+  --shadow-primary-inset: inset 0 0 3px 0 var(--shadow-color);
+  --shadow-secondary: 2px 2px 2px -1px var(--shadow-color);
+
+  // sizing
+  --gap: 8px;
+  --bs-gap: var(--gap);
+  --padding-x: 8px;
+  --padding-y: 8px;
+  --padding: var(--padding-y) var(--padding-x);
+
+  /* 🧩 Components */
+  --action-font-size: 0.9375rem;
+  --action-small-font-size: 0.75rem;
+  --action-size: 44px;
+  --action-small-size: 36px;
+  --bar-size: var(--action-size);
+  --icon-size: 1.75rem;
+  --nav-size: var(--bar-size);
+
+  // action
+  --action-bg: var(--color-secondary-main);
+  --action-shadow: none;
+
+  // action primary
+  --action-primary-bg: var(--action-bg);
+  --action-primary-color: var(--color-white);
+  --action-primary-border: none;
+  --action-primary-bg-active: var(--color-dark-lighter);
+  --action-primary-color-active: var(--color-white);
+  --action-primary-border-active: var(--action-primary-bg-active);
+
+  // action secondary
+  --action-secondary-bg: transparent;
+  --action-secondary-color: inherit;
+  --action-secondary-border: var(--border);
+  --action-secondary-bg-active: var(--action-secondary-border);
+  --action-secondary-color-active: var(--color-dark-main);
+  --action-secondary-border-color-active: var(--action-secondary-border);
+
+  font-size: 100%;
+
+  @media screen and (min-width: 360px) {
+    --padding-x: 12px;
+    --padding: var(--padding-y) var(--padding-x);
+  }
+
+  @media (orientation: landscape) {
+    --bar-size: 60px;
+    --padding-x: 16px;
+    --padding: var(--padding-y) var(--padding-x);
+    --gap: 16px;
+    --bs-gap: var(--gap);
+    --nav-size: 240px;
+  }
+
+  @media (pointer: fine) {
+    --action-size: 42px;
+    --action-small-size: 28px;
+    --action-font-size: 0.875rem;
+    --action-small-font-size: 0.75rem;
+  }
+
+  // typography
+  --font-size: 1rem;
+  --h2-font-size: 1.5rem;
+
+  // button
+  --button-size: var(--action-size);
+  --button-font-size: var(--action-font-size);
+  --button-border-width: var(--border-width);
+  --button-padding-y: 2px;
+  --button-padding-x: 16px;
+
+  // field
+  --field-padding: 4px;
+  --field-font-size: 1rem;
+  --field-line-height: 31px;
+  --field__label-font-size: 15px;
+  --field-line-step: var(--field-line-height);
+  --field-line-offset-x: 3px;
+  --field-line-offset-adjust: -2px;
+  --field-line-offset: calc(25px - var(--field-line-offset-adjust));
+  --field-line-dash-length: 10px;
+  --field-box-padding-top: calc(var(--field-padding) + 2px);
+
+  // field
+  // Visual de formulário como anotação em caderno: linha/borda marrom e texto azul caneta.
+  --field-border-radius: var(--border-radius-primary);
+  --field--active__label-color: var(--color-white);
+  --field--active__label-bg: var(--color-primary-main);
+  --field--active-border-color: var(--color-primary-weak);
+  --field-border-color: var(--border-color);
+  --field-border: 2px dashed var(--field-border-color);
+  --field-color: var(
+    --color-blue-pen
+  ); // Conteúdo escrito: mantém a metáfora de caneta.
+  --field-line-color: var(--border-color);
+  --field-line-dash-gap: 6px;
+  --field-line-thickness: var(--border-width);
+  --field__label-border: none;
+  --field__label-color: var(--color-text);
+  --field__label-bg: var(--color-light-darker);
+  --field__label-padding: 5px 24px 3px;
+  --field__label-fw: normal;
+  --field--multiline-border: 0;
+
+  // table
+  --table-font-family: var(--font-family-body);
+  --table-font-size: 15px;
+  --table-line-height: 1.35;
+  --table-layout: fixed;
+  --table-text-align: left;
+  --table-min-width: 100%;
+  --table-caption-font-family: var(--font-family-title);
+  --table-caption-font-size: 19px;
+  --table-caption-font-size-light: 17px;
+  --table-caption-padding: 11px 14px;
+  --table-caption-padding-light: 7px 14px;
+  --table-caption-border-radius: 0;
+  --table-caption-border-radius-light: var(--border-radius-secondary);
+  --table-caption-mix-blend-mode: normal;
+  --table-caption-mix-blend-mode-light: multiply;
+  --table-cell-height: 44px;
+  --table-cell-padding-block: 8px;
+  --table-cell-padding-inline: 6px;
+  --table-cell-padding-inline-light: 3px;
+  --table-cell-vertical-align: middle;
+  --table-row-border-width: 0.5px;
+  --table-head-border-width: 0.5px;
+  --table-head-border-width-light: 1.5px;
+  --table-head-font-weight: bold;
+  --table-cell-font-weight: normal;
+  --table-section-padding: 8px;
+  --table-section-font-family: var(--font-family-body);
+  --table-section-font-weight: 600;
+  --table-code-font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+    'Courier New', monospace;
+  --table-container-border-radius: var(--border-radius-secondary);
+
+  // category
+  --category-width: 102px;
+  --category-font-size: 0.875rem;
+
+  // card
+  --card-border-radius: var(--border-radius-primary);
+  --card-header-bg: var(--color-light-main);
+  --card-header-color: var(--h3-color);
+  --card-color: var(--color-text-secondary);
+
+  // notebook-tabs
+  --notebook-tabs-bg: var(--color-white-weak);
+  --notebook-tabs-bg-active: var(--color-primary-main);
+
+  // chip
+  // Chips ativos usam marrom com texto branco; chips neutros herdando borda de campo.
+  --chip-mix-blend-mode: multiply;
+  --chip-border: var(--field-border);
+
+  // section-card
+  --section-card-title-bg: var(--color-light-main);
+  --section-card-title-color: var(--color-primary-darker);
+  --section-card-body-bg: var(--color-light-main);
+  --section-card-title-border: var(--border-width) dotted var(--border-color);
+
+  // app-layout
+  --app-layout-aside-border: var(--border);
+  --app-layout-aside-bg: var(--color-light-main);
+}

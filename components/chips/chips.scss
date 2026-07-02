@@ -21,8 +21,9 @@
   }
 
   &:has(input:checked) {
-    background-color: var(--chip-bg-active);
-    color: var(--chip-color-active);
+    border-color: var(--chip-bg-active, var(--color-active));
+    background-color: var(--chip-bg-active, var(--color-active));
+    color: var(--chip-color-active, var(--color-active-contrast));
   }
 }
 

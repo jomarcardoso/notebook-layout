@@ -10,9 +10,9 @@
   /* Papel / superfícies claras
    * Evita cinzas médios para manter o visual mais preto-e-branco e legível.
    */
-  --color-light-light: #ffffff; // Superfície clara máxima: cards e áreas de leitura.
+  --color-light-lighter: #ffffff; // Superfície clara máxima: cards e áreas de leitura.
   --color-light-main: #f2f2f2; // Cor base do papel/textura do caderno.
-  --color-light-dark: #e6e6e6; // Linha clara sutil; não usar para borda estrutural importante.
+  --color-light-darker: #e6e6e6; // Linha clara sutil; não usar para borda estrutural importante.
   --color-light-strong: #f2f2f2cf; // Fundo de papel com alta opacidade.
   --color-light-weak: #f2f2f288; // Fundo de papel translúcido para camadas leves.
 
@@ -62,58 +62,58 @@
    */
 
   // h1 / título principal
-  --typography-page-title-font-family: var(--font-family-title);
-  --typography-page-title-font-size: 28px;
-  --typography-page-title-line-height: 1.2;
-  --typography-page-title-letter-spacing: 1px;
-  --typography-page-title-font-weight: inherit;
-  --typography-page-title-text-transform: capitalize;
-  --typography-page-title-text-align: start;
+  --h1-font-family: var(--font-family-title);
+  --h1-font-size: 28px;
+  --h1-line-height: 1.2;
+  --h1-letter-spacing: 1px;
+  --h1-font-weight: inherit;
+  --h1-text-transform: capitalize;
+  --h1-text-align: start;
 
   // h2 / título de seção
-  --typography-section-title-font-family: var(--font-family-title);
-  --typography-section-title-font-size: var(--h2-font-size);
-  --typography-section-title-line-height: 1.2;
-  --typography-section-title-letter-spacing: 1px;
-  --typography-section-title-font-weight: bold;
-  --typography-section-title-text-transform: none;
-  --typography-section-title-text-align: start;
+  --h2-font-family: var(--font-family-title);
+  --h2-font-size: var(--h2-font-size);
+  --h2-line-height: 1.2;
+  --h2-letter-spacing: 1px;
+  --h2-font-weight: bold;
+  --h2-text-transform: none;
+  --h2-text-align: start;
 
   // h3 / subtítulo
-  --typography-subsection-title-font-family: var(--font-family-title);
-  --typography-subsection-title-font-size: 18px;
-  --typography-subsection-title-line-height: normal;
-  --typography-subsection-title-letter-spacing: 2px;
-  --typography-subsection-title-font-weight: 900;
-  --typography-subsection-title-text-transform: none;
-  --typography-subsection-title-text-align: start;
+  --h3-font-family: var(--font-family-title);
+  --h3-font-size: 18px;
+  --h3-line-height: normal;
+  --h3-letter-spacing: 2px;
+  --h3-font-weight: 900;
+  --h3-text-transform: none;
+  --h3-text-align: start;
 
   // h4 / título menor
   // O estilo legado só definia font-weight. Os demais valores ficam neutros
   // para preservar herança e tamanho atuais.
-  --typography-minor-title-font-family: inherit;
-  --typography-minor-title-font-size: 1em;
-  --typography-minor-title-line-height: normal;
-  --typography-minor-title-letter-spacing: normal;
-  --typography-minor-title-font-weight: bold;
-  --typography-minor-title-text-transform: none;
-  --typography-minor-title-text-align: start;
+  --h4-font-family: inherit;
+  --h4-font-size: 1em;
+  --h4-line-height: normal;
+  --h4-letter-spacing: normal;
+  --h4-font-weight: bold;
+  --h4-text-transform: none;
+  --h4-text-align: start;
 
   // .section-title / superfície de seção legada
-  --typography-section-title-surface-font-size: 17px;
-  --typography-section-title-surface-padding: 7px 14px;
-  --typography-section-title-surface-padding-desktop: 5px 16px;
-  --typography-section-title-surface-text-align: center;
-  --typography-section-title-surface-width: 100%;
-  --typography-section-title-surface-min-width-desktop: 50%;
-  --typography-section-title-surface-max-width-desktop: min-content;
+  --h2-surface-font-size: 17px;
+  --h2-surface-padding: 7px 14px;
+  --h2-surface-padding-desktop: 5px 16px;
+  --h2-surface-text-align: center;
+  --h2-surface-width: 100%;
+  --h2-surface-min-width-desktop: 50%;
+  --h2-surface-max-width-desktop: min-content;
 
   /* 🧱 Border */
   --border-radius-default: 1px;
   --border-radius-primary: 7px;
   --border-radius-secondary: 3px;
   --border-width: 3px;
-  --border-width-secondary: 2px;
+  --border-width: 2px;
 
   /* 🌫️ Shadow */
   --shadow-color: rgb(0 0 0 / 20%);
@@ -126,11 +126,11 @@
   --gap: 8px;
   --bs-gap: var(--gap);
   --padding-x: 8px;
-  --gutter-x: var(--padding-x); // legacy
+  --padding-x: var(--padding-x); // legacy
   --padding-y: 8px;
-  --gutter-y: var(--padding-y); // legacy
+  --padding-y: var(--padding-y); // legacy
   --padding: var(--padding-y) var(--padding-x);
-  --gutter: var(--padding); // legacy
+  --padding: var(--padding); // legacy
 
   /* 🧩 Components */
   --action-font-size: 0.9375rem;
@@ -143,14 +143,14 @@
   font-size: 100%;
 
   @media screen and (min-width: 360px) {
-    --gutter-x: 12px;
-    --gutter: var(--gutter-y) var(--gutter-x);
+    --padding-x: 12px;
+    --padding: var(--padding-y) var(--padding-x);
   }
 
   @media (orientation: landscape) {
     --bar-size: 60px;
-    --gutter-x: 16px;
-    --gutter: var(--gutter-y) var(--gutter-x);
+    --padding-x: 16px;
+    --padding: var(--padding-y) var(--padding-x);
     --gap: 16px;
     --bs-gap: var(--gap);
   }
@@ -181,7 +181,7 @@
   --action-secondary-style: solid;
   --action-secondary-bg-active: var(--color-light-main);
   --action-secondary-color-active: var(--color-dark-lighter);
-  --action-secondary-border-active: var(--color-dark-lighter);
+  --action-secondary-border-color-active: var(--color-dark-lighter);
 
   // typography
   --font-size: 1rem;
