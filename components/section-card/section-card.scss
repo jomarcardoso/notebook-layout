@@ -1,13 +1,10 @@
-@use '../../styles/typography';
-
 .section-card {
   border-radius: var(--card-border-radius, --border-radius-default);
   overflow: hidden;
-  box-shadow: var(--shadow-primary);
+  box-shadow: var(--section-card-shadow, --shadow-primary);
+  border: var(--section-card-border, none);
 
   &__title {
-    @extend .h2;
-
     background-color: var(--section-card-title-bg, --color-primary-main);
     color: var(--section-card-title-color, white);
     padding: 0 var(--padding-x);
@@ -17,7 +14,7 @@
 
     > * {
       padding: var(--padding-y) 0;
-      border: var(--section-card-title-border, none);
+      border-bottom: var(--section-card-title-border, none);
     }
   }
 

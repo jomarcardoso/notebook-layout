@@ -17,7 +17,7 @@
   );
 
   align-items: center;
-  background-color: var(--action-primary-bg);
+  background-color: var(--action-primary-bg, var(--color-primary-main));
   border: var(--action-primary-border);
   border-radius: var(--border-radius-primary);
   box-shadow: var(--action-shadow);

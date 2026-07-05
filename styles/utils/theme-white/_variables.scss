@@ -22,9 +22,9 @@
   --color-dark-lighter: #403831; // Borda/ícone escuro menos agressivo, ainda com bom contraste.
   --color-dark-main: #28211c; // Texto principal e ações fortes.
   --color-dark-darker: #140b08; // Ênfase máxima e títulos quando precisar bater o martelo.
-  --color-dark-strong: #111111e8; // Texto escuro com transparência alta.
-  --color-dark-medium: #111111cc; // Texto secundário ainda legível; evitar para corpo pequeno.
-  --color-dark-weak: #11111166; // Disabled, hints e divisórias discretas.
+  --color-dark-strong: #403831e8; // Texto escuro com transparência alta.
+  --color-dark-medium: #403831cc; // Texto secundário ainda legível; evitar para corpo pequeno.
+  --color-dark-weak: #40383166; // Disabled, hints e divisórias discretas.
 
   /* 🌿 Brand Colors
    * Primary = marrom de caderno/couro/café.
@@ -78,13 +78,13 @@
   --h2-decoration: none;
   --h2-rule: none;
 
-  --h3-color: var(--color-primary-darker);
-  --h3-strong-color: var(--color-dark-darker);
+  --h3-color: var(--color-primary-main);
+  --h3-strong-color: var(--color-dark-main);
   --h3-background: transparent;
   --h3-decoration: none;
 
-  --h4-color: var(--color-text);
-  --h4-strong-color: var(--color-dark-darker);
+  --h4-color: var(--color-primary-darker);
+  --h4-strong-color: var(--color-primary-darker);
   --h4-background: transparent;
   --h4-decoration: none;
 
@@ -160,9 +160,7 @@
 
   /* 🌫️ Shadow */
   --shadow-color: var(--color-dark-weak);
-  --shadow-primary:
-    0 2px 4px -1px var(--shadow-color), 0 4px 5px 0 rgb(0 0 0 / 14%),
-    0 1px 10px 0 rgb(0 0 0 / 12%);
+  --shadow-primary: 1px 1px 3px -1px var(--shadow-color);
   --shadow-primary-inset: inset 0 0 3px 0 var(--shadow-color);
   --shadow-secondary: 2px 2px 2px -1px var(--shadow-color);
 
@@ -180,17 +178,23 @@
   --action-small-size: 36px;
   --bar-size: var(--action-size);
   --icon-size: 1.75rem;
+
+  // nav
   --nav-size: var(--bar-size);
+  --nav-shadow: none;
+  --nav-border: var(--border);
 
   // action
   --action-bg: var(--color-secondary-main);
+  --action-bg-active: var(--color-secondary-dark);
   --action-shadow: none;
+  --action-font-size: 0.75rem;
 
   // action primary
   --action-primary-bg: var(--action-bg);
   --action-primary-color: var(--color-white);
   --action-primary-border: none;
-  --action-primary-bg-active: var(--color-dark-lighter);
+  --action-primary-bg-active: var(--color-secondary-dark);
   --action-primary-color-active: var(--color-white);
   --action-primary-border-active: var(--action-primary-bg-active);
 
@@ -255,7 +259,7 @@
   --field--active__label-bg: var(--color-primary-main);
   --field--active-border-color: var(--color-primary-weak);
   --field-border-color: var(--border-color);
-  --field-border: 2px dashed var(--field-border-color);
+  --field-border: var(--border-width) dashed var(--field-border-color);
   --field-color: var(
     --color-blue-pen
   ); // Conteúdo escrito: mantém a metáfora de caneta.
@@ -309,7 +313,7 @@
 
   // card
   --card-border-radius: var(--border-radius-primary);
-  --card-header-bg: var(--color-light-main);
+  --card-header-bg: var(--color-light-lighter);
   --card-header-color: var(--h3-color);
   --card-color: var(--color-text-secondary);
 
@@ -323,12 +327,21 @@
   --chip-border: var(--field-border);
 
   // section-card
-  --section-card-title-bg: var(--color-light-main);
+  --section-card-shadow: none;
+  --section-card-border: var(--border);
+  --section-card-title-bg: var(--color-light-lighter);
   --section-card-title-color: var(--color-primary-darker);
-  --section-card-body-bg: var(--color-light-main);
+  --section-card-body-bg: var(--color-light-lighter);
   --section-card-title-border: var(--border-width) dotted var(--border-color);
 
   // app-layout
   --app-layout-aside-border: var(--border);
-  --app-layout-aside-bg: var(--color-light-main);
+  --app-layout-aside-shadow: inset 1px 0 3px -1px var(--shadow-color);
+
+  // header
+  --header-shadow: none;
+  --header-border: var(--border);
+
+  // carousel
+  --carousel-focus-color: var(--color-dark-main, #191919);
 }

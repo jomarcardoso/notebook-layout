@@ -38,3 +38,9 @@ img {
 small {
   font-size: 0.75em;
 }
+
+@media (orientation: landscape) {
+  *:focus-visible {
+    outline: revert;
+  }
+}

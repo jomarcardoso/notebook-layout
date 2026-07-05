@@ -1,25 +1,11 @@
 .carousel {
-  --carousel-gap: var(--gap, 8px);
-
-  --carousel-banner-bg: var(--color-light-main, #f2f2f2);
-
-  --carousel-thumb-bg: var(--color-light-main, #f2f2f2);
-  --carousel-thumb-border-width: var(--border-width, 2px);
-  --carousel-thumb-border-color: transparent;
-  --carousel-thumb-border-color-active: var(--color-primary-darker, #6e564d);
-  --carousel-thumb-opacity: 0.72;
-
-  --carousel-focus-color: var(--color-dark-main, #191919);
-
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--carousel-gap);
+  gap: var(--carousel-gap, 8px);
 
   &__banner {
     width: 100%;
-    overflow: hidden;
-    background: var(--carousel-banner-bg);
 
     > * {
       width: 100%;
@@ -36,21 +22,19 @@
 
   &__thumbs {
     display: flex;
-    gap: var(--carousel-gap);
+    gap: var(--carousel-gap, 8px);
     overflow-x: auto;
-    padding-block: 2px calc(var(--carousel-gap) / 2);
+    padding-block: 2px calc(var(--carousel-gap, 8px) / 2);
     scroll-snap-type: x mandatory;
     scrollbar-width: thin;
   }
 
   &__thumb {
-    border: var(--carousel-thumb-border-width) solid
-      var(--carousel-thumb-border-color);
+    border: var(--carousel-thumb-border, var(--border-width)) solid
+      var(--carousel-thumb-border-color, transparent);
     padding: 0;
-    overflow: hidden;
-    background: var(--carousel-thumb-bg);
     cursor: pointer;
-    opacity: var(--carousel-thumb-opacity);
+    opacity: var(--carousel-thumb-opacity, 1);
     scroll-snap-align: start;
     font: inherit;
     transition:
@@ -78,14 +62,12 @@
       transform: translateY(-1px);
     }
 
-    &:focus-visible {
-      outline: 3px solid var(--carousel-focus-color);
-      outline-offset: 3px;
-    }
-
     &--active {
       opacity: 1;
-      border-color: var(--carousel-thumb-border-color-active);
+      border-color: var(
+        --carousel-thumb-border-color-active,
+        var(--color-active)
+      );
       box-shadow: var(--shadow-primary-inset, none);
     }
   }

@@ -42,7 +42,7 @@
   }
 
   @include utils.isDesktop {
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--shadow);
     border: var(--border);
   }
 }
