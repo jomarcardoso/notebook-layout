@@ -1,13 +1,22 @@
-import { useRef, useEffect, useCallback, TextareaHTMLAttributes } from 'react';
+// notebook-layout/utils/auto-resize-textarea.tsx
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type FC,
+  type TextareaHTMLAttributes,
+} from 'react';
+
+const useBrowserLayoutEffect =
+  typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export type AutoResizeTextareaProps =
   TextareaHTMLAttributes<HTMLTextAreaElement> & {
     minRows?: number | string;
   };
 
-export const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = (
-  props,
-) => {
+export const AutoResizeTextarea: FC<AutoResizeTextareaProps> = (props) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   // Filter non-DOM prop `minRows` to avoid React warning
@@ -28,11 +37,31 @@ export const AutoResizeTextarea: React.FC<AutoResizeTextareaProps> = (
     }
   }, []);
 
-  useEffect(() => {
+  useBrowserLayoutEffect(() => {
     resize();
-    const frame = requestAnimationFrame(resize);
-    return () => cancelAnimationFrame(frame);
   }, [resize, props.value, props.defaultValue, minRows]);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const frame = requestAnimationFrame(resize);
+    const resizeObserver =
+      typeof ResizeObserver === 'function'
+        ? new ResizeObserver(() => resize())
+        : null;
+    let disposed = false;
+    resizeObserver?.observe(textarea);
+    document.fonts?.ready.then(() => {
+      if (!disposed) resize();
+    });
+
+    return () => {
+      disposed = true;
+      cancelAnimationFrame(frame);
+      resizeObserver?.disconnect();
+    };
+  }, [resize]);
 
   const initialRows =
     typeof minRows === 'string'

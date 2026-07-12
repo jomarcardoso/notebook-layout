@@ -39,6 +39,14 @@ small {
   font-size: 0.75em;
 }
 
+details {
+  all: revert;
+
+  summary {
+    all: revert;
+  }
+}
+
 @media (orientation: landscape) {
   *:focus-visible {
     outline: revert;

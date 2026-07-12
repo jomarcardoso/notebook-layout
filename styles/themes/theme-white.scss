@@ -9,7 +9,5 @@
 }
 
 .app-layout {
-  &__aside {
-    @include theme-base;
-  }
+  @include theme-base;
 }
