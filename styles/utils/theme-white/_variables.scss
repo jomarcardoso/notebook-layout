@@ -201,11 +201,13 @@
 
   // action secondary
   --action-secondary-bg: transparent;
-  --action-secondary-color: inherit;
-  --action-secondary-border: var(--border);
-  --action-secondary-bg-active: var(--action-secondary-border);
+  --action-secondary-color: var(--color-dark-main);
+  --action-secondary-border-color: var(--border-color);
+  --action-secondary-border: var(--border-width) solid
+    var(--action-secondary-border-color);
+  --action-secondary-bg-active: var(--action-secondary-border-color);
   --action-secondary-color-active: var(--color-dark-main);
-  --action-secondary-border-color-active: var(--action-secondary-border);
+  --action-secondary-border-color-active: var(--action-secondary-border-color);
 
   font-size: 100%;
 
@@ -388,7 +390,7 @@
     --bs-nav-link-padding-x: var(--padding-x);
     // --bs-nav-link-padding-y: #{$nav-link-padding-y};
     // @include rfs($nav-link-font-size, --bs-nav-link-font-size);
-    --bs-nav-link-font-weight: bold;
+    --bs-nav-link-font-weight: normal;
     --bs-nav-link-color: var(--color-text);
     --bs-nav-link-hover-color: var(--color-primary-darker);
     // --bs-nav-link-disabled-color: #{$nav-link-disabled-color};

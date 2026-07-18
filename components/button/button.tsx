@@ -1,7 +1,7 @@
 import {
-  type FC,
   type ButtonHTMLAttributes,
-  ElementType,
+  type ElementType,
+  type FC,
   useMemo,
 } from 'react';
 import './button.scss';
@@ -18,6 +18,12 @@ export type ButtonProps = Props &
     href?: string; // caso use <a> ou <Link>
   };
 
+const variantClasses: Record<NonNullable<Props['variant']>, string> = {
+  primary: 'btn-primary',
+  secondary: 'btn-outline-secondary',
+  tertiary: 'btn-link',
+};
+
 export const Button: FC<ButtonProps> = ({
   as: Component = 'button',
   className = '',
@@ -29,17 +35,18 @@ export const Button: FC<ButtonProps> = ({
 }) => {
   const classes = useMemo(() => {
     return generateClasses({
-      button: true,
-      'button--secondary': variant === 'secondary',
-      'button--tertiary': variant === 'tertiary',
-      'button--full': fullWidth,
+      btn: true,
+      [variantClasses[variant]]: true,
+      'w-100': fullWidth,
       [className]: className,
     });
   }, [className, fullWidth, variant]);
 
   return (
     <Component className={classes} type={type} {...props}>
-      <span className="button__content">{children}</span>
+      <span className="d-inline-flex align-items-center justify-content-center gap-2">
+        {children}
+      </span>
     </Component>
   );
 };
