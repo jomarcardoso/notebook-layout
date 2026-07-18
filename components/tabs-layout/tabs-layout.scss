@@ -21,7 +21,7 @@
 @media (orientation: landscape) {
   .tabs-layout__content {
     @include theme-base;
-    box-shadow: var(--shadow-primary);
+    // box-shadow: var(--shadow-primary);
     height: 100%;
     position: relative;
 

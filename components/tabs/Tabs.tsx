@@ -1,6 +1,6 @@
 'use client';
 import type { FC, HTMLProps, ReactNode } from 'react';
-import { Fragment, useId } from 'react';
+import { useId } from 'react';
 import { generateClasses } from '../../utils/utils';
 import './tabs.scss';
 
@@ -11,7 +11,10 @@ export interface TabItem {
   disabled?: boolean;
 }
 
-export interface TabsProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
+export interface TabsProps extends Omit<
+  HTMLProps<HTMLUListElement>,
+  'onChange'
+> {
   tabs: TabItem[];
   name?: string;
   value?: string;
@@ -36,28 +39,29 @@ export const Tabs: FC<TabsProps> = ({
 
   const classes = generateClasses({
     tabs: true,
-    '-full': full,
     [className]: Boolean(className),
   });
 
   return (
-    <div className={classes} {...props}>
-      <div className="tabs__items">
+    <nav className={classes}>
+      <ul className="nav nav-pills" {...props}>
         {tabs.map((tab, index) => {
           const tabValue = tab.value ?? `${index}`;
           const inputId = tab.id || `${groupName}-${index}`;
           const isControlled = typeof value === 'string';
 
           const checked = isControlled ? value === tabValue : undefined;
-          const defaultChecked =
-            !isControlled
-              ? typeof defaultValue === 'string'
-                ? defaultValue === tabValue
-                : index === firstEnabledIndex
-              : undefined;
+          const defaultChecked = !isControlled
+            ? typeof defaultValue === 'string'
+              ? defaultValue === tabValue
+              : index === firstEnabledIndex
+            : undefined;
 
           return (
-            <Fragment key={tabValue}>
+            <li
+              className={`nav-link${checked ? ' active' : ''}`}
+              key={tabValue}
+            >
               <input
                 className="tabs__input"
                 type="radio"
@@ -65,19 +69,18 @@ export const Tabs: FC<TabsProps> = ({
                 name={groupName}
                 value={tabValue}
                 checked={checked}
+                aria-current={checked ? 'true' : 'false'}
                 defaultChecked={defaultChecked}
                 disabled={tab.disabled}
                 onChange={() => onChange?.(tabValue)}
               />
 
-              <label className="tabs__tab" htmlFor={inputId}>
-                {tab.label}
-              </label>
-            </Fragment>
+              <label htmlFor={inputId}>{tab.label}</label>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ul>
+    </nav>
   );
 };
 

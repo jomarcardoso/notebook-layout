@@ -10,6 +10,7 @@ export interface IntroAndTabsProps extends Omit<IntroProps, 'children'> {
   children?: ReactNode;
   tabsProps?: TabsLayoutProps;
   tabsClassName?: string;
+  header?: ReactNode;
 }
 
 export const IntroAndTabs: FC<IntroAndTabsProps> = ({
@@ -20,6 +21,7 @@ export const IntroAndTabs: FC<IntroAndTabsProps> = ({
   children,
   tabsProps,
   tabsClassName = '',
+  header = '',
   ...props
 }) => {
   const classes = generateClasses({
@@ -29,6 +31,7 @@ export const IntroAndTabs: FC<IntroAndTabsProps> = ({
 
   return (
     <div className={classes}>
+      <div className="intro-and-tabs__header">{header}</div>
       <Intro title={title} intro={intro} titleAs={titleAs} {...props} />
       <TabsLayout className={tabsClassName} {...tabsProps}>
         {children}

@@ -1,6 +1,9 @@
 .intro-and-tabs {
   height: 100%;
 
+  &__header {
+  }
+
   .tabs-layout {
     flex-grow: 1;
   }

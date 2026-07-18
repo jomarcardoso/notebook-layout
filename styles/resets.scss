@@ -1,13 +1,5 @@
 @import 'the-new-css-reset/css/reset.css';
 
-input,
-textarea,
-button,
-select,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
 body {
   color: var(--color-dark-main);
   font-family: var(--font-family-body);

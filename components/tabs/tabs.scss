@@ -1,38 +1,12 @@
 .tabs {
-  --tabs-tab-bg: var(--color-primary-darker);
-  --tabs-tab-color: var(--color-white);
-  --tabs-tab-bg-active: var(--color-white);
-  --tabs-tab-color-active: var(--color-text);
-
-  .tabs__items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap);
-  }
-
   .tabs__input {
     appearance: none;
-    block-size: 1px;
-    clip-path: inset(50%);
-    inline-size: 1px;
-    margin: -1px;
-    opacity: 0;
-    overflow: hidden;
-    pointer-events: none;
     position: absolute;
-    white-space: nowrap;
-  }
-
-  .tabs__tab {
-    background-color: var(--tabs-tab-bg);
-    color: var(--tabs-tab-color);
-    border-top-left-radius: var(--border-radius-primary);
-    border-top-right-radius: var(--border-radius-primary);
-    box-shadow:
-      inset 0 -2px 1px 0 var(--shadow-color),
-      var(--shadow-primary);
-    padding: 5px 8px 3px 12px;
     cursor: pointer;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 
   .tabs__input:checked + .tabs__tab {
@@ -51,9 +25,14 @@
     opacity: 0.5;
   }
 
-  &.-full {
-    .tabs__tab {
-      flex: 1 1 0;
-    }
+  .nav-pills {
+    border: var(--border);
+    border-radius: var(--border-radius-primary);
+    padding: 4px;
+    background: var(--color-light-main);
+  }
+
+  .nav-link {
+    position: relative;
   }
 }

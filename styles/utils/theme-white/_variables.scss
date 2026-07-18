@@ -155,6 +155,7 @@
   --border-radius-primary: 6px;
   --border-radius-secondary: 3px;
   --border-width: 1px;
+  --border-active-width: 3px;
   --border-color: var(--color-light-darker);
   --border: var(--border-width) solid var(--border-color);
 
@@ -231,7 +232,7 @@
 
   // typography
   --font-size: 1rem;
-  --h2-font-size: 1.5rem;
+  --font-size-secondary: 0.875rem;
 
   // button
   --button-size: var(--action-size);
@@ -344,4 +345,74 @@
 
   // carousel
   --carousel-focus-color: var(--color-dark-main, #191919);
+
+  // bootstrap button
+  .btn {
+    // --bs-btn-padding-x: #{$btn-padding-x};
+    // --bs-btn-padding-y: #{$btn-padding-y};
+    // --bs-btn-font-family: #{$btn-font-family};
+    // @include rfs($btn-font-size, --bs-btn-font-size);
+    // --bs-btn-font-weight: #{$btn-font-weight};
+    // --bs-btn-line-height: #{$btn-line-height};
+    // --bs-btn-color: #{$btn-color};
+    // --bs-btn-bg: var(--action-primary-bg, var(--color-primary-main));
+    // --bs-btn-border-width: #{$btn-border-width};
+    // --bs-btn-border-color: transparent;
+    // --bs-btn-border-radius: var(--border-radius-primary);
+    // --bs-btn-hover-border-color: transparent;
+    // --bs-btn-box-shadow: #{$btn-box-shadow};
+    // --bs-btn-disabled-opacity: #{$btn-disabled-opacity};
+    // --bs-btn-focus-box-shadow: 0 0 0 #{$btn-focus-width} rgba(var(--bs-btn-focus-shadow-rgb), .5);
+  }
+
+  // Bootstrap breadcrumbs
+  --breadcrumb-color: var(--color-text-secondary);
+
+  .breadcrumb {
+    // --breadcrumb-padding-x: #{$breadcrumb-padding-x};
+    // --breadcrumb-padding-y: #{$breadcrumb-padding-y};
+    // @include rfs($breadcrumb-font-size, --breadcrumb-font-size);
+    // --breadcrumb-bg: #{$breadcrumb-bg};
+    // --breadcrumb-border-radius: #{$breadcrumb-border-radius};
+    // --breadcrumb-item-padding-x: #{$breadcrumb-item-padding-x};
+    --bs-breadcrumb-margin-bottom: 0;
+    --breadcrumb-divider-color: var(--color-dark-main);
+    --breadcrumb-item-active-color: var(--color-primary-darker);
+    --bs-breadcrumb-divider-color: var(--breadcrumb-divider-color);
+    --bs-breadcrumb-font-size: var(--font-size-secondary);
+    --bs-breadcrumb-item-active-color: var(--breadcrumb-item-active-color);
+  }
+
+  // Bootstrap nav
+  .nav {
+    --bs-nav-link-padding-x: var(--padding-x);
+    // --bs-nav-link-padding-y: #{$nav-link-padding-y};
+    // @include rfs($nav-link-font-size, --bs-nav-link-font-size);
+    --bs-nav-link-font-weight: bold;
+    --bs-nav-link-color: var(--color-text);
+    --bs-nav-link-hover-color: var(--color-primary-darker);
+    // --bs-nav-link-disabled-color: #{$nav-link-disabled-color};
+  }
+
+  .nav-tabs {
+    // --bs-nav-tabs-border-width: #{$nav-tabs-border-width};
+    // --bs-nav-tabs-border-color: #{$nav-tabs-border-color};
+    // --bs-nav-tabs-border-radius: #{$nav-tabs-border-radius};
+    // --bs-nav-tabs-link-hover-border-color: #{$nav-tabs-link-hover-border-color};
+    // --bs-nav-tabs-link-active-color: #{$nav-tabs-link-active-color};
+    // --bs-nav-tabs-link-active-bg: #{$nav-tabs-link-active-bg};
+    // --bs-nav-tabs-link-active-border-color: #{$nav-tabs-link-active-border-color};
+  }
+
+  .nav-pills {
+    --bs-nav-pills-border-radius: var(--border-radius-primary);
+    --bs-nav-pills-link-active-color: var(--color-active-contrast);
+    --bs-nav-pills-link-active-bg: var(--color-active);
+  }
+
+  .nav-underline {
+    --bs-nav-underline-gap: var(--gap);
+    --bs-nav-underline-border-width: var(--border-active-width);
+    --bs-nav-underline-link-active-color: var(--color-active);
+  }
 }
