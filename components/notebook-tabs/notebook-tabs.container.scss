@@ -1,6 +1,6 @@
 @use '../../styles/utils/theme' as *;
 
-.notebook-tabs-container {
+@mixin notebook-tabs-container {
   display: flex;
 
   .notebook-tabs {
@@ -16,6 +16,16 @@
   &__content {
     flex: 1;
   }
+}
+
+.notebook-tabs-container-mobile {
+  @media (orientation: portrait) {
+    @include notebook-tabs-container;
+  }
+}
+
+.notebook-tabs-container {
+  @include notebook-tabs-container;
 
   @media (orientation: landscape) {
     flex-direction: row-reverse;

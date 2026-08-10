@@ -1,6 +1,7 @@
 'use client';
 import { FC, HTMLProps, ReactNode, useId } from 'react';
 import './section-card.scss';
+import { generateClasses } from '../../utils/utils';
 
 interface Props {
   title?: string;
@@ -13,14 +14,19 @@ export const SectionCard: FC<SectionCardProps> = ({
   header,
   title = '',
   children,
+  className = '',
   ...props
 }) => {
+  const classes = generateClasses({
+    'section-card': true,
+    [className]: className,
+  });
   // useId garante estabilidade entre SSR e cliente, evitando hydration mismatch
   const reactId = useId();
   const id = reactId;
 
   return (
-    <section aria-labelledby={id} className="section-card" {...props}>
+    <section aria-labelledby={id} className={classes} {...props}>
       {(header || title) && (
         <strong className="section-card__title h3" id={id}>
           <div>{header || title}</div>

@@ -124,7 +124,7 @@
 
   // sizing
   --gap: 8px;
-  --bs-gap: var(--gap);
+  --cui-gap: var(--gap);
   --padding-x: 8px;
   --padding-x: var(--padding-x); // legacy
   --padding-y: 8px;
@@ -152,7 +152,7 @@
     --padding-x: 16px;
     --padding: var(--padding-y) var(--padding-x);
     --gap: 16px;
-    --bs-gap: var(--gap);
+    --cui-gap: var(--gap);
   }
 
   @media (pointer: fine) {

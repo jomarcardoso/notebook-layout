@@ -11,7 +11,7 @@
 
   // sizing
   --gap: 6px;
-  --bs-gap: var(--gap);
+  --cui-gap: var(--gap);
   --padding-x: 6px;
   --padding-y: 6px;
   --padding: var(--padding-y) var(--padding-x);
@@ -47,7 +47,7 @@
 
   @media screen and (min-width: 360px) {
     --gap: 8px;
-    --bs-gap: var(--gap);
+    --cui-gap: var(--gap);
     --padding-x: 8px;
     --padding-y: 8px;
     --padding: var(--padding-y) var(--padding-x);
@@ -55,7 +55,7 @@
 
   @media (orientation: landscape) {
     --gap: 12px;
-    --bs-gap: var(--gap);
+    --cui-gap: var(--gap);
     --padding-x: 12px;
     --padding: var(--padding-y) var(--padding-x);
   }

@@ -18,6 +18,13 @@
   display: grid;
 }
 
+@media (orientation: portrait) {
+  .tabs-layout__content {
+    padding-left: var(--padding-x);
+    padding-right: var(--padding-x);
+  }
+}
+
 @media (orientation: landscape) {
   .tabs-layout__content {
     @include theme-base;

@@ -106,6 +106,7 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
 
   const classes = generateClasses({
     'tabs-layout': true,
+    'notebook-tabs-container-mobile': shouldRenderMobileTabs,
     [className]: Boolean(className),
   });
 
