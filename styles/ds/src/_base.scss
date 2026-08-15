@@ -429,7 +429,8 @@ $palette: (
   // middle, which is what keeps the pale end from looking dirty and the dark
   // end from looking muddy.
   //
-  // These are layer 1: nothing outside `_themes.scss` may name them.
+  // These are layer 1: only a theme map may name them, and a theme map is not
+  // part of this tool — see `src/ds.scss`.
   parchment: (
     50: oklch(98.3% 0.005 78.3),
     100: oklch(96.8% 0.011 84.6),

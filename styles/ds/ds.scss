@@ -12,44 +12,59 @@
 // modals, dialogs and categories.
 //
 // `check-collisions.mjs` and `check-dangling-refs.mjs` both run on every build.
+//
+// -----------------------------------------------------------------------------
+// WHERE THE THEME WENT
+// -----------------------------------------------------------------------------
+//
+// There is no `theme.scss` any more. It held four unrelated things behind one
+// namespace — two theme maps, the structure map, the surfaces, and a mixin of
+// leftover component tokens — so `theme.$light` told a reader nothing about
+// which theme they were reading. It is now one file per thing under
+// `semantic/`, named after what it is:
+//
+//   semantic/light.scss       the light theme's map      (layer 2)
+//   semantic/dark.scss        the dark theme's map       (layer 2)
+//   semantic/_structure.scss  type, radius, viewport     (layer 2)
+//   semantic/_surfaces.scss   the two surface contexts   (layer 2)
+//   palette.scss              what the colours ARE       (layer 1)
+//   tokens.scss               the component contract     (layer 3)
 // =============================================================================
 
 @use './src/config' with (
-  $themes: (),
   $adapters: (),
   $colour-strategy: 'functional'
 );
 
 @use './src/base';
 @use './src/semantic';
-@use './src/themes';
 @use './src/component';
 @use './src/adapters/coreui' as coreui-adapter;
-@use './theme';
+@use './semantic/light';
+@use './semantic/dark';
+@use './semantic/structure';
+@use './semantic/surfaces';
 
 // Layer 1 — both palettes compile away. Neither emits a byte.
 @include base.emit();
 
 // Layer 2 — the archetype's structure, then the theme. `emit-theme()` runs the
 // contrast gate and the role-distinction check itself.
-@include semantic.emit-structure(theme.$structure);
-@include semantic.emit-theme('light', theme.$light, $default: true);
+@include semantic.emit-structure(structure.$structure);
+@include semantic.emit-theme('light', light.$tokens, $default: true);
 
 // Night. `emit-theme()` measures its page colour and emits `color-scheme: dark`,
 // and it runs the same contrast gate — a dark theme that ships unreadable text
 // does not compile.
-@include semantic.emit-theme('dark', theme.$dark, $auto: true);
-@include themes.emit-contexts();
+@include semantic.emit-theme('dark', dark.$tokens, $auto: true);
 
-// Responsive tokens — layer 2, so a component never mentions a breakpoint.
-@include theme.responsive();
-
-// Layer 3 — the naming contract, plus the one token this product overrides.
-@include theme.component-tokens();
+// Still layer 2: the two tokens whose value depends on the viewport, so a
+// component never mentions a breakpoint.
+@include structure.responsive();
 
 // The product's own surfaces, replacing the three mixins that used to live in
 // `utils/theme-white/_theme.scss`.
-@include theme.surfaces();
+@include surfaces.emit();
 
 // Layer 3.5 — the adapter. ONE, for the one third-party library.
 //
@@ -58,8 +73,8 @@
 // foundation, so its components read layer 2 directly. Wrapping it in an
 // adapter meant maintaining a translation layer between a system and itself.
 // The theme is passed in because this product declares it itself rather than
-// registering it in `config.$themes`. Without it the adapter emits references
-// but no rgb triplets, and every CoreUI opacity utility, focus ring and
-// `.text-bg-*` silently keeps the library default. The adapter now refuses to
-// compile in that state instead of shipping it.
-@include coreui-adapter.emit((light: theme.$light));
+// registering it with the tool. Without it the adapter emits references but no
+// rgb triplets, and every CoreUI opacity utility, focus ring and `.text-bg-*`
+// silently keeps the library default. The adapter now refuses to compile in
+// that state instead of shipping it.
+@include coreui-adapter.emit((light: light.$tokens));

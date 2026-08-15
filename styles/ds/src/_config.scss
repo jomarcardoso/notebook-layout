@@ -45,29 +45,60 @@ $emit-base-vars: false !default;
 // outside any adapter. See _component.scss.
 $emit-component-vars: false !default;
 
-// Themes to compile. Removing one removes its entire block from the output.
-// The FIRST one also lands on `:root`, so it applies before any `data-theme`
-// attribute is set.
-$themes: (light, dark, brand) !default;
-
 // Adapters to BUNDLE into `dist/ds.css`. Empty by default, which is the honest
 // default for a framework-neutral foundation: the token build knows about no
 // library at all.
 //
 // Naming one here bundles it, which is convenient for a project that has
-// settled on a library. The alternative is to compile `src/adapter-<name>.scss`
-// separately and load it as its own file; both emit the same declarations, and
-// this repository uses the separate route because it demonstrates six.
+// settled on a library. The alternative is to compile a standalone entry for it
+// (`src/adapter-<name>.scss`, or your own for the four adapters that need the
+// theme maps) and load it as its own file; both emit the same declarations,
+// and this repository uses the separate route because it demonstrates six.
 //
-// LIST AT MOST ONE. Two reasons, and neither is fixable here:
+// LIST AS MANY AS `check-collisions` PROVES DISJOINT — which is usually one.
+//
+// This used to read "list at most one", as a flat rule. It was the right
+// default stated as the wrong kind of claim: the reason is COLLISIONS, not
+// arithmetic, and a rule phrased as a count cannot be checked.
 //
 //   - Class collisions. Bootstrap and daisyUI share 158 class names (`btn`,
 //     `btn-primary`, `card`, `alert`, `modal`, `table`…), so whichever cascade
 //     layer lands later silently wins.
 //   - Variable collisions. daisyUI uses `--border` for a WIDTH and Preline uses
 //     it for a COLOUR. Bundling both left daisyUI's inputs with no border, in
-//     valid CSS, with a silent build. `scripts/check-collisions.mjs` now fails
-//     the build on that rather than letting a browser find it.
+//     valid CSS, with a silent build.
+//
+// A real product broke the rule correctly and forced the rephrasing. It loads
+// CoreUI for the grid, buttons, nav and breadcrumb, and its own component
+// library for cards, tables, modals and dialogs, with CoreUI imported
+// selectively so the two never meet. Measured rather than assumed: 1938 classes
+// against 61, ONE shared name (`d-none`, identical declaration), and zero shared
+// custom properties.
+//
+// So the rule is: bundle what you can prove is disjoint.
+// `scripts/check-collisions.mjs` runs on every build and fails when two
+// adapters declare the same name with different values, which is the actual
+// hazard the count was standing in for.
+//
+// -----------------------------------------------------------------------------
+// AN ADAPTER IS FOR A THIRD-PARTY LIBRARY. NEVER FOR YOUR OWN DESIGN SYSTEM.
+// -----------------------------------------------------------------------------
+//
+// This is the mistake to not repeat, and it was made here first.
+//
+// A project's own component library — the one the team writes, versions and
+// themes — is NOT a target for an adapter. It is built ON this foundation: its
+// components read layer 2 (`--app-*`) directly, its theme is a `theme.scss`,
+// its palette is its own layer 1. Writing an adapter for it means maintaining a
+// translation layer between a system and itself.
+//
+// The harm is not just redundancy. An adapter that shims a project's own legacy
+// names keeps them RESOLVING, so the old vocabulary looks healthy and nothing
+// reports how much of the library was never migrated. Deleting one such adapter
+// took a component library from "zero violations" to 99 — none of them new.
+//
+// The test is ownership, not size: if you can edit the library's source and
+// ship the change, adapt nothing and build it on the foundation instead.
 //
 // This layer can make two libraries agree on colour. It cannot make them agree
 // on who owns `.btn` or `--border`.

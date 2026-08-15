@@ -3,6 +3,12 @@
 @use '../utils.scss';
 
 .modal {
+  // These two arrived from the token layer, which used to paint `.modal`
+  // directly — a component selector in a file whose job is tokens, and
+  // unlayered, so it beat this file's own declarations without either side
+  // knowing. The dialog is a sheet lifted clear of the page, hence `raised`.
+  background-color: component.$modal-bg;
+  color: component.$modal-fg;
   box-shadow: component.$modal-shadow;
   border-radius: component.$modal-radius;
   display: flex;
@@ -43,8 +49,12 @@
     width: calc(100vw - 8px);
   }
 
+  // One shadow at every width. It used to be `shadow-raised` on mobile and
+  // `shadow-overlay` on desktop — except the token layer carried an unlayered
+  // `.modal` rule that forced the overlay shadow everywhere, so the mobile
+  // value had never actually rendered. Removing that rule exposed a difference
+  // nobody had ever seen, which is not a difference worth keeping.
   @include utils.isDesktop {
-    box-shadow: component.$modal-dialog-shadow;
     border: component.$modal-border-color;
   }
 }

@@ -278,6 +278,37 @@ $_pairs: (
   @return $_pairs;
 }
 
+// -----------------------------------------------------------------------------
+// Adapters that need the theme VALUES, not just the token names
+// -----------------------------------------------------------------------------
+//
+// Most adapters only ever write `library-var: var(--app-token)`, so they never
+// see a colour. Four cannot: Bootstrap and CoreUI build their opacity
+// utilities, focus rings and `.text-bg-*` out of `rgba(var(--x-rgb), …)`, Bulma
+// decomposes every colour into HSL channels, and NES.css bakes a colour into an
+// SVG border-image. A channel cannot be extracted from a `var()`, so those four
+// need the theme MAPS.
+//
+// They used to default to a registry of themes that shipped with the tool. The
+// foundation now ships none, and the old fallback failed in the worst possible
+// way when it found nothing: it emitted the `var()` half of the mapping and
+// silently skipped the channels, so the product looked themed until something
+// translucent, focused, or outlined appeared. Refusing is the only honest
+// answer, because "no themes" is not a degraded build — it is a missing
+// argument.
+@function require-themes($adapter, $themes) {
+  @if $themes == null or map.keys($themes) == () {
+    @error '#{$adapter} adapter: emit() needs the theme maps, not just their '
+         + 'names. This library derives colour CHANNELS (rgb triplets, HSL '
+         + 'components, or a colour baked into an image asset) and a channel '
+         + 'cannot be read out of a var(). Pass `name: choices`, the same map '
+         + 'you gave semantic.emit-theme():'
+         + '  @include #{$adapter}-adapter.emit((<name>: $<theme>));';
+  }
+
+  @return $themes;
+}
+
 @mixin context($selector, $tokens) {
   @each $bg, $fg in $_pairs {
     @if map.has-key($tokens, $bg) and not map.has-key($tokens, $fg) {

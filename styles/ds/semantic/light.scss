@@ -1,0 +1,192 @@
+// =============================================================================
+// LIGHT — LAYER 2, THE ASSIGNMENT
+// =============================================================================
+//
+// One theme, one file, named after the theme. This and `dark.scss` were a
+// single 557-line `theme.scss` that also held the structure map, the surfaces
+// and a component-token mixin. Four unrelated things behind one namespace: a
+// reader who wanted to know what `selected` is had to scroll past a noise
+// texture, and `theme.$light` said nothing about which theme was being read.
+//
+// The folder is `semantic/` because that is the layer these maps belong to —
+// layer 2, the only runtime surface. The foundation ships zero themes; this is
+// the product's own, and `semantic.emit-theme()` in `../ds.scss` is what turns
+// it into custom properties.
+//
+// -----------------------------------------------------------------------------
+// THE SCHOOL
+// -----------------------------------------------------------------------------
+//
+// Functional — the Atlassian school. A colour per JOB:
+//
+//     action    dark ink      what DOES something
+//     selected  dark cocoa    what has been CHOSEN
+//     link      milk toffee   where the text GOES
+//     pen       ballpoint     what the USER wrote
+//
+// One blue, and it belongs to the cook. `action` used to be a second blue
+// (`slate`) and it is now the ink at the dark end of the paper ramp — see the
+// action block below for why.
+//
+// `config.$colour-strategy: 'functional'` is what makes a future collapse
+// between the first three an error rather than a style choice.
+//
+// Note what is absent: `primary` and `secondary`. They are RANKS — which of two
+// buttons matters more on a screen — and this product does not rank by colour.
+// A filled button, an outline button and a ghost button are three levels of
+// emphasis in ONE colour, which is why all three read from `action`.
+// =============================================================================
+
+@use '../src/base';
+@use '../palette' as p;
+
+$tokens: (
+  // --- Paper ---------------------------------------------------------------
+  page: p.pal(paper, 100),
+  surface: p.pal(paper, 50),
+  raised: p.pal(paper, 0),
+  sunken: p.pal(paper, 150),
+
+  // Hover on a neutral surface. Distinct from `sunken`, so a hovered row and a
+  // disabled one are not the same shade.
+  'surface-hover': p.pal(paper, 150),
+  'surface-active': p.pal(paper, 200),
+  overlay: rgba(40, 33, 28, 0.55),
+
+  // --- Ink -----------------------------------------------------------------
+  text: p.pal(paper, 900),
+  'text-muted': p.pal(paper, 800),
+  'text-subtlest': p.pal(paper, 600),
+  heading: p.pal(cocoa, 900),
+
+  // --- Neutral emphasis ----------------------------------------------------
+  //
+  // A PALE fill carrying dark ink, not a dark fill carrying light ink. It moved
+  // when `action` became ink: neutral was paper-700 and action paper-800, one
+  // step apart, so "cancelar" and "salvar" side by side were the same button in
+  // two barely different browns. A control with no opinion should not compete
+  // with the one that acts — it recedes into the paper instead.
+  neutral: p.pal(paper, 300),
+  'on-neutral': p.pal(paper, 900),
+  'neutral-hover': p.pal(paper, 400),
+  'neutral-active': p.pal(paper, 500),
+
+  // Exempt from the contrast gate — WCAG 1.4.3 excludes inactive controls.
+  disabled: p.pal(paper, 200),
+  'disabled-text': p.pal(paper, 500),
+
+  // --- Action: ink. What DOES something. -----------------------------------
+  //
+  // All three button treatments come from here and nowhere else:
+  //
+  //   filled   bg-action        + fg-on-action
+  //   outline  border-action    + fg-action, no fill
+  //   ghost    fg-action only, bg-action-subtle on hover
+  //
+  // This was `slate`, a desaturated blue, and it was the one thing on the page
+  // that did not belong to the notebook. Every other surface is warm — cream
+  // paper, cocoa headings, toffee links — so the only cool hue at fill size
+  // read as a control borrowed from another product. It came from a whiter
+  // theme, where a grey-blue passes for sobriety; on cream it just looks cold.
+  //
+  // Worse, it was the system's SECOND blue. `palette.scss` argues that `info`
+  // must borrow `pen` because "a fourth blue would be a colour with no job" —
+  // and slate was already a blue with no job. In a recipe notebook, blue is
+  // what the cook wrote with. It is not what fills a button.
+  //
+  // So action is the ink itself: the darkest, warmest thing on the sheet. It
+  // stays distinct from `selected` (mid cocoa) and `link` (toffee) by being far
+  // darker than either, and from `neutral` — now a pale chip — by being its
+  // opposite rather than its neighbour.
+  //
+  // `action-text` is a separate entry on purpose. Paper-800 is a FILL, measured
+  // to carry white; as a word on paper the darker step is the one that has to
+  // survive at 14px. Keeping them apart lets either move without the other.
+  action: p.pal(paper, 800),
+  'on-action': p.pal(paper, 0),
+  'action-hover': p.pal(paper, 900),
+  'action-active': p.pal(paper, 950),
+  'action-subtle': p.pal(paper, 200),
+  'action-text': p.pal(paper, 900),
+
+  // --- Selected: dark cocoa. What has been CHOSEN. -------------------------
+  //
+  // Active tab, active pill, the label of the field being edited, the section
+  // band, the checked state of a control. Never a call to action: after a week
+  // with the app cocoa reads as "you already picked this".
+  //
+  // `selected-subtle` is what a HOVER on a selectable item uses — hover is the
+  // preview of selection, so it is a lighter step of this family and never the
+  // action colour. That inversion is the bug this system shipped for months.
+  selected: p.pal(cocoa, 800),
+  'on-selected': p.pal(paper, 0),
+  'selected-hover': p.pal(cocoa, 900),
+  'selected-active': p.pal(cocoa, 950),
+  'selected-subtle': p.pal(cocoa, 100),
+  'selected-text': p.pal(cocoa, 900),
+
+  // --- Link: milk toffee. Where the text GOES. -----------------------------
+  //
+  // Saturated and lighter where selection is deep and desaturated. Hover goes
+  // DARKER, which raises contrast rather than lowering it — the safe direction
+  // for dark text on a light page.
+  link: p.pal(toffee, 500),
+  'link-hover': p.pal(toffee, 600),
+  'link-visited': p.pal(cocoa, 700),
+
+  // --- Structure -----------------------------------------------------------
+  //
+  // Soft again. The previous pass darkened every border to satisfy WCAG 1.4.11,
+  // which was an over-correction: 1.4.11 governs a control the user must be
+  // able to FIND, not the rule between two rows of a list. So the paper lines
+  // stay quiet and only `border-action` — the entire visible boundary of an
+  // outline button — is measured, at 7.23:1.
+  border: p.pal(paper, 400),
+  'border-subtle': p.pal(paper, 300),
+  'border-strong': p.pal(paper, 500),
+  ring: p.pal(pen, 600),
+
+  // Editorial elevation: hierarchy is carried by border and whitespace, so
+  // these exist only for the two things that genuinely float.
+  'shadow-raised': base.scale(shadow, '2xs'),
+  'shadow-overlay': base.scale(shadow, sm),
+
+  // --- Status --------------------------------------------------------------
+  //
+  // New to this product. Three live components read `var(--color-danger)` — a
+  // property no theme defined — so error text rendered in the body colour.
+  success: p.pal(green, 700),
+  'on-success': p.pal(paper, 0),
+  'success-hover': p.pal(green, 800),
+  'success-active': p.pal(green, 900),
+  'success-subtle': p.pal(green, 50),
+  'success-text': p.pal(green, 800),
+  'success-border': p.pal(green, 200),
+
+  // The inverted pair: dark text on a light fill. It has to BRIGHTEN as it is
+  // interacted with — darkening walks the fill toward its own text colour and
+  // the label vanishes exactly while the user is pressing it.
+  warning: p.pal(amber, 200),
+  'on-warning': p.pal(amber, 950),
+  'warning-hover': p.pal(amber, 100),
+  'warning-active': p.pal(amber, 50),
+  'warning-subtle': p.pal(amber, 50),
+  'warning-text': p.pal(amber, 800),
+  'warning-border': p.pal(amber, 300),
+
+  danger: p.pal(red, 700),
+  'on-danger': p.pal(paper, 0),
+  'danger-hover': p.pal(red, 800),
+  'danger-active': p.pal(red, 900),
+  'danger-subtle': p.pal(red, 50),
+  'danger-text': p.pal(red, 800),
+  'danger-border': p.pal(red, 200),
+
+  info: p.pal(pen, 700),
+  'on-info': p.pal(paper, 0),
+  'info-hover': p.pal(pen, 800),
+  'info-active': p.pal(pen, 900),
+  'info-subtle': p.pal(pen, 50),
+  'info-text': p.pal(pen, 700),
+  'info-border': p.pal(pen, 200)
+);

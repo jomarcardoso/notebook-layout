@@ -1,27 +1,17 @@
 // =============================================================================
-// LAYER 3, CONFIGURED FOR THIS PRODUCT
+// LAYER 3 — THIS PRODUCT'S CONFIGURATION AND ITS OWN COMPONENTS
 // =============================================================================
 //
-// Every component in this package imports layer 3 from HERE, never from
-// `src/component` directly. This file is the one place the product's component
-// decisions live.
+// Two jobs in one module, on purpose. The `@forward ... with ()` below
+// CONFIGURES the shared contract, and the declarations at the bottom ADD the
+// components only this product has. A component reaches both through one
+// `@use`, and never has to know which of the two a name came from.
 //
-// -----------------------------------------------------------------------------
-// WHY THIS FILE HAS TO EXIST
-// -----------------------------------------------------------------------------
+//     @use '../../styles/ds/tokens' as component;
 //
-// Sass module configuration — `@use 'x' with (…)` — applies to one compilation
-// and may appear only once per module in it. That is fine for a design system
-// compiled as a single stylesheet, and it does not work here at all: each
-// component's SCSS is its own compilation, because the React component imports
-// it (`import './field.scss'`) and the bundler treats it as an entry.
-//
-// So there is no single `@use … with (…)` that could reach every component. The
-// alternatives were both bad — repeat the configuration in every component
-// file, which is worse duplication than the fallback chain it replaced, or give
-// up per-product defaults entirely.
-//
-// `@forward … with (…)` is the third option and the right one: it configures
+// A `with ()` clause can only configure a name the forwarded module actually
+// declares — which is why this product's own names are declarations here and
+// not entries up there.
 // the module once, here, and re-exports it. A component does
 //
 //     @use '../../styles/ds/tokens' as component;
@@ -71,8 +61,8 @@ $_field-pad: 4px;
 
   // --- Folded in from the theme file ---------------------------------------
   //
-  // These were custom properties in `theme.scss`, a second layer 3 with its
-  // own vocabulary. Same values, one contract.
+  // These were custom properties in the old `theme.scss`, a second layer 3 with
+  // its own vocabulary. Same values, one contract.
   $field-fg: map.get(p.$pen, 600),
   $button-pad-y: 2px,
   $button-pad-x: 16px,
@@ -87,7 +77,42 @@ $_field-pad: 4px;
   $field-border: var(--app-border-width) dashed var(--app-border-color),
   $field-label-pad: 5px 24px 3px,
   $field-label-font-size: 15px,
-  $category-width: 102px,
-  $layout-aside-shadow: inset 1px 0 3px -1px var(--app-border-color-strong),
   $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong)
 );
+
+// --- This product's own components -----------------------------------------
+//
+// `choice`, `section-card`, `notebook-tabs`, `category`, `intro` and
+// `layout-aside` are this product's inventions. They get layer 3 entries
+// like everything else, and they get them HERE rather than in the shared
+// contract, because the tool has no business naming another team's nouns.
+//
+// Declared alongside the `@forward` above so a component still reaches
+// everything through one `@use`.
+$choice-radius: var(--app-radius-surface) !default;
+$choice-gap: var(--app-gap-stack) !default;
+$choice-title-border-width: var(--app-border-width) !default;
+$choice-title-radius: var(--app-radius-control-sm) !default;
+$choice-title-bg: var(--app-bg-raised) !default;
+$choice-img-fg-hover: var(--app-fg-selected) !default;
+$choice-title-bg-hover: var(--app-bg-selected-subtle) !default;
+$intro-gap: var(--app-gap-stack) !default;
+$notebook-tabs-content-bg: var(--app-bg-surface) !default;
+$notebook-tabs-bg: var(--app-bg-sunken) !default;
+$notebook-tabs-radius: var(--app-radius-surface) !default;
+$notebook-tabs-shadow: var(--app-shadow-raised) !default;
+$notebook-tabs-bg-active: var(--app-bg-selected) !default;
+$notebook-tabs-fg-active: var(--app-fg-on-selected) !default;
+$section-card-shadow: var(--app-shadow-raised) !default;
+$section-card-border-color: var(--app-border) !default;
+$section-card-title-bg: var(--app-bg-brand) !default;
+$section-card-title-fg: var(--app-fg-on-brand) !default;
+$section-card-title-font-size: var(--app-font-size-heading-sm) !default;
+$section-card-title-border-width: var(--app-border-width) !default;
+$section-card-title-divider-color: var(--app-bg-brand-deep) !default;
+$section-card-body-bg: var(--app-bg-surface) !default;
+$choice-border-color-hover: var(--app-border-selected) !default;
+$category-width: 102px !default;
+$category-font-size: var(--app-font-size-sm) !default;
+$layout-aside-border: var(--app-border) !default;
+$layout-aside-shadow: inset 1px 0 3px -1px var(--app-border-color-strong) !default;

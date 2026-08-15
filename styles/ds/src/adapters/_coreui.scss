@@ -58,8 +58,8 @@
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:math';
+@use '../base';
 @use '../core';
-@use '../themes';
 @use '../config';
 @use '../component';
 
@@ -539,41 +539,23 @@ $_derived: (
 // Emission
 // -----------------------------------------------------------------------------
 
-// `$themes` is a map of `name: choices` — see the Bootstrap adapter's `emit()`.
-// The triplets are computed from a theme's actual colours, so a product that
-// defines its own theme has to be able to pass it in.
+// `$themes` is a map of `name: choices`, and it is REQUIRED.
+//
+// An adapter with no themes cannot emit TRIPLETS, and triplets are not optional
+// decoration — CoreUI builds its opacity utilities, its focus rings and every
+// `.text-bg-*` out of `rgba(var(--cui-*-rgb), …)`. Without them the library
+// keeps its compiled indigo defaults while every other variable in the file
+// points at the theme, so the product looks themed until something translucent
+// or focused appears.
+//
+// This was silent for every product built with this tool: a product declares
+// its theme by calling `semantic.emit-theme()` directly, which is the only
+// pattern there is now, and the adapter's fallback then resolved an empty set
+// and emitted refs without triplets. So it refuses instead:
+//
+//     @include coreui-adapter.emit(('light': theme.$light));
 @mixin emit($themes: null) {
-  $set: $themes;
-
-  @if $set == null {
-    $set: ();
-    @each $name in config.$themes {
-      $set: map.merge($set, ($name: map.get(themes.$registry, $name)));
-    }
-  }
-
-  // An adapter with no themes cannot emit TRIPLETS, and triplets are not
-  // optional decoration — CoreUI builds its opacity utilities, its focus rings
-  // and every `.text-bg-*` out of `rgba(var(--cui-*-rgb), …)`. Without them the
-  // library keeps its compiled indigo defaults while every other variable in
-  // the file points at the theme, so the product looks themed until something
-  // translucent or focused appears.
-  //
-  // This was silent, and it was silent for every product built with this tool:
-  // a product declares its theme by calling `semantic.emit-theme()` directly
-  // and leaves `config.$themes` empty, which is the documented pattern. The
-  // adapter then resolved an empty set and emitted refs without triplets.
-  //
-  // So it refuses instead. A product in that shape passes its theme in:
-  //
-  //     @include coreui-adapter.emit(('light': theme.$light));
-  @if list.length(map.keys($set)) == 0 {
-    @error 'coreui adapter: no themes to emit. `config.$themes` is empty, which '
-         + 'is normal for a product that calls `semantic.emit-theme()` itself — '
-         + 'in that case pass the theme map: `emit((<name>: $<theme>))`. '
-         + 'Without it the rgb triplets are missing and every opacity utility, '
-         + 'focus ring and .text-bg-* keeps the library default.';
-  }
+  $set: core.require-themes('coreui', $themes);
 
   @include core.in-layer(config.$layer-adapter) {
     // Re-declared at every boundary that can change a token, so a themed or
@@ -606,7 +588,16 @@ $_derived: (
 
       // CoreUI keys dark mode off its own attribute, like Bootstrap. Aliasing
       // it keeps `data-theme` the single switch a product toggles.
-      @if $name == dark {
+      //
+      // MEASURED, not named. This used to read `@if $name == dark`, which is
+      // the same mistake `color-scheme` made and that `emit-theme()` already
+      // fixed: a product whose night theme is called `midnight`, `noite` or
+      // `sepia-escuro` got no CoreUI dark binding at all, and every opacity
+      // utility, focus ring and `.text-bg-*` kept the light theme's triplets on
+      // a dark page. The theme knows whether it is dark; its name does not.
+      $page: map.get($choices, page);
+
+      @if $page != null and base.contrast($page, #fff) > base.contrast($page, #000) {
         [data-coreui-theme='dark'] {
           @include _triplets($choices);
         }

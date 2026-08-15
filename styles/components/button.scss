@@ -1,4 +1,4 @@
-@use '../../styles/ds/tokens' as component;
+@use '../ds/tokens' as component;
 
 // =============================================================================
 // BUTTON
@@ -65,6 +65,10 @@
   align-items: center;
   display: inline-flex;
   justify-content: center;
+  // Was `gap-2` on a `<span>` the React wrapper injected around every child.
+  // The wrapper is gone and the gap belongs here anyway: spacing between a
+  // button's icon and its label is the button's anatomy, not a call site's.
+  gap: var(--app-space-xs);
   letter-spacing: 0.03125rem;
   max-width: 320px;
   min-height: component.$button-size;
@@ -89,12 +93,14 @@
     width: 100%;
   }
 
+  // A two-line button — label above, `small` below. This used to force the
+  // injected `<span>` to `inline-block` so the full-width `small` wrapped under
+  // it. With the span gone the children are flex items directly, so the stack
+  // is expressed as a column instead of as an override.
   &:has(small) {
+    flex-direction: column;
+    gap: 0;
     line-height: 1;
-
-    > span {
-      display: inline-block !important;
-    }
   }
 
   // Extends the hit area to the 44px floor without changing how tall the button

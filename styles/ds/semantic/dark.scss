@@ -1,0 +1,149 @@
+// =============================================================================
+// DARK — the same notebook after dark
+// =============================================================================
+//
+// A theme, not a filter over `light.scss`. It reaches the same palette from the
+// other end, and `../ds.scss` emits it with `$auto: true` so a reader who has
+// never touched the toggle still gets it from the OS.
+//
+// Not a grey inversion. The paper family runs from card-white to ink-black in
+// one warm hue, so the dark theme is the same substance read from the other
+// end: the page becomes the ink and the ink becomes the page. Nothing switches
+// to a neutral grey, because a warm notebook lit by a lamp is not grey.
+//
+// -----------------------------------------------------------------------------
+// EVERY FILL BECOMES AN INVERTED PAIR
+// -----------------------------------------------------------------------------
+//
+// On paper, `action` is slate-700 carrying white. On a near-black page that
+// same slate is almost invisible, so the fill has to come UP the ramp until it
+// separates from the page — and once it does, it is light enough that its label
+// must go DARK.
+//
+// Which flips the direction of every interaction state. A light fill with dark
+// text has to BRIGHTEN on hover: darkening walks the fill toward its own label
+// and the text disappears exactly while the user is pressing it. That is the
+// rule the amber warning pair taught this system on the light theme, and here
+// it applies to action, selected and every status at once.
+// =============================================================================
+
+@use '../src/base';
+@use '../palette' as p;
+
+$tokens: (
+  // --- Paper, read from the dark end ---------------------------------------
+  page: p.pal(paper, 950),
+  surface: p.pal(paper, 900),
+  // A card LIFTS here rather than whitening. On paper a card gets closer to
+  // white; in the dark it gets closer to the lamp.
+  raised: p.pal(paper, 800),
+  sunken: p.pal(paper, 950),
+  'surface-hover': p.pal(paper, 800),
+  'surface-active': p.pal(paper, 700),
+  overlay: rgba(0, 0, 0, 0.7),
+
+  // --- Ink, now light ------------------------------------------------------
+  text: p.pal(paper, 100),
+  'text-muted': p.pal(paper, 300),
+  'text-subtlest': p.pal(paper, 500),
+  // Headings keep the brand hue and climb the cocoa ramp until they read.
+  heading: p.pal(cocoa, 100),
+
+  // The one fill on this theme that still carries LIGHT text, so it is the one
+  // that still darkens on interaction. Everything else here is an inverted
+  // pair and brightens.
+  //
+  // The contrast gate caught this: written to brighten like its neighbours,
+  // `on-neutral` over `neutral-hover` measured 2.39:1. The rule is not
+  // "brighten on dark themes" — it is "move AWAY from the label", and which
+  // direction that is depends on the label, not on the theme.
+  neutral: p.pal(paper, 600),
+  'on-neutral': p.pal(paper, 50),
+  'neutral-hover': p.pal(paper, 700),
+  'neutral-active': p.pal(paper, 800),
+
+  disabled: p.pal(paper, 800),
+  'disabled-text': p.pal(paper, 600),
+
+  // --- Action: ink, inverted ----------------------------------------------
+  //
+  // The light theme retired `slate` — the product's second blue, and the one
+  // cool hue on a page of cream and cocoa. This is the same decision read from
+  // the dark end: the ink that fills a button on paper cannot fill one here,
+  // because on a near-black page a dark fill is invisible. It climbs the paper
+  // ramp until it separates, and by then it is light enough that its label has
+  // to go dark — the inverted pair.
+  //
+  // So it brightens, moving AWAY from its own dark label. `neutral` right above
+  // still darkens, because it still carries LIGHT text. Same rule, opposite
+  // direction, decided by the label rather than by the theme.
+  action: p.pal(paper, 300),
+  'on-action': p.pal(paper, 950),
+  'action-hover': p.pal(paper, 200),
+  'action-active': p.pal(paper, 100),
+  'action-subtle': p.pal(paper, 800),
+  'action-text': p.pal(paper, 200),
+
+  // --- Selected: cocoa, inverted ------------------------------------------
+  selected: p.pal(cocoa, 400),
+  'on-selected': p.pal(paper, 950),
+  'selected-hover': p.pal(cocoa, 300),
+  'selected-active': p.pal(cocoa, 200),
+  'selected-subtle': p.pal(cocoa, 950),
+  'selected-text': p.pal(cocoa, 200),
+
+  // --- Link: toffee, lifted ------------------------------------------------
+  //
+  // Hover goes LIGHTER here, the opposite of the light theme, for the same
+  // reason: contrast has to rise on interaction, and on a dark page that means
+  // moving away from the background rather than toward it.
+  link: p.pal(toffee, 200),
+  'link-hover': p.pal(toffee, 100),
+  // cocoa-300 measures 4.44:1 on `raised` — the lifted card, the lightest
+  // surface here and so the hardest one for any ink. Chosen against that
+  // surface rather than against the page, since a visited link inside a card is
+  // the common case, not the rare one.
+  'link-visited': p.pal(cocoa, 200),
+
+  // --- Structure -----------------------------------------------------------
+  border: p.pal(paper, 700),
+  'border-subtle': p.pal(paper, 800),
+  'border-strong': p.pal(paper, 600),
+  ring: p.pal(pen, 300),
+
+  'shadow-raised': base.scale(shadow, '2xs'),
+  'shadow-overlay': base.scale(shadow, sm),
+
+  // --- Status, all inverted pairs -----------------------------------------
+  success: p.pal(green, 300),
+  'on-success': p.pal(paper, 950),
+  'success-hover': p.pal(green, 200),
+  'success-active': p.pal(green, 100),
+  'success-subtle': p.pal(green, 950),
+  'success-text': p.pal(green, 100),
+  'success-border': p.pal(green, 700),
+
+  warning: p.pal(amber, 300),
+  'on-warning': p.pal(paper, 950),
+  'warning-hover': p.pal(amber, 200),
+  'warning-active': p.pal(amber, 100),
+  'warning-subtle': p.pal(amber, 950),
+  'warning-text': p.pal(amber, 100),
+  'warning-border': p.pal(amber, 700),
+
+  danger: p.pal(red, 300),
+  'on-danger': p.pal(paper, 950),
+  'danger-hover': p.pal(red, 200),
+  'danger-active': p.pal(red, 100),
+  'danger-subtle': p.pal(red, 950),
+  'danger-text': p.pal(red, 100),
+  'danger-border': p.pal(red, 700),
+
+  info: p.pal(pen, 300),
+  'on-info': p.pal(paper, 950),
+  'info-hover': p.pal(pen, 200),
+  'info-active': p.pal(pen, 100),
+  'info-subtle': p.pal(pen, 950),
+  'info-text': p.pal(pen, 100),
+  'info-border': p.pal(pen, 700)
+);

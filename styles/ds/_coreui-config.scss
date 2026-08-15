@@ -19,7 +19,11 @@
 
 @use 'sass:color';
 @use 'sass:map';
-@use './theme';
+
+// Aliased. This file also declares a `$light` of its own further down — that is
+// CoreUI's name for the pale end of the neutral ramp, a palette alias and not a
+// theme, and reading `light.$tokens` two lines above it invited the confusion.
+@use './semantic/light' as light-theme;
 
 // CoreUI inherits Bootstrap's `shade-color()` / `tint-color()`, which call the
 // legacy `mix()` and hard-error on an oklch value. Gamut-map first.
@@ -31,7 +35,7 @@
 }
 
 @function _c($key) {
-  @return srgb(map.get(theme.$light, $key));
+  @return srgb(map.get(light-theme.$tokens, $key));
 }
 
 // `primary` is CoreUI's name for its main button; this product's main button is

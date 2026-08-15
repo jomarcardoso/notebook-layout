@@ -13,16 +13,16 @@
 //   2. Values are STATIC. A ramp does not change between themes; what changes
 //      is which STEP a role reaches for.
 //   3. Values carry NO MEANING. `cocoa-800` does not mean "selected".
-//      Assigning meaning is `theme.scss`'s only job.
+//      Assigning meaning is the only job of the maps under `semantic/`.
 //
-// It emits nothing: `theme.scss` reads it at build time and inlines literals.
+// It emits nothing: those maps read it at build time and inline literals.
 //
 // -----------------------------------------------------------------------------
 // THE TWO CHOCOLATES
 // -----------------------------------------------------------------------------
 //
-// The one thing to understand before reading `theme.scss`: there are two browns
-// doing two different jobs, and they are deliberately far apart.
+// The one thing to understand before reading `semantic/light.scss`: there are
+// two browns doing two different jobs, and they are deliberately far apart.
 //
 //   cocoa    dark chocolate — desaturated, deep. Marks what is CHOSEN.
 //   toffee   milk chocolate — saturated, lighter. Marks a LINK.
@@ -32,6 +32,8 @@
 // saturation. They do not read as two steps of one colour; they read as two
 // colours, which is the whole requirement.
 // =============================================================================
+
+@use 'sass:map';
 
 // -----------------------------------------------------------------------------
 // Paper — the neutral family, running from card-white to ink-black
@@ -167,3 +169,42 @@ $amber: (
   500: #b57315, 600: #945d11, 700: #784b0f, 800: #5e3b0c, 900: #472d09,
   950: #301e06
 );
+
+// -----------------------------------------------------------------------------
+// Reaching a step
+// -----------------------------------------------------------------------------
+//
+// This lookup used to live beside the theme maps. It moved here when those maps
+// were split into `semantic/light.scss` and `semantic/dark.scss`: two files
+// needed it, and duplicating a family-name switch is how the two themes start
+// disagreeing about which ramps exist.
+//
+// It errors rather than returning `null` because `null` in a colour slot is
+// invisible — Sass omits the declaration and the browser inherits, so a typo in
+// a step number ships as "that one role is unstyled" rather than as a build
+// failure.
+// An index rather than a chain of `if($family == red, …)`. Two of the family
+// names — `red` and `green` — are CSS colour keywords, so the old chain compared
+// an argument against a literal colour and stylelint's `color-named` rule read
+// the file as if it were painting something. Interpolating to a string sidesteps
+// both: `'#{red}'` is the word, not the colour.
+$_families: (
+  'paper': $paper,
+  'cocoa': $cocoa,
+  'toffee': $toffee,
+  'slate': $slate,
+  'pen': $pen,
+  'red': $red,
+  'green': $green,
+  'amber': $amber
+);
+
+@function pal($family, $step) {
+  $map: map.get($_families, '#{$family}');
+
+  @if $map == null { @error 'palette: no family "#{$family}".'; }
+  @if not map.has-key($map, $step) {
+    @error 'palette: "#{$family}" has no step "#{$step}".';
+  }
+  @return map.get($map, $step);
+}

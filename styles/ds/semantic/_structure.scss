@@ -1,0 +1,134 @@
+// =============================================================================
+// STRUCTURE — LAYER 2, EVERYTHING THAT IS NOT A COLOUR
+// =============================================================================
+//
+// Type, radius, control size, and the two tokens whose value depends on the
+// VIEWPORT. It sits in `semantic/` beside the themes because all of it is layer
+// 2: the only runtime surface, the only place a component's answer can change
+// underneath it.
+//
+// It is not named after a theme because it is not one — both themes share every
+// value here. A theme is a set of colour decisions; this is the shape they are
+// poured into.
+//
+// -----------------------------------------------------------------------------
+// Archetype: EDITORIAL & PREMIUM
+// -----------------------------------------------------------------------------
+//
+// Not a hybrid and not a description of what was already running — a decision.
+// Serif headings, near-flat elevation, hierarchy from whitespace and line rather
+// than shadow, generous leading.
+//
+// Every value below is the archetype's own, taken from the matrix in
+// `references/archetypes.md`, with one override:
+//
+//   size-control  40px -> 44px
+//
+// Mobile-first outranks the archetype here. The app is used one-handed at a
+// counter, and 40px is a miss target on a phone. `archetypes.md` calls this an
+// OVERRIDE rather than a deviation, because it is the system working: an
+// ergonomic floor is allowed to beat a stylistic preference.
+// =============================================================================
+
+$structure: (
+  'font-family-body': ('Dosis', ui-sans-serif, system-ui, sans-serif),
+  'font-family-heading': ('Cinzel', ui-serif, Georgia, 'Times New Roman', serif),
+
+  // The product's own voice — the wordmark, and eventually the user's own
+  // writing. Currently commented out in the library; the stack is declared here
+  // so it lights up the moment the face is loaded.
+  'font-family-display': (
+    'Playwrite PE Variable', 'Segoe Script', 'Bradley Hand', cursive
+  ),
+
+  'line-height': 1.7,
+  'radius-control': 4px,
+  'radius-surface': 6px,
+  'size-control': 44px,
+
+  // -----------------------------------------------------------------------
+  // Surface padding — the base of a responsive step
+  // -----------------------------------------------------------------------
+  //
+  // Editorial's default is `space-lg`, 24px, and on this product it was too
+  // much: a phone screen lost a quarter of its width to gutters.
+  //
+  // This is the smallest step, for the smallest screen, and `responsive()`
+  // below walks it up: 8px → 12px at 360px → 16px in landscape.
+  //
+  // THE GAP, recorded rather than papered over: `emit-structure()` emits one
+  // `:root` block, so a structural token can have exactly one value per build.
+  // Density that follows the VIEWPORT — which is the common case for anything
+  // used on a phone and a desktop — has no expression in the foundation, and a
+  // product has to step it in its own layer. `[data-density=compact]` exists but
+  // is an attribute someone has to set, which a media query cannot do.
+  'pad-surface': 8px,
+
+  // -----------------------------------------------------------------------
+  // Section rhythm — the vertical gap between a page's major blocks
+  // -----------------------------------------------------------------------
+  //
+  // Also the base of a responsive step, and it exists because the product was
+  // getting this exactly backwards. The home page separated its sections with
+  // `mt-5 mt-md-3` — CoreUI's utilities, so 48px on a phone and 16px from
+  // 768px up. The small screen was paying three times the large one's rhythm,
+  // which is the opposite of mobile-first: a phone has less room to give, not
+  // more.
+  //
+  // Utilities cannot express this. `mt-5 mt-md-3` names two SIZES and leaves
+  // the reader to work out which viewport gets which; a token names the JOB
+  // and the browser swaps the value underneath. It is the same argument
+  // `pad-surface` above already won.
+  'gap-section': 24px
+);
+
+// -----------------------------------------------------------------------------
+// The tokens that follow the viewport
+// -----------------------------------------------------------------------------
+//
+// A spacing token that changes with the viewport belongs HERE, not in the
+// component layer. The component asks for `--app-pad-surface` once and never
+// mentions a breakpoint; the browser swaps the value underneath it.
+//
+// The alternative — `space-small-mobile` and `space-small-desktop`, with the
+// component choosing between them — puts a media query inside every component
+// that has padding. Atlassian and Apple both do it this way for the same reason.
+//
+// The progression is the product's own: 8 on a phone, 12 from 360px, 16 in
+// landscape.
+//
+// `size-bar` — the height of the app's top and bottom chrome — is here for the
+// same reason and arrived by a worse route. It used to be declared in a
+// `component-tokens()` mixin that `ds.scss` included AFTER this one, and
+// `:root` and `:root` inside a media query have identical specificity, so the
+// later rule won unconditionally: the landscape 60px was overwritten by the
+// 44px base on every viewport, and the media query had never once taken effect.
+// A base value has to precede its own overrides, which is exactly what putting
+// it in the same mixin guarantees.
+@mixin responsive() {
+  :root {
+    --app-size-bar: var(--app-size-control);
+  }
+
+  @media screen and (min-width: 360px) {
+    :root {
+      --app-pad-surface: var(--app-space-sm);
+    }
+  }
+
+  // The section rhythm opens up once there is width to spend. 768px is the
+  // grid's own `md` breakpoint, so a page's vertical rhythm changes on the
+  // same line as its columns rather than on a second, invisible one.
+  @media screen and (min-width: 768px) {
+    :root {
+      --app-gap-section: var(--app-space-2xl);
+    }
+  }
+
+  @media (orientation: landscape) {
+    :root {
+      --app-pad-surface: var(--app-space-md);
+      --app-size-bar: 60px;
+    }
+  }
+}

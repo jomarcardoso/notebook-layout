@@ -1,0 +1,149 @@
+// =============================================================================
+// SURFACES — LAYER 2 CONTEXTS
+// =============================================================================
+//
+// A surface is a CONTEXT: a partial override that inherits everything it does
+// not mention. These two were hand-written rule blocks in the old
+// `theme.scss`, which is the reason they are being rewritten rather than moved.
+//
+// `core.context()` refuses to compile a context that overrides a background
+// without its foreground. The hand-written version accepted exactly that, in
+// silence — the invariant that protects every other context in this system was
+// simply not applied to the two surfaces the product actually ships. Going
+// through the helper makes the pairs DATA, which is the only form the check can
+// read.
+//
+// A surface also has to PAINT itself. `core.context()` emits custom properties
+// and nothing else, which is right for the general helper and wrong for a thing
+// called `data-surface`: a reader who writes the attribute expects a sheet, not
+// a set of variables something else must remember to consume. The foundation
+// shipped a transparent header once for exactly this reason.
+//
+// Deliberately UNLAYERED, like the theme blocks beside it. Unlayered CSS beats
+// all layered CSS, and `app.scss` puts CoreUI in `@layer vendor-config` so the
+// library cannot repaint a surface the product declared.
+//
+// -----------------------------------------------------------------------------
+// WHAT THESE REPLACED
+// -----------------------------------------------------------------------------
+//
+// `utils/theme-white/_theme.scss` held three mixins. Two survived the
+// translation; the third did not, and the reason is worth keeping.
+//
+//   theme-base     a near-white sheet. The foundation already has this, and it
+//                  is called `base`. Deleted rather than duplicated.
+//
+//   theme-light    a lighter sheet UNDER THE PAPER TEXTURE. This one is the
+//                  product's signature and it is preserved here as `paper`.
+//
+//   theme-primary  named for the brand and implemented as another light sheet,
+//                  with brown table sections bolted on. It was two ideas at
+//                  once and neither was finished. Replaced by `brand`, which is
+//                  what the name always promised: the brand fill with the
+//                  foreground that is measured against it.
+// =============================================================================
+
+@use '../src/core';
+
+@mixin emit() {
+  // THE PAPER SHEET.
+  //
+  // It changes no ink — the notebook's text colour is already the right one on
+  // its own paper — so the only token it moves is the answer to "what is the
+  // ground under me". Inside the sheet that is `bg-surface`, not the page.
+  //
+  // `fg-default: null` is not filler. The pair invariant requires the key to be
+  // CONSIDERED whenever the background moves, and `null` is how a context says
+  // "considered, unchanged": it satisfies the check and emits nothing. Writing
+  // `core.ref('fg-default')` instead would emit a custom property that
+  // references itself, which is a cycle and is dropped as invalid.
+  @include core.context(
+    '[data-surface="paper"]',
+    (
+      'bg-page': core.ref('bg-surface'),
+      'fg-default': null
+    )
+  );
+
+  // FIBRE, NOT GRAIN.
+  //
+  // Both layers were `baseFrequency='.8'` — isotropic fractal noise, which is
+  // sand. It is what made the texture read as "granulada" and it is why the
+  // paper was abandoned as heavy: grain competes with type at every size,
+  // because its features are the size of the letterforms.
+  //
+  // Paper is FIBRE: long strands, crossing, most of them far longer than they
+  // are wide. That is an anisotropic turbulence — a low frequency on one axis
+  // and a high one on the other stretches each feature into a strand. The two
+  // layers run perpendicular to each other, which is what a sheet of stock
+  // actually looks like under a lamp, and it reads as material at a distance
+  // instead of as dirt up close.
+  //
+  // Alpha came down from .09 to .07/.05 and the tile grew from 180 to 240, so
+  // the repeat is harder to catch. This is the surface the design language
+  // rations: never behind small text.
+  //
+  // The selector used to also name `.app-layout` and `.modal__body`. A token
+  // file that knows a component's class name is a token file the component
+  // cannot be renamed out of, and it inverted the dependency: the sheet decided
+  // which components were made of paper. Both now carry
+  // `data-surface="paper"` in their own markup and ask for it themselves.
+  // SCOPED TO THE `caderno` REGISTER, and that scope is the point.
+  //
+  // Every screen in the product carries `data-surface="paper"`, so before this
+  // the fibre ran under the recipe page, explore, search and settings too —
+  // which are `livro`, a publication, and a publication is printed on flat
+  // stock. Texture everywhere is also how the first attempt at this earned the
+  // word "heavy": a material that is on every screen stops being a material
+  // and becomes a filter over the product.
+  //
+  // A screen with no register declared is `livro`, so it gets the colour and
+  // not the fibre. The notebook has to ask.
+  [data-surface='paper'] {
+    background-color: #{core.ref('bg-surface')};
+    color: #{core.ref('fg-default')};
+  }
+
+  [data-surface='paper'][data-register='caderno'] {
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.007 0.55' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .07'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%23ffffff' filter='url(%23fibre)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.007' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .05'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%235d4937' filter='url(%23fibre)'/%3E%3C/svg%3E");
+    background-size:
+      240px 240px,
+      240px 240px;
+    background-blend-mode: screen, multiply;
+  }
+
+  // A real brand band. `fg-on-brand` is the foreground the contrast gate
+  // measured against `bg-brand`, so every text token that lands here is legible
+  // by construction rather than by inspection.
+  //
+  // `bg-page` and `bg-surface` both move, because a band is a ground: a card
+  // dropped inside one must not read the light-theme surface and punch a white
+  // hole in it.
+  @include core.context(
+    '[data-surface="brand"]',
+    (
+      'bg-page': core.ref('bg-brand'),
+      'bg-surface': core.ref('bg-brand'),
+      'fg-default': core.ref('fg-on-brand'),
+      'fg-heading': core.ref('fg-on-brand'),
+      'fg-muted': core.ref('fg-on-brand'),
+      'fg-brand': core.ref('fg-on-brand'),
+      'border-color': core.ref('bg-brand-deep'),
+
+      // Links on a brand band cannot stay toffee — it is a brown on a brown.
+      // On a dark ground the underline carries the affordance and the colour
+      // cannot, because any hue dark enough to read as a link on paper is too
+      // dark to read on the band.
+      'fg-link': core.ref('fg-on-brand'),
+      'fg-link-hover': core.ref('fg-on-brand'),
+      'fg-link-visited': core.ref('fg-on-brand')
+    )
+  );
+
+  [data-surface='brand'] {
+    background-color: #{core.ref('bg-surface')};
+    color: #{core.ref('fg-default')};
+  }
+}

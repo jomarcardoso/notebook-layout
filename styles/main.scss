@@ -19,22 +19,25 @@
 // All four are gone, along with the six files behind them. The design system is
 // the foundation in `styles/ds/`, which holds every token across three layers:
 //
-//     layer 1  ds/palette.scss   what the colours ARE
-//     layer 2  ds/theme.scss     what they MEAN, plus the surfaces
-//     layer 3  ds/theme.scss     the product's component tokens
+//     layer 1  ds/palette.scss           what the colours ARE
+//     layer 2  ds/semantic/light.scss     what they MEAN, by day
+//     layer 2  ds/semantic/dark.scss      what they MEAN, after dark
+//     layer 2  ds/semantic/_structure     type, radius, the viewport steps
+//     layer 2  ds/semantic/_surfaces      the two surface contexts
+//     layer 3  ds/tokens.scss             the component contract
 //
 // The three mixins became two surfaces. `theme-base` was a near-white sheet,
 // which the foundation already had as `base`; `theme-light` was that sheet under
 // the paper texture and survives as `paper`; `theme-primary` was named for the
 // brand and implemented as a third light sheet, so it was replaced by `brand`,
 // which is the brand fill with the foreground the contrast gate measured against
-// it. See `surfaces()` in `ds/theme.scss`.
+// it. See `ds/semantic/_surfaces.scss`.
 //
 // The `:root { @extend .theme-light }` at the end is what made the paper texture
-// the document default. `surfaces()` applies it to `.app-layout` instead, which
-// is the element that actually IS the sheet — extending a theme class onto
-// `:root` also dragged its `background-image` onto the html element, where a
-// texture cannot be turned off by any child.
+// the document default. The sheet is now `[data-surface="paper"]`, which
+// `.app-layout` and the dialog body carry in their own markup — extending a
+// theme class onto `:root` also dragged its `background-image` onto the html
+// element, where a texture cannot be turned off by any child.
 // =============================================================================
 
 @forward 'resets';
@@ -44,6 +47,11 @@
 @forward 'helpers/scroll';
 
 @forward 'form';
+// `components/button` reached the page through `button.tsx`'s own
+// `import './button.scss'` while the React wrapper existed. The wrapper is
+// gone — call sites write CoreUI's classes directly — so the geometry it
+// carries enters here, beside every other component's styles.
+@forward 'components/button';
 @forward 'components/img';
 @forward 'components/category';
 @forward 'components/card';

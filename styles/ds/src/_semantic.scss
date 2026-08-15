@@ -244,7 +244,8 @@
 //     writing them is how systems end up with `bg-danger-subtle` but no
 //     `bg-warning-subtle`.
 //
-// Expected keys in $c are documented in _themes.scss.
+// The expected keys in $c are the ones `_req()` and `_opt()` below ask for;
+// `example/demo/_themes.scss` is a complete worked example of the map.
 
 // Reads one decision out of a theme map, and REFUSES a theme that does not
 // make it.
@@ -527,9 +528,9 @@
 // CONTRAST — measured on every theme, by construction
 // -----------------------------------------------------------------------------
 //
-// This used to live in `_themes.scss` and be a mixin a caller REMEMBERED to
-// invoke. That was the largest hole in the whole system, and it was invisible
-// because every caller in this repository happened to remember.
+// This used to live in a separate `themes` module and be a mixin a caller
+// REMEMBERED to invoke. That was the largest hole in the whole system, and it
+// was invisible because every caller in this repository happened to remember.
 //
 // The proof was a theme map with white on amber-400 — 1.72:1, unreadable — that
 // called `emit-theme()` and nothing else. It compiled clean. Any agent writing
