@@ -1,0 +1,65 @@
+// =============================================================================
+// NOTEBOOK-LAYOUT — the design system build
+// =============================================================================
+//
+//     npm run build:tokens
+//
+// Two adapters, which the foundation normally forbids. It is legal here because
+// it was MEASURED rather than assumed: compiled side by side, CoreUI-as-imported
+// and notebook-layout share exactly one class name (`d-none`, identical
+// declaration) and zero custom properties. They partition cleanly — CoreUI owns
+// the grid, buttons, nav and breadcrumb; notebook-layout owns cards, tables,
+// modals, dialogs and categories.
+//
+// `check-collisions.mjs` and `check-dangling-refs.mjs` both run on every build.
+// =============================================================================
+
+@use './src/config' with (
+  $themes: (),
+  $adapters: (),
+  $colour-strategy: 'functional'
+);
+
+@use './src/base';
+@use './src/semantic';
+@use './src/themes';
+@use './src/component';
+@use './src/adapters/coreui' as coreui-adapter;
+@use './theme';
+
+// Layer 1 — both palettes compile away. Neither emits a byte.
+@include base.emit();
+
+// Layer 2 — the archetype's structure, then the theme. `emit-theme()` runs the
+// contrast gate and the role-distinction check itself.
+@include semantic.emit-structure(theme.$structure);
+@include semantic.emit-theme('light', theme.$light, $default: true);
+
+// Night. `emit-theme()` measures its page colour and emits `color-scheme: dark`,
+// and it runs the same contrast gate — a dark theme that ships unreadable text
+// does not compile.
+@include semantic.emit-theme('dark', theme.$dark, $auto: true);
+@include themes.emit-contexts();
+
+// Responsive tokens — layer 2, so a component never mentions a breakpoint.
+@include theme.responsive();
+
+// Layer 3 — the naming contract, plus the one token this product overrides.
+@include theme.component-tokens();
+
+// The product's own surfaces, replacing the three mixins that used to live in
+// `utils/theme-white/_theme.scss`.
+@include theme.surfaces();
+
+// Layer 3.5 — the adapter. ONE, for the one third-party library.
+//
+// There is no adapter for this package. An adapter translates a library that
+// does not know the foundation exists; this IS the design system, built on the
+// foundation, so its components read layer 2 directly. Wrapping it in an
+// adapter meant maintaining a translation layer between a system and itself.
+// The theme is passed in because this product declares it itself rather than
+// registering it in `config.$themes`. Without it the adapter emits references
+// but no rgb triplets, and every CoreUI opacity utility, focus ring and
+// `.text-bg-*` silently keeps the library default. The adapter now refuses to
+// compile in that state instead of shipping it.
+@include coreui-adapter.emit((light: theme.$light));

@@ -1,0 +1,253 @@
+// =============================================================================
+// DERIVING A DARK THEME
+// =============================================================================
+//
+//     @include semantic.emit-theme('night', derive.dark($light), $auto: true);
+//
+// One line, and a product that has written a light theme has a dark one. That
+// is the point: a dark theme should not be a second project.
+//
+// -----------------------------------------------------------------------------
+// WHY THIS IS NOT "INVERT THE LIGHTNESS"
+// -----------------------------------------------------------------------------
+//
+// The obvious algorithm — convert to OKLCH, flip L, trim chroma, keep hue — is
+// most of the way there and produces unreadable interfaces, for a reason that
+// only shows up once you look at STATES rather than at colours.
+//
+// On a light theme `bg-action` is a dark fill carrying white, and it DARKENS on
+// hover: darker moves it away from its white label, so contrast rises as the
+// user reaches for it. Flip every colour independently and that relationship
+// survives as its own mirror image — a light fill that gets DARKER on hover,
+// walking straight into the dark label it now needs. Measured on a real theme
+// written that way: 2.39:1 on the hover state, while the resting state was a
+// comfortable 8:1 and every per-colour rule had been obeyed.
+//
+// So this function does not transform colours. It transforms ROLES, and it
+// knows three things a per-colour transform cannot:
+//
+//   1. A fill and its label are a PAIR. Deciding the fill decides the label.
+//   2. A state moves AWAY from the label. Once every dark fill is light enough
+//      to need a dark label, every state brightens — uniformly, with no
+//      exceptions to forget.
+//   3. Elevation on a dark theme is LIGHT, not shadow. A raised card is a
+//      lighter step, because a black shadow on a black page is nothing.
+//
+// -----------------------------------------------------------------------------
+// DERIVATION PROPOSES, THE GATE DISPOSES
+// -----------------------------------------------------------------------------
+//
+// The output goes through `check-contrast()` like any hand-written theme. That
+// is deliberate and it is the only reason automatic generation is safe to
+// offer: if a product's brand hue cannot reach the target lightness without
+// falling below 4.5:1, the build FAILS and says which pair. Generating without
+// verifying is how you ship a confident, measured, unreadable interface.
+//
+// Hue is preserved throughout, so the result is recognisably the same brand.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:string';
+
+// -----------------------------------------------------------------------------
+// The dark ladder
+// -----------------------------------------------------------------------------
+//
+// Absolute OKLCH lightness targets rather than offsets from the light theme.
+// Offsets sound more faithful and are not: a product whose light surfaces are
+// unusually close together would inherit that crowding into the dark theme,
+// where it matters far more, because the eye separates dark tones worse than
+// light ones.
+//
+// The surface steps stop at 0.30. Everything readable has to clear the
+// LIGHTEST surface, not the page — a status caption sitting on a pressed row is
+// the worst case in the theme, and it is the one that fails first.
+$_surfaces: (
+  'page': 0.15,
+  'sunken': 0.12,
+  'surface': 0.2,
+  'surface-hover': 0.25,
+  'surface-active': 0.3,
+  // Elevation lightens. Material's dark-theme rule, and it is not a stylistic
+  // choice: `box-shadow` is invisible on a dark page, so lightness is the only
+  // depth cue left.
+  'raised': 0.26,
+  'disabled': 0.22
+);
+
+$_inks: (
+  'heading': 0.97,
+  'text': 0.95,
+  'text-muted': 0.8,
+  'text-subtlest': 0.64,
+  'disabled-text': 0.48
+);
+
+$_lines: (
+  'border-subtle': 0.26,
+  'border': 0.34,
+  'border-strong': 0.44,
+  'ring': 0.72
+);
+
+// Fills. Every one lands here, which is what makes the state rule uniform:
+// at 0.78 the fill always needs a dark label, so a state always brightens.
+$_fill: 0.78;
+$_fill-hover: 0.85;
+$_fill-active: 0.91;
+// The tinted background behind a selected row or an inline alert.
+$_fill-subtle: 0.24;
+// Tinted ink. Well clear of `surface-active` at 0.30.
+$_fill-text: 0.88;
+$_fill-border: 0.42;
+
+// Links carry the brand hue as ink, so they follow the ink rules, not the fill
+// rules — and they brighten on hover for the same reason every state does.
+$_links: (
+  'link': 0.82,
+  'link-hover': 0.9,
+  'link-visited': 0.76
+);
+
+// Saturated colour on a dark background blooms — the eye reads it as glowing
+// and it fatigues fast. Trimming chroma is the one part of the naive OKLCH
+// recipe that is exactly right.
+$_chroma-fill: 0.72;
+$_chroma-ink: 0.6;
+// Surfaces keep a whisper of the brand hue and no more. A dark surface with
+// real chroma reads as a coloured panel rather than as the page.
+$_chroma-surface-max: 0.018;
+
+// -----------------------------------------------------------------------------
+
+@function _is-color($value) {
+  @return meta.type-of($value) == color;
+}
+
+// Stays a real Sass COLOUR, deliberately. The tempting move is to return a hex
+// string here — a computed colour interpolates as `rgb(12, 11, 9)`, 15 bytes
+// where a hex literal spends 7 — but the map this builds is handed straight to
+// `check-contrast()`, which has to MEASURE these values. A string cannot be
+// measured, and buying 8 bytes by disarming the gate that makes automatic
+// derivation trustworthy would be a bad trade at any price.
+//
+// The compaction happens at emission instead (`core.emit`), where it applies to
+// every colour the system writes rather than only to derived ones.
+@function _srgb($c) {
+  @return color.to-gamut($c, $space: rgb, $method: local-minde);
+}
+
+@function _at($ref, $lightness, $chroma-scale: 1, $chroma-max: null) {
+  $c: color.channel($ref, 'chroma', $space: oklch) * $chroma-scale;
+
+  @if $chroma-max != null and $c > $chroma-max {
+    $c: $chroma-max;
+  }
+
+  @return _srgb(
+    color.change($ref, $lightness: $lightness * 100%, $chroma: $c, $space: oklch)
+  );
+}
+
+// The label for a derived fill. MEASURED, not assumed: at lightness 0.78 the
+// answer is essentially always the dark end, but a product could hand in a
+// fill this function cannot lift that far, and a hardcoded "use black" would
+// then be silently wrong rather than loudly wrong.
+@function _label($fill, $dark, $light) {
+  @if color.channel($fill, 'lightness', $space: oklch) > 55% {
+    @return $dark;
+  }
+  @return $light;
+}
+
+@function _ends-with($name, $suffix) {
+  $n: string.length($name);
+  $s: string.length($suffix);
+
+  @if $s > $n {
+    @return false;
+  }
+  @return string.slice($name, $n - $s + 1) == $suffix;
+}
+
+// -----------------------------------------------------------------------------
+// dark()
+// -----------------------------------------------------------------------------
+//
+// Takes a light theme's choices map and returns a dark one with the same keys.
+// Anything it does not recognise — shadows, `overlay`, a product's own extra
+// entries — passes through untouched rather than being mangled, so adding a
+// key to a theme never silently breaks derivation.
+@function dark($light) {
+  $page: map.get($light, page);
+
+  @if $page == null {
+    @error 'derive.dark() needs a `page` colour: it is the reference for every '
+         + 'surface hue and for the label on every derived fill.';
+  }
+
+  $out: ();
+
+  // The two ends of the derived theme, computed once. Every fill's label is one
+  // of these, which is also what keeps `fg-on-X` consistent across roles.
+  $ink-dark: _at($page, 0.1, $chroma-max: $_chroma-surface-max);
+  $ink-light: _at($page, 0.97, $chroma-max: $_chroma-surface-max);
+
+  @each $key, $value in $light {
+    $result: $value;
+
+    @if not _is-color($value) {
+      // Shadows, `overlay`'s rgba, anything composite. Left alone on purpose:
+      // a shadow is still a shadow, and `overlay` is already a black scrim.
+      $result: $value;
+    } @else if map.has-key($_surfaces, $key) {
+      $result: _at($page, map.get($_surfaces, $key), $chroma-max: $_chroma-surface-max);
+    } @else if map.has-key($_inks, $key) {
+      $result: _at($page, map.get($_inks, $key), $chroma-max: $_chroma-surface-max);
+    } @else if map.has-key($_lines, $key) {
+      $result: _at($page, map.get($_lines, $key), $chroma-max: $_chroma-surface-max);
+    } @else if map.has-key($_links, $key) {
+      $result: _at($value, map.get($_links, $key), $_chroma-ink);
+    } @else if string.index($key + '', 'on-') == 1 {
+      // Handled with its fill below — see the second pass.
+      $result: $value;
+    } @else if _ends-with($key, '-subtle') {
+      $result: _at($value, $_fill-subtle, $_chroma-ink, $_chroma-surface-max * 3);
+    } @else if _ends-with($key, '-text') {
+      $result: _at($value, $_fill-text, $_chroma-ink);
+    } @else if _ends-with($key, '-border') {
+      $result: _at($value, $_fill-border, $_chroma-ink);
+    } @else if _ends-with($key, '-hover') {
+      $result: _at($value, $_fill-hover, $_chroma-fill);
+    } @else if _ends-with($key, '-active') {
+      $result: _at($value, $_fill-active, $_chroma-fill);
+    } @else {
+      // A base fill: action, selected, neutral, success, warning, danger, info,
+      // and any role a product added that behaves like one.
+      $result: _at($value, $_fill, $_chroma-fill);
+    }
+
+    $out: map.merge($out, ($key: $result));
+  }
+
+  // SECOND PASS — the labels.
+  //
+  // Separate because a label depends on its fill AFTER derivation, and Sass
+  // maps are not ordered in a way that guarantees `action` is seen before
+  // `on-action`. Doing it in one pass worked until a product listed them the
+  // other way round.
+  @each $key, $value in $light {
+    @if _is-color($value) and string.index($key + '', 'on-') == 1 {
+      $role: string.slice($key + '', 4);
+      $fill: map.get($out, $role);
+
+      @if $fill != null {
+        $out: map.merge($out, ($key: _label($fill, $ink-dark, $ink-light)));
+      }
+    }
+  }
+
+  @return $out;
+}

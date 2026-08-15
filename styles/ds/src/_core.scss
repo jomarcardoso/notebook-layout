@@ -1,0 +1,311 @@
+// =============================================================================
+// CORE — emission machinery
+// =============================================================================
+//
+// Nothing in this file produces CSS on its own. It exists so that the semantic
+// layer can be written as data (a map) rather than as hand-typed declarations.
+// That matters for two reasons:
+//
+//   - Repetitive families (four status roles x five tokens each) come from a
+//     six-line loop instead of twenty hand-written lines that drift apart.
+//   - The pair invariant (see `context`) can be MECHANICALLY enforced, which is
+//     the difference between a convention and a guarantee.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+@use 'config';
+
+// -----------------------------------------------------------------------------
+// Naming
+// -----------------------------------------------------------------------------
+
+// Characters the W3C Design Tokens format forbids in a token or group name.
+//
+// The spec's rules are: a name MUST NOT begin with `$`, and MUST NOT contain
+// `{`, `}` or `.` — the first because `$` is reserved for the format's own
+// properties, the other three because they are the reference syntax
+// (`{group.token}`) and would make an alias unparseable.
+//
+// Enforcing them here rather than in a lint rule is deliberate. This function
+// is the single place a token name becomes real, so nothing can reach the
+// output without passing through it — including names built by interpolation
+// inside a loop, which is exactly where a stray character would come from and
+// exactly what a regex over the source would miss.
+$_forbidden: ('{', '}', '.');
+
+@function var-name($name) {
+  $n: '#{$name}';
+
+  @if string.slice($n, 1, 1) == '$' {
+    @error 'Token name "#{$n}" starts with "$", which the Design Tokens format '
+         + 'reserves for its own properties. Rename it.';
+  }
+
+  @each $char in $_forbidden {
+    @if string.index($n, $char) {
+      @error 'Token name "#{$n}" contains "#{$char}", which the Design Tokens '
+           + 'format forbids — it is part of the {group.token} reference '
+           + 'syntax. Use "-" to separate words.';
+    }
+  }
+
+  @return --#{config.$prefix}-#{$name};
+}
+
+// The public read accessor. Layer 2, layer 3 and adapters use this; nothing
+// else in the codebase should type `var(--app-…)` by hand.
+@function ref($name, $fallback: null) {
+  @if $fallback == null {
+    @return var(#{var-name($name)});
+  }
+  @return var(#{var-name($name)}, #{$fallback});
+}
+
+// -----------------------------------------------------------------------------
+// Emission
+// -----------------------------------------------------------------------------
+
+// Writes a flat map of token-name -> value as custom property declarations.
+// `null` values are skipped, so a token a theme has no opinion about is erased
+// completely rather than emitted empty.
+// COMPACT COLOUR SERIALISATION.
+//
+// A custom property value is opaque text to Sass and to the minifier — nothing
+// downstream will ever rewrite it. And Sass only prints a colour as hex when it
+// was WRITTEN as hex: any colour that came out of a computation interpolates as
+// `rgb(12, 11, 9)`, which survives `--style=compressed` untouched at 15 bytes
+// against 7.
+//
+// That never mattered while every theme was hand-written from hex literals in
+// the palette. It started mattering the moment `derive.dark()` could generate a
+// whole theme, where every one of ~85 values is computed. Doing the conversion
+// here rather than in the derivation keeps colours as real Sass colours for as
+// long as possible — which is what lets the contrast gate measure them.
+$_hex: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' 'a' 'b' 'c' 'd' 'e' 'f';
+
+@function _byte($n) {
+  $n: math.clamp(0, math.round($n), 255);
+
+  @return list.nth($_hex, math.div($n - $n % 16, 16) + 1) +
+    list.nth($_hex, $n % 16 + 1);
+}
+
+@function _compact($value) {
+  @if meta.type-of($value) != color {
+    @return $value;
+  }
+
+  $c: color.to-space($value, rgb);
+
+  // Translucent values keep `rgba()` — an 8-digit hex is longer and worse
+  // supported — but still get integer channels. A computed scrim serialises as
+  // `rgba(73.9671585459%, 71.3162355991%, 69.4631564999%, 0.55)`, which is 55
+  // bytes of false precision for a colour nobody can distinguish from
+  // `rgba(189, 182, 177, 0.55)`.
+  @if color.channel($value, 'alpha') < 1 {
+    @return rgba(
+      math.round(color.channel($c, 'red', $space: rgb)),
+      math.round(color.channel($c, 'green', $space: rgb)),
+      math.round(color.channel($c, 'blue', $space: rgb)),
+      color.channel($value, 'alpha')
+    );
+  }
+
+  @return '#' + _byte(color.channel($c, 'red', $space: rgb)) +
+    _byte(color.channel($c, 'green', $space: rgb)) +
+    _byte(color.channel($c, 'blue', $space: rgb));
+}
+
+@mixin emit($tokens) {
+  @each $name, $value in $tokens {
+    @if $value != null {
+      #{var-name($name)}: #{_compact($value)};
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Scoping: themes vs contexts
+// -----------------------------------------------------------------------------
+//
+// THEME — a complete, self-sufficient set. Dark mode is a theme: nothing from
+// light mode is worth reusing, every surface and every foreground changes.
+// A theme declares EVERY token in the contract.
+//
+// CONTEXT (subtheme) — a partial override that inherits everything it does not
+// mention. A "brand" section with an inverted background is a context: spacing,
+// radius, typography and motion all stay. Contexts nest.
+//
+// Both are just custom properties on a selector, so inheritance does the work.
+// The only hard requirement is that components read `var(--app-…)` rather than
+// resolving against `:root`, which they do because `ref()` is the only accessor.
+
+// `$scheme` is `light` or `dark` and comes from `emit-theme()`, which MEASURES
+// the theme's page colour rather than reading its name.
+//
+// It used to be `@if $name == dark`. That works for a theme called `dark` and
+// silently fails for every other one: a product whose night theme is called
+// `caderninho-noite` — or `midnight`, or `sepia-escuro` — got
+// `color-scheme: light`, so the browser painted native scrollbars, form
+// controls, `<select>` popups and the canvas behind the page in light colours
+// on a dark interface. Nothing in CSS reports that; it just looks wrong at the
+// edges.
+//
+// Naming was doing the work of measuring, which is the same mistake as choosing
+// a token by the colour it produces instead of the job it names.
+@mixin theme($name, $default: false, $scheme: light) {
+  @if $default {
+    :root,
+    [data-theme='#{$name}'] {
+      color-scheme: $scheme;
+      @content;
+    }
+  } @else {
+    [data-theme='#{$name}'] {
+      color-scheme: $scheme;
+      @content;
+    }
+  }
+}
+
+// FOLLOWING THE OPERATING SYSTEM, without giving up the explicit switch.
+//
+// A theme selector answers "the user chose this". It cannot answer "the user
+// has not chosen, and their OS is in dark mode" — which is the state almost
+// every visitor arrives in, since nobody has clicked a toggle on their first
+// visit.
+//
+// The two have to coexist, and the order matters more than it looks:
+//
+//   :root:not([data-theme])   is 0,2,0 — it beats the plain `:root` that
+//                             carries the default theme, so the OS preference
+//                             applies to a page that has made no choice.
+//
+//   [data-theme='…']          is 0,1,0 — LOWER. That reads like a bug and is
+//                             not one: the moment the attribute exists, the
+//                             `:not()` stops matching at all, so the two
+//                             selectors are never in competition. Specificity
+//                             never gets a say.
+//
+// The consequence worth stating plainly: an explicit choice always wins,
+// including the choice to stay light on a machine set to dark. A toggle that
+// could be overruled by the OS is not a toggle.
+@mixin theme-auto($scheme) {
+  @media (prefers-color-scheme: #{$scheme}) {
+    :root:not([data-theme]) {
+      color-scheme: $scheme;
+      @content;
+    }
+  }
+}
+
+// Pairs that must move together. Overriding a background without its
+// foreground is the single most common way a subtheme ships unreadable text,
+// so the build fails instead of shipping it.
+//
+// To answer "I checked, and the inherited foreground is still correct", give
+// the foreground key an explicit `null`. That satisfies the invariant and emits
+// nothing. Do NOT satisfy it by pointing the token at itself
+// (`'fg-default': core.ref('fg-default')`) — a custom property that references
+// itself is a cycle, and the declaration is dropped as invalid.
+$_pairs: (
+  'bg-page': 'fg-default',
+  'bg-surface': 'fg-default',
+  'bg-raised': 'fg-default',
+  'bg-sunken': 'fg-default',
+  // The hover and pressed states of a neutral surface carry ordinary body
+  // text — a table row does not change its text colour when the pointer
+  // enters it. Listing them means a context that tints its row hover cannot
+  // forget that the row still has to be readable.
+  'bg-surface-hover': 'fg-default',
+  'bg-surface-active': 'fg-default',
+  'bg-action': 'fg-on-action',
+  'bg-action-hover': 'fg-on-action',
+  'bg-action-active': 'fg-on-action',
+  'bg-selected': 'fg-on-selected',
+  'bg-selected-hover': 'fg-on-selected',
+  'bg-selected-active': 'fg-on-selected',
+  'bg-neutral': 'fg-on-neutral',
+  'bg-neutral-hover': 'fg-on-neutral',
+  'bg-neutral-active': 'fg-on-neutral',
+  // `bg-disabled` is deliberately ABSENT. Its foreground is `fg-disabled` and
+  // the two do move together, but listing it here would push adapters to
+  // treat a disabled control as an ordinary readable pair — and WCAG 2.2
+  // exempts inactive components from 1.4.3 precisely because forcing the
+  // contrast erases the signal that the control is off.
+  'bg-success': 'fg-on-success',
+  'bg-warning': 'fg-on-warning',
+  'bg-danger': 'fg-on-danger',
+  'bg-info': 'fg-on-info'
+);
+
+// -----------------------------------------------------------------------------
+// Honouring the pair invariant OUTSIDE a context
+// -----------------------------------------------------------------------------
+//
+// `context()` above enforces the invariant mechanically, and for a long time
+// that was the only place it was enforced — which quietly left the largest
+// surface unguarded. An ADAPTER is the other place a background gets assigned,
+// and dropping the foreground half there fails in a nastier way, because the
+// library will not leave it undefined: it DERIVES one.
+//
+// Bulma is the worked example. Given only a background it computes
+// `--bulma-primary-invert-l: var(--bulma-primary-05-l)` — a near-black tint of
+// the same hue. That reads well on Bulma's own bright teal and is unreadable on
+// a dark brand colour, and it silently affected buttons, tags and notifications
+// at once because all three read that one variable.
+//
+// The foreground was never unknown. Layer 2 had `fg-on-action` the whole time.
+// So: whenever an adapter assigns a background, ask this map what goes on top,
+// and map that too.
+
+@function fg-for($bg) {
+  $fg: map.get($_pairs, $bg);
+  @if $fg == null {
+    @error 'fg-for("#{$bg}") — no foreground is paired with that background. '
+         + 'Either the name is wrong, or it is a token that should not be used '
+         + 'as a background at all (a `fg-*` role, for instance).';
+  }
+  @return $fg;
+}
+
+@function pairs() {
+  @return $_pairs;
+}
+
+@mixin context($selector, $tokens) {
+  @each $bg, $fg in $_pairs {
+    @if map.has-key($tokens, $bg) and not map.has-key($tokens, $fg) {
+      @error 'context "#{$selector}" overrides "#{$bg}" without "#{$fg}". '
+           + 'A background and its foreground must always move together, '
+           + 'otherwise this context inherits unreadable text.';
+    }
+  }
+
+  #{$selector} {
+    @include emit($tokens);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Layer helper
+// -----------------------------------------------------------------------------
+//
+// IMPORTANT, and counter-intuitive: unlayered CSS beats ALL layered CSS,
+// regardless of layer order. Wrapping the design system in a cascade layer
+// makes it WEAKER against a legacy stylesheet, not stronger.
+//
+// The way to win over existing project CSS is to put THAT code into an early
+// layer (`@import 'legacy.css' layer(legacy);`) so it becomes layered too and
+// the declared order applies. See app.css for the full ordering.
+
+@mixin in-layer($name) {
+  @layer #{$name} {
+    @content;
+  }
+}

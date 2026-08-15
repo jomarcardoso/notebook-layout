@@ -1,8 +1,10 @@
+@use '../ds/tokens' as component;
+
 @use '../utils.scss';
 
 .modal {
-  box-shadow: var(--shadow-primary);
-  border-radius: var(--border-radius-primary);
+  box-shadow: component.$modal-shadow;
+  border-radius: component.$modal-radius;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -32,7 +34,7 @@
     flex: 0 0 auto;
     gap: 8px;
     justify-content: flex-end;
-    min-height: var(--action-size);
+    min-height: component.$modal-footer-min-height;
     padding: 8px;
     flex-shrink: 0;
   }
@@ -42,7 +44,7 @@
   }
 
   @include utils.isDesktop {
-    box-shadow: var(--shadow);
-    border: var(--border);
+    box-shadow: component.$modal-dialog-shadow;
+    border: component.$modal-border-color;
   }
 }

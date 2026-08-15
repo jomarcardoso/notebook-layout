@@ -1,34 +1,36 @@
+@use '../../styles/ds/tokens' as component;
+
 @use '../../styles/utils.scss';
 
 .choice {
   display: grid;
-  grid-template-areas: var(--choice-gta);
-  border: var(--field-border);
-  border-radius: var(--border-radius-primary);
+  grid-template-areas: 'choice__img' 'choice__title' 'choice__desc';
+  border: component.$field-border;
+  border-radius: component.$choice-radius;
   width: 160px;
   background: transparent;
   color: inherit;
   text-align: center;
   text-decoration: none;
   padding: 8px;
-  gap: var(--gap);
+  gap: component.$choice-gap;
   cursor: pointer;
 
   &__img {
     grid-area: choice__img;
     font-size: 3.5rem;
-    color: var(--color-primary-main);
+    color: var(--app-fg-brand);
     line-height: 1;
   }
 
   &__title {
     grid-area: choice__title;
-    border: var(--choice__title-border);
+    border: component.$choice-title-border-width solid var(--app-fg-default);
     padding: 8px;
-    border-radius: var(--border-radius-secondary);
+    border-radius: component.$choice-title-radius;
     text-transform: uppercase;
-    text-decoration: var(--choice__title-text-decorations);
-    background-color: var(--color-white);
+    text-decoration: none;
+    background-color: component.$choice-title-bg;
   }
 
   &__desc {
@@ -36,14 +38,14 @@
   }
 
   @include utils.hover {
-    border-color: var(--field--active-border-color);
+    border-color: component.$choice-border-color-hover;
 
     .choice__img {
-      color: var(--color-primary-darker);
+      color: component.$choice-img-fg-hover;
     }
 
     .choice__title {
-      background-color: var(--choice--active__title-bg);
+      background-color: component.$choice-title-bg-hover;
     }
   }
 }

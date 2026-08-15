@@ -11,22 +11,22 @@
 }
 
 .fieldset {
-  border: var(--field-border);
-  border-radius: var(--field-border-radius);
-  padding: 0 var(--padding-x) 16px;
+  border: var(--app-field-border);
+  border-radius: var(--app-field-border-radius);
+  padding: 0 var(--app-pad-surface) 16px;
 
   > legend {
     font-weight: bold;
     padding: 8px;
-    font-size: var(--font-size);
+    font-size: var(--app-font-size);
   }
 
   > label {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: var(--font-size);
-    min-height: var(--action-size);
+    font-size: var(--app-font-size);
+    min-height: var(--app-size-control);
   }
 
   > p {

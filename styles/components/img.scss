@@ -1,3 +1,5 @@
+@use '../ds/tokens' as component;
+
 .img {
   border-radius: 1px;
 }
@@ -20,13 +22,13 @@
 ion-icon,
 .svg-icon {
   user-select: none;
-  width: var(--icon-size);
-  height: var(--icon-size);
+  width: component.$img-width;
+  height: component.$img-height;
   display: inline-block;
   fill: currentcolor;
   flex-shrink: 0;
   transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  font-size: var(--icon-size);
+  font-size: component.$img-font-size;
 
   &.large {
     --icon-size: 2.25rem;
@@ -34,5 +36,5 @@ ion-icon,
 }
 
 .logo {
-  width: calc(var(--bar-size) - var(--padding-y));
+  width: calc(var(--app-size-bar) - var(--app-pad-surface));
 }

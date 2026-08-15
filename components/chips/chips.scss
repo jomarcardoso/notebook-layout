@@ -1,12 +1,14 @@
+@use '../../styles/ds/tokens' as component;
+
 .chip {
   align-items: center;
-  border-radius: var(--border-radius-primary);
-  border: var(--chip-border);
-  mix-blend-mode: var(--chip-mix-blend-mode);
+  border-radius: component.$chip-radius;
+  border: component.$field-border;
   display: inline-flex;
   justify-content: center;
   line-height: 1;
-  min-height: var(--button-size);
+  mix-blend-mode: var(--app-blend-ink);
+  min-height: component.$button-size;
   padding: 4px 12px;
   position: relative;
   text-align: center;
@@ -21,9 +23,9 @@
   }
 
   &:has(input:checked) {
-    border-color: var(--chip-bg-active, var(--color-active));
-    background-color: var(--chip-bg-active, var(--color-active));
-    color: var(--chip-color-active, var(--color-active-contrast));
+    border-color: component.$chip-bg-selected;
+    background-color: component.$chip-bg-selected;
+    color: component.$chip-fg-selected;
   }
 }
 

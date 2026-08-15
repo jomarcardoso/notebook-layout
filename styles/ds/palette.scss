@@ -1,0 +1,169 @@
+// =============================================================================
+// NOTEBOOK-LAYOUT — LAYER 1, THE PRODUCT'S PALETTE
+// =============================================================================
+//
+// This is the design system for Caderninho de Receitas. It lives here, in the
+// library, rather than in any application: `www` is one consumer and there will
+// be others, and a palette that lives in a consumer is a palette the next
+// consumer has to copy.
+//
+// Layer 1's three rules hold:
+//
+//   1. Values are LITERAL. Nothing here points at another token.
+//   2. Values are STATIC. A ramp does not change between themes; what changes
+//      is which STEP a role reaches for.
+//   3. Values carry NO MEANING. `cocoa-800` does not mean "selected".
+//      Assigning meaning is `theme.scss`'s only job.
+//
+// It emits nothing: `theme.scss` reads it at build time and inlines literals.
+//
+// -----------------------------------------------------------------------------
+// THE TWO CHOCOLATES
+// -----------------------------------------------------------------------------
+//
+// The one thing to understand before reading `theme.scss`: there are two browns
+// doing two different jobs, and they are deliberately far apart.
+//
+//   cocoa    dark chocolate — desaturated, deep. Marks what is CHOSEN.
+//   toffee   milk chocolate — saturated, lighter. Marks a LINK.
+//
+// Measured against the paper: cocoa-800 sits at 10.24:1 and toffee-500 at
+// 5.48:1, a 1.87× separation in luminance on top of a 13-point jump in
+// saturation. They do not read as two steps of one colour; they read as two
+// colours, which is the whole requirement.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Paper — the neutral family, running from card-white to ink-black
+// -----------------------------------------------------------------------------
+//
+// One family rather than two. A notebook's paper and its ink are the same
+// substance at two ends of a range, and splitting them would mean deciding
+// arbitrarily where one stops. The dark end IS the ink.
+$paper: (
+  0: #ffffff,    // not paper at all — a sheet lifted clear off the page
+  50: #fdfaf4,   // a card: the reading surface
+  100: #fbf9f6,  // the page itself, under the noise texture
+  150: #f6f1e8,  // a card's header — one step down from its body
+  200: #f1ebe0,  // sunken wells, table stripes
+  300: #e3dacf,  // the soft rule between list items. Decorative, by design.
+  400: #d8ccbb,  // the default border
+  500: #b3a288,  // the strongest neutral line
+  600: #7d6c55,  // subtlest legible text
+  700: #5c4e3d,
+  800: #403831,  // muted text, icons
+  900: #28211c,  // body text
+  950: #140b08   // maximum emphasis
+);
+
+// -----------------------------------------------------------------------------
+// Cocoa — dark chocolate. What is CHOSEN, and the voice of headings.
+// -----------------------------------------------------------------------------
+$cocoa: (
+  50: #f7efe8,
+  100: #ecdbcc,  // the tint behind a chosen item — and behind a hovered one
+  200: #d9bda3,
+  300: #c09a76,
+  400: #a17a52,
+  500: #8d6d4f,
+  600: #806147,
+  700: #6d4423,
+  800: #5f3212,  // the brand: what is selected
+  900: #4c2711,  // pressed
+  950: #3a1d0d
+);
+
+// -----------------------------------------------------------------------------
+// Toffee — milk chocolate. A LINK.
+// -----------------------------------------------------------------------------
+//
+// The same hue family as cocoa and nothing like it in the eye: where cocoa is
+// 68% saturated at 22% lightness, toffee-500 is 81% at 33%. Warm, saturated,
+// closer to melted than to baked.
+//
+// The exact step was chosen BY THE BUILD, not by eye. #a25a12 was the first
+// pick and it measured 4.99:1 on the page — comfortable — but 4.42:1 on
+// `surface-active`, and the contrast gate refused to compile. This is the most
+// saturated step that clears 4.5:1 on all four surfaces a link can sit on.
+$toffee: (
+  50: #fdf1e4,
+  100: #f8ddc0,
+  200: #eebd8b,
+  300: #d99a55,
+  400: #bd7524,
+  500: #9a5410,  // a link. 4.85:1 at its worst, on a pressed surface.
+  600: #8a4a14,  // hovered: darker, so the contrast rises rather than falls
+  700: #743d13,
+  800: #5e3110,
+  900: #48250c,
+  950: #321908
+);
+
+// -----------------------------------------------------------------------------
+// Slate — the action fill
+// -----------------------------------------------------------------------------
+//
+// A desaturated blue, and a FILL: chosen to carry white text, which is exactly
+// what makes it the wrong colour to set a word in.
+$slate: (
+  50: #eef2f6,
+  100: #dbe3ec,
+  200: #b9c6d5,
+  300: #91a3b8,
+  400: #7c93a8,
+  500: #62798f,
+  600: #506679,
+  700: #425668,  // the primary button — white at 7.60:1
+  800: #354557,
+  900: #283442,
+  950: #1a222a
+);
+
+// -----------------------------------------------------------------------------
+// Pen — ballpoint blue. What the USER wrote, and nothing else.
+// -----------------------------------------------------------------------------
+//
+// Its scope is deliberately narrow: the text inside a field, and the tick in a
+// checkbox — a box on paper is ticked, not filled, and the tick is the user's
+// own mark. It is never an action colour and never a link.
+$pen: (
+  50: #e7eef8,
+  100: #cfe0f2,
+  200: #a5c6e6,
+  300: #6ea5d6,
+  400: #2d80c4,
+  500: #0e6bb8,
+  600: #005bac,  // the pen itself
+  700: #004a8c,
+  800: #003f78,
+  900: #002b52,
+  950: #001c36
+);
+
+// -----------------------------------------------------------------------------
+// Status — muted and earthy
+// -----------------------------------------------------------------------------
+//
+// The traditional hues pulled toward the notebook's warmth: unmistakably red,
+// green and amber, at a chroma that sits beside a photograph of food without
+// shouting over it.
+//
+// `info` has no ramp — it borrows `pen`. An informational note in a notebook
+// IS a pen note, and a fourth blue would be a colour with no job.
+$red: (
+  50: #fbeae7, 100: #f6d3cd, 200: #e9a89d, 300: #d97b6b, 400: #c85340,
+  500: #b23b28, 600: #9a2f1e, 700: #7f2617, 800: #661d11, 900: #4d160d,
+  950: #350f09
+);
+
+$green: (
+  50: #eef4e9, 100: #d9e7cd, 200: #b4cf9f, 300: #8db370, 400: #6b954b,
+  500: #547a37, 600: #44632c, 700: #375024, 800: #2b3f1c, 900: #203015,
+  950: #16210e
+);
+
+$amber: (
+  50: #fdf3e0, 100: #f9e2b8, 200: #f0c477, 300: #e3a441, 400: #d18a1f,
+  500: #b57315, 600: #945d11, 700: #784b0f, 800: #5e3b0c, 900: #472d09,
+  950: #301e06
+);

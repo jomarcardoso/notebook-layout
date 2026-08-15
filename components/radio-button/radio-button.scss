@@ -1,13 +1,15 @@
+@use '../../styles/ds/tokens' as component;
+
 .radio-button {
   align-items: center;
-  color: var(--field-color);
+  color: component.$field-fg;
   display: inline-flex;
-  height: var(--action-size);
+  height: component.$radio-button-height;
   justify-content: center;
   line-height: 1;
-  mix-blend-mode: multiply;
+  mix-blend-mode: var(--app-blend-ink);
   position: relative;
-  width: var(--action-size);
+  width: component.$radio-button-width;
 
   input {
     appearance: none;
@@ -27,7 +29,7 @@
     transition: opacity 150ms ease;
 
     [stroke-linecap='round'] {
-      color: var(--field-color);
+      color: component.$field-fg;
     }
 
     &--checked {

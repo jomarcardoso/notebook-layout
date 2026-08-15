@@ -1,88 +1,83 @@
+@use '../ds/tokens' as component;
+
 .table-container {
-  background: var(--table-container-bg);
-  border: var(--table-container-border);
-  border-radius: var(--table-container-border-radius);
-  box-shadow: var(--table-container-shadow);
+  background: component.$table-container-bg;
+  border: component.$table-container-border-width solid
+    component.$table-border-color;
+  border-radius: component.$table-container-radius;
+  box-shadow: none;
   max-width: 100%;
   overflow-x: auto;
   width: 100%;
 
   &--light {
-    --table-container-bg: var(
-      --table-container-bg-light,
-      var(--table-container-bg)
-    );
-    --table-container-border: var(
-      --table-container-border-light,
-      var(--table-container-border)
-    );
-    --table-container-shadow: var(
-      --table-container-shadow-light,
-      var(--table-container-shadow)
-    );
+    --table-container-bg: #{component.$table-container-bg};
+    --table-container-border: #{component.$table-container-border-width} solid
+      component.$table-border-color;
+    --table-container-shadow: none;
   }
 }
 
 .table {
   border-collapse: collapse;
   border-spacing: 0;
-  color: var(--table-color);
-  font-family: var(--table-font-family);
-  font-size: var(--table-font-size);
-  line-height: var(--table-line-height);
-  min-width: var(--table-min-width);
+  color: component.$table-fg;
+  font-family: component.$table-container-font-family;
+  font-size: 15px;
+  line-height: 1.35;
+  min-width: 100%;
   overflow: hidden;
-  table-layout: var(--table-layout);
-  text-align: var(--table-text-align);
+  table-layout: fixed;
+  text-align: left;
   width: 100%;
 
   &__caption {
-    background: var(--table-caption-bg);
-    border-top-left-radius: var(--table-caption-border-radius);
-    border-top-right-radius: var(--table-caption-border-radius);
-    color: var(--table-caption-color);
-    font-family: var(--table-caption-font-family);
-    font-size: var(--table-caption-font-size);
+    background: transparent;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color: component.$table-header-fg;
+    font-family: component.$table-container-caption-font-family;
+    font-size: 19px;
     mix-blend-mode: var(--table-caption-mix-blend-mode);
-    padding: var(--table-caption-padding);
+    padding: 11px 14px;
     text-align: center;
   }
 
   &__th {
-    border-bottom-width: var(--table-head-border-width);
-    font-weight: var(--table-head-font-weight);
+    border-bottom-width: 0.5px;
+    font-weight: bold;
   }
 
   &__td {
-    border-bottom-width: var(--table-row-border-width);
-    font-weight: var(--table-cell-font-weight);
+    border-bottom-width: 0.5px;
+    font-weight: normal;
   }
 
   &__th,
   &__td {
-    border-color: var(--table-border-color);
+    border-color: component.$table-border-color;
     border-style: solid;
-    border-width: 0 0 var(--table-row-border-width);
-    height: var(--table-cell-height);
-    padding: var(--table-cell-padding-block) var(--table-cell-padding-inline);
-    vertical-align: var(--table-cell-vertical-align);
+    border-width: 0 0 0.5px;
+    height: 44px;
+    padding: 8px 6px;
+    vertical-align: middle;
   }
 
   &__td--mono {
-    color: var(--table-code-color);
-    font-family: var(--table-code-font-family);
+    color: var(--app-fg-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   }
 
   &__td--accent {
-    color: var(--table-accent-color);
+    color: var(--app-fg-brand);
   }
 
   &__td--section {
-    background: var(--table-section-bg);
-    color: var(--table-section-color);
-    font-family: var(--table-section-font-family);
-    font-weight: var(--table-section-font-weight);
-    padding: var(--table-section-padding);
+    background: component.$table-header-bg;
+    color: component.$table-header-fg;
+    font-family: component.$table-container-td--section-font-family;
+    font-weight: 600;
+    padding: 8px;
   }
 
   &__tr:last-child .table__td {
@@ -91,18 +86,18 @@
 
   &--on-light,
   .table-container--light & {
-    --table-cell-padding-inline: var(--table-cell-padding-inline-light);
-    --table-head-border-width: var(--table-head-border-width-light);
-    --table-caption-font-size: var(--table-caption-font-size-light);
-    --table-caption-padding: var(--table-caption-padding-light);
-    --table-caption-border-radius: var(--table-caption-border-radius-light);
-    --table-caption-bg: var(--table-caption-bg-light);
-    --table-caption-color: var(--table-caption-color-light);
-    --table-caption-mix-blend-mode: var(--table-caption-mix-blend-mode-light);
+    --table-cell-padding-inline: 3px;
+    --table-head-border-width: 1.5px;
+    --table-caption-font-size: 17px;
+    --table-caption-padding: 7px 14px;
+    --table-caption-border-radius: #{component.$table-caption-radius};
+    --table-caption-bg: #{component.$table-caption-bg};
+    --table-caption-color: #{component.$table-caption-fg};
+    --table-caption-mix-blend-mode: var(--app-blend-ink);
   }
 
   &--on-light .table__tr:last-child .table__td,
   .table-container--light & .table__tr:last-child .table__td {
-    border-bottom-width: var(--table-row-border-width);
+    border-bottom-width: 0.5px;
   }
 }

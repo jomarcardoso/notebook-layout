@@ -1,8 +1,10 @@
+@use '../../styles/ds/tokens' as component;
+
 .carousel {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: var(--carousel-gap, 8px);
+  gap: component.$carousel-gap;
 
   &__banner {
     width: 100%;
@@ -22,7 +24,7 @@
 
   &__thumbs {
     display: flex;
-    gap: var(--carousel-gap, 8px);
+    gap: component.$carousel-thumbs-gap;
     overflow-x: auto;
     padding-block: 2px calc(var(--carousel-gap, 8px) / 2);
     scroll-snap-type: x mandatory;
@@ -30,11 +32,13 @@
   }
 
   &__thumb {
-    border: var(--carousel-thumb-border, var(--border-width)) solid
-      var(--carousel-thumb-border-color, transparent);
+    // Transparent until chosen, so selecting a thumbnail changes its colour
+    // rather than its size — a border that appears on selection shifts the
+    // whole strip by two pixels.
+    border: component.$carousel-thumb-border-width solid transparent;
     padding: 0;
     cursor: pointer;
-    opacity: var(--carousel-thumb-opacity, 1);
+    opacity: 1;
     scroll-snap-align: start;
     font: inherit;
     transition:
@@ -64,11 +68,8 @@
 
     &--active {
       opacity: 1;
-      border-color: var(
-        --carousel-thumb-border-color-active,
-        var(--color-active)
-      );
-      box-shadow: var(--shadow-primary-inset, none);
+      border-color: component.$carousel-indicator-border-color-active;
+      box-shadow: component.$carousel-indicator-shadow-active;
     }
   }
 }

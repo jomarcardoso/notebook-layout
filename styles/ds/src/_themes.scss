@@ -1,0 +1,653 @@
+// =============================================================================
+// THEMES AND CONTEXTS
+// =============================================================================
+//
+// THEME — a complete, self-sufficient set of colour decisions. Dark mode is a
+// theme: nothing from light is worth reusing, every surface and every
+// foreground changes. Selector: `[data-theme="…"]`, plus `:root` for the
+// default. A theme must define every key below or the build fails on a null.
+//
+// CONTEXT (subtheme) — a PARTIAL override that inherits everything it does not
+// mention. An inverted brand band, a sidebar on a tinted surface, a danger
+// zone in a settings page: spacing, radius, typography, motion and z-index all
+// stay. Selector: any attribute or class, and contexts nest freely because
+// custom properties inherit down the DOM.
+//
+// The rule that decides which one you are writing: if you find yourself
+// redefining the text colour AND the surface AND the borders AND the action
+// colour, it is a theme. If it is two or three pairs, it is a context.
+//
+// Contexts are validated by `core.context()`: overriding a background without
+// its foreground is a compile error, not a runtime contrast bug.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'base';
+@use 'core';
+@use 'config';
+@use 'semantic';
+
+// -----------------------------------------------------------------------------
+// Light — the default theme
+// -----------------------------------------------------------------------------
+
+$light: (
+  // Surfaces, from furthest back to closest to the viewer.
+  page: base.color(zinc, 50),
+  surface: base.color(white),
+  raised: base.color(white),
+  sunken: base.color(zinc, 100),
+  // `color.change`, not `rgba()`: the legacy function only accepts the sRGB
+  // family, and layer 1 is oklch throughout.
+  overlay: color.change(base.color(zinc, 950), $alpha: 0.55),
+
+  // Interaction on a neutral surface — a table row, a menu item, a list entry.
+  // A step down the same ramp in a light theme: closer to the pointer reads as
+  // heavier here, and as brighter in dark.
+  'surface-hover': base.color(zinc, 100),
+  'surface-active': base.color(zinc, 200),
+
+  // Text.
+  text: base.color(zinc, 900),
+  'text-muted': base.color(zinc, 600),
+  'text-subtlest': base.color(zinc, 400),
+  heading: base.color(zinc, 950),
+
+  // Neutral emphasis — the filled grey control. Dark enough to carry white
+  // text, so it reads as a sibling of the action button rather than as a
+  // surface someone forgot to colour.
+  neutral: base.color(zinc, 700),
+  'on-neutral': base.color(zinc, 50),
+  'neutral-hover': base.color(zinc, 800),
+  'neutral-active': base.color(zinc, 900),
+
+  // Disabled. Not measured by `check-contrast()` — WCAG exempts inactive
+  // controls — but still clearly separated from `surface` so the state reads.
+  disabled: base.color(zinc, 100),
+  'disabled-text': base.color(zinc, 400),
+
+  // Action — buttons, primary CTAs.
+  action: base.color(indigo, 600),
+  'on-action': base.color(white),
+  'action-hover': base.color(indigo, 700),
+  'action-active': base.color(indigo, 800),
+  'action-subtle': base.color(indigo, 50),
+  // The TEXT tone of the action role, as distinct from its fill. Without
+  // this, `fg-action` was an alias of `bg-action` — a fill reused as text,
+  // the exact mistake the outline/ghost variants make.
+  'action-text': base.color(indigo, 700),
+
+  // Selected — chips, menu items, tabs, active nav entries, and the second
+  // brand emphasis every component library asks for.
+  //
+  // Deliberately a DIFFERENT hue from `action`, and that is a change worth
+  // explaining. These two were the same indigo for a long time, on the grounds
+  // that a product can always diverge them later. The cost of that default only
+  // became visible through the adapters: a library with three brand intents
+  // (daisyUI's primary/secondary/accent, Bulma's primary/link) renders two of
+  // them identically, and a real modelling error — mapping two library roles
+  // onto one semantic role — looks exactly like a working theme.
+  //
+  // A default that hides a distinction teaches every consumer the wrong thing.
+  // Diverging costs nothing (same token count) and makes the collapse visible
+  // the moment it happens. Collapse them back in your own theme if your product
+  // genuinely has one brand colour.
+  selected: base.color(teal, 700),
+  'on-selected': base.color(white),
+  'selected-hover': base.color(teal, 800),
+  'selected-active': base.color(teal, 900),
+  'selected-subtle': base.color(teal, 100),
+  'selected-text': base.color(teal, 800),
+
+  // Navigation.
+  link: base.color(indigo, 700),
+  'link-hover': base.color(indigo, 800),
+  'link-visited': base.color(violet, 700),
+
+  // Lines.
+  border: base.color(zinc, 200),
+  'border-subtle': base.color(zinc, 100),
+  'border-strong': base.color(zinc, 300),
+  ring: base.color(indigo, 500),
+
+  // Elevation.
+  'shadow-raised': base.scale(shadow, sm),
+  'shadow-overlay': base.scale(shadow, lg),
+
+  // Status.
+  // Status. `-hover` is one step down the ramp, the same move `action-hover`
+  // makes, so a status button darkens like every other button.
+  // Status fills sit at 700, not 600. White on green-600 is 3.22:1 and on
+  // sky-600 is 4.02:1 — both fail AA for body text, which the build now
+  // refuses to let past. Green and blue read lighter than their step number
+  // suggests, so they need one more step than red does.
+  success: base.color(green, 700),
+  'on-success': base.color(white),
+  'success-hover': base.color(green, 800),
+  'success-active': base.color(green, 900),
+  'success-subtle': base.color(green, 50),
+  'success-text': base.color(green, 800),
+  'success-border': base.color(green, 200),
+
+  // Warning is the one role whose pair is INVERTED — dark text on a light
+  // fill — and that inverts the direction of its states too.
+  //
+  // Every other role here darkens on interaction, because a darker fill moves
+  // AWAY from white text. Warning's text is dark, so darkening moves the fill
+  // TOWARDS it. Measured on this ramp: amber-950 reads 6.99:1 on amber-500,
+  // 4.70:1 on amber-600 and 2.97:1 on amber-700 — the ladder runs out after
+  // two steps and the third is unreadable at any size.
+  //
+  // So warning BRIGHTENS on interaction. It looks right (an amber control
+  // lighting up) and it is the only direction that keeps the label legible,
+  // which is the same "move the fill, not the text" fix the dark theme's
+  // `action` needed for the mirror-image reason.
+  warning: base.color(amber, 500),
+  'on-warning': base.color(amber, 950),
+  'warning-hover': base.color(amber, 400),
+  'warning-active': base.color(amber, 300),
+  'warning-subtle': base.color(amber, 50),
+  'warning-text': base.color(amber, 800),
+  'warning-border': base.color(amber, 200),
+
+  danger: base.color(red, 600),
+  'on-danger': base.color(white),
+  'danger-hover': base.color(red, 700),
+  'danger-active': base.color(red, 800),
+  'danger-subtle': base.color(red, 50),
+  'danger-text': base.color(red, 800),
+  'danger-border': base.color(red, 200),
+
+  info: base.color(sky, 700),
+  'on-info': base.color(white),
+  'info-hover': base.color(sky, 800),
+  'info-active': base.color(sky, 900),
+  'info-subtle': base.color(sky, 50),
+  'info-text': base.color(sky, 800),
+  'info-border': base.color(sky, 200)
+);
+
+// -----------------------------------------------------------------------------
+// Dark
+// -----------------------------------------------------------------------------
+//
+// Note the two things that are NOT a mirror of light, and that catch every
+// system built by naive inversion:
+//
+//   - `raised` is LIGHTER than `surface`, not darker. In dark UIs elevation is
+//     expressed by lifting luminance, because shadows are invisible on near
+//     black. `shadow-raised` is correspondingly reduced to almost nothing.
+//   - Action and status colours move UP the ramp (600 -> 500/400), because the
+//     same hue that reads as vivid on white reads as muddy on near black.
+
+$dark: (
+  page: base.color(zinc, 950),
+  surface: base.color(zinc, 900),
+  raised: base.color(zinc, 800),
+  sunken: base.color(zinc, 950),
+  overlay: color.change(base.color(black), $alpha: 0.7),
+
+  // Hover LIFTS here rather than deepening — the same reason `raised` is
+  // lighter than `surface` in this theme. This is also the pair that exposed
+  // why the token had to exist: `sunken` is `zinc-950`, identical to `page`, so
+  // every adapter that had been borrowing it for hover was resolving to no
+  // visible change on a page-level row.
+  //
+  // Pressed goes the OTHER way, and that is measured rather than chosen. The
+  // ramp has exactly one step of headroom above `surface`: `text-muted` reads
+  // 5.66:1 on zinc-800 and 3.98:1 on zinc-700, so a second lift would put
+  // ordinary secondary text below AA. Recessing on press is both readable and
+  // the more literal metaphor.
+  'surface-hover': base.color(zinc, 800),
+  'surface-active': base.color(zinc, 950),
+
+  text: base.color(zinc, 100),
+  'text-muted': base.color(zinc, 400),
+  'text-subtlest': base.color(zinc, 500),
+  heading: base.color(white),
+
+  // Neutral emphasis. A grey FILL, so it stays a mid-dark step rather than
+  // following the bright-fill/dark-text pattern the intents use here — a
+  // neutral control that glows reads as an action, which is the one thing it
+  // is defined not to be.
+  neutral: base.color(zinc, 700),
+  'on-neutral': base.color(zinc, 100),
+  // Hover lifts, press recedes — the same measured constraint as the surface
+  // states in this theme. Continuing UP the ramp put the label at 4.39:1.
+  'neutral-hover': base.color(zinc, 600),
+  'neutral-active': base.color(zinc, 800),
+
+  disabled: base.color(zinc, 800),
+  'disabled-text': base.color(zinc, 500),
+
+  // Bright fill, dark text — the pattern the status roles below already used,
+  // which `action` and `danger` were the only two not following.
+  //
+  // The old pairing was indigo-500 with white, and it broke on interaction:
+  // hover brightens to indigo-400, where white drops to 3.12:1. There is no
+  // single foreground that works for both a 500 fill and a 400 hover, so the
+  // fill has to move rather than the text. Going brighter and flipping to dark
+  // text also means hover can keep brightening, which is what a dark theme
+  // wants, instead of having to darken to protect contrast.
+  action: base.color(indigo, 400),
+  'on-action': base.color(indigo, 950),
+  'action-hover': base.color(indigo, 300),
+  'action-active': base.color(indigo, 200),
+  'action-subtle': base.color(indigo, 950),
+  'action-text': base.color(indigo, 300),
+
+  // Distinct from `action` for the reason spelled out in `$light`. Dark takes
+  // the foreground down the ramp rather than to white, the same move the status
+  // roles make here — a 500-step colour is light enough that white text on it
+  // is the weaker pairing.
+  selected: base.color(teal, 500),
+  'on-selected': base.color(teal, 950),
+  'selected-hover': base.color(teal, 400),
+  'selected-active': base.color(teal, 300),
+  'selected-subtle': base.color(teal, 950),
+  'selected-text': base.color(teal, 300),
+
+  link: base.color(indigo, 300),
+  'link-hover': base.color(indigo, 200),
+  'link-visited': base.color(violet, 300),
+
+  border: base.color(zinc, 800),
+  'border-subtle': base.color(zinc, 900),
+  'border-strong': base.color(zinc, 700),
+  ring: base.color(indigo, 400),
+
+  'shadow-raised': base.scale(shadow, '2xs'),
+  'shadow-overlay': base.scale(shadow, md),
+
+  // Status. In dark, `-hover` moves UP the ramp for the same reason the base
+  // colours do — brightening reads as "closer" on a dark surface.
+  success: base.color(green, 500),
+  'on-success': base.color(green, 950),
+  'success-hover': base.color(green, 400),
+  'success-active': base.color(green, 300),
+  'success-subtle': base.color(green, 950),
+  'success-text': base.color(green, 300),
+  'success-border': base.color(green, 800),
+
+  warning: base.color(amber, 400),
+  'on-warning': base.color(amber, 950),
+  'warning-hover': base.color(amber, 300),
+  'warning-active': base.color(amber, 200),
+  'warning-subtle': base.color(amber, 950),
+  'warning-text': base.color(amber, 300),
+  'warning-border': base.color(amber, 800),
+
+  danger: base.color(red, 400),
+  'on-danger': base.color(red, 950),
+  'danger-hover': base.color(red, 300),
+  'danger-active': base.color(red, 200),
+  'danger-subtle': base.color(red, 950),
+  'danger-text': base.color(red, 300),
+  'danger-border': base.color(red, 800),
+
+  info: base.color(sky, 500),
+  'on-info': base.color(sky, 950),
+  'info-hover': base.color(sky, 400),
+  'info-active': base.color(sky, 300),
+  'info-subtle': base.color(sky, 950),
+  'info-text': base.color(sky, 300),
+  'info-border': base.color(sky, 800)
+);
+
+// -----------------------------------------------------------------------------
+// Brand — a warm, earthy identity built from five supplied colours
+// -----------------------------------------------------------------------------
+//
+// This theme exists to test the claim the architecture makes: that adding a
+// theme is a set of colour DECISIONS, not a rewrite. Nothing below this file
+// changed to accommodate it — no new token name, no adapter edit, no component
+// edit. Both adapters picked it up for free.
+//
+// Two decisions worth naming, because they are the interesting part:
+//
+//   - `action` is cocoa and `selected` is steel. In `light` the two share a hue
+//     and the README lists collapsing them as an open question. Here they are
+//     genuinely different colours, which is what those two roles being separate
+//     was FOR. Anything reading `bg-selected` now visibly diverges from
+//     anything reading `bg-action` — with no code change anywhere.
+//
+//   - Status colours stay on the stock ramps. A brand palette says what the
+//     product looks like; it does not get to say that danger is brown. Warning
+//     and danger are re-tinted slightly warm to sit with the palette, but they
+//     stay recognisably amber and red.
+
+$brand: (
+  // Surfaces. The supplied palette gives these directly: the near-white is the
+  // raised/surface level and the cream is the page behind it, which is the
+  // right way round — the page should recede.
+  page: base.color(parchment, 100),
+  surface: base.color(parchment, 50),
+  raised: base.color(parchment, 50),
+  sunken: base.color(parchment, 200),
+  overlay: color.change(base.color(parchment, 950), $alpha: 0.55),
+
+  // Hover lands on the page tone and pressed one step past it. `parchment-300`
+  // was the obvious third step and `text-muted` reads 4.26:1 on it — below AA,
+  // and invisible until the surface states joined the contrast matrix.
+  'surface-hover': base.color(parchment, 100),
+  'surface-active': base.color(parchment, 200),
+
+  // Text.
+  text: base.color(parchment, 900),
+  'text-muted': base.color(parchment, 600),
+  'text-subtlest': base.color(parchment, 500),
+  heading: base.color(parchment, 950),
+
+  // Neutral emphasis stays in the parchment family rather than introducing a
+  // fourth grey — the same argument the borders below make.
+  neutral: base.color(parchment, 700),
+  'on-neutral': base.color(parchment, 50),
+  'neutral-hover': base.color(parchment, 800),
+  'neutral-active': base.color(parchment, 900),
+
+  disabled: base.color(parchment, 200),
+  'disabled-text': base.color(parchment, 500),
+
+  // Action — cocoa.
+  action: base.color(cocoa, 700),
+  'on-action': base.color(parchment, 50),
+  'action-hover': base.color(cocoa, 800),
+  'action-active': base.color(cocoa, 900),
+  'action-subtle': base.color(cocoa, 100),
+  'action-text': base.color(cocoa, 800),
+
+  // Selected — steel. Deliberately a different family from action.
+  selected: base.color(steel, 600),
+  'on-selected': base.color(parchment, 50),
+  'selected-hover': base.color(steel, 700),
+  'selected-active': base.color(steel, 800),
+  'selected-subtle': base.color(steel, 100),
+  'selected-text': base.color(steel, 800),
+
+  // Navigation. Cocoa one step darker than `action` so a link reads as text
+  // rather than as a button that lost its background.
+  link: base.color(cocoa, 800),
+  'link-hover': base.color(cocoa, 900),
+  'link-visited': base.color(steel, 800),
+
+  // Lines — the neutral family, so borders sit in the palette rather than
+  // introducing a fourth grey.
+  border: base.color(parchment, 300),
+  'border-subtle': base.color(parchment, 200),
+  'border-strong': base.color(parchment, 400),
+  ring: base.color(cocoa, 600),
+
+  'shadow-raised': base.scale(shadow, sm),
+  'shadow-overlay': base.scale(shadow, lg),
+
+  // Status — stock ramps, warmed slightly to sit with the palette.
+  success: base.color(green, 700),
+  'on-success': base.color(parchment, 50),
+  'success-hover': base.color(green, 800),
+  'success-active': base.color(green, 900),
+  'success-subtle': base.color(green, 50),
+  'success-text': base.color(green, 800),
+  'success-border': base.color(green, 200),
+
+  // Dark text on amber, not light. Amber reads far lighter than its step
+  // number suggests: the near-white foreground the rest of this theme uses
+  // gives 3.04:1 here, which the build rejects. This is the one status role
+  // where the pair inverts, in every theme.
+  //
+  // And because the pair inverts, the STATES invert with it — this theme
+  // brightens on interaction where every other role darkens. See `$light` for
+  // the measurements. The old ladder went the other way and its hover sat at
+  // 3.79:1, below AA, unnoticed for as long as only the resting pair was
+  // checked. Generating the state pairs is what surfaced it.
+  warning: base.color(amber, 600),
+  'on-warning': base.color(parchment, 950),
+  'warning-hover': base.color(amber, 500),
+  'warning-active': base.color(amber, 400),
+  'warning-subtle': base.color(amber, 50),
+  'warning-text': base.color(amber, 800),
+  'warning-border': base.color(amber, 200),
+
+  danger: base.color(red, 700),
+  'on-danger': base.color(parchment, 50),
+  'danger-hover': base.color(red, 800),
+  'danger-active': base.color(red, 900),
+  'danger-subtle': base.color(red, 50),
+  'danger-text': base.color(red, 800),
+  'danger-border': base.color(red, 200),
+
+  // Sky, not steel. `selected` is already steel-600 in this theme, and pointing
+  // `info` at the same value made Bulma's `is-link` and `is-info` render
+  // identically — a theme hiding a distinction the system deliberately models,
+  // which is the same mistake the stock light/dark themes made with
+  // `action`/`selected`. Status colours should stay recognisable anyway: a
+  // brand palette says what the product looks like, not that information is
+  // brown-grey.
+  info: base.color(sky, 700),
+  'on-info': base.color(parchment, 50),
+  'info-hover': base.color(sky, 800),
+  'info-active': base.color(sky, 900),
+  'info-subtle': base.color(sky, 50),
+  'info-text': base.color(sky, 800),
+  'info-border': base.color(sky, 200)
+);
+
+$registry: (light: $light, dark: $dark, brand: $brand);
+
+// -----------------------------------------------------------------------------
+// Contexts — subthemes
+// -----------------------------------------------------------------------------
+//
+// These are deliberately short. A context that grows past a dozen tokens is a
+// theme wearing a disguise; promote it and stop paying the inheritance tax.
+
+// `$choices` is optional and exists because the INVERTED context was the one
+// part of layer 2 a product could not theme.
+//
+// The band's four colours were hardcoded to zinc. That is a reasonable default
+// and it is wrong for any brand whose dark band is not grey — Booking.com's
+// header is navy `#003b95`, and reproducing it meant either editing this
+// vendored file or abandoning the context and hand-writing the band, which is
+// exactly the fork the architecture exists to avoid.
+//
+// Four optional theme keys now cover it, each falling back to what was there:
+//
+//   inverted           the band's surface
+//   on-inverted        its foreground
+//   inverted-muted     secondary text on it
+//   inverted-border    lines on it
+//
+// A theme that says nothing gets the zinc band it always got.
+@mixin emit-contexts($choices: ()) {
+  $inverted: map.get($choices, 'inverted') or base.color(zinc, 900);
+  $on-inverted: map.get($choices, 'on-inverted') or base.color(zinc, 50);
+  $inverted-muted: map.get($choices, 'inverted-muted') or base.color(zinc, 400);
+  $inverted-border: map.get($choices, 'inverted-border') or base.color(zinc, 700);
+  // Defaults to the band's own foreground. A brand that wants a tinted link on
+  // its dark band sets this and gets measured on it like everything else.
+  $inverted-link: map.get($choices, 'inverted-link') or $on-inverted;
+  // The band needs its OWN interaction wash, for the third time this context
+  // has taught the same lesson: a surface that overrides some roles and not
+  // others ships a broken state.
+  //
+  // `bg-surface-hover` is a light-page token by definition — a step DOWN a
+  // light ramp. Inside a dark band it is nearly invisible, so every hoverable
+  // thing on a navy header had no hover at all. A translucent white is the
+  // right default because it composes over whatever the band happens to be.
+  $inverted-hover: map.get($choices, 'inverted-hover') or rgb(255 255 255 / 0.12);
+  $inverted-active: map.get($choices, 'inverted-active') or rgb(255 255 255 / 0.2);
+
+  @include core.in-layer(config.$layer-semantic) {
+    // Inverted band: hero sections, footers, promotional strips.
+    // Works under BOTH themes because it names its own pair explicitly.
+    @include core.context(
+      '[data-surface="inverted"]',
+      (
+        'bg-page': core.ref('bg-inverted-base'),
+        'bg-surface': core.ref('bg-inverted-base'),
+        'fg-default': core.ref('fg-inverted-base'),
+        'fg-heading': core.ref('fg-inverted-base'),
+        'fg-muted': $inverted-muted,
+        'border-color': $inverted-border,
+
+        // THE INTERACTIVE INKS, and their absence was a real bug for as long
+        // as this context has existed.
+        //
+        // The band flipped its surface and its body text and left `fg-link`,
+        // `fg-action` and `border-action` pointing at values chosen for a light
+        // page. Every footer link inside an inverted band therefore rendered in
+        // the light-theme link colour on a dark ground. The Booking study
+        // measured it at **1.2:1** — invisible, and it had been shipping.
+        //
+        // It survived because none of the earlier demo pages put a LINK inside
+        // an inverted band, which is a reminder that a context is only as
+        // tested as the markup someone happened to write. A footer is the most
+        // common inverted band there is.
+        //
+        // They take the band's own foreground rather than a tinted brand
+        // colour: on a dark ground the underline carries the affordance and the
+        // colour cannot, because any brand hue dark enough to read as a link on
+        // white is too dark to read on navy.
+        'fg-link': $inverted-link,
+        'fg-link-hover': $inverted-link,
+        'fg-link-visited': $inverted-link,
+        'bg-surface-hover': $inverted-hover,
+        'bg-surface-active': $inverted-active
+        //
+        // `fg-action` and `border-action` are DELIBERATELY NOT flipped here,
+        // and the first attempt did flip them — which broke the Booking header
+        // in the opposite direction, to 1:1.
+        //
+        // A link is always inline text directly on the band, so the band can
+        // decide its colour. An ACTION may not be: Booking's header buttons are
+        // white chips that bring their own surface onto the navy, and giving
+        // them white ink made them white-on-white. Itaú's are text buttons
+        // sitting directly on the band and do want the flip.
+        //
+        // The context cannot know which, so it declines to guess. A product
+        // whose actions sit directly on the band adds the two lines to its own
+        // context — `example/ds-itau-shadcn-phase3` does exactly that.
+      )
+    );
+
+    // Secondary surface: sidebars, wells, table headers. The most common
+    // subtheme, and the reason `bg-sunken` exists in the contract.
+    @include core.context(
+      '[data-surface="sunken"]',
+      (
+        'bg-surface': core.ref('bg-sunken'),
+        // `null`, not `core.ref('fg-default')`. The pair invariant demands that
+        // this key be considered, and it has been: a sunken surface is a tint
+        // of the same theme, so the inherited foreground is already correct.
+        // Writing `--app-fg-default: var(--app-fg-default)` would say the same
+        // thing as a self-reference, which is a cycle and therefore invalid.
+        // `null` is the documented way to answer "checked, unchanged" — it
+        // satisfies the invariant and emits nothing.
+        'fg-default': null,
+        'border-color': core.ref('border-color-subtle')
+      )
+    );
+
+    // A SURFACE CONTEXT HAS TO PAINT ITSELF.
+    //
+    // `core.context()` emits custom properties and nothing else, which is
+    // right for the general helper — a context may be applied to a wrapper
+    // that should not have a background. These two are different: they are
+    // named SURFACE, and a reader who writes `data-surface="inverted"` expects
+    // a dark band, not a set of variables that something else must remember
+    // to consume.
+    //
+    // Found by forgetting. The Booking study put `data-surface="inverted"` on
+    // its navy header and the header rendered transparent: the tokens were
+    // right and nothing painted them. Worse, every white control inside then
+    // read the overridden `bg-surface` and turned navy on a white page — one
+    // missing declaration producing a bug that looked like a theme error.
+    [data-surface="inverted"],
+    [data-surface="sunken"] {
+      background-color: #{core.ref("bg-surface")};
+      color: #{core.ref("fg-default")};
+    }
+
+    // Density, not colour: no pair to honour, just the one knob.
+    [data-density='compact'] {
+      --#{config.$prefix}-space-unit: 0.2rem;
+    }
+
+    // The two anchors the inverted context leans on.
+    :root {
+      --#{config.$prefix}-bg-inverted-base: #{$inverted};
+      --#{config.$prefix}-fg-inverted-base: #{$on-inverted};
+    }
+
+    // Only meaningful when the built-in dark theme is compiled. A product
+    // shipping its own single theme never matches this selector, so the
+    // hardcoded zinc here costs it nothing.
+    [data-theme='dark'] {
+      --#{config.$prefix}-bg-inverted-base: #{base.color(zinc, 800)};
+      --#{config.$prefix}-fg-inverted-base: #{base.color(white)};
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Orchestration
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// Contrast validation
+// -----------------------------------------------------------------------------
+//
+// The pair invariant guarantees a foreground is DECLARED for every background.
+// It cannot say whether that foreground is READABLE, and that gap is where
+// accessibility regressions hide: a theme with a complete, well-formed set of
+// pairs can still ship white text on amber.
+//
+// So every theme is measured at build time. This costs nothing at runtime — it
+// is Sass arithmetic that produces no CSS — and it is the difference between
+// "we intend the system to be accessible" and "the build will not let it stop
+// being accessible".
+//
+// The ladder is deliberate rather than a single threshold:
+//   below 3.0   -> error. Unreadable at any size; this is a broken theme.
+//   3.0 to 4.5  -> warn. Legal for large text only, which is a real choice for
+//                  a badge or a heading, so it is surfaced rather than blocked.
+//   4.5 and up  -> silent. AA for body text.
+//
+// Pairs are listed as THEME keys rather than derived from `core.pairs()`,
+// because the surface pairs (`page`/`text`) do not follow the `X`/`on-X`
+// convention the intent pairs do, and spelling them out is clearer than
+// encoding the exception.
+
+// The contrast machinery now lives in `_semantic.scss`, beside the token
+// contract it measures, because `emit-theme()` has to run it and a module
+// cannot import the module that imports it. `themes.check-contrast()` is kept
+// as a forwarder: it is the standalone form, useful for measuring a theme map
+// without emitting it.
+@mixin check-contrast($name, $choices) {
+  @include semantic.check-contrast($name, $choices);
+}
+
+@mixin emit() {
+  @include semantic.emit-structure();
+
+  // The FIRST theme in `$themes` also lands on `:root`, so it applies before
+  // any `data-theme` attribute is set. Keying this on the literal name `light`
+  // instead would leave a project that compiles only `(dark)` with every token
+  // undefined until something wrote the attribute.
+  $default-theme: list.nth(config.$themes, 1);
+
+  @each $name in config.$themes {
+    $choices: map.get($registry, $name);
+    @if $choices == null {
+      @error 'themes: "#{$name}" is listed in $themes but not defined.';
+    }
+    @include semantic.emit-theme(
+      $name,
+      $choices,
+      $default: $name == $default-theme
+    );
+  }
+
+  @include emit-contexts();
+}

@@ -1,10 +1,44 @@
-@use './utils/theme' as *;
+// =============================================================================
+// NOTEBOOK-LAYOUT — the component stylesheets
+// =============================================================================
+//
+// Components only. No variables, no themes, no palette.
+//
+// -----------------------------------------------------------------------------
+// WHAT LEFT THIS FILE
+// -----------------------------------------------------------------------------
+//
+// It used to forward `variables` and `themes/theme-white`, and to define three
+// theme classes of its own:
+//
+//     .theme-base    { @include theme-base; }
+//     .theme-light   { @include theme-light; }
+//     .theme-primary { @include theme-primary; }
+//     :root          { @extend .theme-light; }
+//
+// All four are gone, along with the six files behind them. The design system is
+// the foundation in `styles/ds/`, which holds every token across three layers:
+//
+//     layer 1  ds/palette.scss   what the colours ARE
+//     layer 2  ds/theme.scss     what they MEAN, plus the surfaces
+//     layer 3  ds/theme.scss     the product's component tokens
+//
+// The three mixins became two surfaces. `theme-base` was a near-white sheet,
+// which the foundation already had as `base`; `theme-light` was that sheet under
+// the paper texture and survives as `paper`; `theme-primary` was named for the
+// brand and implemented as a third light sheet, so it was replaced by `brand`,
+// which is the brand fill with the foreground the contrast gate measured against
+// it. See `surfaces()` in `ds/theme.scss`.
+//
+// The `:root { @extend .theme-light }` at the end is what made the paper texture
+// the document default. `surfaces()` applies it to `.app-layout` instead, which
+// is the element that actually IS the sheet — extending a theme class onto
+// `:root` also dragged its `background-image` onto the html element, where a
+// texture cannot be turned off by any child.
+// =============================================================================
 
-@forward 'variables';
 @forward 'resets';
-
 @forward 'typography';
-@forward 'themes/theme-white';
 
 @forward 'helpers/media';
 @forward 'helpers/scroll';
@@ -20,24 +54,8 @@
 @forward 'components/progressbar';
 @forward 'components/progress-indicator';
 
-.theme-base {
-  @include theme-base;
-}
-
-.theme-light {
-  @include theme-light;
-}
-
-.theme-primary {
-  @include theme-primary;
-}
-
-:root {
-  @extend .theme-light;
-}
-
 hr {
-  border-bottom: var(--border);
+  border-bottom: var(--app-border);
 }
 
 *:disabled {

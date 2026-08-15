@@ -1,15 +1,16 @@
 // components/breadcrumbs/breadcrumbs.tsx
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import { generateClasses } from '../../utils/utils';
-import './breadcrumbs.scss';
 
 export interface BreadcrumbItem {
   label: ReactNode;
   href?: string;
 }
 
-export interface BreadcrumbsProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+export interface BreadcrumbsProps extends Omit<
+  HTMLAttributes<HTMLElement>,
+  'children'
+> {
   items?: BreadcrumbItem[];
   label?: string;
   linkComponent?: ElementType<{ children: ReactNode; href: string }>;

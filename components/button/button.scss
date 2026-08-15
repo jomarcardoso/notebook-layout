@@ -1,21 +1,65 @@
+@use '../../styles/ds/tokens' as component;
+
+// =============================================================================
+// BUTTON
+// =============================================================================
+//
+// This file used to carry 48 lines of `--cui-btn-*` colour declarations across
+// `.btn-primary`, `.btn-outline-secondary` and `.btn-link`. They are gone, and
+// what replaced them is nothing: the CoreUI adapter binds every button variant
+// already, on the PROPERTY rather than the variable, from `vendor-config`.
+//
+// Which means those 48 lines were not merely redundant — most were DEAD. A
+// property declaration in a later layer beats a variable read in an earlier
+// one, so `--cui-btn-bg` written here never reached the page. The file
+// described a button that was not rendering, and it described it wrongly:
+//
+//     --cui-btn-bg: var(--action-primary-bg, var(--color-primary-main));
+//                                            ^ cocoa — the SELECTION colour
+//
+// A primary button in the selection colour is the confusion the whole system
+// exists to prevent. It survived because it was invisible twice over: dead in
+// the cascade, and written in a vocabulary (`primary`) that has no word for the
+// distinction it was getting wrong.
+//
+// -----------------------------------------------------------------------------
+// WHAT STAYS
+// -----------------------------------------------------------------------------
+//
+// Geometry and this product's own anatomy: the uppercase label, the icon
+// sizing, the `small` second line, and the invisible `::before` that extends
+// the tap target to 44px without changing the visual height. None of that is a
+// colour and none of it is CoreUI's business.
+//
+// The three emphases come from the adapter and are one colour at three
+// strengths — `.btn-primary` filled, `.btn-outline-primary` bordered,
+// `.btn-ghost-primary` label-only. Emphasis is carried by fill, border and
+// nothing; never by hue.
+// =============================================================================
+
 .btn {
-  --cui-btn-font-family: var(--font-family-body);
-  --cui-btn-font-size: var(--button-font-size);
+  // Type and metrics. `--button-*` are the library's own geometry tokens, which
+  // the adapter points at layer 2.
+  --cui-btn-font-family: #{component.$button-font-family};
+  --cui-btn-font-size: #{component.$button-font-size};
   --cui-btn-font-weight: 700;
   --cui-btn-line-height: normal;
-  --cui-btn-padding-y: var(--button-padding-y);
-  --cui-btn-padding-x: var(--button-padding-x);
-  --cui-btn-border-radius: var(--border-radius-primary);
-  --cui-btn-box-shadow: var(--action-shadow);
-  --cui-btn-focus-box-shadow: 0 0 0 0.25rem
-    color-mix(in srgb, var(--color-secondary-main) 25%, transparent);
+  --cui-btn-padding-y: #{component.$button-pad-y};
+  --cui-btn-padding-x: #{component.$button-pad-x};
+  --cui-btn-border-radius: #{component.$button-radius};
+
+  // The focus ring. It was a `color-mix()` of the old secondary colour at 25%,
+  // which is the shape of an adapter inventing a value — the system has a ring
+  // and it is `--app-ring`, sized and offset by its own tokens.
+  --cui-btn-focus-box-shadow: 0 0 0 #{component.$button-ring-width}
+    #{component.$button-ring};
 
   --button__icon-font-size: 1.2em;
   --button__icon-margin-left: -0.15rem;
   --button__small-font-size: 0.75em;
   --button__small-text-transform: none;
   --size-difference: calc(
-    (((44px - var(--button-size)) / 2) + var(--border-width)) * -1
+    (((44px - component.$button-size) / 2) + #{component.$button-border-width}) * -1
   );
 
   align-items: center;
@@ -23,7 +67,7 @@
   justify-content: center;
   letter-spacing: 0.03125rem;
   max-width: 320px;
-  min-height: var(--button-size);
+  min-height: component.$button-size;
   position: relative;
   text-transform: uppercase;
   white-space: nowrap;
@@ -53,6 +97,9 @@
     }
   }
 
+  // Extends the hit area to the 44px floor without changing how tall the button
+  // looks. A phone in a kitchen gets the full target; the layout does not pay
+  // for it.
   &::before {
     bottom: var(--size-difference);
     content: '';
@@ -63,51 +110,16 @@
   }
 }
 
-.btn-primary {
-  --cui-btn-color: var(--action-primary-color);
-  --cui-btn-bg: var(--action-primary-bg, var(--color-primary-main));
-  --cui-btn-border-width: 0;
-  --cui-btn-border-color: transparent;
-  --cui-btn-hover-color: var(--action-primary-color-active);
-  --cui-btn-hover-bg: var(--action-primary-bg-active);
-  --cui-btn-hover-border-color: transparent;
-  --cui-btn-active-color: var(--action-primary-color-active);
-  --cui-btn-active-bg: var(--action-primary-bg-active);
-  --cui-btn-active-border-color: transparent;
-  --cui-btn-disabled-color: var(--action-primary-color);
-  --cui-btn-disabled-bg: var(--action-primary-bg, var(--color-primary-main));
-  --cui-btn-disabled-border-color: transparent;
-}
-
-.btn-outline-secondary {
-  --cui-btn-color: var(--action-secondary-color);
-  --cui-btn-bg: var(--action-secondary-bg);
-  --cui-btn-border-width: var(--border-width);
-  --cui-btn-border-color: var(--action-secondary-border-color);
-  --cui-btn-hover-color: var(--action-secondary-color-active);
-  --cui-btn-hover-bg: var(--action-secondary-bg-active);
-  --cui-btn-hover-border-color: var(--action-secondary-border-color-active);
-  --cui-btn-active-color: var(--action-secondary-color-active);
-  --cui-btn-active-bg: var(--action-secondary-bg-active);
-  --cui-btn-active-border-color: var(--action-secondary-border-color-active);
-  --cui-btn-disabled-color: var(--action-secondary-color);
-  --cui-btn-disabled-bg: transparent;
-  --cui-btn-disabled-border-color: var(--action-secondary-border-color);
-}
-
+// `.btn-link` is a button that looks like a link, so it takes the LINK role —
+// toffee, underlined — rather than the body text colour it used to use. That
+// was the last place in this file where a colour decision was being made by
+// picking a value instead of naming a job.
 .btn-link {
-  --cui-btn-color: var(--color-text);
-  --cui-btn-bg: transparent;
-  --cui-btn-border-width: 0;
-  --cui-btn-border-color: transparent;
-  --cui-btn-hover-color: var(--color-text);
-  --cui-btn-hover-bg: color-mix(in srgb, currentColor 10%, transparent);
-  --cui-btn-hover-border-color: transparent;
-  --cui-btn-active-color: var(--color-text);
-  --cui-btn-active-bg: color-mix(in srgb, currentColor 10%, transparent);
-  --cui-btn-active-border-color: transparent;
-  --cui-btn-disabled-color: var(--color-dark-weak);
-  --cui-btn-padding-x: var(--button-padding-y);
+  --cui-btn-color: var(--app-fg-link);
+  --cui-btn-hover-color: var(--app-fg-link-hover);
+  --cui-btn-active-color: var(--app-fg-link-hover);
+  --cui-btn-disabled-color: #{component.$button-fg-disabled};
+  --cui-btn-padding-x: #{component.$button-pad-y};
 
   text-decoration: underline;
 }

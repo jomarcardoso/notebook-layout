@@ -1,3 +1,5 @@
+@use '../../styles/ds/tokens' as component;
+
 .tabs {
   .tabs__input {
     appearance: none;
@@ -10,13 +12,13 @@
   }
 
   .tabs__input:checked + .tabs__tab {
-    background-color: var(--tabs-tab-bg-active);
-    color: var(--tabs-tab-color-active);
-    box-shadow: var(--shadow-primary);
+    background-color: component.$tabs-tab-bg-selected;
+    color: component.$tabs-tab-fg-selected;
+    box-shadow: component.$tabs-tab-shadow-selected;
   }
 
   .tabs__input:focus-visible + .tabs__tab {
-    outline: var(--field-border);
+    outline: component.$field-border;
     outline-offset: -2px;
   }
 
@@ -26,10 +28,10 @@
   }
 
   .nav-pills {
-    border: var(--border);
-    border-radius: var(--border-radius-primary);
+    border: component.$tabs-border-color;
+    border-radius: component.$tabs-radius;
     padding: 4px;
-    background: var(--color-light-main);
+    background: component.$tabs-bg;
   }
 
   .nav-link {

@@ -1,25 +1,57 @@
-.section-card {
-  border-radius: var(--card-border-radius, --border-radius-default);
-  overflow: hidden;
-  box-shadow: var(--section-card-shadow, --shadow-primary);
-  border: var(--section-card-border, none);
+@use '../../styles/ds/tokens' as component;
 
+// =============================================================================
+// SECTION CARD
+// =============================================================================
+//
+// A titled panel: a brand band across the top, a paper body under it.
+//
+// -----------------------------------------------------------------------------
+// THE BUG THIS FILE CARRIED
+// -----------------------------------------------------------------------------
+//
+// Four of its six declarations were written like this:
+//
+//     background-color: var(--section-card-body-bg, --color-white);
+//                                                   ^^^^^^^^^^^^^ not a value
+//
+// A `var()` fallback has to be a VALUE. `--color-white` there is a bare custom
+// property NAME — it needed `var(--color-white)` — so the whole declaration was
+// invalid and the browser dropped it. The panel fell back to whatever the
+// element inherited, which is why the body looked white and the border was
+// missing entirely.
+//
+// It reads as a decision. It compiles. Nothing warns. And it survived a full
+// migration because a token that resolves to nothing and a token whose fallback
+// is malformed look identical from the outside — both simply have no effect.
+//
+// `scripts/check-fallback-values.mjs` now fails the build on the pattern.
+// =============================================================================
+
+.section-card {
+  border-radius: component.$card-radius;
+  overflow: hidden;
+  box-shadow: component.$section-card-shadow;
+  border: component.$section-card-border-color;
+
+  // The band. `bg-brand` and `fg-on-brand` are a measured pair, so the title is
+  // legible by construction rather than by inspection.
   &__title {
-    background-color: var(--section-card-title-bg, --color-primary-main);
-    color: var(--section-card-title-color, white);
-    padding: 0 var(--padding-x);
+    background-color: component.$section-card-title-bg;
+    color: component.$section-card-title-fg;
+    padding: 0 var(--app-pad-surface);
     margin: 0;
-    font-size: 17px;
+    font-size: component.$section-card-title-font-size;
     display: block;
 
     > * {
-      padding: var(--padding-y) 0;
-      border-bottom: var(--section-card-title-border, none);
+      padding: var(--app-pad-surface) 0;
+      border-bottom: component.$section-card-title-border-width dotted component.$section-card-title-divider-color;
     }
   }
 
   &__body {
-    padding: var(--padding-x);
-    background-color: var(--section-card-body-bg, --color-white);
+    padding: var(--app-pad-surface);
+    background-color: component.$section-card-body-bg;
   }
 }

@@ -1,10 +1,12 @@
+@use '../ds/tokens' as component;
+
 .heading {
   display: grid;
   grid-template-areas:
     'heading__title . heading__indicator'
     'heading__subtitle . heading__indicator';
   flex-shrink: 0;
-  min-height: var(--action-size);
+  min-height: component.$heading-min-height;
   padding: 8px;
   grid-template-columns: auto 1fr auto;
   align-items: center;

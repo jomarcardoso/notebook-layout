@@ -1,10 +1,11 @@
-@use '../utils/theme' as *;
+@use '../ds/tokens' as component;
+
 
 .card {
   container-type: inline-size;
 
   &__content {
-    border-radius: var(--border-radius-secondary);
+    border-radius: component.$card-content-radius;
     display: grid;
     overflow: hidden;
   }
@@ -15,7 +16,7 @@
     flex-direction: column;
 
     img {
-      background-color: var(--color-white);
+      background-color: component.$card-img-bg;
     }
   }
 
@@ -30,11 +31,12 @@
 
 .card:not(.slim-card) {
   .card__content {
-    @include theme-base;
+    background-color: component.$card-content-bg;
+    color: var(--app-fg-default);
 
-    box-shadow: var(--card-shadow);
-    border: var(--card-border);
-    border-radius: var(--card-border-radius);
+    box-shadow: component.$card-content-shadow;
+    border: component.$card-content-border-color;
+    border-radius: component.$card-radius;
 
     grid-template-areas:
       'card__header card__header'
@@ -46,11 +48,11 @@
   }
 
   .card__img {
-    padding: 14px 0 14px var(--padding-x);
-    gap: calc(var(--padding-y) / 2);
+    padding: 14px 0 14px var(--app-pad-surface);
+    gap: calc(var(--app-pad-surface) / 2);
 
     img {
-      // box-shadow: var(--shadow-primary);
+      // box-shadow: var(--app-shadow-raised);
     }
   }
 
@@ -60,34 +62,41 @@
     text-align: center;
   }
 
+  // A card's header sits one step down from its body, which is how printed
+  // matter behaves: the same paper, slightly in shadow.
+  //
+  // Its text read `fg-selected` — correct-looking and wrong. A header is not a
+  // selected thing; it is a heading, and it only looked right because the brand
+  // hue and the selection hue are the same colour in this theme.
   .card__header {
-    background-color: var(--card-header-bg);
-    color: var(--card-header-color);
+    background-color: component.$card-header-bg;
+    color: var(--app-fg-heading);
     font-weight: bold;
   }
 
   .card__title {
-    padding: var(--padding-y) var(--padding-x);
+    padding: component.$card-title-pad var(--app-pad-surface);
     grid-column: 2;
-    font-family: var(--font-family-title);
+    font-family: component.$card-title-font-family;
     font-size: 1rem;
   }
 
   .card__body {
     grid-area: card__body;
-    padding: var(--padding-y) var(--padding-x);
+    padding: component.$card-body-pad var(--app-pad-surface);
     align-self: center;
-    color: var(--card-color);
+    color: var(--app-fg-default);
   }
 
   .card__footer {
-    @include theme-base;
+    background-color: component.$card-footer-bg;
+    color: var(--app-fg-default);
 
-    border-top: var(--card-border);
+    border-top: component.$card-footer-border-color;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: var(--padding-y) var(--padding-x);
+    padding: component.$card-footer-pad var(--app-pad-surface);
     justify-content: flex-end;
   }
 
@@ -106,7 +115,7 @@
 
 .slim-card {
   padding: 8px;
-  border: 1px solid var(--color-dark-main);
+  border: component.$card-border-width solid component.$card-border-color;
   grid-template-areas:
     'card__img'
     'card__header'

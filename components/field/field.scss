@@ -1,30 +1,85 @@
+@use '../../styles/ds/tokens' as component;
+
+// The ruled lines of a notebook textarea, as a repeating mask.
+//
+// Parameterised because the `--large` variant needs a different rhythm, and
+// layer 3 is Sass: a variant cannot re-declare a token and expect a gradient
+// composed at build time to follow. The token supplies the default, the mixin
+// makes the variant possible, and neither pretends to be the other.
+@mixin ruled-lines($step, $offset) {
+  $rule: component.$field-line-border-width;
+
+  /* stylelint-disable color-no-hex --
+   The `#000` stops below are MASK values, not colours: a mask reads the
+   alpha channel, and #000 here means "fully opaque" for the ruled line.
+   No colour token can express that, and substituting one would change a
+   mask into a paint. */
+  -webkit-mask-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(#{$offset} - #{$rule}),
+    #000 calc(#{$offset} - #{$rule}),
+    #000 $offset,
+    transparent $offset,
+    transparent $step
+  );
+  -webkit-mask-size: 100% $step;
+  -webkit-mask-repeat: repeat;
+  mask-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(#{$offset} - #{$rule}),
+    #000 calc(#{$offset} - #{$rule}),
+    #000 $offset,
+    transparent $offset,
+    transparent $step
+  );
+  mask-size: 100% $step;
+  mask-repeat: repeat;
+  /* stylelint-enable color-no-hex */
+}
+
+
 .field {
   display: flex;
   flex-direction: column;
 
+  // The label is a TAB on top of the box, the way a section is tabbed in a
+  // paper folder: it carries the box's border colour as a fill and shares its
+  // top corners, so label and box read as one piece of stationery rather than
+  // as two elements.
+  //
+  // All six of these declarations died in the migration. They read
+  // `--field__label-bg`, `--field__label-color`, `--field__label-padding` and
+  // three more, every one of them defined only in the variables file that was
+  // deleted, and none with a fallback — so the label lost its fill, its colour,
+  // its padding and its weight in a single commit.
+  //
+  // `check-dangling-refs` did not catch it: that guard only inspects the
+  // `--app-*` namespace, and these were the old vocabulary. `check-orphan-reads`
+  // exists now for exactly this class.
   &__label {
-    font-weight: var(--field__label-fw);
-    border: var(--field__label-border);
+    font-weight: normal;
     border-bottom: 0;
-    color: var(--field__label-color);
-    border-top-left-radius: var(--field-border-radius);
-    border-top-right-radius: var(--field-border-radius);
-    background-color: var(--field__label-bg);
-    padding: var(--field__label-padding);
+    color: component.$field-label-fg;
+    border-top-left-radius: component.$field-radius;
+    border-top-right-radius: component.$field-radius;
+    background-color: component.$field-label-bg;
+    padding: component.$field-label-pad;
     align-self: flex-start;
-    font-size: var(--field__label-font-size);
-    font-family: var(--font-family-title);
+    font-size: component.$field-label-font-size;
+    font-family: component.$field-label-font-family;
     letter-spacing: 0.0625rem;
-    mix-blend-mode: multiply;
-    transition: background-color 0.2s ease-in-out;
+    mix-blend-mode: var(--app-blend-ink);
+    transition: background-color var(--app-duration-base) var(--app-ease);
   }
 
   &__box {
-    border: var(--field-border);
+    border: component.$field-border;
     display: flex;
     align-items: center;
-    padding: calc(var(--field-padding) + 2px) var(--field-padding) 0;
-    border-radius: var(--field-border-radius);
+    padding: calc(component.$field-pad + 2px) component.$field-pad 0;
+    border-radius: component.$field-radius;
     border-top-left-radius: 0;
     transition: border-color 0.2s ease-in-out;
     overflow: hidden;
@@ -44,7 +99,7 @@
     width: 80%;
     height: 100%;
     margin: auto;
-    mix-blend-mode: multiply;
+    mix-blend-mode: var(--app-blend-ink);
 
     svg {
       height: 92%;
@@ -60,11 +115,11 @@
 
   &__input {
     background-color: transparent;
-    font-family: var(--font-family-input);
+    font-family: component.$field-input-font-family;
     font-weight: 200;
-    line-height: var(--field-line-height);
-    font-size: var(--field-font-size);
-    color: var(--field-color);
+    line-height: component.$field-line-height;
+    font-size: component.$field-font-size;
+    color: component.$field-fg;
     resize: none;
     width: 100%;
     border: 0;
@@ -73,14 +128,14 @@
     z-index: 1;
 
     &::placeholder {
-      color: var(--color-dark-lighter);
-      font-family: var(--font-family-body);
+      color: component.$field-placeholder-fg;
+      font-family: component.$field-placeholder-font-family;
       letter-spacing: 1px;
     }
 
     &::selection {
-      color: var(--color-dark-darker);
-      background: var(--color-secondary-light);
+      color: var(--app-fg-heading);
+      background: component.$field-selection-bg;
     }
 
     &:focus {
@@ -92,17 +147,17 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: var(--field-line-height);
+    width: component.$field-line-height;
   }
 
   &__list-item {
-    height: var(--field-line-height);
-    width: var(--field-line-height);
+    height: component.$field-line-height;
+    width: component.$field-line-height;
     padding: 4px 3px 2px;
   }
 
   &__hint {
-    font-family: var(--font-family-body);
+    font-family: component.$field-hint-font-family;
     margin-top: 2px;
     font-size: 13px;
   }
@@ -123,7 +178,7 @@
     }
 
     .field__input {
-      padding-left: calc(var(--field-line-height) + 4px);
+      padding-left: calc(component.$field-line-height + 4px);
     }
   }
 
@@ -136,53 +191,30 @@
     .field__box {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-      border: var(--field--multiline-border);
-      padding: var(--field-box-padding-top) 0 0;
+      border: 0;
+      padding: component.$field-box-pad-y 0 0;
       position: relative;
 
       &::before {
         content: '';
         position: absolute;
-        inset: var(--field-box-padding-top) var(--field-line-offset-x) 0;
+        inset: component.$field-box-pad-y component.$field-line-offset-x 0;
         pointer-events: none;
         z-index: 0;
         background-image: repeating-linear-gradient(
           to right,
-          var(--field-line-color) 0,
-          var(--field-line-color) var(--field-line-dash-length),
-          transparent var(--field-line-dash-length),
+          component.$field-line-border-color 0,
+          component.$field-line-border-color component.$field-line-dash-length,
+          transparent component.$field-line-dash-length,
           transparent
-            calc(var(--field-line-dash-length) + var(--field-line-dash-gap))
+            calc(component.$field-line-dash-length + component.$field-line-dash-gap)
         );
         background-size: calc(
-            var(--field-line-dash-length) + var(--field-line-dash-gap)
+            component.$field-line-dash-length + component.$field-line-dash-gap
           )
           100%;
         background-repeat: repeat;
-        -webkit-mask-image: repeating-linear-gradient(
-          to bottom,
-          transparent 0,
-          transparent
-            calc(var(--field-line-offset) - var(--field-line-thickness)),
-          #000 calc(var(--field-line-offset) - var(--field-line-thickness)),
-          #000 var(--field-line-offset),
-          transparent var(--field-line-offset),
-          transparent var(--field-line-step)
-        );
-        -webkit-mask-size: 100% var(--field-line-step);
-        -webkit-mask-repeat: repeat;
-        mask-image: repeating-linear-gradient(
-          to bottom,
-          transparent 0,
-          transparent
-            calc(var(--field-line-offset) - var(--field-line-thickness)),
-          #000 calc(var(--field-line-offset) - var(--field-line-thickness)),
-          #000 var(--field-line-offset),
-          transparent var(--field-line-offset),
-          transparent var(--field-line-step)
-        );
-        mask-size: 100% var(--field-line-step);
-        mask-repeat: repeat;
+        @include ruled-lines(component.$field-line-height, component.$field-line-offset);
       }
     }
 
@@ -192,45 +224,72 @@
       z-index: 1;
     }
 
+    // THE LARGE VARIANT NOW ACTUALLY DOES SOMETHING.
+    //
+    // It set `--app-field-line-step` and `--app-field-line-offset` on
+    // `.field__input`, while the ruled lines are painted on
+    // `.field__box::before` — a different element, and not a descendant, so the
+    // values could never arrive. The note that used to sit here said as much:
+    // the variant "only looked like it was" changing its rule spacing.
+    //
+    // Making it real is the single deliberate visual change in this migration.
+    // The intended numbers are kept, including the offset, which was written as
+    // `32px` minus a `-2px` adjustment token — two tokens to say 34px.
     &.field--large {
       .field__box {
-        --field-box-padding-top: 24px;
-        padding-top: var(--field-box-padding-top);
+        padding-top: 24px;
+
+        &::before {
+          inset: 24px component.$field-line-offset-x 0;
+
+          @include ruled-lines(44px, 34px);
+        }
       }
 
       .field__input {
-        --field-line-step: 44px;
-        --field-line-offset: calc(32px - var(--field-line-offset-adjust));
         line-height: 44px;
         font-size: 25px;
       }
     }
   }
 
+  // A field being edited is a field the user has CHOSEN, so the whole focused
+  // state comes from the `selected` family — box border, label fill, and the
+  // ruled lines of a textarea together.
   &--focused {
     .field__box {
-      border-color: var(--color-primary-darker);
+      border-color: component.$field-box-border-color-focus;
     }
 
+    // The label inverts: the tab fills with cocoa and its text goes to the
+    // measured pair, so the section you are writing in is the one that stands
+    // out on the page.
     .field__label {
-      color: var(--field--active__label-color);
-      background-color: var(--field--active__label-bg);
+      color: component.$field-label-fg-focus;
+      background-color: component.$field-label-bg-focus;
     }
 
+    // The rule lines follow the focus, which is the detail that makes a
+    // textarea read as the page you are writing on rather than a box near it.
+    //
+    // This line said `--field-line-color` while the gradient that draws the
+    // rules reads `--app-field-line-color`. The migration renamed every READ
+    // and left the DECLARATIONS alone, so the focus state has been writing to a
+    // name nothing consumes — the lines simply stopped changing colour.
     &.field--multiline {
-      --field-line-color: var(--field--active-border-color);
+      --app-field-line-color: #{component.$field-divider-color-focus};
     }
   }
 
   &--no-label {
     .field__box {
-      border-radius: var(--field-border-radius);
+      border-radius: component.$field-radius;
     }
   }
 
   &--no-breakline {
     .field__box {
-      padding: var(--field-padding);
+      padding: component.$field-pad;
     }
   }
 }

@@ -1,0 +1,93 @@
+// =============================================================================
+// LAYER 3, CONFIGURED FOR THIS PRODUCT
+// =============================================================================
+//
+// Every component in this package imports layer 3 from HERE, never from
+// `src/component` directly. This file is the one place the product's component
+// decisions live.
+//
+// -----------------------------------------------------------------------------
+// WHY THIS FILE HAS TO EXIST
+// -----------------------------------------------------------------------------
+//
+// Sass module configuration — `@use 'x' with (…)` — applies to one compilation
+// and may appear only once per module in it. That is fine for a design system
+// compiled as a single stylesheet, and it does not work here at all: each
+// component's SCSS is its own compilation, because the React component imports
+// it (`import './field.scss'`) and the bundler treats it as an entry.
+//
+// So there is no single `@use … with (…)` that could reach every component. The
+// alternatives were both bad — repeat the configuration in every component
+// file, which is worse duplication than the fallback chain it replaced, or give
+// up per-product defaults entirely.
+//
+// `@forward … with (…)` is the third option and the right one: it configures
+// the module once, here, and re-exports it. A component does
+//
+//     @use '../../styles/ds/tokens' as component;
+//
+// and receives the configured values, in its own compilation, with no knowledge
+// that any configuration happened.
+// =============================================================================
+
+@use 'sass:map';
+@use './palette' as p;
+
+$_field-pad: 4px;
+
+@forward '../ds/src/component' with (
+  // A field label's fill is the BORDER colour — the detail that makes the label
+  // read as part of the box's outline rather than as a chip sitting above it.
+  //
+  // The contract leaves this `null` because no library has a semantic source
+  // for it: most design systems do not put a background on a field label at
+  // all. `null` is the honest default there, and it is also a trap in Sass —
+  // `background-color: null` omits the declaration entirely, so a component
+  // reading an unconfigured `null` silently loses the property rather than
+  // failing. This line is what stops that here.
+  $field-label-bg: var(--app-border-color-subtle),
+
+  // Navigation chrome in this product sits on the sunken surface.
+  $nav-bg: var(--app-bg-sunken),
+
+  // --- Avatar ---------------------------------------------------------------
+  //
+  // The contract defaults an avatar to a pill at control height, which is what
+  // a name-badge in a menu bar wants. This product renders a photo frame: a
+  // large rounded square with a thick paper-white mount around it, like a
+  // print taped into a notebook.
+  //
+  // These three lines are what the layer is FOR. Before them the component
+  // read layer 2 directly and `$avatar-size` was declared, documented and
+  // unread — setting it changed nothing on screen.
+  $avatar-radius: var(--app-radius-surface),
+  $avatar-size: 80px,
+  $avatar-border-width: 4px,
+
+  // The contract defaults a chip to a pill. Here it is a rounded square,
+  // because a chip in this product is a torn-off paper tag, not a token in
+  // a chat input.
+  $chip-radius: var(--app-radius-surface),
+
+  // --- Folded in from the theme file ---------------------------------------
+  //
+  // These were custom properties in `theme.scss`, a second layer 3 with its
+  // own vocabulary. Same values, one contract.
+  $field-fg: map.get(p.$pen, 600),
+  $button-pad-y: 2px,
+  $button-pad-x: 16px,
+  $field-pad: $_field-pad,
+  $field-line-height: 31px,
+  $field-line-offset: 27px,
+  $field-line-offset-x: 3px,
+  $field-line-dash-length: 10px,
+  $field-line-dash-gap: 6px,
+  $field-box-pad-y: calc(#{$_field-pad} + 2px),
+  $field-radius: var(--app-radius-surface),
+  $field-border: var(--app-border-width) dashed var(--app-border-color),
+  $field-label-pad: 5px 24px 3px,
+  $field-label-font-size: 15px,
+  $category-width: 102px,
+  $layout-aside-shadow: inset 1px 0 3px -1px var(--app-border-color-strong),
+  $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong)
+);

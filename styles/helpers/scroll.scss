@@ -11,7 +11,7 @@
       margin: -6px;
 
       > * {
-        width: calc(92% - var(--gap));
+        width: calc(92% - var(--app-gap-stack));
         flex-shrink: 0;
       }
     }

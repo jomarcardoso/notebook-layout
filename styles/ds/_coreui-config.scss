@@ -1,0 +1,62 @@
+// =============================================================================
+// COREUI SASS CONFIGURATION — the values, computed from the theme
+// =============================================================================
+//
+// This file exists because of an ordering rule in Sass that has no way around
+// it: `@use 'lib' with (…)` is the ONLY way to configure a module's `!default`
+// variables, `@use` must appear before anything else in a file, and a `with ()`
+// clause therefore cannot call a function defined in that same file.
+//
+// So the computation lives here, in a module of its own, and `coreui-entry.scss`
+// does `@use './coreui-config' as cfg;` first and then passes `cfg.$primary`
+// into CoreUI's configuration.
+//
+// The first attempt set the variables as plain globals before an `@import` of
+// CoreUI's variables file. That silently did nothing — CoreUI's `_variables.scss`
+// is a module, and a module's `!default` ignores globals from the importer. The
+// library kept compiling its stock indigo while the file looked correct.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:map';
+@use './theme';
+
+// CoreUI inherits Bootstrap's `shade-color()` / `tint-color()`, which call the
+// legacy `mix()` and hard-error on an oklch value. Gamut-map first.
+@function srgb($c) {
+  @return color.to-space(
+    color.to-gamut($c, $space: rgb, $method: local-minde),
+    rgb
+  );
+}
+
+@function _c($key) {
+  @return srgb(map.get(theme.$light, $key));
+}
+
+// `primary` is CoreUI's name for its main button; this product's main button is
+// the ACTION colour. `secondary` is CoreUI's GREY button, so it maps to the
+// neutral ramp — never to `selected`, which means "chosen" and would put a
+// cancel button in the same colour as an active menu item.
+$primary: _c(action);
+$secondary: _c(neutral);
+$success: _c(success);
+$info: _c(info);
+$warning: _c(warning);
+$danger: _c(danger);
+
+// Absolute palette aliases in Bootstrap's vocabulary, not theme roles. They keep
+// that nature and take the ends of the paper ramp so they are on-brand rather
+// than stock grey.
+$light: _c(surface);
+$dark: _c(text);
+
+$body-bg: _c(page);
+$body-color: _c(text);
+$body-secondary-color: _c('text-muted');
+$body-tertiary-bg: _c(sunken);
+
+$link-color: _c(link);
+$link-hover-color: _c('link-hover');
+
+$border-color: _c(border);

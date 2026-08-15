@@ -1,0 +1,111 @@
+// =============================================================================
+// COREUI BUILD ENTRY
+// =============================================================================
+//
+//     compiled by `npm run build:coreui` into ./dist/coreui.css
+//
+// -----------------------------------------------------------------------------
+// WHY THE COLOURS ARE SET HERE AND NOT IN THE ADAPTER
+// -----------------------------------------------------------------------------
+//
+// CoreUI builds every button, alert, badge and background utility from a Sass
+// `@each` over `$theme-colors`. That loop runs at COMPILE time, so whatever
+// `$primary` holds when the library is configured is what a hundred compiled
+// declarations get — including the ones no custom property can reach, like
+// `shade-color($primary, 20%)` for the hover state.
+//
+// Until this file configured them, the library compiled with its stock indigo:
+//
+//     .btn-primary { --cui-btn-bg: #5856d6; --cui-btn-hover-bg: rgb(74.8, 73.1, 181.9) }
+//
+// and the adapter repainted every variant at runtime. That worked and it was
+// waste twice over: ~190KB of library CSS carrying the wrong colour, an override
+// layer on top of it, and the derived hover and active shades still computed
+// from indigo underneath.
+//
+// This is what the architecture document means by adapting the library natively
+// rather than fighting it in the browser.
+//
+// -----------------------------------------------------------------------------
+// THE ORDERING RULE THAT SHAPES THIS FILE
+// -----------------------------------------------------------------------------
+//
+// `@use 'lib' with (…)` is the only way to configure a module's `!default`
+// variables. Setting them as globals before an `@import` does nothing when the
+// imported file is a module — which CoreUI's `_variables.scss` is. The first
+// attempt did exactly that and the library kept its indigo while the file read
+// as if it were themed.
+//
+// And because `@use` must come first, a `with ()` clause cannot call a function
+// defined in this file. Hence `_coreui-config.scss`: it computes the values, and
+// this file passes them in.
+//
+// -----------------------------------------------------------------------------
+// WHAT STILL BELONGS TO THE RUNTIME ADAPTER
+// -----------------------------------------------------------------------------
+//
+// Only what a THEME SWAP has to move. A build-time colour is one colour; the
+// adapter's `:root` bindings are what would let `[data-theme]` change it without
+// recompiling. This product has one theme, so that layer is currently doing
+// little — it is kept because the day a dark mode arrives it is the only thing
+// that makes it possible.
+// =============================================================================
+
+@use './coreui-config' as cfg;
+
+// The library, configured. Every value below reaches CoreUI's own `@each` loops,
+// so `.btn-danger` and `.btn-success` come out of the compiler already correct
+// rather than being repainted afterwards.
+@use '@coreui/coreui/scss/variables' with (
+  $primary: cfg.$primary,
+  $secondary: cfg.$secondary,
+  $success: cfg.$success,
+  $info: cfg.$info,
+  $warning: cfg.$warning,
+  $danger: cfg.$danger,
+  $light: cfg.$light,
+  $dark: cfg.$dark,
+
+  $body-bg: cfg.$body-bg,
+  $body-color: cfg.$body-color,
+  $body-secondary-color: cfg.$body-secondary-color,
+  $body-tertiary-bg: cfg.$body-tertiary-bg,
+
+  $link-color: cfg.$link-color,
+  $link-hover-color: cfg.$link-hover-color,
+
+  $border-color: cfg.$border-color,
+  $border-width: 1px,
+  $border-radius: 4px,
+  $border-radius-sm: 4px,
+  $border-radius-lg: 6px,
+  $border-radius-pill: 9999px,
+
+  // Turns on the CSS Grid utilities: `.grid`, `.g-col-*`, `.columns-*`. The
+  // application's own layout depends on these, and this flag is the only thing
+  // that generates them.
+  $enable-cssgrid: true
+);
+
+@use '@coreui/coreui/scss/variables-dark';
+@use '@coreui/coreui/scss/root';
+@use '@coreui/coreui/scss/containers';
+@use '@coreui/coreui/scss/grid' with ($include-column-box-sizing: true);
+@use '@coreui/coreui/scss/helpers';
+@use '@coreui/coreui/scss/utilities/api';
+
+// The component families, through the `@import` shims CoreUI ships for exactly
+// this. They need no configuration — only the variables module did — and by the
+// time they load, the modules above have already been configured.
+//
+// Imported SELECTIVELY: `card`, `table` and `modal` are deliberately absent
+// because this package owns those components. Adding one would create the class
+// collision that `check-collisions` currently reports as absent.
+@import '@coreui/coreui/scss/functions.import';
+@import '@coreui/coreui/scss/variables.import';
+@import '@coreui/coreui/scss/variables-dark.import';
+@import '@coreui/coreui/scss/maps.import';
+@import '@coreui/coreui/scss/mixins.import';
+@import '@coreui/coreui/scss/breadcrumb.import';
+@import '@coreui/coreui/scss/nav.import';
+@import '@coreui/coreui/scss/buttons.import';

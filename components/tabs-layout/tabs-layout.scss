@@ -1,4 +1,5 @@
-@use '../../styles/utils/theme' as *;
+@use '../../styles/ds/tokens' as component;
+
 @use '../../styles/helpers/media.scss' as *;
 @use '../../styles/utils.scss' as *;
 
@@ -20,15 +21,16 @@
 
 @media (orientation: portrait) {
   .tabs-layout__content {
-    padding-left: var(--padding-x);
-    padding-right: var(--padding-x);
+    padding-left: var(--app-pad-surface);
+    padding-right: var(--app-pad-surface);
   }
 }
 
 @media (orientation: landscape) {
   .tabs-layout__content {
-    @include theme-base;
-    // box-shadow: var(--shadow-primary);
+    background-color: component.$tabs-layout-content-bg;
+    color: var(--app-fg-default);
+    // box-shadow: var(--app-shadow-raised);
     height: 100%;
     position: relative;
 

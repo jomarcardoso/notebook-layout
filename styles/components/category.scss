@@ -1,11 +1,13 @@
+@use '../ds/tokens' as component;
+
 .category {
   font-weight: bold;
   text-align: center;
-  font-size: var(--category-font-size);
+  font-size: component.$category-font-size;
   display: grid;
   gap: 4px;
   word-break: break-word;
-  width: var(--category-width);
+  width: component.$category-width;
 
   img {
     border-radius: 50%;

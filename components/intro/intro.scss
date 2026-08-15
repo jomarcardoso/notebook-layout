@@ -1,6 +1,8 @@
+@use '../../styles/ds/tokens' as component;
+
 .intro {
   padding-bottom: 32px;
   padding-top: 32px;
   display: grid;
-  gap: var(--gap);
+  gap: component.$intro-gap;
 }
