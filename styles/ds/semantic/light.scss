@@ -41,11 +41,45 @@
 @use '../palette' as p;
 
 $tokens: (
-  // --- Paper ---------------------------------------------------------------
-  page: p.pal(paper, 100),
+  // --- Board and paper: two materials, not one -----------------------------
+  //
+  // `page` was paper-100 and `surface` paper-50 — a 1% difference. Nothing on
+  // screen separated the sheet from what it lay on, so the whole product was
+  // one flat wash and every scrap of hierarchy fell to the borders, which is
+  // more than a 1.32:1 rule can carry.
+  //
+  // Now the page is BOARD and the surface is PAPER. The sheet reads as a sheet
+  // because it is lighter than the thing behind it, which is how a sheet has
+  // always read — no shadow required, which is what `elevation: borders` was
+  // reaching for and could not get from one family.
+  //
+  // board-50 and not board-100: the gate refused 100, where `link` toffee
+  // landed at 3.99:1. Toffee was itself chosen BY THE BUILD as the most
+  // saturated step clearing the floor on every surface a link can sit on, so
+  // adding a darker ground changed that sum — and the ground moved rather than
+  // the link, which would have dragged its hover along with it.
+  //
+  // The COVER is not a darker `sunken`. That was the first attempt and the
+  // gate refused that too: `sunken` is a paper well — table stripes, inset
+  // panels — and a link legitimately sits in one, which put toffee at 3.16:1.
+  // A cover is a different MATERIAL, and in this system a material is a
+  // surface context, not a step further down the surface ramp. See `cover`
+  // below and `[data-surface="cover"]` in `_surfaces.scss`.
+  page: p.pal(board, 50),
   surface: p.pal(paper, 50),
   raised: p.pal(paper, 0),
   sunken: p.pal(paper, 150),
+
+  // THE COVER, carried by the `brand` surface rather than by a new token.
+  //
+  // `bg-brand` is the foundation's "band, footer, masthead" surface and it
+  // defaults to `selected` when a product does not declare one. This product
+  // does: its brand material is unbleached board, and the nav rail and the
+  // bottom bar are its masthead. Declaring it here means the chrome asks for
+  // `[data-surface="brand"]` and gets cover stock, with no token invented and
+  // nothing changed in the vendored `src/`.
+  brand: p.pal(board, 200),
+  'on-brand': p.pal(paper, 950),
 
   // Hover on a neutral surface. Distinct from `sunken`, so a hovered row and a
   // disabled one are not the same shade.
@@ -66,10 +100,14 @@ $tokens: (
   // step apart, so "cancelar" and "salvar" side by side were the same button in
   // two barely different browns. A control with no opinion should not compete
   // with the one that acts — it recedes into the paper instead.
-  neutral: p.pal(paper, 300),
+  // Board, not paper. As a pale step of the sheet it was invisible against the
+  // sheet — a "grey button", which is exactly what it looked like. Made of
+  // cover stock it reads as a tab cut from the binder: quieter than the ink
+  // action, and unmistakably a control rather than a patch of background.
+  neutral: p.pal(board, 100),
   'on-neutral': p.pal(paper, 900),
-  'neutral-hover': p.pal(paper, 400),
-  'neutral-active': p.pal(paper, 500),
+  'neutral-hover': p.pal(board, 200),
+  'neutral-active': p.pal(board, 300),
 
   // Exempt from the contrast gate — WCAG 1.4.3 excludes inactive controls.
   disabled: p.pal(paper, 200),
@@ -144,7 +182,20 @@ $tokens: (
   border: p.pal(paper, 400),
   'border-subtle': p.pal(paper, 300),
   'border-strong': p.pal(paper, 500),
-  ring: p.pal(pen, 600),
+  // INK, not pen blue.
+  //
+  // The ring was `pen-600` #005bac, and it was the loudest colour in the
+  // product: every click on every button flashed a saturated blue into a page
+  // made of cream, board and cocoa. `action` stopped being blue for exactly
+  // this reason and the ring kept it alive.
+  //
+  // `pen` still means what the design language says it means — the text the
+  // user types, the tick they put in a box. A focus ring is not the user's
+  // mark; it is the interface saying where the keyboard is.
+  //
+  // It stays visible on a dark fill because the ring is drawn with a light gap
+  // between it and the control — see `$button-ring` in `button.scss`.
+  ring: p.pal(paper, 900),
 
   // Editorial elevation: hierarchy is carried by border and whitespace, so
   // these exist only for the two things that genuinely float.

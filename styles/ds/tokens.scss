@@ -77,7 +77,15 @@ $_field-pad: 4px;
   $field-border: var(--app-border-width) dashed var(--app-border-color),
   $field-label-pad: 5px 24px 3px,
   $field-label-font-size: 15px,
-  $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong)
+  $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong),
+
+  // A CARD IS A SHEET LAID ON THE PAGE, so it cannot be the page's own colour.
+  // The default is `bg-surface`, and `bg-surface` is what the notebook's sheet
+  // is made of — so every card rendered at exactly the colour it was sitting
+  // on, and the only thing separating them was a 1.32:1 border. `card.scss`
+  // has always described this component as "a clean card put down on top of
+  // the page"; `raised` is what makes that true instead of aspirational.
+  $card-content-bg: var(--app-bg-raised)
 );
 
 // --- This product's own components -----------------------------------------

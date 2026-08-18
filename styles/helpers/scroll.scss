@@ -1,23 +1,54 @@
+// A SHELF on a phone, a GRID on a desktop.
+//
+// -----------------------------------------------------------------------------
+// NO HORIZONTAL SCROLLING ON DESKTOP. EVER.
+// -----------------------------------------------------------------------------
+//
+// This is a standing rule, recorded in `DESIGN-LANGUAGE.md` under guardrails,
+// and it has now been got wrong twice — once by wrapping with no width, and
+// once by me "fixing" that into a sideways shelf at every size. Writing it here
+// as well because this is the file someone edits when they want to change how a
+// row of cards behaves.
+//
+// Sideways scrolling is a THUMB pattern. With a mouse the hidden items cost a
+// scrollbar drag or a shift-wheel that most people never learn, and there is no
+// reason to pay that on a screen that has the width to show everything. On a
+// wide viewport a collection wraps.
+//
+// -----------------------------------------------------------------------------
+// The bug this file used to have
+// -----------------------------------------------------------------------------
+//
+// Landscape was `flex-wrap: wrap` with no width on the children, and a card has
+// NO INTRINSIC WIDTH — its image is absolutely positioned over a padding
+// spacer, so the flex item collapsed to exactly 0px. Every recipe in a list
+// vanished on desktop while the row kept its 276px height. Nothing errored.
+//
+// The lesson, worth keeping: a flex or grid item whose content cannot report a
+// width must be given one. `auto` resolving to zero looks identical to a
+// display bug and is invisible to every check we run.
 .horizontal-scroll {
-  display: flex;
-  align-items: stretch;
+  display: grid;
+  gap: var(--app-gap-stack);
 
+  // Phone: one shelf, scrolled with the thumb, the next card peeking so the
+  // row announces itself as scrollable without a scrollbar.
   @media (orientation: portrait) {
-    &:has(> *:not(:only-child)) {
-      width: calc(100% + 14px);
-      overflow-x: scroll;
-      padding: 8px;
-      padding-left: 6px;
-      margin: -6px;
+    grid-auto-flow: column;
+    grid-auto-columns: min(88%, 420px);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    // Room for the card's own shadow, which a clipped overflow would cut off.
+    padding-block: 8px;
 
-      > * {
-        width: calc(92% - var(--app-gap-stack));
-        flex-shrink: 0;
-      }
+    > * {
+      scroll-snap-align: start;
     }
   }
 
+  // Desktop: it wraps. `auto-fill` rather than `auto-fit` so a list with one
+  // recipe does not stretch that card across the whole row.
   @media (orientation: landscape) {
-    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
 }

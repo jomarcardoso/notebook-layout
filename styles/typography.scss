@@ -94,16 +94,50 @@
 
 // A written rubric rather than a solid band: brand ink with a ruled line under
 // it, like a heading underlined by hand.
+// A SECTION TITLE IS A BAND, not an underlined phrase.
+//
+// Three levels of hierarchy, from the sections report:
+//
+//   section   a whole area of the page — Minhas receitas, Minhas listas
+//   item      an organiser INSIDE a section — one recipe list
+//   card      the content itself
+//
+// The section title is the mark that says a new area starts here, so it is
+// filled cover stock with light text rather than words with a line under
+// them. It was the underline, and the underline had two problems: at
+// `width: fit-content` it read as an underlined phrase rather than the top of
+// anything, and it left the product needing a SECOND mark for the level below
+// — every list drew its own full-width `<hr>`. One page, two devices, one job.
+//
+// A band cannot be confused with the item heading under it, which is the whole
+// point of §2.2 of the report: an item must organise without competing.
 .section-title {
   @extend .h2;
 
+  // Cocoa, not `brand`. `brand` is now the CO VER — the board the nav is made
+  // of — and a light tan band cannot carry light text. Cocoa is the product's
+  // strong brown, and `DESIGN-LANGUAGE.md` already lists "section band" among
+  // the things it may mark, beside the active tab and the checked control.
+  background-color: var(--app-bg-selected);
   border: 0;
-  border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
-  color: var(--app-fg-brand);
-  display: inline-block;
+  border-radius: var(--app-radius-surface);
+  color: var(--app-fg-on-selected);
+  display: block;
   max-width: 100%;
+  padding: 0.25em var(--app-pad-surface) 0.3em;
+}
+
+// ONE LEVEL DOWN, and deliberately much quieter: a light rule, the brand hue
+// as ink rather than as a fill. It has to read as an organiser inside the
+// section, never as another section.
+.section-title.-sub {
+  @extend .h3;
+
+  background-color: transparent;
+  border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
+  border-radius: 0;
+  color: var(--app-fg-brand);
   padding: 0 0 0.2em;
-  width: fit-content;
 }
 
 .section-title.-center,

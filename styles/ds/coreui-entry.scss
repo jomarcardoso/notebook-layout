@@ -109,3 +109,22 @@
 @import '@coreui/coreui/scss/breadcrumb.import';
 @import '@coreui/coreui/scss/nav.import';
 @import '@coreui/coreui/scss/buttons.import';
+
+// Added for the "already filed" disclosure on the notebook page. CoreUI owns
+// no class this package also declares here — `check-collisions` runs on every
+// build and would say so — and the collapse is driven by React state rather
+// than by CoreUI's JS, which this project does not ship.
+@import '@coreui/coreui/scss/accordion.import';
+
+// NOT CoreUI's carousel. It was imported for §16.8 and taken straight back
+// out: this package already owns `.carousel` — a BEM component with
+// `.carousel__banner` — and CoreUI declares the same base class. That is the
+// collision the selective import list above exists to avoid, and it is why
+// `card`, `table` and `modal` are absent too.
+//
+// `check-collisions` did NOT catch it, which is worth knowing: it compares
+// ADAPTERS against each other, and `notebook-layout`'s own components are not
+// an adapter. A green build was not evidence of safety here.
+//
+// The sideways track for §16.8 is `card-carousel` in the app, under a name
+// nothing else claims.

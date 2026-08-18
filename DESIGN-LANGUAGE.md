@@ -16,11 +16,14 @@ archetype: hybrid
 # screen gets which. A screen with no instruction is `livro` — so there is
 # always a default, and `caderno` is the marked case that has to be asked for.
 archetypeNote: >
-  Two registers. `caderno` is personal, handwritten, physical — the user's own
-  notebook. `livro` is a publication: editorial, calm, professional. The
-  PASSAGE between them is the product's thesis: a recipe scribbled by hand
-  becomes something worth showing. The design does not pick a side, it stages
-  the transformation. `livro` is the default for any screen not listed below.
+  ONE look, at two degrees of rusticity — not two themes. Same palette, same
+  faces, same components everywhere; what changes is HOW MANY notebook
+  elements a screen carries and how much imperfection it allows. `caderno`
+  is the most hand-filled end: taped photographs, things slightly out of true,
+  ruled space waiting to be written on. `livro` is the same notebook printed
+  more carefully — fewer marks, less tilt, tidier alignment. A reader must
+  never wonder whether they are still in the same product; they should only
+  feel that one page was filled in by hand and another was set properly.
 
 # Extension to the template's schema, and the most load-bearing block here.
 # An agent decides register FIRST, then reads the rest of this file through it.
@@ -29,17 +32,31 @@ registers:
     pages: [home / my recipes, recipe create and edit]
     feels: >
       A guided but hand-filled notebook page: ruled space to write, marked
-      space to paste a photo. Modelled, not blank. Pen ink, paper fibre,
-      photographs taped slightly crooked.
+      space to paste a photo. Modelled, not blank. Tape on the photographs,
+      things a degree or two out of true — the imperfections of something a
+      person organised themselves.
   livro:
     pages: [recipe detail, explore, search, settings]
     feels: >
-      A cookbook you browse. Aligned photography, generous leading, nothing
-      crooked and nothing taped. This is where a personal note has become a
-      publication.
+      The SAME notebook, printed more carefully. Not another product and not
+      another theme: same paper, same board, same ink. Fewer marks, no tape,
+      nothing crooked. Rustic is a dial, and this is it turned down.
 
 density: comfortable
 platform: mobile-first
+
+# Every screen is one of three kinds, and the kind decides its chrome. It is a
+# STACK: a primary page is the ground, a contextual page sits on it, an edit
+# page sits on that. "meu caderninho -> receita -> cozinha".
+#
+#   primary      the ground. My recipes, Explore. Stable header, no back.
+#   contextual   opened FROM somewhere. Search results, a recipe. Has back.
+#   editing      the deepest, and the only one that can be abandoned. Recipe
+#                writing. Cancel and save rather than navigation.
+#
+# An agent deciding what a page's header and nav should hold answers this
+# question first.
+pageKinds: [primary, contextual, editing]
 
 radius: subtle                    # radius-control 4px, radius-surface 6px
 elevation: borders
@@ -126,6 +143,37 @@ guardrails:
     enforcement: build
     signature: scripts/check-dangling-refs.mjs
 
+  - rule: >
+      NO FREE HORIZONTAL SCROLLING ON DESKTOP. A sideways shelf is a phone
+      pattern: it works with a thumb and it is hostile with a mouse, where
+      reaching the hidden items means dragging a scrollbar or shift-wheeling.
+      On a wide screen a collection WRAPS — the width is there, so use it.
+      Free sideways scrolling remains available in portrait only.
+
+      THE EXCEPTION IS A CAROUSEL WITH CONTROLS. What makes a shelf hostile
+      with a mouse is the absence of an affordance, not the sideways motion —
+      so a track with visible previous/next buttons is allowed on desktop,
+      because the pointer has something to click. A carousel without buttons
+      is just a shelf and is still refused.
+    enforcement: document
+    signature: overflow-x in a landscape/min-width query with no paging control beside it
+
+  - rule: >
+      ON A PHONE, ACTIONS BELONG IN THE LOWER THIRD. The screen is held in one
+      hand and the thumb sweeps an arc at the bottom; a primary action at the
+      top of a tall page is a two-handed control. Exceptions are allowed for
+      things that are deliberately hard to reach — destructive actions earn
+      their distance — but they are exceptions and should be stated as such.
+    enforcement: document
+
+  - rule: >
+      THE NAVBAR CARRIES NAVIGATION ON A PRIMARY PAGE AND ACTIONS ON A
+      CONTEXTUAL ONE. On a recipe, the only navigation is "back"; everything
+      else — edit, share, delete — is something you do to what is on screen.
+      Repeating the site's sections there wastes the one strip of chrome that
+      is always within the thumb's reach.
+    enforcement: document
+
   - rule: Status colour reports an outcome; it never marks an action
     enforcement: document
 
@@ -178,6 +226,16 @@ photograph — read as a violation of it. The instincts were not the problem.
   page among several. When a flow ends, it ends there; when navigation is
   ambiguous, the answer is the notebook. The user should always feel they
   stepped out, turned some pages, and are on their way back.
+  The in-page navigation for this is `notebook-tabs` — the index tabs of a ring
+  binder, down the side of the sheet. It is the product's answer to a
+  section nav with scroll spy, and it is a notebook element that carries its
+  own mechanism: the grips you reach for to land on a page fast.
+- **A recipe is private until its owner says otherwise.** Reading one requires
+  either owning it or arriving with a share token in the URL. The token is the
+  point: it says *you were given this link* rather than *you guessed an id*, so
+  a private recipe can be handed to one person without being published to
+  everyone. Any surface that lists other people's recipes has to respect that,
+  which is why discovery cannot simply read the recipe endpoint.
 - **The register decides before anything else does.** Before choosing a
   spacing, a shadow or a photograph treatment, answer: is this screen the
   user's notebook, or a publication? Both answers are available; picking
@@ -245,6 +303,26 @@ The tokens live in `styles/ds/`. This section is the **rules for using them**.
   give, so it gets the tighter rhythm; the utilities that did the reverse
   (`mt-5 mt-md-3`) are the shape of the mistake to watch for.
 
+### The same job, two devices
+
+A component is not "the mobile one" or "the desktop one" — it is a JOB, and the
+job has a different best answer on a thumb than on a pointer. This table is the
+product's own mapping, and it is what to consult before building a responsive
+variant of anything.
+
+| the job | phone | desktop |
+|---|---|---|
+| move between sections of a page | scroll spy | tabs (`notebook-tabs`) |
+| group related content | panels / sections | panels / sections |
+| hide secondary detail | "see more" | accordion / `details`, sticky header |
+| interrupt for a decision | modal | side sheet, or a modal in the aside |
+| show a set you can page through | carousel, one at a time | carousel, several at a time, **with controls** |
+| show a collection | grid, max 2 columns | grid, max 4 columns |
+
+Two of these are load-bearing enough to have their own guardrail above: the
+carousel's controls are what make a sideways track acceptable with a mouse, and
+the column caps are what stop a grid from becoming a wall.
+
 ### Elevation
 
 - **Default is flat.** Borders carry hierarchy, and `livro` has nothing else.
@@ -255,6 +333,48 @@ The tokens live in `styles/ds/`. This section is the **rules for using them**.
   user must be able to FIND, not the line between two rows of a list. The one
   border that *is* a control's whole visible boundary — the outline button's —
   is `border-action`.
+
+---
+
+## 2b. The notebook's vocabulary
+
+The devices this product may reach for when a screen needs to feel like the
+object it imitates. **It is a menu, not a checklist** — the rationing rule
+still applies, and a page that used ten of these would be the visual weight
+that got the first attempt torn out.
+
+Each one is only worth using if it carries its own mechanism. A picture of a
+spiral binding was removed for exactly this reason; the ruled field line stayed
+because it is where you write.
+
+**In use today**
+
+- ruled lines — the empty state that invites instead of reporting
+- the dashed field border — a written line, not a box
+- pen blue — the text the user types, the tick in a checkbox
+- cardboard — the cover, carried by the `brand` surface
+- the taped photograph — `--taped`, opt-in, deliberately not the default
+- the pasted print — mount, lift and a half-degree of tilt
+- index tabs — `notebook-tabs`, the grips that jump you to a page
+
+**Available, not yet used**
+
+- sticker-album page with marked spaces to paste into
+- stickers, and the stuck-on star
+- pencil drawing, alongside pen writing
+- highlighter, underline, a change of pen colour
+- the teacher's tick and cross when marking exercises
+- weak ink that lets the paper's texture show through
+- office paper glued onto the page — the sheet the teacher printed
+- a page run through a copier or mimeograph
+- the "bom dia" drawing you make when the notebook is new
+- the space at the top for the date
+- recycled paper
+- **the cover's softly rounded corner.** The thing to get right is that a
+  notebook's corner is *worn* — it has thickness, and an inner shadow is what
+  reads as thickness. That is not a ban on `border-radius`; the radius is part
+  of the shape. The warning is only against reaching for a radius alone and
+  expecting it to feel like a cover.
 
 ---
 
@@ -302,6 +422,13 @@ The per-situation register table is **undecided** — see Known gaps.
 
 ### Do
 
+- **Let the recipe card change with its context.** It is one component with
+  different jobs: in the notebook it shows what the cook needs to recognise
+  their own recipe, and in search it should show the author and how often it
+  has been copied — facts that only matter about someone else's. Fat and fibre
+  earn their place on a page about eating and not on a page about finding.
+- **Style breadcrumbs as the notebook's date line** — the space at the top of a
+  page where you write the day. A trail of where you are is the same gesture.
 - Put cocoa on things that are *chosen*: active tab, active pill, active field
   label, section band, checked control.
 - Use one action colour at three emphases — filled, outline, ghost.

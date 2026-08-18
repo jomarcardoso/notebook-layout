@@ -42,6 +42,12 @@ $tokens: (
   'surface-active': p.pal(paper, 700),
   overlay: rgba(0, 0, 0, 0.7),
 
+  // The cover, read from the dark end: board deep enough to frame a lit sheet
+  // without becoming another black. See `light.scss` for why the cover rides
+  // on `brand` instead of on a token of its own.
+  brand: p.pal(board, 800),
+  'on-brand': p.pal(board, 50),
+
   // --- Ink, now light ------------------------------------------------------
   text: p.pal(paper, 100),
   'text-muted': p.pal(paper, 300),
@@ -109,7 +115,8 @@ $tokens: (
   border: p.pal(paper, 700),
   'border-subtle': p.pal(paper, 800),
   'border-strong': p.pal(paper, 600),
-  ring: p.pal(pen, 300),
+  // Ink read from the dark end — see `light.scss` for why this is not `pen`.
+  ring: p.pal(paper, 100),
 
   'shadow-raised': base.scale(shadow, '2xs'),
   'shadow-overlay': base.scale(shadow, sm),

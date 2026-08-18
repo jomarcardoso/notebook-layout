@@ -46,6 +46,28 @@
 @use '../src/core';
 
 @mixin emit() {
+  // INK BLENDING IS OFF.
+  //
+  // `emit-theme()` in the vendored `src/` sets `--app-blend-ink` to `multiply`
+  // on light themes and `screen` on dark, so a mark composites INTO the paper
+  // instead of sitting on it. That is the right effect when there is a texture
+  // to soak into. There is not: the fibre is gone, so multiply had nothing to
+  // absorb the mark and was only doing the other half of its arithmetic —
+  // shifting every blended colour toward the backdrop and flattening the
+  // artwork's own palette.
+  //
+  // `normal` and not `none`: `none` is not a value `mix-blend-mode` accepts,
+  // and an invalid value would make the declaration invalid rather than
+  // neutral. Overridden here, in the product's layer, rather than in `src/` —
+  // the foundation's default is right for a product that has a texture.
+  //
+  // Specificity: the dark theme lands on `:root[data-theme="dark"]` at (0,2,0),
+  // so a bare `:root` would lose to it. `:root[data-theme]` matches that.
+  :root,
+  :root[data-theme] {
+    --app-blend-ink: normal;
+  }
+
   // THE PAPER SHEET.
   //
   // It changes no ink — the notebook's text colour is already the right one on
@@ -65,54 +87,22 @@
     )
   );
 
-  // FIBRE, NOT GRAIN.
-  //
-  // Both layers were `baseFrequency='.8'` — isotropic fractal noise, which is
-  // sand. It is what made the texture read as "granulada" and it is why the
-  // paper was abandoned as heavy: grain competes with type at every size,
-  // because its features are the size of the letterforms.
-  //
-  // Paper is FIBRE: long strands, crossing, most of them far longer than they
-  // are wide. That is an anisotropic turbulence — a low frequency on one axis
-  // and a high one on the other stretches each feature into a strand. The two
-  // layers run perpendicular to each other, which is what a sheet of stock
-  // actually looks like under a lamp, and it reads as material at a distance
-  // instead of as dirt up close.
-  //
-  // Alpha came down from .09 to .07/.05 and the tile grew from 180 to 240, so
-  // the repeat is harder to catch. This is the surface the design language
-  // rations: never behind small text.
-  //
-  // The selector used to also name `.app-layout` and `.modal__body`. A token
-  // file that knows a component's class name is a token file the component
-  // cannot be renamed out of, and it inverted the dependency: the sheet decided
-  // which components were made of paper. Both now carry
-  // `data-surface="paper"` in their own markup and ask for it themselves.
-  // SCOPED TO THE `caderno` REGISTER, and that scope is the point.
-  //
-  // Every screen in the product carries `data-surface="paper"`, so before this
-  // the fibre ran under the recipe page, explore, search and settings too —
-  // which are `livro`, a publication, and a publication is printed on flat
-  // stock. Texture everywhere is also how the first attempt at this earned the
-  // word "heavy": a material that is on every screen stops being a material
-  // and becomes a filter over the product.
-  //
-  // A screen with no register declared is `livro`, so it gets the colour and
-  // not the fibre. The notebook has to ask.
+  // NO TEXTURE. The fibre was tried twice — first as isotropic grain, then
+  // as crossing strands — and neither survived contact with the page: at a
+  // strength you could see it competed with the type, and at a strength that
+  // did not, you could not see it. It is removed rather than dialled down to
+  // invisibility, because an effect nobody can perceive is cost with no
+  // benefit. The notebook is carried by its ELEMENTS, not by its stock.
   [data-surface='paper'] {
     background-color: #{core.ref('bg-surface')};
     color: #{core.ref('fg-default')};
   }
 
-  [data-surface='paper'][data-register='caderno'] {
-    background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.007 0.55' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .07'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%23ffffff' filter='url(%23fibre)'/%3E%3C/svg%3E"),
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cfilter id='fibre'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.007' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 .05'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' fill='%235d4937' filter='url(%23fibre)'/%3E%3C/svg%3E");
-    background-size:
-      240px 240px,
-      240px 240px;
-    background-blend-mode: screen, multiply;
-  }
+  // THE COVER rides on the `brand` surface below — the board the sheets are
+  // bound into. It is a MATERIAL, not a deeper well, which is why it is a
+  // context and not a step on the surface ramp: the first attempt made
+  // `sunken` the cover and the contrast gate refused it, since a link in an
+  // ordinary paper well would then have sat on cover stock at 3.16:1.
 
   // A real brand band. `fg-on-brand` is the foreground the contrast gate
   // measured against `bg-brand`, so every text token that lands here is legible

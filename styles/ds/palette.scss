@@ -43,12 +43,17 @@
 // substance at two ends of a range, and splitting them would mean deciding
 // arbitrarily where one stops. The dark end IS the ink.
 $paper: (
+  // The light end was BUTTER, not paper: #fdfaf4 and #f6f1e8 carry enough
+  // yellow that a full screen of them reads as parchment, and it was the whole
+  // background of the product. Warmth stays — this is not a cold white — but
+  // the cast comes down, so the sheet reads as stock and the ink on it reads
+  // as ink instead of as grey on cream.
   0: #ffffff,    // not paper at all — a sheet lifted clear off the page
-  50: #fdfaf4,   // a card: the reading surface
-  100: #fbf9f6,  // the page itself, under the noise texture
-  150: #f6f1e8,  // a card's header — one step down from its body
-  200: #f1ebe0,  // sunken wells, table stripes
-  300: #e3dacf,  // the soft rule between list items. Decorative, by design.
+  50: #fdfcf9,   // a card: the reading surface
+  100: #f9f7f4,  // the page itself, under the fibre
+  150: #f2efe9,  // a card's header — one step down from its body
+  200: #eae6de,  // sunken wells, table stripes
+  300: #ded8ce,  // the soft rule between list items. Decorative, by design.
   400: #d8ccbb,  // the default border
   500: #b3a288,  // the strongest neutral line
   600: #7d6c55,  // subtlest legible text
@@ -56,6 +61,35 @@ $paper: (
   800: #403831,  // muted text, icons
   900: #28211c,  // body text
   950: #140b08   // maximum emphasis
+);
+
+// -----------------------------------------------------------------------------
+// Board — kraft cardboard. The COVER, and everything that is not the sheet.
+// -----------------------------------------------------------------------------
+//
+// The material the design language names first and the palette did not have.
+// Without it the whole light theme came out of `paper` alone: page, surface,
+// raised, sunken, borders, text and the action fill were all steps of ONE
+// family, which is why the product read as a single yellow wash with grey
+// boxes on it. There was no second colour at fill size anywhere on screen.
+//
+// A recipe notebook's cover is unbleached board — recycled, fibrous, warmer
+// and greyer than chocolate. It is deliberately NOT cocoa: cocoa is a
+// confection colour and marks what is chosen, while this is a material and
+// marks what is not paper. Two browns doing two jobs, kept apart the same way
+// cocoa and toffee are.
+$board: (
+  50: #f0e7d8,
+  100: #e4d5be,  // the desk the sheet lies on
+  200: #d3bd9c,  // the cover itself
+  300: #bfa47e,
+  400: #a88a63,
+  500: #8f7350,
+  600: #775f42,
+  700: #5f4c35,
+  800: #483929,
+  900: #32281d,
+  950: #1e1811
 );
 
 // -----------------------------------------------------------------------------
@@ -190,6 +224,7 @@ $amber: (
 // both: `'#{red}'` is the word, not the colour.
 $_families: (
   'paper': $paper,
+  'board': $board,
   'cocoa': $cocoa,
   'toffee': $toffee,
   'slate': $slate,

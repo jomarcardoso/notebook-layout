@@ -51,8 +51,16 @@
   // The focus ring. It was a `color-mix()` of the old secondary colour at 25%,
   // which is the shape of an adapter inventing a value — the system has a ring
   // and it is `--app-ring`, sized and offset by its own tokens.
-  --cui-btn-focus-box-shadow: 0 0 0 #{component.$button-ring-width}
-    #{component.$button-ring};
+  // Two rings, not one: a light gap against the control, then the ink.
+  //
+  // A single dark ring drawn straight onto a dark filled button is invisible —
+  // ink on ink — and that is most buttons in this product now that `action` is
+  // the ink. The gap is the sheet colour, so the ring separates from the
+  // control on a filled button and from the page on an outline one, without
+  // needing a second colour that only exists to be seen.
+  --cui-btn-focus-box-shadow:
+    0 0 0 #{component.$button-ring-width} var(--app-bg-raised),
+    0 0 0 calc(#{component.$button-ring-width} * 2) #{component.$button-ring};
 
   --button__icon-font-size: 1.2em;
   --button__icon-margin-left: -0.15rem;

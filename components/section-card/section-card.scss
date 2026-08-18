@@ -45,8 +45,9 @@
     display: block;
 
     > * {
-      padding: var(--app-pad-surface) 0;
-      border-bottom: component.$section-card-title-border-width dotted component.$section-card-title-divider-color;
+      padding: var(--app-pad-control-y) 0;
+      // border when the title has the same color of the body.
+      //   border-bottom: component.$section-card-title-border-width dotted component.$section-card-title-divider-color;
     }
   }
 
