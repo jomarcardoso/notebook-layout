@@ -63,7 +63,18 @@ $_field-pad: 4px;
   //
   // These were custom properties in the old `theme.scss`, a second layer 3 with
   // its own vocabulary. Same values, one contract.
-  $field-fg: map.get(p.$pen, 600),
+  // WHAT THE USER TYPES IS INK, NOT A HIGHLIGHT.
+  //
+  // This pinned the field's text to `pen-600` #005bac — a bright ballpoint
+  // blue, hardcoded past layer 2, so every input in the product was the
+  // loudest thing on its screen and no theme could move it. The idea was that
+  // a field holds the user's own writing; the effect was a page competing with
+  // itself for attention.
+  //
+  // Body ink instead, which is what the foundation's default already said. The
+  // pen ramp survives in the palette for a mark that genuinely is the user's —
+  // the tick in a checkbox — and nowhere else.
+  $field-fg: var(--app-fg-default),
   $button-pad-y: 2px,
   $button-pad-x: 16px,
   $field-pad: $_field-pad,

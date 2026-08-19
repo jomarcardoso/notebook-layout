@@ -207,6 +207,84 @@ $amber: (
 // -----------------------------------------------------------------------------
 // Reaching a step
 // -----------------------------------------------------------------------------
+// THEME TWO's own materials
+// -----------------------------------------------------------------------------
+//
+// A second notebook, not a recolour of the first. Where theme one is ink on
+// cream with cocoa marking what is chosen, this one is a kraft-covered book
+// written in fountain-pen blue: the ACTION is the cardboard itself, the LINK is
+// the pen, and what is CHOSEN is pencilled.
+//
+// Sketched by Gemini as flat hex values in `tasks/gemini-second-theme/`. The
+// concepts are kept and the shape is not: single values cannot express hover,
+// pressed or subtle states, and this system checks contrast per state — so each
+// material is a ramp, with the sketch's value sitting at the step it belongs to.
+
+// Kraft — the cardboard cover, and this theme's action fill.
+$kraft: (
+  50: #faf4ec,
+  100: #f3ebe0,  // the sketch's "papel kraft claro": secondary surfaces
+  200: #e5d3ba,
+  300: #d0b28a,
+  400: #b98a55,
+  500: #9d6a34,
+  600: #7f4f24,  // the sketch's cardboard brown: what ACTS
+  700: #6a4120,
+  800: #55341a,
+  900: #3f2713,
+  950: #2a1a0d
+);
+
+// Fountain-pen blue — this theme's LINK. Denser and greyer than theme one's
+// ballpoint `pen`, which is a bright modern blue; this is bottled ink.
+$fountain: (
+  50: #eaf0f5,
+  100: #cfdde8,
+  200: #a3bed2,
+  300: #6f97b4,
+  400: #3f7194,
+  500: #23577a,
+  600: #1b4965,  // the sketch's ink blue
+  700: #163b53,
+  800: #112d40,
+  900: #0c202e,
+  950: #08141d
+);
+
+// Graphite — pencil. Marks what has been CHOSEN, and carries the quiet text.
+$graphite: (
+  50: #f4f2ef,
+  100: #e2ddd4,  // the sketch's notebook rule
+  200: #ccc5b8,
+  300: #aca392,
+  400: #8b8272,
+  500: #6e685e,  // the sketch's pencil lead
+  600: #5a554d,
+  700: #46423b,
+  800: #33302b,
+  900: #1c1917,  // the sketch's india-ink black
+  950: #100e0d
+);
+
+// Ivory — the paper of this book. Lighter and less yellow than theme one's
+// `paper`, with only a whisper between page and card.
+$ivory: (
+  0: #ffffff,
+  50: #fffdf9,   // the sketch's card
+  100: #fbf8f1,  // the sketch's page
+  150: #f6f2e9,
+  200: #efe9dd,
+  300: #e2ddd4,
+  400: #cfc8bb,
+  500: #b0a897,
+  600: #857d6d,
+  700: #625b4f,
+  800: #46413a,
+  900: #2b2723,
+  950: #171512
+);
+
+// -----------------------------------------------------------------------------
 //
 // This lookup used to live beside the theme maps. It moved here when those maps
 // were split into `semantic/light.scss` and `semantic/dark.scss`: two files
@@ -224,6 +302,10 @@ $amber: (
 // both: `'#{red}'` is the word, not the colour.
 $_families: (
   'paper': $paper,
+  'ivory': $ivory,
+  'kraft': $kraft,
+  'fountain': $fountain,
+  'graphite': $graphite,
   'board': $board,
   'cocoa': $cocoa,
   'toffee': $toffee,
@@ -243,3 +325,4 @@ $_families: (
   }
   @return map.get($map, $step);
 }
+

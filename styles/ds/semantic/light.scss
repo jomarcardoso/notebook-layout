@@ -91,7 +91,16 @@ $tokens: (
   text: p.pal(paper, 900),
   'text-muted': p.pal(paper, 800),
   'text-subtlest': p.pal(paper, 600),
-  heading: p.pal(cocoa, 900),
+  // HEADINGS ARE INK, at every level.
+  //
+  // They used to carry cocoa, which made the hierarchy legible by COLOUR as
+  // well as by size — and that is one signal too many. Size and weight already
+  // separate an h1 from an h3; tinting them as well means a heading competes
+  // with the things that use colour to mean something, and it splits the page
+  // into more voices than it has ideas.
+  //
+  // One ink for h1, h2 and h3. What distinguishes them is how big they are.
+  heading: p.pal(paper, 900),
 
   // --- Neutral emphasis ----------------------------------------------------
   //

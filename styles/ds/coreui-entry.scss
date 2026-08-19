@@ -116,6 +116,11 @@
 // than by CoreUI's JS, which this project does not ship.
 @import '@coreui/coreui/scss/accordion.import';
 
+// Badges. Added so counters stop being hand-rolled: `.filed-recipes__count`
+// was a bespoke pill reimplementing `.badge` with its own padding, radius and
+// colours, and every counter after it would have been another one.
+@import '@coreui/coreui/scss/badge.import';
+
 // NOT CoreUI's carousel. It was imported for §16.8 and taken straight back
 // out: this package already owns `.carousel` — a BEM component with
 // `.carousel__banner` — and CoreUI declares the same base class. That is the

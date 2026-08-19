@@ -81,74 +81,78 @@
   @extend .h1;
 }
 
-// The notebook's own voice — the display face, which is where the handwriting
-// lands once that font is loaded.
-.handwritten-title,
-.section-heading {
-  color: component.$heading-2-fg;
+// THE DISPLAY VOICE — the handwriting.
+//
+// One class, not three. This was `.handwritten-title` and `.section-heading`,
+// declared identically, used nowhere, and named closely enough to
+// `.section-title` — which is a different thing entirely — that reading the
+// file taught you the wrong model. Two dead names for one idea is worse than
+// no name.
+//
+// It is the product speaking rather than labelling: "Seu caderninho, do seu
+// jeito", a marginal note, a badge of a line. `fg-brand` is the accent ink each
+// theme reserves for exactly this.
+.display-title {
+  color: var(--app-fg-brand);
   font-family: var(--app-font-family-display);
   font-size: var(--app-font-size-heading-lg);
   font-weight: var(--app-font-weight-heading);
-  line-height: var(--app-line-height-heading);
+  line-height: 1.4;
+  margin: 0;
+  text-wrap: balance;
+
+  &.-center {
+    margin-inline: auto;
+    max-inline-size: 22ch;
+    text-align: center;
+  }
 }
 
-// A written rubric rather than a solid band: brand ink with a ruled line under
-// it, like a heading underlined by hand.
-// A SECTION TITLE IS A BAND, not an underlined phrase.
+// A SECTION BAND, softly.
 //
-// Three levels of hierarchy, from the sections report:
+// Written nested, which is the point of Sass and was not being used: this was
+// six flat rulesets — `.section-title`, `.section-title.-sub`,
+// `.section-title.-center`, `.section-title.-plain` — repeating the selector
+// every time, so the relationship between a modifier and its base was
+// something you had to reconstruct by reading.
 //
-//   section   a whole area of the page — Minhas receitas, Minhas listas
-//   item      an organiser INSIDE a section — one recipe list
-//   card      the content itself
-//
-// The section title is the mark that says a new area starts here, so it is
-// filled cover stock with light text rather than words with a line under
-// them. It was the underline, and the underline had two problems: at
-// `width: fit-content` it read as an underlined phrase rather than the top of
-// anything, and it left the product needing a SECOND mark for the level below
-// — every list drew its own full-width `<hr>`. One page, two devices, one job.
-//
-// A band cannot be confused with the item heading under it, which is the whole
-// point of §2.2 of the report: an item must organise without competing.
+// The fill is `bg-sunken`, not `bg-selected`. The dark cocoa band made sense
+// when it sat under a paper texture with `multiply` softening it; with the
+// texture gone it is a heavy dark slab, and the strongest colour on the page
+// was being spent on a label rather than on anything a reader can act on.
+// A sunken well says "a new area starts here" without shouting it.
 .section-title {
   @extend .h2;
 
-  // Cocoa, not `brand`. `brand` is now the CO VER — the board the nav is made
-  // of — and a light tan band cannot carry light text. Cocoa is the product's
-  // strong brown, and `DESIGN-LANGUAGE.md` already lists "section band" among
-  // the things it may mark, beside the active tab and the checked control.
-  background-color: var(--app-bg-selected);
+  background-color: var(--app-bg-sunken);
   border: 0;
   border-radius: var(--app-radius-surface);
-  color: var(--app-fg-on-selected);
+  color: var(--app-fg-heading);
   display: block;
   max-width: 100%;
-  padding: 0.25em var(--app-pad-surface) 0.3em;
-}
+  padding: 0.25em var(--app-pad-control-y) 0.3em;
 
-// ONE LEVEL DOWN, and deliberately much quieter: a light rule, the brand hue
-// as ink rather than as a fill. It has to read as an organiser inside the
-// section, never as another section.
-.section-title.-sub {
-  @extend .h3;
+  // One level down: an organiser INSIDE a section, which must not read as
+  // another section. No fill at all — a ruled line under the words, the same
+  // mark a notebook makes.
+  &.-sub {
+    @extend .h3;
 
-  background-color: transparent;
-  border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
-  border-radius: 0;
-  color: var(--app-fg-brand);
-  padding: 0 0 0.2em;
-}
+    background-color: transparent;
+    border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
+    border-radius: 0;
+    padding: 0 0 0.2em;
+  }
 
-.section-title.-center,
-.handwritten-title.-center,
-.section-heading.-center {
-  margin-inline: auto;
-  text-align: center;
-}
+  &.-center {
+    margin-inline: auto;
+    text-align: center;
+  }
 
-.section-title.-plain {
-  border-bottom: 0;
+  &.-plain {
+    background-color: transparent;
+    padding-inline: 0;
+  }
 }
 
 .link {

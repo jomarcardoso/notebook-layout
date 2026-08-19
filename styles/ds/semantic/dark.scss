@@ -52,8 +52,8 @@ $tokens: (
   text: p.pal(paper, 100),
   'text-muted': p.pal(paper, 300),
   'text-subtlest': p.pal(paper, 500),
-  // Headings keep the brand hue and climb the cocoa ramp until they read.
-  heading: p.pal(cocoa, 100),
+  // Ink at the light end — see `light.scss` for why every level shares it.
+  heading: p.pal(paper, 100),
 
   // The one fill on this theme that still carries LIGHT text, so it is the one
   // that still darkens on interaction. Everything else here is an inverted

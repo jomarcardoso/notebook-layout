@@ -42,6 +42,8 @@
 @use './src/adapters/coreui' as coreui-adapter;
 @use './semantic/light';
 @use './semantic/dark';
+@use './semantic/two';
+@use './src/derive';
 @use './semantic/structure';
 @use './semantic/surfaces';
 
@@ -57,6 +59,44 @@
 // and it runs the same contrast gate — a dark theme that ships unreadable text
 // does not compile.
 @include semantic.emit-theme('dark', dark.$tokens, $auto: true);
+
+// THEME TWO — the kraft-covered notebook. Same structure, different materials:
+// kraft acts, graphite marks what is chosen, fountain pen links. See
+// `semantic/two.scss` for why that is one sentence rather than a palette swap.
+//
+// Its night is DERIVED rather than hand-written. `derive.dark()` transforms by
+// ROLE in OKLCH — a fill carrying light text keeps darkening, a fill carrying
+// dark text brightens — and its output goes through the same contrast gate as
+// everything else. A hand-written second night can replace it later if the
+// theme earns the attention; a generated one nobody measured could not.
+@include semantic.emit-theme('two', two.$tokens);
+@include semantic.emit-theme('two-dark', derive.dark(two.$tokens));
+
+// THEME TWO'S FACES.
+//
+// Emitted here rather than through `emit-structure`, because that mixin emits
+// ONE `:root` block for the whole build: type is structure, and structure is
+// shared. It is shared because two themes should read as two covers of one
+// product, not as two products — and the face is the loudest thing a reader
+// uses to tell products apart.
+//
+// So this is a deliberate exception, and it is the reason theme two is a
+// second NOTEBOOK rather than a second colourway: a kraft-bound book is
+// printed differently, not just dyed differently.
+//
+//   title    Young Serif   the opulent serif of a printed cookery book
+//   body     Plus Jakarta  humanist sans; open curves, no industrial chill
+//   display  Caveat        real handwriting, for small marginal notes only
+//   mono     DM Mono       typewriter, for quantities and times
+//
+// Both schemes of theme two, and nothing else. Theme one is untouched.
+:root[data-theme='two'],
+:root[data-theme='two-dark'] {
+  --app-font-family-heading: 'Young Serif', 'Lora', Georgia, serif;
+  --app-font-family-body: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+  --app-font-family-display: 'Caveat Variable', 'Caveat', cursive;
+  --app-font-family-mono: 'DM Mono', ui-monospace, monospace;
+}
 
 // Still layer 2: the two tokens whose value depends on the viewport, so a
 // component never mentions a breakpoint.
