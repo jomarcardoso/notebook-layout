@@ -26,8 +26,7 @@
 $_field-pad: 4px;
 
 @forward '../ds/src/component' with (
-  // A field label's fill is the BORDER colour — the detail that makes the label
-  // read as part of the box's outline rather than as a chip sitting above it.
+  // A BORDER COLOUR WAS BEING USED AS A FILL.
   //
   // The contract leaves this `null` because no library has a semantic source
   // for it: most design systems do not put a background on a field label at
@@ -35,7 +34,6 @@ $_field-pad: 4px;
   // `background-color: null` omits the declaration entirely, so a component
   // reading an unconfigured `null` silently loses the property rather than
   // failing. This line is what stops that here.
-  // A BORDER COLOUR WAS BEING USED AS A FILL.
   //
   // `border-color-subtle` is paper-300, the decorative rule between list items,
   // and this was the only place in the product painting a SURFACE with it — so
@@ -107,19 +105,24 @@ $_field-pad: 4px;
   // survives describing a shape the product no longer draws.
   $field-border: var(--app-border-width) solid var(--app-border-color),
 
-  // 21px, and this is layer 3 rather than a step on the type scale.
+  // A STEP OF THE SCALE, not a literal.
   //
-  // The scale is shared by every face, and this size is a property of ONE
-  // face: `font-family-display` is a handwriting face, and handwriting faces
-  // run small — a 16px x-height in Playwrite reads about a third smaller than
-  // 16px in the body face, which is why the typed text looked like a caption
-  // in a field the size of a control. Adding a 21px step to the scale would
-  // put an optical correction for one typeface into the vocabulary every
-  // heading and paragraph reads from.
+  // This was `21px`, argued as an optical correction for the handwriting
+  // face — true of the face it was measured against, and a layer 3 token that
+  // holds a raw pixel value has stopped referring to the system: nothing moves
+  // it when the scale moves, and nothing tells you which step it is near.
   //
-  // It pairs with `$field-line-height: 31px` above, and the two are one
-  // decision: 21/31 is the rhythm the ruled lines are drawn at.
-  $field-font-size: 21px,
+  // `font-size-lg` is 20px, the step the correction was reaching for. The
+  // display face still runs smaller than the body face at the same nominal
+  // size, which is exactly why the field takes a step ABOVE body rather than
+  // body itself — the correction survives, expressed in the vocabulary.
+  $field-font-size: var(--app-font-size-lg),
+
+  // The tab is a LABEL, so it is set in the label's face. It read
+  // `font-family-heading` by default, which put the printed-book serif on a
+  // control — a heading face is for what a document says, not for what an
+  // interface asks.
+  $field-label-font-family: var(--app-font-family-body),
 
   // The field is a slip cut from the same stock as its tab — see
   // `.field__box` in `field.scss`. The default is `bg-surface`, which is the
@@ -127,29 +130,31 @@ $_field-pad: 4px;
   // own.
   $field-bg: var(--app-bg-sunken),
 
-  // THE RULED LINES LIGHTEN AT FOCUS, THEY DO NOT SWITCH ON.
+  // THE RULED LINES AT FOCUS: the strong colour, a little transparent.
   //
-  // Focus was painting them at full `border-selected` — cocoa-800, the same
-  // weight the BOX outline takes — so the moment you clicked into a textarea
-  // the faint rules under your writing became the darkest lines in the field
-  // and competed with the text about to be written on them. A ruled page does
-  // not get louder because you picked up a pen.
+  // Mixed toward TRANSPARENT rather than toward the paper, and the difference
+  // is not cosmetic. Mixing toward `border-color-subtle` invents a third
+  // colour — a muddy brown that belongs to no role and follows neither of the
+  // two it was made from when a theme moves. Mixing toward transparent keeps
+  // the rule the SAME colour it always was and lets the paper show through it,
+  // which is what "the line is lighter" physically means on paper.
   //
-  // There is no weaker step of `selected` in the border family to reach for:
-  // layer 2 ships `border-selected` and nothing under it, and `selected-subtle`
-  // is a FILL tint — cocoa-100, paler than the resting rule, so focus would
-  // reduce contrast instead of raising it. Mixing is the honest answer, and it
-  // is done here rather than with `opacity` because opacity would also fade
-  // whatever the mask lets through and would compose differently on each
-  // surface the field can sit on.
+  // 85%, not 66%. `selected` is a strong colour and it does not need much
+  // taking down: at two thirds it stopped reading as ink on the page and
+  // started reading as a different, weaker ink. The rules still have to sit
+  // under the writing rather than beside it, so they give up a little and no
+  // more.
   //
-  // Two thirds of the way from the resting rule toward the focused outline:
-  // unmistakably darker than at rest, and unmistakably lighter than the box
-  // edge, so the hierarchy inside the focused field stays edge > rule > paper.
+  // `color-mix` and not `opacity`, still: the rules are drawn on the element
+  // the mask cuts, and `opacity` there would fade the whole layer including
+  // what the mask lets through.
   $field-divider-color-focus:
-    color-mix(in oklab, var(--app-border-selected) 66%, var(--app-border-color-subtle)),
+    color-mix(in oklab, var(--app-border-selected) 85%, transparent),
   $field-label-pad: 5px 24px 3px,
-  $field-label-font-size: 15px,
+  // No `$field-label-font-size` here. It was pinned to `15px`, a value on no
+  // ramp and belonging to no face, so the tab was the one piece of type in the
+  // product the scale could not move. The contract's default is
+  // `--app-font-size-sm`, which is what a secondary label is.
   $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong),
 
   // A CARD IS A SHEET LAID ON THE PAGE, so it cannot be the page's own colour.

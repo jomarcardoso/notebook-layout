@@ -155,8 +155,19 @@
     'font-family-display': base.scale(font, sans),
     'font-family-mono': base.scale(font, mono),
 
-    // BODY SIZES. Three steps is enough: anything smaller than `sm` fails
-    // 1.4.4 at the first zoom step, and anything larger is a heading.
+    // BODY SIZES. Four steps, not three.
+    //
+    // It used to stop at `sm`, on the grounds that anything smaller fails
+    // WCAG 1.4.4 at the first zoom step. That is not what 1.4.4 says: the
+    // criterion is about text scaling to 200% without loss, and a size
+    // declared in `rem` scales with the root — a small rem value passes,
+    // a large px value fails. The floor that matters is legibility, and the
+    // ramp is floored for that reason where it stops being modular.
+    //
+    // `xs` exists because a kicker is a real typographic level with a real
+    // size, and without a token for it every eyebrow in the product borrowed
+    // the caption step and came out one size too large.
+    'font-size-xs': base.scale(text, xs),
     'font-size-sm': base.scale(text, sm),
     'font-size': base.scale(text, base),
     'font-size-lg': base.scale(text, lg),
@@ -173,10 +184,22 @@
     //
     // The suffix ladder is the same one `size-control` and `radius-*` already
     // use, so a reader who knows one knows all three.
-    'font-size-heading-sm': base.scale(text, lg),
-    'font-size-heading': base.scale(text, '2xl'),
-    'font-size-heading-lg': base.scale(text, '3xl'),
-    'font-size-heading-xl': base.scale(text, '4xl'),
+    // Four CONSECUTIVE steps, starting AT the body size.
+    //
+    // The smallest heading is the same size as body text, and that is the
+    // decision rather than an oversight: a fourth-level heading inside a card
+    // is a label for what follows, and a label that is bigger than the text it
+    // labels inverts the thing it is there to do. It separates itself by
+    // weight and face, which is what `.h4` already uses.
+    //
+    // From there the ramp climbs: 16 → 20 → 25 → 31.2. The old mapping skipped
+    // `xl`, which put a 1.5x jump between the first two heading levels and
+    // 1.25x between the rest — invisible on a hand-tuned ramp, and on a
+    // modular one the single place the ratio breaks.
+    'font-size-heading-sm': base.scale(text, base),
+    'font-size-heading': base.scale(text, lg),
+    'font-size-heading-lg': base.scale(text, xl),
+    'font-size-heading-xl': base.scale(text, '2xl'),
 
     'font-weight-body': base.scale(weight, normal),
     'font-weight-heading': base.scale(weight, semibold),

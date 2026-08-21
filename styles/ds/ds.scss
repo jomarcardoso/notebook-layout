@@ -36,7 +36,42 @@
   $colour-strategy: 'functional'
 );
 
-@use './src/base';
+// THE MODULAR SCALE — major third, 1.25, anchored at a 16px body.
+//
+// The ramp it replaced grew by five different factors (1.125, 1.11, 1.2, 1.25,
+// 1.2), so a product that needed a level between two of them had nowhere to
+// put it. Here every step above the body is exactly 1.25 from the one below:
+//
+//     base  16px    body, and h4
+//     lg    20px    h3
+//     xl    25px    h2
+//     2xl   31.2px  h1
+//
+// BELOW the body the ratio deliberately flattens — 12.8 → 14.24 → 16 grows by
+// about 1.11, not 1.25. A strict 1.25 downward gives 12.8 and 10.2, and 10px
+// is not a size a caption can be set in. Small text is bounded by legibility
+// rather than by proportion, so the ramp is modular where it is free to be and
+// floored where it is not. Written down because a reader checking the ratio
+// will find it broken at the bottom and should know it was broken on purpose.
+//
+//     xs    12.8px   the kicker
+//     sm    14.24px  captions, secondary labels
+//
+// The steps above 2xl continue the ratio and nothing consumes them yet.
+@use './src/base' with (
+  $text: (
+    xs: 0.8rem,
+    sm: 0.89rem,
+    base: 1rem,
+    lg: 1.25rem,
+    xl: 1.56rem,
+    '2xl': 1.95rem,
+    '3xl': 2.44rem,
+    '4xl': 3.05rem,
+    '5xl': 3.81rem,
+    '6xl': 4.77rem
+  )
+);
 @use './src/semantic';
 @use './src/component';
 @use './src/adapters/coreui' as coreui-adapter;
@@ -71,32 +106,6 @@
 // theme earns the attention; a generated one nobody measured could not.
 @include semantic.emit-theme('two', two.$tokens);
 @include semantic.emit-theme('two-dark', derive.dark(two.$tokens));
-
-// THEME TWO'S FACES.
-//
-// Emitted here rather than through `emit-structure`, because that mixin emits
-// ONE `:root` block for the whole build: type is structure, and structure is
-// shared. It is shared because two themes should read as two covers of one
-// product, not as two products — and the face is the loudest thing a reader
-// uses to tell products apart.
-//
-// So this is a deliberate exception, and it is the reason theme two is a
-// second NOTEBOOK rather than a second colourway: a kraft-bound book is
-// printed differently, not just dyed differently.
-//
-//   title    Young Serif   the opulent serif of a printed cookery book
-//   body     Plus Jakarta  humanist sans; open curves, no industrial chill
-//   display  Caveat        real handwriting, for small marginal notes only
-//   mono     DM Mono       typewriter, for quantities and times
-//
-// Both schemes of theme two, and nothing else. Theme one is untouched.
-:root[data-theme='two'],
-:root[data-theme='two-dark'] {
-  --app-font-family-heading: 'Young Serif', 'Lora', Georgia, serif;
-  --app-font-family-body: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
-  --app-font-family-display: 'Caveat Variable', 'Caveat', cursive;
-  --app-font-family-mono: 'DM Mono', ui-monospace, monospace;
-}
 
 // Still layer 2: the two tokens whose value depends on the viewport, so a
 // component never mentions a breakpoint.

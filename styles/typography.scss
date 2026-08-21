@@ -37,6 +37,27 @@
 // it; alignment, weight and tracking are literals, here, where they are read.
 // =============================================================================
 
+// A HEADING GETS A MEASURE TOO, at a different number and for a different
+// reason.
+//
+// 45–75ch is the reading measure: it exists so the eye can return to the left
+// margin and find the next line. A heading is not read that way — it is taken
+// in as a shape, in one or two lines — and `ch` scales with font size, so 45ch
+// of a 31px h1 is over a thousand pixels. The same *principle* at display size
+// lands near 30 characters, which is also where a title stops being a title
+// and starts being a sentence.
+//
+// `text-wrap: balance` is the other half: with a cap, the last line of a
+// two-line heading is whatever happens to overflow. Balanced, the browser
+// evens the lines out.
+.h1,
+.h2,
+.h3,
+.h4 {
+  max-width: 30ch;
+  text-wrap: balance;
+}
+
 .h1 {
   color: component.$heading-1-fg;
   font-family: var(--app-font-family-heading);
@@ -63,14 +84,15 @@
   line-height: var(--app-line-height-heading);
 }
 
-// h4 drops to the body face on purpose: below the third level a serif at small
-// size stops reading as a title and starts reading as decoration.
+// h4 is the BODY size, in the body face, separated only by weight. Below the
+// third level a serif at small size stops reading as a title and starts
+// reading as decoration — and a label that is larger than the text it labels
+// inverts the job it is there to do.
 .h4 {
   color: component.$heading-4-fg;
   font-family: var(--app-font-family-body);
   font-size: var(--app-font-size-heading-sm);
   font-weight: 700;
-  letter-spacing: 0.01em;
   line-height: var(--app-line-height-heading);
 }
 
@@ -131,7 +153,7 @@
   color: var(--app-fg-brand);
   display: block;
   font-family: var(--app-font-family-body);
-  font-size: var(--app-font-size-sm);
+  font-size: var(--app-font-size-xs);
   font-weight: var(--app-font-weight-heading);
   letter-spacing: 0.12em;
   line-height: 1.2;
@@ -201,7 +223,13 @@
 .p {
   color: var(--app-fg-default);
   line-height: var(--app-line-height);
-  max-width: 200ch;
+  // THE MEASURE. 45–75 characters is where the eye finds the start of the next
+  // line without hunting for it, and 68 sits in the middle of that band.
+  //
+  // This said `200ch`, which is not a cap — no column in this product is ever
+  // that wide, so the declaration read as a limit and enforced nothing. A
+  // paragraph on a desktop simply ran the full width of whatever held it.
+  max-width: 68ch;
 
   &.-large {
     font-size: var(--app-font-size-lg);

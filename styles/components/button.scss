@@ -77,7 +77,6 @@
   // The wrapper is gone and the gap belongs here anyway: spacing between a
   // button's icon and its label is the button's anatomy, not a call site's.
   gap: var(--app-space-xs);
-  letter-spacing: 0.03125rem;
   max-width: 320px;
   min-height: component.$button-size;
   position: relative;

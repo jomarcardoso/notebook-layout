@@ -76,7 +76,6 @@
     align-self: flex-start;
     font-size: component.$field-label-font-size;
     font-family: component.$field-label-font-family;
-    letter-spacing: 0.0625rem;
     mix-blend-mode: var(--app-blend-ink);
     transition:
       background-color var(--app-duration-base) var(--app-ease),
@@ -148,7 +147,6 @@
     &::placeholder {
       color: component.$field-placeholder-fg;
       font-family: component.$field-placeholder-font-family;
-      letter-spacing: 1px;
     }
 
     &::selection {
@@ -209,9 +207,25 @@
     .field__box {
       border-top-left-radius: 0;
       border-top-right-radius: 0;
+      // THE FIRST RULED LINE, drawn as the box's top border.
+      //
+      // The label tab is an arch — left, top, right, and `border-bottom: 0` so
+      // it can join the box under it. On a single-line field the box closes
+      // that arch with its own outline. A multiline box has no outline, so
+      // nothing closed it: the tab hung open at the bottom and the ruled area
+      // started at the first mask line, a gap below.
+      //
+      // It belongs to the PAUTA rather than to the tab. Painted on the label
+      // instead, it would follow the label's focus colour and go dark cocoa
+      // while every line under it went to the softened rule — one line out of
+      // step with the page it starts. Here it takes the same token and the
+      // same transition as the rules below it, and reads as the first of them.
       border: 0;
+      border-top: component.$field-line-border-width solid
+        component.$field-line-border-color;
       padding: component.$field-box-pad-y 0 0;
       position: relative;
+      transition: border-color var(--app-duration-base) var(--app-ease);
 
       &::before {
         content: '';
@@ -305,6 +319,13 @@
     // nothing fails loudly when that read does not exist. Where the state can
     // set the property directly, it should.
     &.field--multiline {
+      // The box's own outline does NOT take the focus colour here — a
+      // multiline box has no outline, only the top border that starts the
+      // pauta, so it moves with the rules rather than with the frame.
+      .field__box {
+        border-top-color: component.$field-divider-color-focus;
+      }
+
       .field__box::before {
         background-color: component.$field-divider-color-focus;
       }

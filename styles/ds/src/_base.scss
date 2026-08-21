@@ -522,6 +522,18 @@ $radius: (
   full: 9999px,
 );
 
+// CONFIGURABLE, because a type scale is a PRODUCT decision.
+//
+// The default below is the familiar hand-tuned ramp — the one Tailwind ships,
+// where the steps are round numbers rather than a single ratio. It is a fine
+// default and it is not a system: 16 → 18 → 20 → 24 → 30 → 36 grows by 1.125,
+// 1.11, 1.2, 1.25 and 1.2, so a product that adds a level has nowhere to put
+// it. A product that wants a strict modular scale sets this once:
+//
+//     @use 'ds/src/base' with ($text: (…));
+//
+// The keys are the contract. Whatever the values, `base` is body text and the
+// rest are steps away from it, so `semantic.scss` keeps mapping the same names.
 $text: (
   xs: 0.75rem,
   sm: 0.875rem,
@@ -533,7 +545,7 @@ $text: (
   '4xl': 2.25rem,
   '5xl': 3rem,
   '6xl': 3.75rem,
-);
+) !default;
 
 $leading: (
   tight: 1.25,

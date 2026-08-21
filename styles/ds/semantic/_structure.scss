@@ -30,16 +30,40 @@
 // ergonomic floor is allowed to beat a stylistic preference.
 // =============================================================================
 
+// THE FOUR FACES, one job each. Shared by both themes: two covers of one
+// product, and the face is the loudest thing a reader uses to tell products
+// apart. They were declared for theme two alone for a while, which made theme
+// one a different product rather than a different cover.
+//
+//   heading  Young Serif    the opulent serif of a printed cookery book
+//   body     Plus Jakarta   humanist sans; open curves, no industrial chill
+//   display  Caveat         real handwriting, for short marginal marks only
+//   mono     DM Mono        typewriter, for quantities and times
+//
+// The `Variable` suffixes are how `@fontsource-variable` registers the family;
+// the static name follows as the fallback for a build that ships the static
+// package instead.
 $structure: (
-  'font-family-body': ('Dosis', ui-sans-serif, system-ui, sans-serif),
-  'font-family-heading': ('Cinzel', ui-serif, Georgia, 'Times New Roman', serif),
-
-  // The product's own voice — the wordmark, and eventually the user's own
-  // writing. Currently commented out in the library; the stack is declared here
-  // so it lights up the moment the face is loaded.
-  'font-family-display': (
-    'Playwrite PE Variable', 'Segoe Script', 'Bradley Hand', cursive
+  'font-family-body': (
+    'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif
   ),
+  'font-family-heading': ('Young Serif', 'Lora', Georgia, serif),
+  'font-family-display': ('Caveat Variable', 'Caveat', cursive),
+  'font-family-mono': ('DM Mono', ui-monospace, monospace),
+
+  // NO TRACKING ON HEADINGS.
+  //
+  // The foundation's default is `tracking.tight`, a small negative value, and
+  // every hand-set tracking in this product was tuned for faces it no longer
+  // uses — Cinzel is an inscriptional capital that genuinely needs opening up,
+  // Dosis is condensed and needed the same. Young Serif and Plus Jakarta are
+  // both drawn with their spacing already right at text sizes, so any tracking
+  // now is a correction for a problem that left with the old faces.
+  //
+  // The kicker is the one exception in the product, and it earns it: `.eyebrow`
+  // is set in uppercase, where the letterforms really do collide without extra
+  // space. That is a property of setting caps, not a house style.
+  'letter-spacing-heading': 0,
 
   'line-height': 1.7,
   'radius-control': 4px,

@@ -24,7 +24,12 @@
  * more than fixing the file it catches.
  */
 module.exports = {
+  plugins: ['../tools/stylelint/no-nested-bem-element.mjs'],
+
   rules: {
+    /* BEM has two levels. See the plugin for why nesting an element inside an
+     * element produces a class name nobody can find by searching. */
+    'recepta/no-nested-bem-element': true,
     /* No literal colours. Layer 1 is the only exception, below. */
     'color-no-hex': true,
 
