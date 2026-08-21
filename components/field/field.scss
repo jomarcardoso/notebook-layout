@@ -65,17 +65,35 @@
     border-top-left-radius: component.$field-radius;
     border-top-right-radius: component.$field-radius;
     background-color: component.$field-label-bg;
+    // The tab is OUTLINED, not just filled, so that it and the box below read
+    // as one cut shape rather than as a coloured patch resting on a bordered
+    // rectangle. `border-bottom: 0` above is what joins them: the outline runs
+    // up the label, across its top and back down, and the box continues it.
+    border: component.$field-border-width solid
+      component.$field-label-border-color;
+    border-bottom: 0;
     padding: component.$field-label-pad;
     align-self: flex-start;
     font-size: component.$field-label-font-size;
     font-family: component.$field-label-font-family;
     letter-spacing: 0.0625rem;
     mix-blend-mode: var(--app-blend-ink);
-    transition: background-color var(--app-duration-base) var(--app-ease);
+    transition:
+      background-color var(--app-duration-base) var(--app-ease),
+      border-color var(--app-duration-base) var(--app-ease);
   }
 
   &__box {
     border: component.$field-border;
+    // THE WHOLE FIELD IS CUT FROM ONE STOCK.
+    //
+    // The box used to be transparent, so the label tab was the only part of
+    // the field made of paper and the writing area was whatever surface
+    // happened to be behind it. Filling the box with the same `bg-sunken`
+    // makes the field a single piece of stationery — a slip with a tab on it —
+    // and it gives the ruled lines a ground of their own to sit on instead of
+    // floating over the page.
+    background-color: component.$field-bg;
     display: flex;
     align-items: center;
     padding: calc(component.$field-pad + 2px) component.$field-pad 0;
@@ -201,19 +219,18 @@
         inset: component.$field-box-pad-y component.$field-line-offset-x 0;
         pointer-events: none;
         z-index: 0;
-        background-image: repeating-linear-gradient(
-          to right,
-          component.$field-line-border-color 0,
-          component.$field-line-border-color component.$field-line-dash-length,
-          transparent component.$field-line-dash-length,
-          transparent
-            calc(component.$field-line-dash-length + component.$field-line-dash-gap)
-        );
-        background-size: calc(
-            component.$field-line-dash-length + component.$field-line-dash-gap
-          )
-          100%;
-        background-repeat: repeat;
+        // A CONTINUOUS RULE, painted flat and cut into lines by the mask.
+        //
+        // This used to be a second repeating gradient running left-to-right,
+        // dashing the rule along its length — so the mask cut the sheet into
+        // rows and the gradient cut each row into ticks. A ruled page has
+        // continuous lines; dashes belong to a worksheet, and two textures
+        // stacked on one element is one more than the page can carry.
+        //
+        // Flat colour also makes the focus state a one-line override, which is
+        // what it should always have been — see `--focused` below.
+        background-color: component.$field-line-border-color;
+        transition: background-color var(--app-duration-base) var(--app-ease);
         @include ruled-lines(component.$field-line-height, component.$field-line-offset);
       }
     }
@@ -267,17 +284,30 @@
     .field__label {
       color: component.$field-label-fg-focus;
       background-color: component.$field-label-bg-focus;
+      // The outline darkens WITH the fill. A pale border left around a filled
+      // tab reads as a leftover edge — the shape is solid now, so its own
+      // outline has to belong to it rather than to the resting state.
+      border-color: component.$field-label-border-color-focus;
     }
 
     // The rule lines follow the focus, which is the detail that makes a
     // textarea read as the page you are writing on rather than a box near it.
     //
-    // This line said `--field-line-color` while the gradient that draws the
-    // rules reads `--app-field-line-color`. The migration renamed every READ
-    // and left the DECLARATIONS alone, so the focus state has been writing to a
-    // name nothing consumes — the lines simply stopped changing colour.
+    // It is painted directly on the element that draws the rules. Two earlier
+    // versions of this set a CUSTOM PROPERTY instead — first `--field-line-color`
+    // and then `--app-field-line-color` — and neither name was ever read by
+    // anything: the rules take their colour from `$field-line-border-color`,
+    // which resolves to `--app-border-color-subtle`. So the focused state has
+    // been assigning to a variable nobody consumes, and the lines never moved.
+    //
+    // The lesson is in the shape of the bug, not in the name: a state that
+    // writes to a variable is only as good as the read at the other end, and
+    // nothing fails loudly when that read does not exist. Where the state can
+    // set the property directly, it should.
     &.field--multiline {
-      --app-field-line-color: #{component.$field-divider-color-focus};
+      .field__box::before {
+        background-color: component.$field-divider-color-focus;
+      }
     }
   }
 

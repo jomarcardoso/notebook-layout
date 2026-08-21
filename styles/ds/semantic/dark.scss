@@ -42,10 +42,11 @@ $tokens: (
   'surface-active': p.pal(paper, 700),
   overlay: rgba(0, 0, 0, 0.7),
 
-  // The cover, read from the dark end: board deep enough to frame a lit sheet
-  // without becoming another black. See `light.scss` for why the cover rides
-  // on `brand` instead of on a token of its own.
-  brand: p.pal(board, 800),
+  // board-700, not 800. At 800 the cover measured 1.43:1 against the sheet —
+  // two dark browns that read as one surface — and the bar was leaning on a
+  // hard border to look separate. A step lighter puts it at 1.94:1, matching
+  // what the light theme gets for free, and the line became unnecessary.
+  brand: p.pal(board, 700),
   'on-brand': p.pal(board, 50),
 
   // --- Ink, now light ------------------------------------------------------
@@ -54,6 +55,12 @@ $tokens: (
   'text-subtlest': p.pal(paper, 500),
   // Ink at the light end — see `light.scss` for why every level shares it.
   heading: p.pal(paper, 100),
+
+  // The display voice, declared here for the same reason as on the light theme
+  // — see `light.scss`. Read from the light end: toffee rather than cocoa,
+  // because cocoa light enough to clear `raised` has lost the warmth that made
+  // it cardboard, and toffee at that lightness has not.
+  'brand-text': p.pal(toffee, 300),
 
   // The one fill on this theme that still carries LIGHT text, so it is the one
   // that still darkens on interaction. Everything else here is an inverted

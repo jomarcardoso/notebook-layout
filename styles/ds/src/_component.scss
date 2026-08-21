@@ -745,6 +745,13 @@ $table-caption-bg: var(--app-bg-brand) !default;
 $table-caption-fg: var(--app-fg-on-brand) !default;
 $field-box-border-color-focus: var(--app-border-selected) !default;
 $field-divider-color-focus: var(--app-border-selected) !default;
+// The label tab's own outline. Separate from `$field-border-color` because a
+// tab and the box under it can legitimately differ — a folder tab is often cut
+// from heavier stock — and because the focused state moves this one and not
+// the other in every product that fills the tab.
+$field-border-width: var(--app-border-width) !default;
+$field-label-border-color: var(--app-border-color) !default;
+$field-label-border-color-focus: var(--app-border-selected) !default;
 $carousel-indicator-border-color-active: var(--app-border-selected) !default;
 $button-border-width: var(--app-border-width) !default;
 $button-fg-disabled: var(--app-fg-disabled) !default;
@@ -757,8 +764,6 @@ $field-line-height: var(--app-line-height-body) !default;
 $field-line-offset: 0px !default;
 $field-line-offset-x: 0px !default;
 $field-line-border-width: var(--app-border-width) !default;
-$field-line-dash-length: 0px !default;
-$field-line-dash-gap: 0px !default;
 $field-line-border-color: var(--app-border-color-subtle) !default;
 $field-box-pad-y: var(--app-pad-control-y) !default;
 $field-border: var(--app-border-width) solid var(--app-border-color) !default;

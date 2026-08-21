@@ -108,6 +108,37 @@
   }
 }
 
+// THE KICKER — the small line ABOVE a title that says where you are.
+//
+// Editorial layout's oldest device, and the one thing missing from a page of
+// headings that all look like headings: a title alone announces its own
+// subject and nothing else, so a reader arriving mid-scroll has size to tell
+// them what is important and nothing to tell them what section they are in.
+//
+// It carries `fg-brand`, the same accent ink as `.display-title` above, and
+// NOT pen blue — which was the first attempt and was wrong for a reason worth
+// keeping written down: in this product blue means "you can act on this". A
+// kicker is not actionable, so a blue one reads as a link that does nothing.
+//
+// The defence offered for the blue was that a kicker is a MARK rather than a
+// fill. That does not survive contact with the button vocabulary: a ghost
+// button is also nothing but coloured text, so "it is only text" cannot be
+// what separates a decorative colour from an interactive one.
+//
+// Uppercase in CSS rather than in the markup, so the accessible name stays the
+// sentence someone wrote.
+.eyebrow {
+  color: var(--app-fg-brand);
+  display: block;
+  font-family: var(--app-font-family-body);
+  font-size: var(--app-font-size-sm);
+  font-weight: var(--app-font-weight-heading);
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  margin: 0 0 var(--app-space-2xs);
+  text-transform: uppercase;
+}
+
 // A SECTION BAND, softly.
 //
 // Written nested, which is the point of Sass and was not being used: this was

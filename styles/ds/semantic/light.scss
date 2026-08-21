@@ -65,8 +65,19 @@ $tokens: (
   // A cover is a different MATERIAL, and in this system a material is a
   // surface context, not a step further down the surface ramp. See `cover`
   // below and `[data-surface="cover"]` in `_surfaces.scss`.
+  //
+  // `surface` is paper-100 and not paper-50 because the palette says so in as
+  // many words: 50 is "a card: the reading surface", 100 is "the page itself".
+  // The two were one step out of place, which left a white card sitting on a
+  // sheet 1% away from white — no lift at all, so the card was made entirely
+  // of its own border and the page read as a grid of boxes.
+  //
+  // A step apart is still a QUIET separation, and it is meant to be: this is
+  // ivory laid on cream, not a panel floating over a backdrop. It does not
+  // replace the card's line, it stops the line from being the only thing
+  // holding the card together.
   page: p.pal(board, 50),
-  surface: p.pal(paper, 50),
+  surface: p.pal(paper, 100),
   raised: p.pal(paper, 0),
   sunken: p.pal(paper, 150),
 
@@ -101,6 +112,20 @@ $tokens: (
   //
   // One ink for h1, h2 and h3. What distinguishes them is how big they are.
   heading: p.pal(paper, 900),
+
+  // THE DISPLAY VOICE — cardboard brown, and its own decision.
+  //
+  // `fg-brand` falls back to `selected-text` when a theme does not declare
+  // `brand-text`, and theme one was living on that fallback: the handwriting
+  // line and the section kicker were painted in the colour that means "you
+  // chose this". It rendered fine and it was still wrong — the day selection
+  // moves, every display line in the product follows it for no reason.
+  //
+  // cocoa-700 rather than the 900 it was inheriting: an accent that appears
+  // twice on a page should be warm rather than nearly black, and keeping it a
+  // clear step off `selected-text` is what makes the two independent in fact
+  // and not just in name. Theme two already made this decision explicitly.
+  'brand-text': p.pal(cocoa, 700),
 
   // --- Neutral emphasis ----------------------------------------------------
   //

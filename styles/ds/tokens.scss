@@ -35,7 +35,17 @@ $_field-pad: 4px;
   // `background-color: null` omits the declaration entirely, so a component
   // reading an unconfigured `null` silently loses the property rather than
   // failing. This line is what stops that here.
-  $field-label-bg: var(--app-border-color-subtle),
+  // A BORDER COLOUR WAS BEING USED AS A FILL.
+  //
+  // `border-color-subtle` is paper-300, the decorative rule between list items,
+  // and this was the only place in the product painting a SURFACE with it — so
+  // the label tab came out a grey that appears nowhere else, in a palette that
+  // has no greys.
+  //
+  // `bg-sunken` is the same fill the notebook tabs use, and that is the right
+  // answer twice over: a label tab and an index tab are the same object — a
+  // grip cut out of the page — so they should be cut from the same stock.
+  $field-label-bg: var(--app-bg-sunken),
 
   // Navigation chrome in this product sits on the sunken surface.
   $nav-bg: var(--app-bg-sunken),
@@ -81,11 +91,63 @@ $_field-pad: 4px;
   $field-line-height: 31px,
   $field-line-offset: 27px,
   $field-line-offset-x: 3px,
-  $field-line-dash-length: 10px,
-  $field-line-dash-gap: 6px,
   $field-box-pad-y: calc(#{$_field-pad} + 2px),
   $field-radius: var(--app-radius-surface),
-  $field-border: var(--app-border-width) dashed var(--app-border-color),
+
+  // SOLID, both the box and the ruled lines inside it.
+  //
+  // The dashes were the notebook argument taken one step too literally: a
+  // ruled notebook has CONTINUOUS lines, and a dashed one is a worksheet — a
+  // cut-here line, a form to fill in. Dashes also read as provisional, which
+  // is the wrong thing to say about the field holding the user's recipe.
+  //
+  // A solid rule is still unmistakably a ruled page; it just stops adding a
+  // second texture on top of the one the page already has. The dash length and
+  // gap tokens went with them rather than being set to zero, so nothing
+  // survives describing a shape the product no longer draws.
+  $field-border: var(--app-border-width) solid var(--app-border-color),
+
+  // 21px, and this is layer 3 rather than a step on the type scale.
+  //
+  // The scale is shared by every face, and this size is a property of ONE
+  // face: `font-family-display` is a handwriting face, and handwriting faces
+  // run small — a 16px x-height in Playwrite reads about a third smaller than
+  // 16px in the body face, which is why the typed text looked like a caption
+  // in a field the size of a control. Adding a 21px step to the scale would
+  // put an optical correction for one typeface into the vocabulary every
+  // heading and paragraph reads from.
+  //
+  // It pairs with `$field-line-height: 31px` above, and the two are one
+  // decision: 21/31 is the rhythm the ruled lines are drawn at.
+  $field-font-size: 21px,
+
+  // The field is a slip cut from the same stock as its tab — see
+  // `.field__box` in `field.scss`. The default is `bg-surface`, which is the
+  // sheet the field is lying ON, so a field made of it had no material of its
+  // own.
+  $field-bg: var(--app-bg-sunken),
+
+  // THE RULED LINES LIGHTEN AT FOCUS, THEY DO NOT SWITCH ON.
+  //
+  // Focus was painting them at full `border-selected` — cocoa-800, the same
+  // weight the BOX outline takes — so the moment you clicked into a textarea
+  // the faint rules under your writing became the darkest lines in the field
+  // and competed with the text about to be written on them. A ruled page does
+  // not get louder because you picked up a pen.
+  //
+  // There is no weaker step of `selected` in the border family to reach for:
+  // layer 2 ships `border-selected` and nothing under it, and `selected-subtle`
+  // is a FILL tint — cocoa-100, paler than the resting rule, so focus would
+  // reduce contrast instead of raising it. Mixing is the honest answer, and it
+  // is done here rather than with `opacity` because opacity would also fade
+  // whatever the mask lets through and would compose differently on each
+  // surface the field can sit on.
+  //
+  // Two thirds of the way from the resting rule toward the focused outline:
+  // unmistakably darker than at rest, and unmistakably lighter than the box
+  // edge, so the hierarchy inside the focused field stays edge > rule > paper.
+  $field-divider-color-focus:
+    color-mix(in oklab, var(--app-border-selected) 66%, var(--app-border-color-subtle)),
   $field-label-pad: 5px 24px 3px,
   $field-label-font-size: 15px,
   $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong),
@@ -96,7 +158,20 @@ $_field-pad: 4px;
   // on, and the only thing separating them was a 1.32:1 border. `card.scss`
   // has always described this component as "a clean card put down on top of
   // the page"; `raised` is what makes that true instead of aspirational.
-  $card-content-bg: var(--app-bg-raised)
+  $card-content-bg: var(--app-bg-raised),
+
+  // ONE LINE LIGHTER, now that the card has a lift of its own.
+  //
+  // With `surface` a step off white, the sheet no longer has to be drawn in
+  // full strength to be seen. `--app-border` is the DEFAULT line — the one
+  // meant for a field, a table cell, a divider that has to be read — and a
+  // page that spends it on every card edge turns into a cage of rules: the
+  // eye counts the boxes before it reads anything inside them.
+  //
+  // `border-color-subtle` is the decorative step, which is exactly what a
+  // card's outline is here: the card is already legible without it.
+  $card-content-border-color: var(--app-border-width) solid
+    var(--app-border-color-subtle)
 );
 
 // --- This product's own components -----------------------------------------

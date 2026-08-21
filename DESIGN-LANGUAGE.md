@@ -351,7 +351,14 @@ because it is where you write.
 
 - ruled lines — the empty state that invites instead of reporting
 - the dashed field border — a written line, not a box
-- pen blue — the text the user types, the tick in a checkbox
+- pen blue — the text the user types, the tick in a checkbox. It stays in the
+  palette and is deliberately NOT an emitted ink: in this product blue reads as
+  "you can act on this", so a blue that is not interactive reads as a link that
+  does nothing. "It is only text, not a fill" does not license an exception —
+  a ghost button is also only text.
+- the blank page waiting in the stack — the first cell of the recipe grid is a
+  dashed sheet that opens the editor, so the invitation to write sits among the
+  pages that have already been written on rather than on a toolbar
 - cardboard — the cover, carried by the `brand` surface
 - the taped photograph — `--taped`, opt-in, deliberately not the default
 - the pasted print — mount, lift and a half-degree of tilt
@@ -359,6 +366,10 @@ because it is where you write.
 
 **Available, not yet used**
 
+- the red margin rule down the left edge, marking where a paragraph indents.
+  Its blue counterpart — faint blue ruled lines instead of grey ones — was
+  considered and rejected: in this product blue means "you can act on this",
+  and ruling the whole writing surface in it spends that signal on decoration.
 - sticker-album page with marked spaces to paste into
 - stickers, and the stuck-on star
 - pencil drawing, alongside pen writing
