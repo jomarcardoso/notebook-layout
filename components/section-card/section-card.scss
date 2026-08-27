@@ -28,6 +28,20 @@
 // `scripts/check-fallback-values.mjs` now fails the build on the pattern.
 // =============================================================================
 
+@mixin section-compact {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  // .section-card__title {
+  //   padding-inline: var(--app-pad-surface);
+  // }
+
+  .section-card__body {
+    padding: var(--app-pad-surface) var(--app-pad-surface) 0;
+  }
+}
+
 .section-card {
   border-radius: component.$card-radius;
   overflow: hidden;
@@ -36,6 +50,10 @@
 
   // The band. `bg-brand` and `fg-on-brand` are a measured pair, so the title is
   // legible by construction rather than by inspection.
+  //
+  // It spans the card. The heading class lives on the child, because that class
+  // limits line length for reading and a band that stops mid-card reads as a
+  // mistake rather than as typography.
   &__title {
     background-color: component.$section-card-title-bg;
     color: component.$section-card-title-fg;
@@ -46,6 +64,9 @@
 
     > * {
       padding: var(--app-pad-control-y) 0;
+      // The child inherits the band's colour; its own heading rules must not
+      // reintroduce a margin that would break the band.
+      margin: 0;
       // border when the title has the same color of the body.
       //   border-bottom: component.$section-card-title-border-width dotted component.$section-card-title-divider-color;
     }
@@ -54,5 +75,19 @@
   &__body {
     padding: var(--app-pad-surface);
     background-color: component.$section-card-body-bg;
+  }
+
+  dialog & {
+    @include section-compact;
+  }
+
+  @media (orientation: portrait) {
+    &--compact {
+      @include section-compact;
+    }
+  }
+
+  @media (max-width: 360px) {
+    @include section-compact;
   }
 }

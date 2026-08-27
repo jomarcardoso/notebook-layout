@@ -130,11 +130,20 @@ $adapters: () !default;
 //                 the interface reads through weight, shape and space instead.
 //                 Nothing is warned about.
 //
-// Why a setting rather than a second set of tokens: a parallel
-// `brand-primary` / `ui-action` vocabulary would give every decision two names
-// with no way to tell which is authoritative, and the adapters would have to
-// pick one anyway. The translation to `primary`/`secondary` already happens at
-// the adapter boundary, which is the layer whose entire job is translation.
+// The setting decides the layer 2 VOCABULARY, not just which collapses
+// `check-roles()` warns about. `bg-action` in a functional build is `bg-primary`
+// in a brand one and `bg-accent` in a monochrome one — see `src/_roles.scss`.
+//
+// The old rationale here argued the opposite: that a parallel vocabulary would
+// give every decision two names with no way to tell which is authoritative. It
+// was right about PARALLEL and wrong about the shape. Three vocabularies where
+// exactly one is active per build is not two names for a decision — it is one
+// name, in the language of the school the product chose. What made the union
+// contract untenable was the reverse of the feared problem: a monochrome
+// product had to fill `action`, `selected` and `link` with the same value,
+// three decisions where the school says there is one.
+//
+// Adapters still see one name, because `core.ref()` resolves at build time.
 $colour-strategy: 'functional' !default;
 
 // -----------------------------------------------------------------------------
@@ -158,6 +167,46 @@ $colour-strategy: 'functional' !default;
 $contrast-min: 4.5 !default;
 
 // -----------------------------------------------------------------------------
+// Which step of the ramp each emitted size takes
+// -----------------------------------------------------------------------------
+//
+// `base.$text` says what the sizes ARE; this says which of them each token
+// gets. Two separate decisions, and a product routinely needs the second
+// without the first — or the first without the second.
+//
+// The default skips `xl`, which is a hand-tuned ramp's prerogative: on a ramp
+// whose steps grow by five different factors nobody can see where the gap is.
+// On a strict modular ramp it is the one place the ratio breaks, and it is the
+// gap a reader compares the two smallest headings across. A product on a
+// modular scale usually wants four CONSECUTIVE steps:
+//
+//     @use 'ds/src/config' with (
+//       $type-scale-steps: (
+//         'heading-sm': base, 'heading': lg,
+//         'heading-lg': xl,   'heading-xl': '2xl'
+//       )
+//     );
+//
+// That example also makes the smallest heading the same size as body text,
+// which is a choice rather than an oversight: a fourth-level heading is a
+// label for what follows it, and a label larger than the text it labels
+// inverts its own job. It separates itself by weight and face instead.
+//
+// PARTIAL — only the keys given are overridden, the rest keep the defaults
+// below, so a product that only wants to move `heading-xl` writes one line.
+// That is why it is a map rather than eight variables: the set of emitted
+// sizes belongs to the foundation, and a product choosing from a ramp should
+// not have to restate the steps it already agrees with.
+//
+// The defaults live in `_semantic.scss`, beside the tokens they feed.
+//
+// A value must be a key of `base.$text`. `_semantic.scss` fails the build if it
+// is not, because a typo would otherwise emit an empty size and the text would
+// silently fall back to whatever it inherited.
+$type-scale-steps: () !default;
+
+
+// -----------------------------------------------------------------------------
 // Cascade layer names
 // -----------------------------------------------------------------------------
 // Kept configurable because the layer ORDER lives in the application entry
@@ -166,3 +215,16 @@ $layer-base: 'ds.base' !default;
 $layer-semantic: 'ds.semantic' !default;
 $layer-component: 'ds.component' !default;
 $layer-adapter: 'vendor-config' !default;
+
+// The school has three names in the wild — Monochrome, Accent-Driven,
+// Minimalist — and a client who was sold one of the other two should not have to
+// learn ours to write the config line. Everything downstream asks this function
+// rather than reading the variable, so the aliases exist in exactly one place.
+//
+// `functional` and `brand` have one name each and need no aliasing.
+@function strategy() {
+  @if $colour-strategy == 'accent-driven' or $colour-strategy == 'minimalist' {
+    @return 'monochrome';
+  }
+  @return $colour-strategy;
+}

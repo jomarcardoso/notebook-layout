@@ -168,77 +168,77 @@
 // -----------------------------------------------------------------------------
 
 // --- Button: the most-customised component in every library ------------
-$button-bg: var(--app-bg-action) !default;
-$button-fg: var(--app-fg-on-action) !default;
-$button-bg-hover: var(--app-bg-action-hover) !default;
-$button-bg-active: var(--app-bg-action-active) !default;
-$button-border-color: var(--app-border-action) !default;
-$button-radius: var(--app-radius-control) !default;
-$button-height: var(--app-size-control) !default;
-$button-pad-x: var(--app-pad-control-x) !default;
+$button-bg: #{core.ref('bg-action')} !default;
+$button-fg: #{core.ref('fg-on-action')} !default;
+$button-bg-hover: #{core.ref('bg-action-hover')} !default;
+$button-bg-active: #{core.ref('bg-action-active')} !default;
+$button-border-color: #{core.ref('border-action')} !default;
+$button-radius: #{core.ref('radius-control')} !default;
+$button-height: #{core.ref('size-control')} !default;
+$button-pad-x: #{core.ref('pad-control-x')} !default;
 
 // --- Input / field -----------------------------------------------------
-$field-bg: var(--app-bg-surface) !default;
-$field-fg: var(--app-fg-default) !default;
-$field-border-color: var(--app-border-color) !default;
-$field-border-color-focus: var(--app-border-action) !default;
-$field-radius: var(--app-radius-control) !default;
-$field-height: var(--app-size-control) !default;
+$field-bg: #{core.ref('bg-surface')} !default;
+$field-fg: #{core.ref('fg-default')} !default;
+$field-border-color: #{core.ref('border-color')} !default;
+$field-border-color-focus: #{core.ref('border-action')} !default;
+$field-radius: #{core.ref('radius-control')} !default;
+$field-height: #{core.ref('size-control')} !default;
 // Your example lives here: unusual to theme, occasionally set per instance.
-$field-label-fg: var(--app-fg-default) !default;
+$field-label-fg: #{core.ref('fg-default')} !default;
 // No semantic source — a field label has no background unless a product gives
 // it one. `null` rather than a pointer, so reading it without setting it is a
 // Sass error at build time instead of a silent empty value in the CSS.
 $field-label-bg: null !default;
 
 // --- Surface / card ----------------------------------------------------
-$surface-bg: var(--app-bg-surface) !default;
-$surface-fg: var(--app-fg-default) !default;
-$surface-border-color: var(--app-border-color) !default;
-$surface-radius: var(--app-radius-surface) !default;
-$surface-pad: var(--app-pad-surface) !default;
-$surface-shadow: var(--app-shadow-raised) !default;
+$surface-bg: #{core.ref('bg-surface')} !default;
+$surface-fg: #{core.ref('fg-default')} !default;
+$surface-border-color: #{core.ref('border-color')} !default;
+$surface-radius: #{core.ref('radius-surface')} !default;
+$surface-pad: #{core.ref('pad-surface')} !default;
+$surface-shadow: #{core.ref('shadow-raised')} !default;
 
 // --- Table: called out as a key parameter ------------------------------
-$table-fg: var(--app-fg-default) !default;
-$table-border-color: var(--app-border-color-subtle) !default;
-$table-header-bg: var(--app-bg-sunken) !default;
-$table-header-fg: var(--app-fg-heading) !default;
+$table-fg: #{core.ref('fg-default')} !default;
+$table-border-color: #{core.ref('border-color-subtle')} !default;
+$table-header-bg: #{core.ref('bg-sunken')} !default;
+$table-header-fg: #{core.ref('fg-heading')} !default;
 // Hover is a STATE and striping is a resting tint, so they no longer share
 // a source. Both pointed at `bg-sunken` while layer 2 had no interaction
 // token, which is what made a hovered row and a striped row identical —
 // and in the dark theme made the hover invisible outright.
-$table-row-bg-hover: var(--app-bg-surface-hover) !default;
-$table-row-bg-striped: var(--app-bg-sunken) !default;
+$table-row-bg-hover: #{core.ref('bg-surface-hover')} !default;
+$table-row-bg-striped: #{core.ref('bg-sunken')} !default;
 
 // --- Overlay / modal / dropdown ---------------------------------------
-$overlay-bg: var(--app-bg-raised) !default;
-$overlay-fg: var(--app-fg-default) !default;
-$overlay-border-color: var(--app-border-color) !default;
-$overlay-radius: var(--app-radius-surface) !default;
-$overlay-shadow: var(--app-shadow-overlay) !default;
-$overlay-backdrop: var(--app-bg-overlay) !default;
+$overlay-bg: #{core.ref('bg-raised')} !default;
+$overlay-fg: #{core.ref('fg-default')} !default;
+$overlay-border-color: #{core.ref('border-color')} !default;
+$overlay-radius: #{core.ref('radius-surface')} !default;
+$overlay-shadow: #{core.ref('shadow-overlay')} !default;
+$overlay-backdrop: #{core.ref('bg-overlay')} !default;
 
 // --- Navigation --------------------------------------------------------
 // Navigation CHROME, not an inline link: a sidebar item that came out toffee
 // would read as a hyperlink in a list. `fg-link` is for text inside prose.
-$nav-fg: var(--app-fg-default) !default;
+$nav-fg: #{core.ref('fg-default')} !default;
 // Hover on a nav item PREVIEWS selection, so it comes from the `selected`
 // family. It defaulted to `fg-link-hover` — the link colour — which is how a
 // product ended up previewing one hue and committing to another on the same
 // control. `check-state-families` enforces the rule; this is the default that
 // stops it being violated by accident.
-$nav-fg-hover: var(--app-fg-selected) !default;
+$nav-fg-hover: #{core.ref('fg-selected')} !default;
 // The chosen item's LABEL, which sits on `nav-bg-active`, so it is that
 // fill's measured pair rather than a text colour picked separately.
-$nav-fg-active: var(--app-fg-on-selected) !default;
-$nav-bg-active: var(--app-bg-selected) !default;
+$nav-fg-active: #{core.ref('fg-on-selected')} !default;
+$nav-bg-active: #{core.ref('bg-selected')} !default;
 
 // --- Inline code -------------------------------------------------------
 // Libraries like to tint `<code>` (Bootstrap ships a fixed pink). The
 // foundation has no opinion about code, so this defaults to body text and
 // exists so a project can have one without editing an adapter.
-$code-fg: var(--app-fg-default) !default;
+$code-fg: #{core.ref('fg-default')} !default;
 
 // --- Chip: the first entry reserved for a component NO library ships ---
 //
@@ -286,14 +286,14 @@ $code-fg: var(--app-fg-default) !default;
 // and the admission test asks whether a consumer would plausibly override
 // this ONE part for ONE instance — which is true of the resting and selected
 // fills and not of the hover.
-$chip-bg: var(--app-bg-surface) !default;
-$chip-fg: var(--app-fg-default) !default;
-$chip-border-color: var(--app-border-color) !default;
-$chip-radius: var(--app-radius-pill) !default;
-$chip-height: var(--app-size-control-sm) !default;
-$chip-pad-x: var(--app-pad-control-x) !default;
-$chip-bg-selected: var(--app-bg-selected) !default;
-$chip-fg-selected: var(--app-fg-on-selected) !default;
+$chip-bg: #{core.ref('bg-surface')} !default;
+$chip-fg: #{core.ref('fg-default')} !default;
+$chip-border-color: #{core.ref('border-color')} !default;
+$chip-radius: #{core.ref('radius-pill')} !default;
+$chip-height: #{core.ref('size-control-sm')} !default;
+$chip-pad-x: #{core.ref('pad-control-x')} !default;
+$chip-bg-selected: #{core.ref('bg-selected')} !default;
+$chip-fg-selected: #{core.ref('fg-on-selected')} !default;
 
 // --- Progress ----------------------------------------------------------
 //
@@ -306,9 +306,9 @@ $chip-fg-selected: var(--app-fg-on-selected) !default;
 // adapter choosing a value with no contract entry behind it is the same
 // symptom as an adapter reaching for `color-mix`: a decision escaping into a
 // place no theme can reach and no hand-written component can match.
-$progress-track-bg: var(--app-bg-sunken) !default;
-$progress-fill-bg: var(--app-bg-action) !default;
-$progress-radius: var(--app-radius-pill) !default;
+$progress-track-bg: #{core.ref('bg-sunken')} !default;
+$progress-fill-bg: #{core.ref('bg-action')} !default;
+$progress-radius: #{core.ref('radius-pill')} !default;
 
 // --- Tooltip -----------------------------------------------------------
 //
@@ -325,24 +325,24 @@ $progress-radius: var(--app-radius-pill) !default;
 // modifier was bound to a role, and the name promised something a theme must
 // not move. Here the component's MEANING is inverted, so following the theme
 // is what the component asks for.
-$tooltip-bg: var(--app-fg-default) !default;
-$tooltip-fg: var(--app-bg-surface) !default;
-$tooltip-radius: var(--app-radius-control) !default;
+$tooltip-bg: #{core.ref('fg-default')} !default;
+$tooltip-fg: #{core.ref('bg-surface')} !default;
+$tooltip-radius: #{core.ref('radius-control')} !default;
 
 // --- Switch ------------------------------------------------------------
 //
 // Four of six. The track and the thumb are pure component anatomy with no
 // semantic equivalent anywhere — admission test 3, the clearest case of it
 // in this file.
-$switch-track-bg: var(--app-bg-sunken) !default;
+$switch-track-bg: #{core.ref('bg-sunken')} !default;
 // A switch that is ON is a control the user has MARKED, not an action they
 // are about to take — the same category as a checked checkbox, a chosen chip
 // or an active nav item, all of which this contract already routes to
 // `selected`. It read `bg-action` until `check-state-families` was written and
 // caught it on its first run against existing code, in the one adapter that
 // binds it directly enough to be visible.
-$switch-track-bg-checked: var(--app-bg-selected) !default;
-$switch-thumb-bg: var(--app-bg-surface) !default;
+$switch-track-bg-checked: #{core.ref('bg-selected')} !default;
+$switch-thumb-bg: #{core.ref('bg-surface')} !default;
 
 // Deliberately NOT reserved: `avatar`. Three of six ship one, and what they
 // ship is a size and a border radius with no colour role — a consumer
@@ -350,11 +350,11 @@ $switch-thumb-bg: var(--app-bg-surface) !default;
 // admission tests 1 and 2 and only weakly passes 3, which is not enough.
 
 // --- Feedback: alert / badge ------------------------------------------
-$alert-radius: var(--app-radius-control) !default;
-$alert-pad: var(--app-pad-surface) !default;
-$badge-radius: var(--app-radius-pill) !default;
-$badge-fg: var(--app-fg-on-action) !default;
-$badge-bg: var(--app-bg-action) !default;
+$alert-radius: #{core.ref('radius-control')} !default;
+$alert-pad: #{core.ref('pad-surface')} !default;
+$badge-radius: #{core.ref('radius-pill')} !default;
+$badge-fg: #{core.ref('fg-on-action')} !default;
+$badge-bg: #{core.ref('bg-action')} !default;
 
 // ---------------------------------------------------------------------
 // CAPABILITIES LAYER 2 COMPRESSES — a default is not a limit
@@ -383,7 +383,16 @@ $badge-bg: var(--app-bg-action) !default;
 // the foundation may grow a NAME the ecosystem shares, never a name that only
 // makes sense inside one library.
 
-// A second brand FILL. daisyUI's `accent`, Material's tertiary — and the one
+// A second brand FILL. Material calls it TERTIARY and so does this contract;
+// daisyUI calls its slot `accent`, and that name is the reason for the rename.
+//
+// In the accent-driven school "accent" means the opposite thing: the single live
+// colour that carries every interactive job. A product in that school setting
+// `$accent-bg` would have been reaching for its accent and getting a library's
+// third brand slot, which defaults to grey — a name that does something other
+// than what the reader is thinking of, in the one school most likely to type it.
+//
+// This is the one shape of secondary action layer 2 cannot express.
 // shape of secondary action layer 2 cannot express.
 //
 // A survey of how real systems render a secondary action produced seven
@@ -406,21 +415,21 @@ $badge-bg: var(--app-bg-action) !default;
 // nothing. Neutral is the honest default: "no second brand colour was
 // declared, so this reads as having no opinion". Set two variables and the
 // capability is back.
-$accent-bg: var(--app-bg-neutral) !default;
-$accent-fg: var(--app-fg-on-neutral) !default;
-$accent-bg-hover: var(--app-bg-neutral-hover) !default;
+$tertiary-bg: #{core.ref('bg-neutral')} !default;
+$tertiary-fg: #{core.ref('fg-on-neutral')} !default;
+$tertiary-bg-hover: #{core.ref('bg-neutral-hover')} !default;
 // The tinted pair, for the "soft" variant every library ships.
-$accent-bg-subtle: var(--app-bg-sunken) !default;
-$accent-fg-on-subtle: var(--app-fg-default) !default;
+$tertiary-bg-subtle: #{core.ref('bg-sunken')} !default;
+$tertiary-fg-on-subtle: #{core.ref('fg-default')} !default;
 
 // Per-level heading colour. Layer 2 makes one decision — a heading is a
 // heading — but Pico steps six levels down a ramp and some brands do too.
-$heading-1-fg: var(--app-fg-heading) !default;
-$heading-2-fg: var(--app-fg-heading) !default;
-$heading-3-fg: var(--app-fg-heading) !default;
-$heading-4-fg: var(--app-fg-heading) !default;
-$heading-5-fg: var(--app-fg-heading) !default;
-$heading-6-fg: var(--app-fg-heading) !default;
+$heading-1-fg: #{core.ref('fg-heading')} !default;
+$heading-2-fg: #{core.ref('fg-heading')} !default;
+$heading-3-fg: #{core.ref('fg-heading')} !default;
+$heading-4-fg: #{core.ref('fg-heading')} !default;
+$heading-5-fg: #{core.ref('fg-heading')} !default;
+$heading-6-fg: #{core.ref('fg-heading')} !default;
 
 // A CATEGORICAL scale, for charts. Reserved because shadcn asks for
 // `--chart-1` … `--chart-5` and every dashboard library asks for something
@@ -441,43 +450,43 @@ $heading-6-fg: var(--app-fg-heading) !default;
 // underline-border and enclosed — and each has its own active state. They all
 // land on these, because "the chosen item in a navigation" is one decision
 // however the library dresses it.
-$nav-bg: var(--app-bg-sunken) !default;
-$nav-border-color: var(--app-border-color) !default;
-$nav-radius: var(--app-radius-control) !default;
-$nav-fg-disabled: var(--app-fg-disabled) !default;
-$nav-fg-on-active: var(--app-fg-on-selected) !default;
-$nav-tab-bg-active: var(--app-bg-surface) !default;
-$nav-tab-border-color-active: var(--app-border-selected) !default;
-$nav-tab-border-color-hover: var(--app-border-color-subtle) !default;
-$nav-underline-width: var(--app-border-width) !default;
+$nav-bg: #{core.ref('bg-sunken')} !default;
+$nav-border-color: #{core.ref('border-color')} !default;
+$nav-radius: #{core.ref('radius-control')} !default;
+$nav-fg-disabled: #{core.ref('fg-disabled')} !default;
+$nav-fg-on-active: #{core.ref('fg-on-selected')} !default;
+$nav-tab-bg-active: #{core.ref('bg-surface')} !default;
+$nav-tab-border-color-active: #{core.ref('border-selected')} !default;
+$nav-tab-border-color-hover: #{core.ref('border-color-subtle')} !default;
+$nav-underline-width: #{core.ref('border-width')} !default;
 
 // --- breadcrumb ---------------------------------------------------------
-$breadcrumb-divider-fg: var(--app-fg-muted) !default;
-$breadcrumb-item-fg-selected: var(--app-fg-selected) !default;
+$breadcrumb-divider-fg: #{core.ref('fg-muted')} !default;
+$breadcrumb-item-fg-selected: #{core.ref('fg-selected')} !default;
 
 // --- dropdown -----------------------------------------------------------
-$dropdown-bg: var(--app-bg-raised) !default;
-$dropdown-border-color: var(--app-border-color) !default;
-$dropdown-bg-hover: var(--app-bg-surface-hover) !default;
+$dropdown-bg: #{core.ref('bg-raised')} !default;
+$dropdown-border-color: #{core.ref('border-color')} !default;
+$dropdown-bg-hover: #{core.ref('bg-surface-hover')} !default;
 
 // --- field --------------------------------------------------------------
-$field-placeholder-fg: var(--app-fg-subtlest) !default;
-$field-pad-x: var(--app-pad-control-x) !default;
-$field-pad-y: var(--app-pad-control-y) !default;
+$field-placeholder-fg: #{core.ref('fg-subtlest')} !default;
+$field-pad-x: #{core.ref('pad-control-x')} !default;
+$field-pad-y: #{core.ref('pad-control-y')} !default;
 
 // --- surface ------------------------------------------------------------
-$surface-pad-x: var(--app-pad-surface) !default;
-$surface-pad-y: var(--app-pad-surface) !default;
-$surface-section-bg: var(--app-bg-sunken) !default;
+$surface-pad-x: #{core.ref('pad-surface')} !default;
+$surface-pad-y: #{core.ref('pad-surface')} !default;
+$surface-section-bg: #{core.ref('bg-sunken')} !default;
 
 // --- chip ---------------------------------------------------------------
-$chip-bg-hover: var(--app-bg-surface-hover) !default;
-$chip-fg-hover: var(--app-fg-default) !default;
+$chip-bg-hover: #{core.ref('bg-surface-hover')} !default;
+$chip-fg-hover: #{core.ref('fg-default')} !default;
 
 // --- progress, code, range ---------------------------------------------
-$progress-fill-fg: var(--app-fg-on-action) !default;
-$code-bg: var(--app-bg-sunken) !default;
-$range-thumb-bg: var(--app-bg-action) !default;
+$progress-fill-fg: #{core.ref('fg-on-action')} !default;
+$code-bg: #{core.ref('bg-sunken')} !default;
+$range-thumb-bg: #{core.ref('bg-action')} !default;
 
 // =============================================================================
 // THE REST OF WHAT THE LIBRARIES EXPOSE
@@ -494,120 +503,120 @@ $range-thumb-bg: var(--app-bg-action) !default;
 // product that needs one has a name waiting rather than a fork.
 
 // --- Accordion -----------------------------------------------------------
-$accordion-bg: var(--app-bg-surface) !default;
-$accordion-fg: var(--app-fg-default) !default;
-$accordion-border-color: var(--app-border-color) !default;
-$accordion-radius: var(--app-radius-surface) !default;
-$accordion-pad-x: var(--app-pad-surface) !default;
-$accordion-pad-y: var(--app-pad-surface) !default;
-$accordion-header-bg: var(--app-bg-surface) !default;
-$accordion-header-fg: var(--app-fg-heading) !default;
+$accordion-bg: #{core.ref('bg-surface')} !default;
+$accordion-fg: #{core.ref('fg-default')} !default;
+$accordion-border-color: #{core.ref('border-color')} !default;
+$accordion-radius: #{core.ref('radius-surface')} !default;
+$accordion-pad-x: #{core.ref('pad-surface')} !default;
+$accordion-pad-y: #{core.ref('pad-surface')} !default;
+$accordion-header-bg: #{core.ref('bg-surface')} !default;
+$accordion-header-fg: #{core.ref('fg-heading')} !default;
 // An open panel is a CHOSEN panel, so its states come from `selected` — the
 // same rule `check-state-families` enforces on tabs and nav items.
-$accordion-header-bg-selected: var(--app-bg-selected-subtle) !default;
-$accordion-header-fg-selected: var(--app-fg-selected) !default;
+$accordion-header-bg-selected: #{core.ref('bg-selected-subtle')} !default;
+$accordion-header-fg-selected: #{core.ref('fg-selected')} !default;
 
 // --- Popover -------------------------------------------------------------
-$popover-bg: var(--app-bg-raised) !default;
-$popover-fg: var(--app-fg-default) !default;
-$popover-border-color: var(--app-border-color) !default;
-$popover-radius: var(--app-radius-surface) !default;
-$popover-shadow: var(--app-shadow-overlay) !default;
-$popover-pad-x: var(--app-pad-surface) !default;
-$popover-pad-y: var(--app-pad-surface) !default;
-$popover-header-bg: var(--app-bg-sunken) !default;
-$popover-header-fg: var(--app-fg-heading) !default;
+$popover-bg: #{core.ref('bg-raised')} !default;
+$popover-fg: #{core.ref('fg-default')} !default;
+$popover-border-color: #{core.ref('border-color')} !default;
+$popover-radius: #{core.ref('radius-surface')} !default;
+$popover-shadow: #{core.ref('shadow-overlay')} !default;
+$popover-pad-x: #{core.ref('pad-surface')} !default;
+$popover-pad-y: #{core.ref('pad-surface')} !default;
+$popover-header-bg: #{core.ref('bg-sunken')} !default;
+$popover-header-fg: #{core.ref('fg-heading')} !default;
 
 // --- Offcanvas / drawer --------------------------------------------------
-$offcanvas-bg: var(--app-bg-raised) !default;
-$offcanvas-fg: var(--app-fg-default) !default;
-$offcanvas-border-color: var(--app-border-color) !default;
-$offcanvas-pad-x: var(--app-pad-surface) !default;
-$offcanvas-pad-y: var(--app-pad-surface) !default;
-$offcanvas-backdrop: var(--app-bg-overlay) !default;
+$offcanvas-bg: #{core.ref('bg-raised')} !default;
+$offcanvas-fg: #{core.ref('fg-default')} !default;
+$offcanvas-border-color: #{core.ref('border-color')} !default;
+$offcanvas-pad-x: #{core.ref('pad-surface')} !default;
+$offcanvas-pad-y: #{core.ref('pad-surface')} !default;
+$offcanvas-backdrop: #{core.ref('bg-overlay')} !default;
 
 // --- List group ----------------------------------------------------------
 //
 // The widest state surface of any component here: Bootstrap's list group alone
 // exposes eighteen variables, because a row can be plain, actionable, hovered,
 // current or disabled, and each combination has a fill and a foreground.
-$list-bg: var(--app-bg-surface) !default;
-$list-fg: var(--app-fg-default) !default;
-$list-border-color: var(--app-border-color) !default;
-$list-radius: var(--app-radius-surface) !default;
-$list-item-bg: var(--app-bg-surface) !default;
-$list-item-fg: var(--app-fg-default) !default;
-$list-item-bg-hover: var(--app-bg-surface-hover) !default;
-$list-item-bg-selected: var(--app-bg-selected) !default;
-$list-item-fg-selected: var(--app-fg-on-selected) !default;
-$list-item-bg-disabled: var(--app-bg-disabled) !default;
-$list-item-fg-disabled: var(--app-fg-disabled) !default;
+$list-bg: #{core.ref('bg-surface')} !default;
+$list-fg: #{core.ref('fg-default')} !default;
+$list-border-color: #{core.ref('border-color')} !default;
+$list-radius: #{core.ref('radius-surface')} !default;
+$list-item-bg: #{core.ref('bg-surface')} !default;
+$list-item-fg: #{core.ref('fg-default')} !default;
+$list-item-bg-hover: #{core.ref('bg-surface-hover')} !default;
+$list-item-bg-selected: #{core.ref('bg-selected')} !default;
+$list-item-fg-selected: #{core.ref('fg-on-selected')} !default;
+$list-item-bg-disabled: #{core.ref('bg-disabled')} !default;
+$list-item-fg-disabled: #{core.ref('fg-disabled')} !default;
 
 // --- Pagination ----------------------------------------------------------
 //
 // Page numbers are LINKS that lead somewhere, and the current page is a
 // selected item — the two roles the functional school keeps apart, in one
 // component.
-$pagination-bg: var(--app-bg-surface) !default;
-$pagination-fg: var(--app-fg-link) !default;
-$pagination-border-color: var(--app-border-color) !default;
-$pagination-radius: var(--app-radius-control) !default;
-$pagination-item-bg-hover: var(--app-bg-surface-hover) !default;
-$pagination-item-bg-selected: var(--app-bg-selected) !default;
-$pagination-item-fg-selected: var(--app-fg-on-selected) !default;
-$pagination-item-fg-disabled: var(--app-fg-disabled) !default;
+$pagination-bg: #{core.ref('bg-surface')} !default;
+$pagination-fg: #{core.ref('fg-link')} !default;
+$pagination-border-color: #{core.ref('border-color')} !default;
+$pagination-radius: #{core.ref('radius-control')} !default;
+$pagination-item-bg-hover: #{core.ref('bg-surface-hover')} !default;
+$pagination-item-bg-selected: #{core.ref('bg-selected')} !default;
+$pagination-item-fg-selected: #{core.ref('fg-on-selected')} !default;
+$pagination-item-fg-disabled: #{core.ref('fg-disabled')} !default;
 
 // --- Toast / notification ------------------------------------------------
-$toast-bg: var(--app-bg-raised) !default;
-$toast-fg: var(--app-fg-default) !default;
-$toast-border-color: var(--app-border-color) !default;
-$toast-radius: var(--app-radius-surface) !default;
-$toast-shadow: var(--app-shadow-overlay) !default;
-$toast-pad-x: var(--app-pad-surface) !default;
-$toast-pad-y: var(--app-pad-surface) !default;
-$toast-header-bg: var(--app-bg-sunken) !default;
-$toast-header-fg: var(--app-fg-heading) !default;
+$toast-bg: #{core.ref('bg-raised')} !default;
+$toast-fg: #{core.ref('fg-default')} !default;
+$toast-border-color: #{core.ref('border-color')} !default;
+$toast-radius: #{core.ref('radius-surface')} !default;
+$toast-shadow: #{core.ref('shadow-overlay')} !default;
+$toast-pad-x: #{core.ref('pad-surface')} !default;
+$toast-pad-y: #{core.ref('pad-surface')} !default;
+$toast-header-bg: #{core.ref('bg-sunken')} !default;
+$toast-header-fg: #{core.ref('fg-heading')} !default;
 
 // --- Dropdown, completed -------------------------------------------------
-$dropdown-fg: var(--app-fg-default) !default;
-$dropdown-radius: var(--app-radius-surface) !default;
-$dropdown-shadow: var(--app-shadow-overlay) !default;
-$dropdown-pad-x: var(--app-pad-control-x) !default;
-$dropdown-pad-y: var(--app-pad-control-y) !default;
-$dropdown-divider-color: var(--app-border-color-subtle) !default;
-$dropdown-header-fg: var(--app-fg-muted) !default;
-$dropdown-item-bg-selected: var(--app-bg-selected) !default;
-$dropdown-item-fg-selected: var(--app-fg-on-selected) !default;
+$dropdown-fg: #{core.ref('fg-default')} !default;
+$dropdown-radius: #{core.ref('radius-surface')} !default;
+$dropdown-shadow: #{core.ref('shadow-overlay')} !default;
+$dropdown-pad-x: #{core.ref('pad-control-x')} !default;
+$dropdown-pad-y: #{core.ref('pad-control-y')} !default;
+$dropdown-divider-color: #{core.ref('border-color-subtle')} !default;
+$dropdown-header-fg: #{core.ref('fg-muted')} !default;
+$dropdown-item-bg-selected: #{core.ref('bg-selected')} !default;
+$dropdown-item-fg-selected: #{core.ref('fg-on-selected')} !default;
 
 // --- Avatar --------------------------------------------------------------
-$avatar-bg: var(--app-bg-raised) !default;
-$avatar-border-color: var(--app-bg-raised) !default;
-$avatar-border-width: var(--app-border-width) !default;
-$avatar-radius: var(--app-radius-pill) !default;
-$avatar-size: var(--app-size-control) !default;
-$avatar-font-size: var(--app-font-size-sm) !default;
+$avatar-bg: #{core.ref('bg-raised')} !default;
+$avatar-border-color: #{core.ref('bg-raised')} !default;
+$avatar-border-width: #{core.ref('border-width')} !default;
+$avatar-radius: #{core.ref('radius-pill')} !default;
+$avatar-size: #{core.ref('size-control')} !default;
+$avatar-font-size: #{core.ref('font-size-sm')} !default;
 
 // --- Spinner -------------------------------------------------------------
-$spinner-size: var(--app-size-icon) !default;
-$spinner-border-width: var(--app-border-width) !default;
+$spinner-size: #{core.ref('size-icon')} !default;
+$spinner-border-width: #{core.ref('border-width')} !default;
 
 // --- Skeleton ------------------------------------------------------------
-$skeleton-bg: var(--app-bg-sunken) !default;
-$skeleton-radius: var(--app-radius-control-sm) !default;
+$skeleton-bg: #{core.ref('bg-sunken')} !default;
+$skeleton-radius: #{core.ref('radius-control-sm')} !default;
 
 // --- Carousel ------------------------------------------------------------
 //
 // A caption sits on a photograph, which is the one surface no theme controls.
 // `fg-inverted-base` is the light ink the inverted context uses, and it is the
 // only foreground in the system that is safe over an unknown image.
-$carousel-caption-fg: var(--app-fg-inverted-base) !default;
-$carousel-indicator-bg-selected: var(--app-bg-selected) !default;
+$carousel-caption-fg: #{core.ref('fg-inverted-base')} !default;
+$carousel-indicator-bg-selected: #{core.ref('bg-selected')} !default;
 
-$chart-1: var(--app-bg-action) !default;
-$chart-2: var(--app-bg-selected) !default;
-$chart-3: var(--app-bg-info) !default;
-$chart-4: var(--app-bg-warning) !default;
-$chart-5: var(--app-bg-success) !default;
+$chart-1: #{core.ref('bg-action')} !default;
+$chart-2: #{core.ref('bg-selected')} !default;
+$chart-3: #{core.ref('bg-info')} !default;
+$chart-4: #{core.ref('bg-warning')} !default;
+$chart-5: #{core.ref('bg-success')} !default;
 
 // A brand ramp. Layer 1 has one and keeps it private, on purpose: a ramp is a
 // primitive, and application code reaching for `--app-base-indigo-300` is the
@@ -617,17 +626,17 @@ $chart-5: var(--app-bg-success) !default;
 //
 // These are the public, themeable version: nine names, each defaulting to the
 // nearest decision layer 2 actually made. Set them and the ramp is real.
-$action-50: var(--app-bg-action-subtle) !default;
-$action-100: var(--app-bg-action-subtle) !default;
-$action-200: var(--app-bg-action-subtle) !default;
-$action-300: var(--app-border-action) !default;
-$action-400: var(--app-bg-action) !default;
-$action-500: var(--app-bg-action) !default;
-$action-600: var(--app-bg-action) !default;
-$action-700: var(--app-bg-action-hover) !default;
-$action-800: var(--app-bg-action-active) !default;
-$action-900: var(--app-bg-action-active) !default;
-$action-950: var(--app-bg-action-active) !default;
+$action-50: #{core.ref('bg-action-subtle')} !default;
+$action-100: #{core.ref('bg-action-subtle')} !default;
+$action-200: #{core.ref('bg-action-subtle')} !default;
+$action-300: #{core.ref('border-action')} !default;
+$action-400: #{core.ref('bg-action')} !default;
+$action-500: #{core.ref('bg-action')} !default;
+$action-600: #{core.ref('bg-action')} !default;
+$action-700: #{core.ref('bg-action-hover')} !default;
+$action-800: #{core.ref('bg-action-active')} !default;
+$action-900: #{core.ref('bg-action-active')} !default;
+$action-950: #{core.ref('bg-action-active')} !default;
 
 // -----------------------------------------------------------------------------
 // WHAT WAS REMOVED
@@ -662,54 +671,69 @@ $action-950: var(--app-bg-action-active) !default;
 // Only families a third party would recognise are here. A product's own
 // nouns stay with the product — the tool carrying them would be the stock
 // themes mistake in reverse.
-$carousel-gap: var(--app-gap-inline) !default;
-$carousel-thumbs-gap: var(--app-gap-inline) !default;
-$carousel-thumb-border-width: var(--app-border-width) !default;
-$checkbox-height: var(--app-size-control) !default;
-$checkbox-width: var(--app-size-control) !default;
-$field-label-font-family: var(--app-font-family-heading) !default;
-$field-input-font-family: var(--app-font-family-display) !default;
-$field-placeholder-font-family: var(--app-font-family-body) !default;
-$field-selection-bg: var(--app-bg-action-subtle) !default;
-$field-hint-font-family: var(--app-font-family-body) !default;
-$field-label-fg-focus: var(--app-fg-on-selected) !default;
-$field-label-bg-focus: var(--app-bg-selected) !default;
-$footer-bg: var(--app-bg-brand) !default;
-$footer-fg: var(--app-fg-on-brand) !default;
-$footer-height: var(--app-size-control) !default;
-$footer-radius: var(--app-radius-surface) !default;
-$footer-shadow: var(--app-shadow-raised) !default;
-$footer-navigation-bg: var(--app-bg-brand) !default;
-$footer-navigation-fg: var(--app-fg-on-brand) !default;
-$footer-strip-bg: var(--app-fg-on-brand) !default;
-$footer-bg-open: var(--app-bg-brand-deep) !default;
-$radio-button-height: var(--app-size-control) !default;
-$radio-button-width: var(--app-size-control) !default;
-$tabs-tab-bg-selected: var(--app-bg-selected) !default;
-$tabs-tab-fg-selected: var(--app-fg-on-selected) !default;
-$tabs-tab-shadow-selected: var(--app-shadow-raised) !default;
-$tabs-border-color: var(--app-border) !default;
-$tabs-radius: var(--app-radius-surface) !default;
-$tabs-bg: var(--app-bg-page) !default;
-$tabs-layout-content-bg: var(--app-bg-surface) !default;
-$card-content-radius: var(--app-radius-control-sm) !default;
-$card-img-bg: var(--app-bg-raised) !default;
-$card-content-bg: var(--app-bg-surface) !default;
-$card-content-shadow: var(--app-shadow-raised) !default;
-$card-content-border-color: var(--app-border) !default;
-$card-header-bg: var(--app-bg-sunken) !default;
-$card-title-pad: var(--app-space-xs) !default;
-$card-title-font-family: var(--app-font-family-heading) !default;
-$card-body-pad: var(--app-space-xs) !default;
-$card-footer-bg: var(--app-bg-surface) !default;
-$card-footer-border-color: var(--app-border) !default;
-$card-footer-pad: var(--app-space-xs) !default;
-$card-border-width: var(--app-border-width) !default;
-$card-border-color: var(--app-border-color-strong) !default;
-$heading-min-height: var(--app-size-control) !default;
-$img-width: var(--app-size-icon) !default;
-$img-height: var(--app-size-icon) !default;
-$img-font-size: var(--app-size-icon) !default;
+$carousel-gap: #{core.ref('gap-inline')} !default;
+$carousel-thumbs-gap: #{core.ref('gap-inline')} !default;
+$carousel-thumb-border-width: #{core.ref('border-width')} !default;
+$checkbox-height: #{core.ref('size-control')} !default;
+$checkbox-width: #{core.ref('size-control')} !default;
+// Ticked, the box FILLS. Declared as a pair so the tick is legible on it by
+// construction rather than by review — the same invariant every `bg-X` /
+// `fg-on-X` in layer 2 carries. Without these two names a product paints the
+// checked state by hand and the contrast gate never sees it.
+$checkbox-bg-checked: #{core.ref('bg-selected')} !default;
+$checkbox-fg-checked: #{core.ref('fg-on-selected')} !default;
+$checkbox-radius: #{core.ref('radius-control')} !default;
+$field-label-font-family: #{core.ref('font-family-heading')} !default;
+$field-input-font-family: #{core.ref('font-family-display')} !default;
+// The placeholder is an EXAMPLE of what to type, so it is written in the same
+// hand the answer will be. A different family makes the same font-size look
+// like a different one, and the example stops reading as an example.
+$field-placeholder-font-family: $field-input-font-family !default;
+$field-selection-bg: #{core.ref('bg-action-subtle')} !default;
+$field-hint-font-family: #{core.ref('font-family-body')} !default;
+$field-label-fg-focus: #{core.ref('fg-on-selected')} !default;
+$field-label-bg-focus: #{core.ref('bg-selected')} !default;
+$footer-bg: #{core.ref('bg-brand')} !default;
+$footer-fg: #{core.ref('fg-on-brand')} !default;
+$footer-height: #{core.ref('size-control')} !default;
+$footer-radius: #{core.ref('radius-surface')} !default;
+$footer-shadow: #{core.ref('shadow-raised')} !default;
+$footer-navigation-bg: #{core.ref('bg-brand')} !default;
+$footer-navigation-fg: #{core.ref('fg-on-brand')} !default;
+$footer-strip-bg: #{core.ref('fg-on-brand')} !default;
+$footer-bg-open: #{core.ref('bg-brand-deep')} !default;
+$radio-button-height: #{core.ref('size-control')} !default;
+$radio-button-width: #{core.ref('size-control')} !default;
+// The same pair as the checkbox above, and a pill rather than a control
+// radius: a radio is round in every system that has ever shipped one.
+$radio-button-bg-checked: #{core.ref('bg-selected')} !default;
+$radio-button-fg-checked: #{core.ref('fg-on-selected')} !default;
+$radio-button-radius: #{core.ref('radius-pill')} !default;
+$tabs-tab-bg-selected: #{core.ref('bg-selected')} !default;
+$tabs-tab-fg-selected: #{core.ref('fg-on-selected')} !default;
+$tabs-tab-shadow-selected: #{core.ref('shadow-raised')} !default;
+$tabs-border-color: #{core.ref('border')} !default;
+$tabs-radius: #{core.ref('radius-surface')} !default;
+$tabs-bg: #{core.ref('bg-page')} !default;
+$tabs-layout-content-bg: #{core.ref('bg-surface')} !default;
+$card-content-radius: #{core.ref('radius-control-sm')} !default;
+$card-img-bg: #{core.ref('bg-raised')} !default;
+$card-content-bg: #{core.ref('bg-surface')} !default;
+$card-content-shadow: #{core.ref('shadow-raised')} !default;
+$card-content-border-color: #{core.ref('border')} !default;
+$card-header-bg: #{core.ref('bg-sunken')} !default;
+$card-title-pad: #{core.ref('space-xs')} !default;
+$card-title-font-family: #{core.ref('font-family-heading')} !default;
+$card-body-pad: #{core.ref('space-xs')} !default;
+$card-footer-bg: #{core.ref('bg-surface')} !default;
+$card-footer-border-color: #{core.ref('border')} !default;
+$card-footer-pad: #{core.ref('space-xs')} !default;
+$card-border-width: #{core.ref('border-width')} !default;
+$card-border-color: #{core.ref('border-color-strong')} !default;
+$heading-min-height: #{core.ref('size-control')} !default;
+$img-width: #{core.ref('size-icon')} !default;
+$img-height: #{core.ref('size-icon')} !default;
+$img-font-size: #{core.ref('size-icon')} !default;
 // A dialog is a sheet lifted clear of the page, so it is `raised` and not
 // `surface`. The pair was missing for as long as the family existed, which is
 // the hole this contract keeps falling into: layer 3 gets whatever names the
@@ -717,8 +741,8 @@ $img-font-size: var(--app-size-icon) !default;
 // here before `modal-bg`. The consequence was that the product painted its
 // dialog from the token layer with a rule keyed on `.modal`, because the
 // component had nothing to ask for.
-$modal-bg: var(--app-bg-raised) !default;
-$modal-fg: var(--app-fg-default) !default;
+$modal-bg: #{core.ref('bg-raised')} !default;
+$modal-fg: #{core.ref('fg-default')} !default;
 // `shadow-overlay` and not `shadow-raised`: a modal floats above everything,
 // which is the whole reason the overlay step exists. There was briefly a second
 // entry, `modal-dialog-shadow`, so a product could lift the shadow on desktop
@@ -726,48 +750,50 @@ $modal-fg: var(--app-fg-default) !default;
 // mobile value: an unlayered rule in its token layer forced the desktop shadow
 // at every width. A knob whose two settings nobody has ever seen apart is not a
 // knob.
-$modal-shadow: var(--app-shadow-overlay) !default;
-$modal-radius: var(--app-radius-surface) !default;
-$modal-footer-min-height: var(--app-size-control) !default;
-$modal-border-color: var(--app-border) !default;
-$progressbar-border-width: var(--app-border-width) !default;
-$table-container-bg: var(--app-bg-surface) !default;
-$table-container-border-width: var(--app-border-width) !default;
-$table-container-radius: var(--app-radius-control-sm) !default;
-$table-container-font-family: var(--app-font-family-body) !default;
-$table-container-caption-font-family: var(--app-font-family-heading) !default;
-$table-container-td--section-font-family: var(--app-font-family-body) !default;
-$button-font-family: var(--app-font-family-body) !default;
-$button-ring-width: var(--app-ring-width) !default;
-$button-ring: var(--app-ring-color) !default;
-$table-caption-radius: var(--app-radius-control-sm) !default;
-$table-caption-bg: var(--app-bg-brand) !default;
-$table-caption-fg: var(--app-fg-on-brand) !default;
-$field-box-border-color-focus: var(--app-border-selected) !default;
-$field-divider-color-focus: var(--app-border-selected) !default;
-// The label tab's own outline. Separate from `$field-border-color` because a
-// tab and the box under it can legitimately differ — a folder tab is often cut
-// from heavier stock — and because the focused state moves this one and not
-// the other in every product that fills the tab.
-$field-border-width: var(--app-border-width) !default;
-$field-label-border-color: var(--app-border-color) !default;
-$field-label-border-color-focus: var(--app-border-selected) !default;
-$carousel-indicator-border-color-active: var(--app-border-selected) !default;
-$button-border-width: var(--app-border-width) !default;
-$button-fg-disabled: var(--app-fg-disabled) !default;
-$button-size: var(--app-size-control) !default;
-$button-font-size: var(--app-font-size-sm) !default;
-$button-pad-y: var(--app-pad-control-y) !default;
-$field-pad: var(--app-pad-control-y) !default;
-$field-font-size: var(--app-font-size) !default;
-$field-line-height: var(--app-line-height-body) !default;
+$modal-shadow: #{core.ref('shadow-overlay')} !default;
+$modal-radius: #{core.ref('radius-surface')} !default;
+$modal-footer-min-height: #{core.ref('size-control')} !default;
+$modal-border-color: #{core.ref('border')} !default;
+$progressbar-border-width: #{core.ref('border-width')} !default;
+$table-container-bg: #{core.ref('bg-surface')} !default;
+$table-container-border-width: #{core.ref('border-width')} !default;
+$table-container-radius: #{core.ref('radius-control-sm')} !default;
+$table-container-font-family: #{core.ref('font-family-body')} !default;
+$table-container-caption-font-family: #{core.ref('font-family-heading')} !default;
+$table-container-td--section-font-family: #{core.ref('font-family-body')} !default;
+$button-font-family: #{core.ref('font-family-body')} !default;
+$button-ring-width: #{core.ref('ring-width')} !default;
+$button-ring: #{core.ref('ring-color')} !default;
+$table-caption-radius: #{core.ref('radius-control-sm')} !default;
+$table-caption-bg: #{core.ref('bg-brand')} !default;
+$table-caption-fg: #{core.ref('fg-on-brand')} !default;
+$field-box-border-color-focus: #{core.ref('border-selected')} !default;
+$field-divider-color-focus: #{core.ref('border-selected')} !default;
+// The label tab's own outline, separate from the box's. A tab and the box
+// under it can legitimately differ — a folder tab is often cut from heavier
+// stock — and in every product that FILLS the tab on focus, this is the border
+// that has to move with the fill while the box's does not.
+$field-border-width: #{core.ref('border-width')} !default;
+$field-label-border-color: #{core.ref('border-color')} !default;
+$field-label-border-color-focus: #{core.ref('border-selected')} !default;
+$carousel-indicator-border-color-active: #{core.ref('border-selected')} !default;
+$button-border-width: #{core.ref('border-width')} !default;
+$button-fg-disabled: #{core.ref('fg-disabled')} !default;
+$button-size: #{core.ref('size-control')} !default;
+$button-font-size: #{core.ref('font-size-sm')} !default;
+$button-pad-y: #{core.ref('pad-control-y')} !default;
+$field-pad: #{core.ref('pad-control-y')} !default;
+$field-font-size: #{core.ref('font-size')} !default;
+$field-line-height: #{core.ref('line-height-body')} !default;
 $field-line-offset: 0px !default;
 $field-line-offset-x: 0px !default;
-$field-line-border-width: var(--app-border-width) !default;
-$field-line-border-color: var(--app-border-color-subtle) !default;
-$field-box-pad-y: var(--app-pad-control-y) !default;
-$field-border: var(--app-border-width) solid var(--app-border-color) !default;
-$field-label-pad: var(--app-pad-control-y) var(--app-pad-control-x) !default;
-$field-label-font-size: var(--app-font-size-sm) !default;
-$card-radius: var(--app-radius-surface) !default;
-$carousel-indicator-shadow-active: var(--app-shadow-raised) !default;
+$field-line-border-width: #{core.ref('border-width')} !default;
+$field-line-dash-length: 0px !default;
+$field-line-dash-gap: 0px !default;
+$field-line-border-color: #{core.ref('border-color-subtle')} !default;
+$field-box-pad-y: #{core.ref('pad-control-y')} !default;
+$field-border: #{core.ref('border-width')} solid #{core.ref('border-color')} !default;
+$field-label-pad: #{core.ref('pad-control-y')} #{core.ref('pad-control-x')} !default;
+$field-label-font-size: #{core.ref('font-size-sm')} !default;
+$card-radius: #{core.ref('radius-surface')} !default;
+$carousel-indicator-shadow-active: #{core.ref('shadow-raised')} !default;

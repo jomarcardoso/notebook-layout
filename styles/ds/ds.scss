@@ -31,9 +31,31 @@
 //   tokens.scss               the component contract     (layer 3)
 // =============================================================================
 
+// FOUR CONSECUTIVE STEPS FOR THE HEADINGS, and the smallest one at body size.
+//
+// The foundation's default skips `xl`, which is right for the hand-tuned ramp
+// it ships and wrong for the modular one below: on a strict 1.25 ramp that skip
+// is the single place the ratio breaks, and it is the gap a reader compares the
+// two smallest headings across.
+//
+// `heading-sm` lands ON the body size. A fourth-level heading is a label for
+// what follows it, and a label larger than the text it labels inverts its own
+// job; it separates itself by weight and face instead — see `.h4` in
+// `typography.scss`.
+//
+// This is CONFIGURATION, not a patch. The mapping used to be edited directly in
+// the vendored `src/_semantic.scss`, which meant a product decision was sitting
+// in a file that gets overwritten the next time the foundation is updated. The
+// foundation now exposes it, and `src/` is an unmodified copy again.
 @use './src/config' with (
   $adapters: (),
-  $colour-strategy: 'functional'
+  $colour-strategy: 'functional',
+  $type-scale-steps: (
+    'heading-sm': base,
+    'heading': lg,
+    'heading-lg': xl,
+    'heading-xl': '2xl'
+  )
 );
 
 // THE MODULAR SCALE — major third, 1.25, anchored at a 16px body.

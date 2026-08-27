@@ -67,6 +67,7 @@
 @use 'base';
 @use 'core';
 @use 'config';
+@use 'roles';
 
 // -----------------------------------------------------------------------------
 // STRUCTURE — theme-independent tokens
@@ -76,6 +77,41 @@
 // height and the motion curve are properties of the product, not of the theme.
 // Keeping them out of the theme files means a new theme is ~35 colour
 // decisions rather than ~85 tokens, which is what makes themes cheap to add.
+
+$_type-scale-steps: (
+  'xs': xs,
+  'sm': sm,
+  'base': base,
+  'lg': lg,
+  'heading-sm': lg,
+  'heading': '2xl',
+  'heading-lg': '3xl',
+  'heading-xl': '4xl'
+);
+
+// One emitted font size, resolved through `config.$type-scale-steps`.
+//
+// It ERRORS on an unknown step rather than returning null, and that is the
+// whole reason this is a function instead of a `map.get` at each call site: a
+// null would emit `--app-font-size-heading:` with no value, the declaration
+// would be dropped, and the heading would silently inherit its parent's size.
+// A misconfigured scale should not be something a reader discovers by noticing
+// that one title looks wrong.
+@function _step($name) {
+  $steps: map.merge($_type-scale-steps, config.$type-scale-steps);
+  $key: map.get($steps, $name);
+
+  @if $key == null {
+    @error 'config.$type-scale-steps has no entry for "#{$name}". The keys are '
+         + '#{map.keys($_type-scale-steps)}.';
+  }
+  @if not map.has-key(base.$text, $key) {
+    @error 'config.$type-scale-steps maps "#{$name}" to "#{$key}", which is not '
+         + 'a step of base.$text. Available steps: #{map.keys(base.$text)}.';
+  }
+
+  @return base.scale(text, $key);
+}
 
 @function structure() {
   @return (
@@ -155,22 +191,24 @@
     'font-family-display': base.scale(font, sans),
     'font-family-mono': base.scale(font, mono),
 
-    // BODY SIZES. Four steps, not three.
+    // BODY SIZES. Four steps.
     //
-    // It used to stop at `sm`, on the grounds that anything smaller fails
-    // WCAG 1.4.4 at the first zoom step. That is not what 1.4.4 says: the
-    // criterion is about text scaling to 200% without loss, and a size
-    // declared in `rem` scales with the root — a small rem value passes,
-    // a large px value fails. The floor that matters is legibility, and the
-    // ramp is floored for that reason where it stops being modular.
+    // It used to be three, on the grounds that anything smaller than `sm`
+    // fails WCAG 1.4.4 at the first zoom step. That is not what 1.4.4 says:
+    // the criterion is about text scaling to 200% without loss of content or
+    // function, and a size declared in `rem` scales with the root — a small
+    // rem value passes it and a large `px` value fails it. What actually
+    // bounds the small end is legibility, which is a decision about a ramp
+    // rather than a rule about a token.
     //
-    // `xs` exists because a kicker is a real typographic level with a real
-    // size, and without a token for it every eyebrow in the product borrowed
-    // the caption step and came out one size too large.
-    'font-size-xs': base.scale(text, xs),
-    'font-size-sm': base.scale(text, sm),
-    'font-size': base.scale(text, base),
-    'font-size-lg': base.scale(text, lg),
+    // `xs` exists because a KICKER is a real typographic level with a real
+    // size — the small line above a heading that says which section you are
+    // in. Without a token for it, every product's kicker borrows the caption
+    // step and comes out one size too large.
+    'font-size-xs': _step(xs),
+    'font-size-sm': _step(sm),
+    'font-size': _step(base),
+    'font-size-lg': _step(lg),
 
     // HEADING SIZES — four steps, and the reason they exist is that until now
     // there was ONE. A page has h1 through h4, so every product fell back to
@@ -184,22 +222,13 @@
     //
     // The suffix ladder is the same one `size-control` and `radius-*` already
     // use, so a reader who knows one knows all three.
-    // Four CONSECUTIVE steps, starting AT the body size.
     //
-    // The smallest heading is the same size as body text, and that is the
-    // decision rather than an oversight: a fourth-level heading inside a card
-    // is a label for what follows, and a label that is bigger than the text it
-    // labels inverts the thing it is there to do. It separates itself by
-    // weight and face, which is what `.h4` already uses.
-    //
-    // From there the ramp climbs: 16 → 20 → 25 → 31.2. The old mapping skipped
-    // `xl`, which put a 1.5x jump between the first two heading levels and
-    // 1.25x between the rest — invisible on a hand-tuned ramp, and on a
-    // modular one the single place the ratio breaks.
-    'font-size-heading-sm': base.scale(text, base),
-    'font-size-heading': base.scale(text, lg),
-    'font-size-heading-lg': base.scale(text, xl),
-    'font-size-heading-xl': base.scale(text, '2xl'),
+    // WHICH step of the ramp each one takes is `config.$type-scale-steps` —
+    // see there for why the default skips `xl` and when a product should not.
+    'font-size-heading-sm': _step('heading-sm'),
+    'font-size-heading': _step(heading),
+    'font-size-heading-lg': _step('heading-lg'),
+    'font-size-heading-xl': _step('heading-xl'),
 
     'font-weight-body': base.scale(weight, normal),
     'font-weight-heading': base.scale(weight, semibold),
@@ -315,7 +344,107 @@
   @return _req($c, $fallback-key, $name);
 }
 
+// -----------------------------------------------------------------------------
+// SCHOOL-NATIVE THEME KEYS
+// -----------------------------------------------------------------------------
+//
+// A theme map is written in ITS SCHOOL's vocabulary, not in the canonical one.
+// A monochrome product declares `accent` once; a brand product declares
+// `primary`. Neither should have to fill three keys with the same value so that
+// a contract written for a third school stays satisfied — that redundancy was
+// the point of splitting the vocabularies.
+//
+// This expands the school's keys back onto the canonical ones the body of
+// `colors()` reads, so there is one `colors()` rather than three.
+//
+// EXPLICIT ALWAYS WINS. `_alias` only fills a canonical key that is absent, so a
+// monochrome product that genuinely wants its links a step lighter than its
+// buttons writes `link` and keeps it.
+@function _alias($c, $from, $to) {
+  @if map.has-key($c, $to) or not map.has-key($c, $from) {
+    @return $c;
+  }
+  @return map.merge($c, ($to: map.get($c, $from)));
+}
+
+@function _normalise($c) {
+  $s: config.strategy();
+
+  @if $s == 'monochrome' {
+    $c: _alias($c, accent, action);
+    $c: _alias($c, 'on-accent', 'on-action');
+    $c: _alias($c, 'accent-hover', 'action-hover');
+    $c: _alias($c, 'accent-active', 'action-active');
+    $c: _alias($c, 'accent-subtle', 'action-subtle');
+    $c: _alias($c, 'accent-text', 'action-text');
+    $c: _alias($c, 'accent-border', 'action-border');
+
+    // The collapse. Three canonical families, one declared accent.
+    @each $suffix in ('', '-hover', '-active', '-subtle', '-text', '-border') {
+      $c: _alias($c, 'action#{$suffix}', 'selected#{$suffix}');
+    }
+    $c: _alias($c, 'on-action', 'on-selected');
+    $c: _alias($c, 'action-text', link);
+    $c: _alias($c, 'action-hover', 'link-hover');
+    // `link-visited` is deliberately NOT aliased. The school says one hue, not
+    // one state, and letting a visited link look unvisited is an accessibility
+    // regression dressed as minimalism.
+    $c: _alias($c, 'action-text', 'link-visited');
+  } @else if $s == 'brand' {
+    $c: _alias($c, primary, action);
+    $c: _alias($c, 'on-primary', 'on-action');
+    $c: _alias($c, 'primary-hover', 'action-hover');
+    $c: _alias($c, 'primary-active', 'action-active');
+    $c: _alias($c, 'primary-container', 'action-subtle');
+    $c: _alias($c, 'primary-text', 'action-text');
+    $c: _alias($c, 'primary-border', 'action-border');
+
+    // The brand hue marking what is chosen IS this school, so selection
+    // defaults to the container rather than to the solid fill — which is what
+    // Material actually renders for a selected list item.
+    $c: _alias($c, 'primary-container', selected);
+    $c: _alias($c, 'on-primary-container', 'on-selected');
+    $c: _alias($c, 'primary-hover', 'selected-hover');
+    $c: _alias($c, 'primary-active', 'selected-active');
+    $c: _alias($c, 'primary-container', 'selected-subtle');
+    $c: _alias($c, 'primary-text', 'selected-text');
+    $c: _alias($c, 'primary-border', 'selected-border');
+  }
+
+  @return $c;
+}
+
+// Canonical keys in, EMITTED keys out.
+//
+// Where a school collapses several canonical names onto one — monochrome's
+// accent standing in for action, selected and link — the values have to agree,
+// and this is where that becomes a compile-time assertion rather than a
+// convention. A "monochrome" theme that gives its action and its selection two
+// different colours is not monochrome, and the build says so instead of
+// emitting whichever the map iterated last.
+@function _to-school($tokens, $name) {
+  $out: ();
+
+  @each $key, $value in $tokens {
+    $emitted: roles.resolve($key);
+    $existing: map.get($out, $emitted);
+
+    @if $existing != null and $existing != $value {
+      @error 'theme "#{$name}": "#{$key}" and another role both emit '
+           + '"#{$emitted}" in the #{config.strategy()} school, but they carry '
+           + 'different values (#{$existing} vs #{$value}). In this school '
+           + 'those are one colour. Either give them the same value, or the '
+           + 'product belongs in a different school.';
+    }
+
+    $out: map.merge($out, ($emitted: $value));
+  }
+
+  @return $out;
+}
+
 @function colors($c, $name: 'unnamed') {
+  $c: _normalise($c);
   $tokens: (
     // Surfaces. The original sketch had a single "background colour"; a real
     // UI needs a hierarchy or a card on a card is impossible to express.
@@ -519,7 +648,7 @@
     );
   }
 
-  @return $tokens;
+  @return _to-school($tokens, $name);
 }
 
 // -----------------------------------------------------------------------------
@@ -701,19 +830,20 @@ $_contrast-pairs: (
 
   $checks: $all;
 
-  @if config.$colour-strategy == 'monochrome' {
+  @if config.strategy() == 'monochrome' {
     // One accent by design. Nothing to warn about.
     $checks: ();
-  } @else if config.$colour-strategy == 'brand' {
+  } @else if config.strategy() == 'brand' {
     // The brand hue doing several jobs is the school, not a slip. Navigation
     // collapsing into it is still worth saying: a system where the button, the
     // chosen tab AND the link are one colour has stopped distinguishing
     // anything, and that is a different claim from "our brand colour marks
     // what is chosen".
     $checks: ((action, link, 'a button and an inline link'),);
-  } @else if config.$colour-strategy != 'functional' {
+  } @else if config.strategy() != 'functional' {
     @error 'config.$colour-strategy must be "functional", "brand" or '
-         + '"monochrome"; got "#{config.$colour-strategy}".';
+         + '"monochrome" (aliases: "accent-driven", "minimalist"); got '
+         + '"#{config.$colour-strategy}".';
   }
 
   @each $c in $checks {

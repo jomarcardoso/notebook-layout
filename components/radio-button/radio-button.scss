@@ -1,3 +1,4 @@
+// notebook-layout/components/radio-button/radio-button.scss
 @use '../../styles/ds/tokens' as component;
 
 .radio-button {
@@ -11,6 +12,10 @@
   position: relative;
   width: component.$radio-button-width;
 
+  // Both states draw inside the same circle, so choosing one does not move the
+  // label next to it.
+  --radio-button-box-size: 24px;
+
   input {
     appearance: none;
     background: transparent;
@@ -22,8 +27,10 @@
 
   .radio-button__icon {
     align-items: center;
+    block-size: var(--radio-button-box-size);
     display: flex;
     font-size: 24px;
+    inline-size: var(--radio-button-box-size);
     justify-content: center;
     pointer-events: none;
     transition: opacity 150ms ease;
@@ -31,9 +38,21 @@
     [stroke-linecap='round'] {
       color: component.$field-fg;
     }
+  }
 
-    &--checked {
-      display: none;
+  .radio-button__icon--checked {
+    // Chosen, the circle fills and the dot is cut out of it — the same move the
+    // checkbox makes, and for the same reason: a glyph merely recoloured to
+    // `fg-selected` reads as the text colour in a theme that pencils its
+    // choices instead of inking them.
+    background-color: component.$radio-button-bg-checked;
+    border-radius: component.$radio-button-radius;
+    color: component.$radio-button-fg-checked;
+    display: none;
+    font-size: 18px;
+
+    [stroke-linecap='round'] {
+      color: component.$radio-button-fg-checked;
     }
   }
 
@@ -43,5 +62,11 @@
 
   input:checked ~ .radio-button__icon--unchecked {
     display: none;
+  }
+
+  // A filled control is not a pencil stroke, so it does not multiply into the
+  // paper the way an ink outline does.
+  &:has(input:checked) {
+    mix-blend-mode: normal;
   }
 }

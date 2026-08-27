@@ -1,0 +1,160 @@
+// =============================================================================
+// SCHOOL VOCABULARIES
+// =============================================================================
+//
+// Layer 2 used to be ONE contract that was the union of what all three schools
+// need. Every product got every name: a monochrome product carrying
+// `bg-selected`, `bg-action` and `fg-link` as three separate names it had to
+// fill with the same value — three decisions where the school says there is one.
+//
+// Now each school emits its OWN vocabulary, and this file is the map between
+// them. Three consequences:
+//
+//   1. LEANER. Monochrome emits 13 interactive tokens where functional emits
+//      21, and the gap widens as the contract grows: expanding one school no
+//      longer inflates the other two.
+//
+//   2. OBJECTIVE. The names are the ones a designer in that school already
+//      uses — Material's `primary` / `on-primary` / `primary-container`,
+//      Atlassian's `action` / `selected`, Radix's `accent`. A product does not
+//      translate from our vocabulary into its school's.
+//
+//   3. A SCHOOL STOPS LOOKING LIKE ANOTHER. If `bg-selected` exists in a
+//      monochrome build, someone will eventually point it somewhere new and
+//      quietly reintroduce two-hue thinking. It does not exist.
+//
+// -----------------------------------------------------------------------------
+// ONE ACCESSOR, NOT THREE CODE PATHS
+// -----------------------------------------------------------------------------
+//
+// The obvious cost of per-school names is that every adapter and every layer 3
+// entry would need to branch. They do not. `core.ref()` resolves through the
+// map below at BUILD time, so an adapter still writes
+//
+//     --cui-btn-bg: #{component.$button-bg};   // $button-bg: core.ref('bg-action')
+//
+// and gets `var(--app-bg-action)` in a functional build and
+// `var(--app-bg-accent)` in a monochrome one. Eleven adapters, one code path,
+// zero runtime cost.
+//
+// CANONICAL names are the argument you write; EMITTED names are what reaches
+// the CSS. Where a school has no separate concept — monochrome has no
+// "selected" distinct from its accent — several canonical names resolve to one
+// emitted name, and that collapse is the school stated in code.
+// =============================================================================
+
+@use 'sass:map';
+@use 'config';
+
+// `functional` is the identity map: it IS the canonical vocabulary, because the
+// canonical vocabulary was written from Atlassian and Polaris. Listing it
+// anyway rather than special-casing null — a reader comparing the three schools
+// should see three tables, not two tables and an absence.
+$_functional: ();
+
+// -----------------------------------------------------------------------------
+// MONOCHROME / ACCENT-DRIVEN
+// -----------------------------------------------------------------------------
+//
+// One accent carries what acts, what is chosen and where text goes. Those are
+// three jobs and one colour, so three canonical families collapse onto `accent`.
+//
+// `link-visited` does NOT collapse, and that is deliberate. Radix and Vercel do
+// let visited links look unvisited, but that is a habit rather than a rule of
+// the school, and dropping the distinction is an accessibility regression
+// dressed as minimalism. The school says "one hue", not "one state".
+//
+// `neutral` survives untouched in every school. It is the deliberate ABSENCE of
+// brand — the fill for an action that carries no opinion — and in this school
+// it is what a secondary button is made of.
+$_monochrome: (
+  'bg-action': 'bg-accent',
+  'fg-on-action': 'fg-on-accent',
+  'bg-action-hover': 'bg-accent-hover',
+  'bg-action-active': 'bg-accent-active',
+  'bg-action-subtle': 'bg-accent-subtle',
+  'fg-action': 'fg-accent',
+  'border-action': 'border-accent',
+
+  'bg-selected': 'bg-accent',
+  'fg-on-selected': 'fg-on-accent',
+  'bg-selected-hover': 'bg-accent-hover',
+  'bg-selected-active': 'bg-accent-active',
+  'bg-selected-subtle': 'bg-accent-subtle',
+  'fg-selected': 'fg-accent',
+  'border-selected': 'border-accent',
+
+  'fg-link': 'fg-accent',
+  'fg-link-hover': 'fg-accent-hover'
+);
+
+// -----------------------------------------------------------------------------
+// BRAND
+// -----------------------------------------------------------------------------
+//
+// Material's vocabulary, because that is the school's reference implementation
+// and a designer arriving from Material should not have to learn a second name
+// for `primary`.
+//
+// The CONTAINER pattern is what makes this school distinct: a low-emphasis
+// surface derived from the brand hue, with its own measured foreground. Where
+// functional says "a lighter tone of the action" and monochrome says "a pale
+// tint of the accent", Material says `primary-container` / `on-primary-container`
+// and treats it as a first-class pair rather than a tint.
+//
+// `selected` collapses onto the primary family — the brand hue marking what is
+// chosen IS the school — but onto the CONTAINER rather than the solid fill,
+// which is what Material actually renders for a selected list item.
+$_brand: (
+  'bg-action': 'bg-primary',
+  'fg-on-action': 'fg-on-primary',
+  'bg-action-hover': 'bg-primary-hover',
+  'bg-action-active': 'bg-primary-active',
+  'bg-action-subtle': 'bg-primary-container',
+  'fg-action': 'fg-primary',
+  'border-action': 'border-primary',
+
+  // SELECTED STAYS ITS OWN FAMILY, and that was a correction made by a real
+  // system rather than by reasoning. The first version of this map sent both
+  // `action-subtle` and `selected` to `primary-container`, on the argument that
+  // the brand school merges them. Itau — reconstructed here from 383 published
+  // custom properties read off the live site — has a pale lilac selection and an
+  // orange action, and the collapse assertion refused to compile it.
+  //
+  // What defines the school is that action and selection may share a HUE, not
+  // that they are one token. `check-roles()` says the same thing from the other
+  // direction: in `brand` it stops WARNING when they share a value, rather than
+  // requiring that they do.
+  'fg-on-selected': 'fg-on-selected'
+);
+
+@function _map() {
+  $s: config.strategy();
+
+  @if $s == 'monochrome' {
+    @return $_monochrome;
+  }
+  @if $s == 'brand' {
+    @return $_brand;
+  }
+  @return $_functional;
+}
+
+// Canonical name in, emitted name out. Anything not in the active school's map
+// passes through unchanged, which is every surface, every piece of ink, every
+// border and the whole status family — they are common to all three schools and
+// renaming them per school would be vocabulary for its own sake.
+@function resolve($name) {
+  $mapped: map.get(_map(), '#{$name}');
+
+  @if $mapped != null {
+    @return $mapped;
+  }
+  @return $name;
+}
+
+// The distinct emitted names for the active school, so `colors()` knows what to
+// build without duplicating the tables above.
+@function emitted() {
+  @return _map();
+}

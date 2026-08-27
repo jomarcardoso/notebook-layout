@@ -19,6 +19,7 @@
 @use 'sass:meta';
 @use 'sass:string';
 @use 'config';
+@use 'roles';
 
 // -----------------------------------------------------------------------------
 // Naming
@@ -54,7 +55,12 @@ $_forbidden: ('{', '}', '.');
     }
   }
 
-  @return --#{config.$prefix}-#{$name};
+  // Resolved through the active school here rather than at each call site.
+  // `ref('bg-action')` is what every adapter and every layer 3 entry writes; what
+  // reaches the CSS is `--app-bg-accent` in a monochrome build and
+  // `--app-bg-primary` in a brand one. One accessor, three vocabularies, no
+  // branching anywhere downstream.
+  @return --#{config.$prefix}-#{roles.resolve($name)};
 }
 
 // The public read accessor. Layer 2, layer 3 and adapters use this; nothing
@@ -158,16 +164,31 @@ $_hex: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' 'a' 'b' 'c' 'd' 'e' 'f';
 //
 // Naming was doing the work of measuring, which is the same mistake as choosing
 // a token by the colour it produces instead of the job it names.
+//
+// `accent-color` rides along for the same reason and fails the same way. Left
+// at `auto`, the browser paints the parts of a native control it does not let
+// you style — a checkbox tick, a range thumb, a progress bar, the highlighted
+// row of an open `<select>` — in the OPERATING SYSTEM's accent, which on
+// Windows is blue. A warm brown interface with a blue bar through the middle
+// of its dropdown is the same class of failure as a light scrollbar on a dark
+// page: nothing in CSS reports it, and it only shows at the edges the product
+// does not draw itself.
+//
+// `bg-selected` is what an accent MEANS — the colour of a thing chosen — so
+// the native highlight and the product's own selected state answer to one
+// value per theme.
 @mixin theme($name, $default: false, $scheme: light) {
   @if $default {
     :root,
     [data-theme='#{$name}'] {
       color-scheme: $scheme;
+      accent-color: #{ref('bg-selected')};
       @content;
     }
   } @else {
     [data-theme='#{$name}'] {
       color-scheme: $scheme;
+      accent-color: #{ref('bg-selected')};
       @content;
     }
   }
@@ -195,10 +216,16 @@ $_hex: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' 'a' 'b' 'c' 'd' 'e' 'f';
 // The consequence worth stating plainly: an explicit choice always wins,
 // including the choice to stay light on a machine set to dark. A toggle that
 // could be overruled by the OS is not a toggle.
+//
+// `accent-color` is set here too, and it was missed the first time for a
+// reason worth naming: this is the branch nobody looks at, because you have to
+// change your OS setting to see it. The visitor who has never touched the
+// toggle is the MAJORITY case, and they were the ones getting the system blue.
 @mixin theme-auto($scheme) {
   @media (prefers-color-scheme: #{$scheme}) {
     :root:not([data-theme]) {
       color-scheme: $scheme;
+      accent-color: #{ref('bg-selected')};
       @content;
     }
   }

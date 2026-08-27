@@ -44,10 +44,8 @@ $_field-pad: 4px;
   // answer twice over: a label tab and an index tab are the same object — a
   // grip cut out of the page — so they should be cut from the same stock.
   $field-label-bg: var(--app-bg-sunken),
-
   // Navigation chrome in this product sits on the sunken surface.
   $nav-bg: var(--app-bg-sunken),
-
   // --- Avatar ---------------------------------------------------------------
   //
   // The contract defaults an avatar to a pill at control height, which is what
@@ -66,7 +64,6 @@ $_field-pad: 4px;
   // because a chip in this product is a torn-off paper tag, not a token in
   // a chat input.
   $chip-radius: var(--app-radius-surface),
-
   // --- Folded in from the theme file ---------------------------------------
   //
   // These were custom properties in the old `theme.scss`, a second layer 3 with
@@ -91,7 +88,6 @@ $_field-pad: 4px;
   $field-line-offset-x: 3px,
   $field-box-pad-y: calc(#{$_field-pad} + 2px),
   $field-radius: var(--app-radius-surface),
-
   // SOLID, both the box and the ruled lines inside it.
   //
   // The dashes were the notebook argument taken one step too literally: a
@@ -104,32 +100,18 @@ $_field-pad: 4px;
   // gap tokens went with them rather than being set to zero, so nothing
   // survives describing a shape the product no longer draws.
   $field-border: var(--app-border-width) solid var(--app-border-color),
-
-  // A STEP OF THE SCALE, not a literal.
-  //
-  // This was `21px`, argued as an optical correction for the handwriting
-  // face — true of the face it was measured against, and a layer 3 token that
-  // holds a raw pixel value has stopped referring to the system: nothing moves
-  // it when the scale moves, and nothing tells you which step it is near.
-  //
-  // `font-size-lg` is 20px, the step the correction was reaching for. The
-  // display face still runs smaller than the body face at the same nominal
-  // size, which is exactly why the field takes a step ABOVE body rather than
-  // body itself — the correction survives, expressed in the vocabulary.
-  $field-font-size: var(--app-font-size-lg),
-
+  // Keep this value to be 22px.
+  $field-font-size: 1.375rem,
   // The tab is a LABEL, so it is set in the label's face. It read
   // `font-family-heading` by default, which put the printed-book serif on a
   // control — a heading face is for what a document says, not for what an
   // interface asks.
   $field-label-font-family: var(--app-font-family-body),
-
   // The field is a slip cut from the same stock as its tab — see
   // `.field__box` in `field.scss`. The default is `bg-surface`, which is the
   // sheet the field is lying ON, so a field made of it had no material of its
   // own.
   $field-bg: var(--app-bg-sunken),
-
   // THE RULED LINES AT FOCUS: the strong colour, a little transparent.
   //
   // Mixed toward TRANSPARENT rather than toward the paper, and the difference
@@ -148,15 +130,18 @@ $_field-pad: 4px;
   // `color-mix` and not `opacity`, still: the rules are drawn on the element
   // the mask cuts, and `opacity` there would fade the whole layer including
   // what the mask lets through.
-  $field-divider-color-focus:
-    color-mix(in oklab, var(--app-border-selected) 85%, transparent),
+  $field-divider-color-focus: color-mix(
+      in oklab,
+      var(--app-border-selected) 85%,
+      transparent
+    ),
   $field-label-pad: 5px 24px 3px,
   // No `$field-label-font-size` here. It was pinned to `15px`, a value on no
   // ramp and belonging to no face, so the tab was the one piece of type in the
   // product the scale could not move. The contract's default is
   // `--app-font-size-sm`, which is what a secondary label is.
-  $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-color-strong),
-
+  $carousel-indicator-shadow-active: inset 0 0 3px 0
+    var(--app-border-color-strong),
   // A CARD IS A SHEET LAID ON THE PAGE, so it cannot be the page's own colour.
   // The default is `bg-surface`, and `bg-surface` is what the notebook's sheet
   // is made of — so every card rendered at exactly the colour it was sitting
@@ -164,7 +149,6 @@ $_field-pad: 4px;
   // has always described this component as "a clean card put down on top of
   // the page"; `raised` is what makes that true instead of aspirational.
   $card-content-bg: var(--app-bg-raised),
-
   // ONE LINE LIGHTER, now that the card has a lift of its own.
   //
   // With `surface` a step off white, the sheet no longer has to be drawn in

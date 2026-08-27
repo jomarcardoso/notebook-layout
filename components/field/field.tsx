@@ -4,6 +4,7 @@ import {
   FC,
   HTMLProps,
   type InputHTMLAttributes,
+  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
   type FocusEventHandler,
   ReactNode,
@@ -13,14 +14,29 @@ import {
   useRef,
   useMemo,
   useCallback,
+  useId,
 } from 'react';
 import { CiCircleRemove } from 'react-icons/ci';
 import './field.scss';
 import { generateClasses } from '../../utils/utils';
 import { AutoResizeTextarea } from '../../utils/auto-resize-textarea';
 
+/** One choice in a field that offers a closed set of them. */
+export interface FieldOption {
+  value: string;
+  label: string;
+}
+
 interface Props {
   rootProps?: HTMLProps<HTMLDivElement>;
+  /**
+   * Turns the field into a select.
+   *
+   * A dropdown is a field like any other — it has the same label, the same box,
+   * the same focused state — so it is the same component rather than a second
+   * one that has to be kept looking like this one.
+   */
+  options?: FieldOption[];
   labelProps?: HTMLProps<HTMLLabelElement>;
   label?: HTMLProps<HTMLLabelElement>['children'];
   multiline?: boolean;
@@ -74,10 +90,16 @@ export const Field: FC<FieldProps> = ({
   className = '',
   size,
   bg,
+  options,
   ...props
 }) => {
-  const toBeTextarea = breakline || multiline;
-  const { id: inputId, onBlur, onFocus } = props;
+  const toBeSelect = Boolean(options);
+  const toBeTextarea = !toBeSelect && (breakline || multiline);
+  const { onBlur, onFocus } = props;
+  const generatedId = useId();
+  // The label needs something to point at. A caller-supplied id wins so that
+  // existing markup and `htmlFor` from outside keep working.
+  const inputId = props.id || generatedId;
   const [focused, setFocused] = useState(false);
   const [hasValue, setHasValue] = useState(() =>
     Boolean(normalizeFieldValue(props.value ?? props.defaultValue)),
@@ -275,13 +297,37 @@ export const Field: FC<FieldProps> = ({
         type="text"
         className="field__input"
         {...(props as InputHTMLAttributes<HTMLInputElement>)}
+        id={inputId}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
         ref={inputRef}
       />
     ),
-    [handleChange, props],
+    [handleChange, inputId, props],
+  );
+
+  const memoizedSelect = useMemo(
+    () =>
+      options ? (
+        <select
+          className="field__input"
+          {...(props as SelectHTMLAttributes<HTMLSelectElement>)}
+          id={inputId}
+          onFocus={handleFocus as unknown as FocusEventHandler<HTMLSelectElement>}
+          onBlur={handleBlur as unknown as FocusEventHandler<HTMLSelectElement>}
+          onChange={
+            handleChange as unknown as ChangeEventHandler<HTMLSelectElement>
+          }
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      ) : null,
+    [handleChange, inputId, options, props],
   );
 
   const memoizedTextarea = useMemo(
@@ -290,12 +336,13 @@ export const Field: FC<FieldProps> = ({
         className="field__input"
         minRows={1}
         {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+        id={inputId}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
       />
     ),
-    [handleChange, props],
+    [handleChange, inputId, props],
   );
 
   const memoizedRender = useMemo(
@@ -338,7 +385,11 @@ export const Field: FC<FieldProps> = ({
               {bg}
             </div>
           ) : null}
-          {toBeTextarea ? memoizedTextarea : memoizedInput}
+          {toBeSelect
+            ? memoizedSelect
+            : toBeTextarea
+              ? memoizedTextarea
+              : memoizedInput}
           {onErase && (props.value || inputRef?.current?.value) && (
             <button
               className="field__action"
@@ -353,6 +404,7 @@ export const Field: FC<FieldProps> = ({
       </div>
     ),
     [
+      toBeSelect,
       toBeTextarea,
       classes,
       hint,
@@ -362,6 +414,7 @@ export const Field: FC<FieldProps> = ({
       listMarkers,
       hasListMarkers,
       memoizedInput,
+      memoizedSelect,
       memoizedTextarea,
       onErase,
       props.value,

@@ -1,3 +1,4 @@
+// notebook-layout/components/checkbox/checkbox.scss
 @use '../../styles/ds/tokens' as component;
 
 .checkbox {
@@ -11,6 +12,10 @@
   position: relative;
   width: component.$checkbox-width;
 
+  // The box the two states share. Both draw inside the same square, so
+  // ticking one does not move the label next to it.
+  --checkbox-box-size: 26px;
+
   input {
     appearance: none;
     background: transparent;
@@ -22,8 +27,10 @@
 
   .checkbox__icon {
     align-items: center;
+    block-size: var(--checkbox-box-size);
     display: flex;
     font-size: 32px;
+    inline-size: var(--checkbox-box-size);
     justify-content: center;
     pointer-events: none;
     transition: opacity 150ms ease;
@@ -31,9 +38,25 @@
     [stroke-linecap='round'] {
       color: component.$field-fg;
     }
+  }
 
-    &--checked {
-      display: none;
+  .checkbox__icon--unchecked {
+    // The empty box is a drawn outline, so it keeps the glyph's own size.
+    font-size: 32px;
+  }
+
+  .checkbox__icon--checked {
+    // Ticked, the square IS the mark: filled in the chosen colour with the
+    // tick cut out of it. That reads at a glance in every theme, including the
+    // one whose selected colour is a step away from the text colour.
+    background-color: component.$checkbox-bg-checked;
+    border-radius: component.$checkbox-radius;
+    color: component.$checkbox-fg-checked;
+    display: none;
+    font-size: 20px;
+
+    [stroke-linecap='round'] {
+      color: component.$checkbox-fg-checked;
     }
   }
 
@@ -43,5 +66,11 @@
 
   input:checked ~ .checkbox__icon--unchecked {
     display: none;
+  }
+
+  // A filled control is not a pencil stroke. Multiplying it into the paper is
+  // what turned the fill and the tick into the same ink.
+  &:has(input:checked) {
+    mix-blend-mode: normal;
   }
 }

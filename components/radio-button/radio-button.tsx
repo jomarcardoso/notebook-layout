@@ -1,5 +1,5 @@
 import { type FC, type HTMLProps } from 'react';
-import { IoRadioButtonOffOutline, IoRadioButtonOnOutline } from 'react-icons/io5';
+import { IoEllipse, IoRadioButtonOffOutline } from 'react-icons/io5';
 import { generateClasses } from '../../utils/utils';
 import './radio-button.scss';
 
@@ -15,7 +15,7 @@ export const RadioButton: FC<RadioButtonProps> = ({ className = '', ...props }) 
     <span className={classes}>
       <input type="radio" {...props} />
       <span className="radio-button__icon radio-button__icon--checked" aria-hidden="true">
-        <IoRadioButtonOnOutline />
+        <IoEllipse />
       </span>
       <span
         className="radio-button__icon radio-button__icon--unchecked"

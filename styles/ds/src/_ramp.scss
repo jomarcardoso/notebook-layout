@@ -1,0 +1,146 @@
+// =============================================================================
+// LAYER 1 — GENERATED RAMPS
+// =============================================================================
+//
+//     $paper: ramp.neutral(#8a7355, $pigment: 0.6);
+//     $pen:   ramp.chromatic(#005bac);
+//
+// Two pigments in, two full palettes out, with the same step keys a
+// hand-written family uses. So `pal(paper, 100)` keeps working and a project
+// can swap a hand-tuned palette for a generated one without touching layer 2.
+//
+// -----------------------------------------------------------------------------
+// WHY THIS EXISTS, AND WHY IT IS NOT FOR EVERY SCHOOL
+// -----------------------------------------------------------------------------
+//
+// In the `monochrome` / accent-driven school, layer 1 is a NEUTRAL RAMP plus one
+// accent, and layer 2 maps onto it almost mechanically — canvas takes the
+// lightest step, body text the darkest, borders the middle. That mapping is the
+// same for every product in the school, which is what makes the promise real:
+// change the pigment, and the entire system moves without editing layer 2.
+//
+// The `functional` school cannot work that way and should not try. Its layer 1
+// is several independently chosen hues — a slate for what acts, a cocoa for
+// what is chosen, a toffee for where text goes — and which hue plays which role
+// is the product's decision, not a ladder position. Generating those would be
+// generating the design.
+//
+// So this module is offered, not imposed. `brand` sits in between: its neutral
+// ramp is generated, its brand hue is given.
+//
+// -----------------------------------------------------------------------------
+// THE LADDER
+// -----------------------------------------------------------------------------
+//
+// Lightness targets are absolute, in OKLCH, and they are not invented: they
+// were measured off a hand-tuned paper palette that had already passed the
+// contrast gate in two themes, then smoothed into a monotonic ladder. Absolute
+// rather than relative because a seed says what colour the pigment IS, not how
+// a surface should be spaced from the text sitting on it.
+//
+// CHROMA IS A CURVE, NOT A CONSTANT, and that was the surprise in the
+// measurement. The hand-tuned ramp peaked at step 500 and fell away toward both
+// ends — 0.041 in the mid-tones against 0.004 near white and 0.017 near black.
+// It reads as correct because it is how pigment behaves: a wash thinned toward
+// white loses saturation, and ink thickened toward black loses it again. A flat
+// chroma across the ramp gives pale steps a colour cast that looks like a
+// miscalibrated monitor.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+
+// step: (lightness %, chroma as a fraction of the seed's)
+//
+// Step 0 is pure white with zero chroma — "not paper at all, a sheet lifted
+// clear off the page". Step 150 exists because a card header one shade under
+// its body is a real need and 100→200 is too big a jump to express it.
+$_neutral: (
+  0: (100, 0),
+  50: (99, 0.1),
+  100: (97.5, 0.14),
+  150: (95, 0.22),
+  200: (92.5, 0.3),
+  300: (88, 0.4),
+  400: (82, 0.65),
+  500: (72, 1),
+  600: (60, 0.95),
+  700: (48, 0.8),
+  800: (37, 0.42),
+  900: (27, 0.34),
+  950: (16, 0.4)
+);
+
+// An accent is meant to be seen, so its chroma stays high across the working
+// range instead of tapering. It still falls at the extremes: a near-white tint
+// at full chroma is a highlighter, and a near-black one is mud.
+$_chromatic: (
+  50: (97, 0.13),
+  100: (93.5, 0.3),
+  200: (88, 0.55),
+  300: (80.5, 0.85),
+  400: (70.5, 1),
+  500: (63.5, 1),
+  600: (57.5, 0.98),
+  700: (50.5, 0.88),
+  800: (44.5, 0.75),
+  900: (39.5, 0.62),
+  950: (26, 0.45)
+);
+
+// The seed's own chroma is the peak the curve multiplies. A washed-out seed
+// produces a washed-out ramp, which is the honest reading of "this is the
+// pigment I want".
+//
+// `$pigment` scales that peak, and it is the knob the interview asks about as
+// "how much colour is in your greys": 0 gives a true neutral grey, 1 gives the
+// seed's own strength, and a paper-coloured system usually lands around 0.5–0.8.
+@function _build($seed, $ladder, $pigment, $chroma-cap) {
+  $hue: color.channel($seed, 'hue', $space: oklch);
+  $peak: color.channel($seed, 'chroma', $space: oklch) * $pigment;
+
+  @if $chroma-cap != null and $peak > $chroma-cap {
+    $peak: $chroma-cap;
+  }
+
+  $out: ();
+
+  @each $step, $spec in $ladder {
+    $c: color.change(
+      $seed,
+      $lightness: list.nth($spec, 1) * 1%,
+      $chroma: $peak * list.nth($spec, 2),
+      $hue: $hue,
+      $space: oklch
+    );
+
+    // Gamut-mapped here rather than at emission. A colour outside sRGB is not
+    // wrong until something has to show it, but a palette is read by the
+    // contrast gate, and measuring a colour the screen cannot produce reports a
+    // ratio nobody will ever see.
+    $out: map.merge(
+      $out,
+      ($step: color.to-gamut($c, $space: rgb, $method: local-minde))
+    );
+  }
+
+  @return $out;
+}
+
+// A pigmented neutral ramp: surfaces, borders and ink, all one substance.
+//
+// `$chroma-cap` defaults low on purpose. A neutral that carries real chroma
+// stops reading as a surface and starts reading as a coloured panel, and the
+// failure is gradual enough that nobody catches it until a screenshot sits next
+// to a competitor's.
+@function neutral($seed, $pigment: 1, $chroma-cap: 0.045) {
+  @return _build($seed, $_neutral, $pigment, $chroma-cap);
+}
+
+// The accent, or any hue that is meant to be a colour rather than a surface.
+// No cap: the seed's chroma is the point.
+@function chromatic($seed, $pigment: 1) {
+  @return _build($seed, $_chromatic, $pigment, null);
+}

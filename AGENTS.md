@@ -68,3 +68,56 @@ Two things this does NOT forbid:
 
 `recepta/no-nested-bem-element` in `tools/stylelint/` enforces this. It reads
 the direct parent only, which is what makes the two exceptions above pass.
+
+### The order rules are written in
+
+CSS breaks ties by source order, so the order inside a block IS the override
+order. Write a block in this order:
+
+```scss
+.bloco {
+  .outro-bloco {}
+
+  &__elemento-menor {}
+
+  &__elemento-maior {}
+
+  &--modificador {
+    .outro-bloco {}
+
+    .bloco__elemento-menor {}
+
+    .bloco__elemento-maior {}
+  }
+
+  @media () {
+    &--modificador {
+      .outro-bloco {}
+
+      .bloco__elemento-menor {}
+
+      .bloco__elemento-maior {}
+    }
+  }
+}
+```
+
+Reading down: the other blocks that appear inside this one, then this block's
+own elements from the smallest to the largest, then the modifiers repeating the
+same order inside, then the media queries with the modifiers inside them.
+
+The point is the modifiers. A modifier exists to change something, and most of
+what it changes are the block's own elements, so it has to be able to win
+against them. Written after them it wins on source order even at equal weight;
+written before them it silently loses to the rule it was meant to override, and
+the usual repair is `!important` or a third class, which is the same bug with
+more code.
+
+Inside a modifier, write the element's full class rather than `&__elemento`.
+`&` there is `.bloco--modificador`, so `&__elemento` compiles to
+`.bloco--modificador__elemento` — a class no markup carries. `.bloco__elemento`
+compiles to `.bloco--modificador .bloco__elemento`, which is the rule you
+wanted, and it stays findable by searching for its own name.
+
+The media queries go last for the same reason: `@media` adds no weight, so a
+narrow-screen override only lands if nothing written after it says otherwise.

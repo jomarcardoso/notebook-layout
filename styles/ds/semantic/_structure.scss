@@ -78,7 +78,7 @@ $structure: (
   // much: a phone screen lost a quarter of its width to gutters.
   //
   // This is the smallest step, for the smallest screen, and `responsive()`
-  // below walks it up: 8px → 12px at 360px → 16px in landscape.
+  // below walks it up: 8px on a phone → 12px from 600px → 16px in landscape.
   //
   // THE GAP, recorded rather than papered over: `emit-structure()` emits one
   // `:root` block, so a structural token can have exactly one value per build.
@@ -118,7 +118,7 @@ $structure: (
 // component choosing between them — puts a media query inside every component
 // that has padding. Atlassian and Apple both do it this way for the same reason.
 //
-// The progression is the product's own: 8 on a phone, 12 from 360px, 16 in
+// The progression is the product's own: 8 on a phone, 12 from 600px, 16 in
 // landscape.
 //
 // `size-bar` — the height of the app's top and bottom chrome — is here for the
@@ -134,7 +134,15 @@ $structure: (
     --app-size-bar: var(--app-size-control);
   }
 
-  @media screen and (min-width: 360px) {
+  // 360px was too low a bar to mean anything: every phone in use is wider than
+  // that, so the 8px step above never once reached a phone — the smallest
+  // screen was already paying 12px on each side of every nested surface. On a
+  // 375px screen that is 24px lost per level of nesting, and a recipe form
+  // nests a card inside a page inside a card.
+  //
+  // 600px is where a portrait screen stops being a phone. Below it the padding
+  // stays at its smallest, because that width belongs to the content.
+  @media screen and (min-width: 600px) {
     :root {
       --app-pad-surface: var(--app-space-sm);
     }

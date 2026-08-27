@@ -28,8 +28,12 @@ export const SectionCard: FC<SectionCardProps> = ({
   return (
     <section aria-labelledby={id} className={classes} {...props}>
       {(header || title) && (
-        <strong className="section-card__title h3" id={id}>
-          <div>{header || title}</div>
+        // `h3` carries the heading face AND a reading measure, so putting it on
+        // the element that also paints the brand band capped the band at the
+        // measure — the band stopped short of the card's own width. The band is
+        // the outer element and the text keeps its measure inside it.
+        <strong className="section-card__title" id={id}>
+          <div className="h3">{header || title}</div>
         </strong>
       )}
       <div className="section-card__body">{children}</div>
