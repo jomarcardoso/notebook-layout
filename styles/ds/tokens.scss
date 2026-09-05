@@ -211,29 +211,6 @@ $_field-pad: 4px;
   // sheet the field is lying ON, so a field made of it had no material of its
   // own.
   $field-bg: var(--app-bg-sunken),
-  // THE RULED LINES AT FOCUS: the strong colour, a little transparent.
-  //
-  // Mixed toward TRANSPARENT rather than toward the paper, and the difference
-  // is not cosmetic. Mixing toward `border-color-subtle` invents a third
-  // colour — a muddy brown that belongs to no role and follows neither of the
-  // two it was made from when a theme moves. Mixing toward transparent keeps
-  // the rule the SAME colour it always was and lets the paper show through it,
-  // which is what "the line is lighter" physically means on paper.
-  //
-  // 85%, not 66%. `selected` is a strong colour and it does not need much
-  // taking down: at two thirds it stopped reading as ink on the page and
-  // started reading as a different, weaker ink. The rules still have to sit
-  // under the writing rather than beside it, so they give up a little and no
-  // more.
-  //
-  // `color-mix` and not `opacity`, still: the rules are drawn on the element
-  // the mask cuts, and `opacity` there would fade the whole layer including
-  // what the mask lets through.
-  $field-divider-color-focus: color-mix(
-      in oklab,
-      var(--app-border-accent) 85%,
-      transparent
-    ),
   $field-label-pad: 5px 24px 3px,
   // No `$field-label-font-size` here. It was pinned to `15px`, a value on no
   // ramp and belonging to no face, so the tab was the one piece of type in the
@@ -274,8 +251,30 @@ $_field-pad: 4px;
   // Two rungs down on the neutral ladder, which is the same depth a chosen chip
   // takes, plus a solid accent bar on the leading edge — an INDICATOR of state,
   // which is a mark and not a fill. See `.app-navbar` for the bar.
+  // THE TRACK IS THE MECHANISM, SO IT CARRIES NO RULE.
+  //
+  // A segmented control is a recess with one segment lifted out of it. The
+  // recess is now real — the contract stopped defaulting the track to the page
+  // colour — and a border drawn around it as well is the same boundary stated
+  // twice, which is what makes a quiet product look busy for a reason nobody
+  // can name.
+  $tabs-border-color: none,
+
   $nav-bg-active: var(--app-bg-neutral-subtle-active),
   $nav-fg-active: var(--app-fg-heading),
+
+  // HOVER PREVIEWS SELECTION, AND SELECTION IS NO LONGER ACCENT.
+  //
+  // The contract defaults this to the selection INK, which is right: hovering a
+  // nav item is a preview of choosing it, and a control that previews one thing
+  // and commits to another is the bug `check-state-families` exists to catch.
+  //
+  // This school collapses the selection ink onto the accent, so with the
+  // default the rail previewed a blue label and then committed to a neutral
+  // fill with a small accent bar — the preview promising the one treatment the
+  // commitment does not use. The heading ink is what the chosen item takes, so
+  // it is what the hover shows.
+  $nav-fg-hover: var(--app-fg-heading),
 
   $card-content-border-color: none,
 

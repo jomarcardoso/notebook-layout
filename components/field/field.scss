@@ -83,7 +83,19 @@
   }
 
   &__box {
-    border: component.$field-border;
+    // THE SAME EDGE A `.form-control` TAKES.
+    //
+    // It read `$field-border` — a shorthand ending in `border-color`, the
+    // GENERAL line — while the adapter hands CoreUI's inputs
+    // `$field-border-color`, which is `border-interactive`. Two controls of the
+    // same family with two different edges, and the difference is legal rather
+    // than cosmetic: what identifies a control sits inside WCAG 1.4.11 and
+    // wants 3:1, and a decorative divider does not. A native input beside a
+    // Field was the findable one.
+    //
+    // One token drives both now, so setting `$field-border-color` moves the
+    // Field and every `.form-control` on the page together.
+    border: component.$field-border-width solid component.$field-border-color;
     // THE WHOLE FIELD IS CUT FROM ONE STOCK.
     //
     // The box used to be transparent, so the label tab was the only part of
@@ -284,12 +296,26 @@
     }
   }
 
-  // A field being edited is a field the user has CHOSEN, so the whole focused
-  // state comes from the `selected` family — box border, label fill, and the
-  // ruled lines of a textarea together.
+  // FOCUS IS AN OUTLINE, and it is the same answer the adapter gives
+  // `.form-control:focus-visible`.
+  //
+  // The whole focused state used to come from the `selected` family — box
+  // border, label fill and the ruled lines together — which in a one-pigment
+  // school means a cursor arriving paints an accent edge and an accent patch.
+  // That is the focus ring's own vocabulary spent on something merely focused,
+  // and it left the actual ring with nothing left to distinguish it.
+  //
+  // The ring announces the focus and the resting border stays exactly where it
+  // was: it is what tells a reader the thing is a control, so moving it on
+  // focus takes the affordance away at the moment it is being used. The label
+  // tab still fills, which answers a different question — WHICH section you are
+  // writing in — and it fills with the quiet neutral rung rather than the
+  // pigment.
   &--focused {
     .field__box {
       border-color: component.$field-box-border-color-focus;
+      outline: component.$field-ring;
+      outline-offset: component.$field-ring-offset;
     }
 
     // The label inverts: the tab fills with cocoa and its text goes to the
@@ -304,32 +330,16 @@
       border-color: component.$field-label-border-color-focus;
     }
 
-    // The rule lines follow the focus, which is the detail that makes a
-    // textarea read as the page you are writing on rather than a box near it.
+    // THE RULED LINES DO NOT MOVE.
     //
-    // It is painted directly on the element that draws the rules. Two earlier
-    // versions of this set a CUSTOM PROPERTY instead — first `--field-line-color`
-    // and then `--app-field-line-color` — and neither name was ever read by
-    // anything: the rules take their colour from `$field-line-border-color`,
-    // which resolves to `--app-border-color-subtle`. So the focused state has
-    // been assigning to a variable nobody consumes, and the lines never moved.
+    // They followed the focus colour, on the argument that it makes a textarea
+    // read as the page you are writing on. It does the opposite: a rule on
+    // notebook paper is DECORATION — it identifies nothing and nothing about it
+    // is clickable — and decoration that changes state is the field telling the
+    // reader something the cursor sitting in it has already said.
     //
-    // The lesson is in the shape of the bug, not in the name: a state that
-    // writes to a variable is only as good as the read at the other end, and
-    // nothing fails loudly when that read does not exist. Where the state can
-    // set the property directly, it should.
-    &.field--multiline {
-      // The box's own outline does NOT take the focus colour here — a
-      // multiline box has no outline, only the top border that starts the
-      // pauta, so it moves with the rules rather than with the frame.
-      .field__box {
-        border-top-color: component.$field-divider-color-focus;
-      }
-
-      .field__box::before {
-        background-color: component.$field-divider-color-focus;
-      }
-    }
+    // The box's outline is the focus signal here as everywhere else, and the
+    // pauta stays the colour paper rules are.
   }
 
   &--no-label {

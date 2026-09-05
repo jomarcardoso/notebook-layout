@@ -99,10 +99,35 @@ $_inks: (
   'disabled-text': 0.48
 );
 
+// LINES. Not a family of fills, and the difference is the whole reason this map
+// exists: a line is READ AGAINST the plane it divides, so it lives a short
+// distance from the page and never crosses to the other end of the ramp.
+//
+// `border-divider` and `border-interactive` were added to layer 2 when the four
+// naming axes were settled, and were not added here. Nothing failed. A key this
+// map does not name falls through every branch below to the LAST one, which
+// treats it as a base fill and lifts it to 0.78 — so on dark, every divider in
+// the system was a near-white line at 10:1 against the page, and every input
+// border with it. The `.border` utility was the loudest case, because it is
+// the one a product reaches for by hand.
+//
+// That is the third time this map has proved to be part of a token's
+// DEFINITION rather than an optional extra (`field` was the second, and its
+// note is above). The catch-all in `dark()` for any key beginning `border-`
+// exists so the fourth time is a wrong shade rather than an inverted one.
 $_lines: (
   'border-subtle': 0.26,
+  // Same distance as `border`, because they are the same decision seen from two
+  // axes: `border-divider` says WHERE the line sits (between things on one
+  // plane), `border` says how loud it is. A product that splits them is saying
+  // a divider should be quieter than a boundary, and can pass its own value.
+  'border-divider': 0.34,
   'border': 0.34,
   'border-strong': 0.44,
+  // Rung 7. It has a floor no other line has — 3:1 against the plane behind it,
+  // because the edge of an empty field is the only thing saying a control is
+  // there — so it takes the strong step rather than the ordinary one.
+  'border-interactive': 0.44,
   'ring': 0.72
 );
 
@@ -253,6 +278,16 @@ $_chroma-surface-max: 0.018;
       $result: _at($value, $_fill-hover, $_chroma-fill);
     } @else if _ends-with($key, '-active') {
       $result: _at($value, $_fill-active, $_chroma-fill);
+    } @else if string.index($key + '', 'border-') == 1 {
+      // A `border-*` key this file does not name explicitly is still a LINE.
+      // Without this branch it reaches the base-fill case below and is lifted to
+      // 0.78 — the failure described on `$_lines`, which shipped for two
+      // releases because a wrong answer here looks exactly like a right one
+      // until someone opens the dark theme.
+      //
+      // The ordinary distance rather than the strong one: guessing quiet is
+      // recoverable by eye, guessing loud is a white line across a black page.
+      $result: _at($page, map.get($_lines, 'border'), $chroma-max: $_chroma-surface-max);
     } @else {
       // A base fill: action, selected, neutral, success, warning, danger, info,
       // and any role a product added that behaves like one.

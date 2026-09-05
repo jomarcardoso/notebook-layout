@@ -85,6 +85,7 @@ someone makes, not a context that derives.
 node scripts/ds/check-doc-tokens.mjs <your-styles-dir>
 node scripts/ds/audit-wash.mjs <your-styles-dir>
 node scripts/ds/check-ladder.mjs <your-styles-dir>
+node scripts/ds/check-utility-colour.mjs <your-styles-dir>
 ```
 
 `audit-wash` is the one to read carefully. It tells you whether your palette can
@@ -102,6 +103,32 @@ good idea for four hundred years — as navy on a page, never as pale blue on cr
 
 ---
 
+## Before you reach for `.text-danger`
+
+The library's colour utilities are wired to layer 2 and follow a theme flip, so
+`.bg-primary`, `.border-primary` and `.text-bg-*` are safe to use by hand. Two
+things about the family are worth knowing before the first one bites:
+
+**`.text-*` is built from a role's SOLID FILL, not from its readable ink.** That
+is a fine default when every role in a palette is dark, and wrong the moment one
+of them is light: `.text-warning` on a cream page measures 1.16:1, which is
+invisible. **The readable member of the family is `.text-*-emphasis`** — it is
+bound to the ink role and clears AA in both themes. Use `.text-danger-emphasis`
+for form errors and `.text-warning-emphasis` for a caution note.
+
+**A surface is not a class.** `bg-surface` and `bg-page` are layer 2 TOKEN names
+and there is no `.bg-surface` to write; a card gets `data-surface="surface"` on
+the container, and everything inside it shifts. Reaching for the class is one of
+the two ways to get nothing to happen — the other being a dangling `var()`, and
+`check-utility-colour` reports both.
+
+Run that check once against your own build and read the whole output. It measures
+every colour utility the library compiled, on the grounds your `patterns.json`
+declares, in every theme — including the ones nobody has used yet, which are
+exactly the ones that surprise somebody in month three.
+
+---
+
 ## The checks, and what each one is for
 
 Every one takes a directory and most take `--gate` to fail a build.
@@ -116,6 +143,7 @@ Every one takes a directory and most take `--gate` to fail a build.
 | `check-token-axis` | does each token family speak one naming axis? |
 | `check-doc-tokens` | does a document name a token the build does not emit? |
 | `audit-wash` | can this palette have a washed accent at all? |
+| `check-utility-colour` | do the library colour utilities do anything, and is it right? |
 | `audit-contrast` | does every text pair clear AA, in every theme? |
 
 They exist because each one caught something no human review did. Wire the ones

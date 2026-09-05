@@ -226,7 +226,7 @@ $field-fg: #{core.ref('fg-default')} !default;
 // 1.2-1.5:1. A field with no perceivable edge is a field nobody can find, and
 // this is the one place a border is not negotiable.
 $field-border-color: #{core.ref('border-interactive')} !default;
-$field-border-color-focus: #{core.ref('border-action')} !default;
+$field-border-color-focus: #{core.ref('border-interactive')} !default;
 $field-radius: #{core.ref('radius-control')} !default;
 $field-height: #{core.ref('size-control')} !default;
 // Your example lives here: unusual to theme, occasionally set per instance.
@@ -902,8 +902,13 @@ $field-input-font-family: #{core.ref('font-family-display')} !default;
 $field-placeholder-font-family: $field-input-font-family !default;
 $field-selection-bg: #{core.ref('bg-action-subtle')} !default;
 $field-hint-font-family: #{core.ref('font-family-body')} !default;
-$field-label-fg-focus: #{core.ref('fg-on-selected')} !default;
-$field-label-bg-focus: #{core.ref('bg-selected')} !default;
+// The label tab on focus. It was the SELECTED pair — a solid fill of the
+// selection colour — which in a one-pigment school is a filled chromatic patch
+// appearing because a cursor arrived. The quiet neutral rung says the same
+// thing without spending the accent, and the ring beside it is what actually
+// announces the focus.
+$field-label-fg-focus: #{core.ref('fg-heading')} !default;
+$field-label-bg-focus: #{core.ref('bg-neutral-subtle-active')} !default;
 $footer-bg: #{core.ref('bg-brand')} !default;
 $footer-fg: #{core.ref('fg-on-brand')} !default;
 $footer-height: #{core.ref('size-control')} !default;
@@ -920,12 +925,32 @@ $radio-button-width: #{core.ref('size-control')} !default;
 $radio-button-bg-checked: #{core.ref('bg-selected')} !default;
 $radio-button-fg-checked: #{core.ref('fg-on-selected')} !default;
 $radio-button-radius: #{core.ref('radius-pill')} !default;
-$tabs-tab-bg-selected: #{core.ref('bg-selected')} !default;
-$tabs-tab-fg-selected: #{core.ref('fg-on-selected')} !default;
-$tabs-tab-shadow-selected: #{core.ref('shadow-raised')} !default;
+// --- tabs: the SEGMENTED control ---------------------------------------
+//
+// The same closed-and-contiguous case `$nav-tab-bg-active` argues at length,
+// and it was decided the other way here by accident: the chosen segment took
+// the filled selection while the track took the PAGE colour. A track the
+// colour of the page is not a track, so the chosen segment had nothing to come
+// forward out of — and with nothing to come out of, the only way left to show
+// which one it was is a solid accent fill.
+//
+// So it is spelled out where the mechanism lives: the track is a RECESS and
+// the chosen segment is a surface lifted out of it. That is how iOS and macOS
+// draw this control, it is what `claude-4.md` prescribes for a set whose items
+// are adjacent and mutually exclusive, and it spends no accent on a state that
+// POSITION has already made obvious.
+$tabs-bg: #{core.ref('bg-sunken')} !default;
+$tabs-tab-bg-selected: #{core.ref('bg-surface')} !default;
+// Accent as INK, which is the one way a chosen thing may still carry the
+// pigment: small, and on a neutral fill rather than as one.
+$tabs-tab-fg-selected: #{core.ref('fg-selected')} !default;
+// NO SHADOW. The tone difference between the recess and the segment is the
+// mechanism, and a shadow on top of it is the same boundary drawn twice —
+// which is what `check-mechanism` counts. A segment does not float; it is
+// flush with the surface it came from.
+$tabs-tab-shadow-selected: none !default;
 $tabs-border-color: #{core.ref('border')} !default;
 $tabs-radius: #{core.ref('radius-surface')} !default;
-$tabs-bg: #{core.ref('bg-page')} !default;
 $tabs-layout-content-bg: #{core.ref('bg-surface')} !default;
 $card-content-radius: #{core.ref('radius-control-sm')} !default;
 $card-img-bg: #{core.ref('bg-raised')} !default;
@@ -978,15 +1003,45 @@ $button-ring: #{core.ref('ring-color')} !default;
 $table-caption-radius: #{core.ref('radius-control-sm')} !default;
 $table-caption-bg: #{core.ref('bg-brand')} !default;
 $table-caption-fg: #{core.ref('fg-on-brand')} !default;
-$field-box-border-color-focus: #{core.ref('border-selected')} !default;
-$field-divider-color-focus: #{core.ref('border-selected')} !default;
+// --- the focused field ---------------------------------------------------
+//
+// FOCUS IS AN OUTLINE. It is not a border and it is not a fill: it answers
+// "where is the keyboard", it has to look identical on every control and
+// unlike anything else on the screen, and it must not replace the resting
+// border — which is what tells a reader the thing is a control in the first
+// place. `$field-ring` is what a component puts in `outline`, and it is the
+// same answer the adapter gives `.form-control:focus-visible`.
+//
+// These three carried the SELECTED role, so a focused field grew an accent
+// edge and, in products that fill the label tab, an accent patch with it.
+// Under a school with one pigment that is the focus ring's own vocabulary
+// appearing on something that is merely focused, which is the collision
+// `check-focus-collision` exists to prevent — reached from the other side.
+//
+// THE RESTING BORDER DOES NOT MOVE, and that is the rule rather than an
+// omission: the border is what says the thing is a control, so replacing it on
+// focus removes the affordance at the exact moment the user is relying on it.
+// These three keep their names so a product can still step them — a dense
+// product may want the edge to firm up — and default to the resting value, so
+// out of the box the ring is the only thing that changes.
+//
+// A step was tried here first and measured: `border-color-strong` and
+// `border-interactive` land on the same rung of a twelve-step ramp, so the
+// "firmer edge" was the same colour with a comment claiming otherwise.
+$field-ring: #{core.ref('ring')} !default;
+$field-ring-offset: #{core.ref('ring-offset')} !default;
+$field-box-border-color-focus: #{core.ref('border-interactive')} !default;
+// The ruled lines do NOT move. Decoration does not carry state, and a page of
+// rules changing colour because a cursor entered the box is the field telling
+// the reader something the cursor already told them.
+$field-divider-color-focus: #{core.ref('border-divider')} !default;
 // The label tab's own outline, separate from the box's. A tab and the box
 // under it can legitimately differ — a folder tab is often cut from heavier
 // stock — and in every product that FILLS the tab on focus, this is the border
 // that has to move with the fill while the box's does not.
 $field-border-width: #{core.ref('border-width')} !default;
 $field-label-border-color: #{core.ref('border-color')} !default;
-$field-label-border-color-focus: #{core.ref('border-selected')} !default;
+$field-label-border-color-focus: #{core.ref('border-color')} !default;
 $carousel-indicator-border-color-active: #{core.ref('border-selected')} !default;
 $button-border-width: #{core.ref('border-width')} !default;
 $button-fg-disabled: #{core.ref('fg-disabled')} !default;
@@ -1001,7 +1056,12 @@ $field-line-offset-x: 0px !default;
 $field-line-border-width: #{core.ref('border-width')} !default;
 $field-line-dash-length: 0px !default;
 $field-line-dash-gap: 0px !default;
-$field-line-border-color: #{core.ref('border-color-subtle')} !default;
+// THE DIVIDER ROLE, because that is exactly what these are: the ruled lines a
+// textarea draws for the writing to sit on. They identify nothing and nothing
+// is clickable about them, so WCAG 1.4.11 does not reach them and the border
+// family is the wrong place to take them from — a line pushed to the strength
+// of a control's edge turns the field into a striped panel.
+$field-line-border-color: #{core.ref('border-divider')} !default;
 $field-box-pad-y: #{core.ref('pad-control-y')} !default;
 $field-border: #{core.ref('border-width')} solid #{core.ref('border-color')} !default;
 $field-label-pad: #{core.ref('pad-control-y')} #{core.ref('pad-control-x')} !default;
