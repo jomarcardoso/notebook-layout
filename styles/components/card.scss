@@ -1,141 +1,118 @@
 @use '../ds/tokens' as component;
 
+// =============================================================================
+// CARD — a sheet laid on the page
+// =============================================================================
+//
+// A recipe is a leaf of paper on the table. What makes it one is the tone it
+// sits at and the space around it, and nothing else: no rule, no shadow, and
+// no coloured strip across the top.
+//
+// -----------------------------------------------------------------------------
+// WHY THERE IS NO HEADER
+// -----------------------------------------------------------------------------
+//
+// There was a `card__header` — a full-width band at `bg-sunken`, one rung down
+// from the body, with the title inside it. That is the Enterprise vocabulary,
+// and on an Editorial page it is the single loudest thing saying the product is
+// two schools at once: a serif title sitting inside a filled tan strip.
+//
+// Editorial carries hierarchy with SPACE. A card has a title, not a header, and
+// a title is a line of type in the body with room above it. The band came from
+// the contract's default rather than from a decision here, which is exactly the
+// kind of inheritance that never gets questioned because nobody chose it.
+//
+// -----------------------------------------------------------------------------
+// THE PHOTOGRAPH IS THE BOUNDARY
+// -----------------------------------------------------------------------------
+//
+// It bleeds to the card's own edge and takes the card's corner through
+// `overflow: hidden`. `check the content first`: a photograph already delimits
+// itself, so a border, a fill and a shadow around one is the redundancy this
+// school tests for.
+//
+// And WITHOUT a photograph there is no image area at all. An empty slot renders
+// as a large tan rectangle, which reads as a picture that failed to load rather
+// than as a card that has none — so the element is not rendered and the card
+// simply shrinks.
+// =============================================================================
 
 .card {
   container-type: inline-size;
 
-  // Flat on the textured sheet, which is also how paper works: you put a clean
-  // card down on top of the page. The cancellation used to sit inside the
-  // surface's own rule in the token layer, where a file of tokens had to know
-  // this component existed. The component states its own relationship to the
-  // sheet instead.
+  // Flat on the sheet, which is also how paper works: you put a clean card down
+  // on top of the page. The component states its own relationship to the sheet
+  // rather than the token layer having to know this component exists.
   [data-surface='paper'] & {
     background-image: none;
   }
 
   &__content {
-    border-radius: component.$card-content-radius;
+    background-color: component.$card-content-bg;
+    color: component.$card-fg;
+    border: component.$card-content-border-color;
+    border-radius: component.$card-radius;
+    box-shadow: component.$card-content-shadow;
+
+    // Three rows and the middle one grows, so a row of cards ends flush at the
+    // bottom whatever their titles do.
     display: grid;
+    grid-template-rows: auto 1fr auto;
+    block-size: 100%;
     overflow: hidden;
   }
 
+  // FULL BLEED, and no padding of its own. The card's `overflow: hidden` is
+  // what rounds the top corners; the picture supplies the rest.
   &__img {
-    grid-area: card__img;
-    display: flex;
-    flex-direction: column;
+    display: block;
+    aspect-ratio: component.$card-img-ratio;
 
     img {
-      background-color: component.$card-img-bg;
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
     }
   }
 
-  &__header {
-    grid-area: card__header;
-  }
-
-  &__footer {
-    grid-area: card__footer;
-  }
-}
-
-.card:not(.slim-card) {
-  .card__content {
-    background-color: component.$card-content-bg;
-    color: component.$card-fg;
-
-    box-shadow: component.$card-content-shadow;
-    border: component.$card-content-border-color;
-    border-radius: component.$card-radius;
-
-    grid-template-areas:
-      'card__header card__header'
-      'card__img card__body'
-      'card__footer card__footer';
-    grid-template-columns: 7fr 10fr;
-    grid-template-columns: min(200px, calc(100% * 7 / 21)) 1fr;
-    grid-template-rows: 1fr auto auto;
-  }
-
-  .card__img {
-    padding: 14px 0 14px var(--app-pad-surface);
-    gap: calc(var(--app-pad-surface) / 2);
-
-    img {
-      // box-shadow: var(--app-shadow-raised);
-    }
-  }
-
-  .card__img-description {
-    font-size: 0.9375em;
-    font-weight: bold;
+  &__img-description {
+    padding: component.$card-body-pad component.$card-body-pad 0;
+    color: component.$card-meta-fg;
+    font-size: component.$card-img-description-font-size;
     text-align: center;
   }
 
-  // A card's header sits one step down from its body, which is how printed
-  // matter behaves: the same paper, slightly in shadow.
-  //
-  // Its text read `fg-selected` — correct-looking and wrong. A header is not a
-  // selected thing; it is a heading, and it only looked right because the brand
-  // hue and the selection hue are the same colour in this theme.
-  .card__header {
-    background-color: component.$card-header-bg;
-    color: component.$card-header-fg;
-    font-weight: bold;
+  &__body {
+    display: grid;
+    align-content: start;
+    gap: component.$card-gap;
+    padding: component.$card-body-pad;
   }
 
-  .card__title {
-    padding: component.$card-title-pad var(--app-pad-surface);
-    grid-column: 2;
+  // The heading face, at the smallest heading step. It is the loudest thing in
+  // the card and it gets there by being set rather than by being painted.
+  &__title {
     font-family: component.$card-title-font-family;
-    font-size: 1rem;
+    font-size: component.$card-title-font-size;
+    font-weight: component.$card-title-font-weight;
+    line-height: component.$card-title-line-height;
   }
 
-  .card__body {
-    grid-area: card__body;
-    padding: component.$card-body-pad var(--app-pad-surface);
-    align-self: center;
-    color: component.$card-fg;
+  // THE LINE THE CARD ACTUALLY NEEDED. Which list, how many portions, how long
+  // — the three things a cook scanning a grid is choosing between, and none of
+  // them were on the card before.
+  &__meta {
+    color: component.$card-meta-fg;
+    font-size: component.$card-meta-font-size;
   }
 
-  .card__footer {
-    background-color: component.$card-footer-bg;
-    color: component.$card-fg;
-
-    border-top: component.$card-footer-border-color;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: component.$card-footer-pad var(--app-pad-surface);
-    justify-content: flex-end;
-  }
-
-  @container (min-width: 280px) {
-    .card__header {
-      grid-template-columns: subgrid;
-      grid-column: 1 / -1;
-      display: grid;
-    }
-
-    .card__img {
-      margin-top: -30px;
-    }
-  }
-}
-
-.slim-card {
-  padding: 8px;
-  border: component.$card-border-width solid component.$card-border-color;
-  grid-template-areas:
-    'card__img'
-    'card__header'
-    'card__body'
-    'card_footer';
-  grid-template-rows: auto auto 1fr auto;
-
-  .card__title {
-    font-weight: bold;
-    padding: 8px 0;
-    text-align: center;
-    text-decoration: underline;
+  // NUTRITION IS METADATA, NOT A HEADLINE. It was a four-cell grid in bold at
+  // body size, which made the calorie count larger than the name of the dish —
+  // in a recipe notebook that is the hierarchy upside down. One line, at the
+  // quietest legible rung, at the bottom.
+  &__footer {
+    padding: 0 component.$card-body-pad component.$card-body-pad;
+    color: component.$card-footer-fg;
+    font-size: component.$card-footer-font-size;
   }
 }

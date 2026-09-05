@@ -263,7 +263,32 @@ $_field-pad: 4px;
   // What the lines still do is the part a tone cannot — a divider between
   // ingredients on ONE plane, and the resting edge of a control, which is
   // affordance rather than separation.
+  // THE CHOSEN NAV ITEM IS A QUIET FILL WITH A MARK, NOT A SOLID BLOCK.
+  //
+  // The contract sends `nav-bg-active` to the selection pair, which this school
+  // resolves to the accent — so the rail carried a full-width blue slab, and a
+  // screen counting the accent found seven occurrences, three of them solid.
+  // The budget is one filled chromatic per viewport, and it belongs to the
+  // primary button.
+  //
+  // Two rungs down on the neutral ladder, which is the same depth a chosen chip
+  // takes, plus a solid accent bar on the leading edge — an INDICATOR of state,
+  // which is a mark and not a fill. See `.app-navbar` for the bar.
+  $nav-bg-active: var(--app-bg-neutral-subtle-active),
+  $nav-fg-active: var(--app-fg-heading),
+
   $card-content-border-color: none,
+
+  // NO SHADOW EITHER. The tone already separates the card from the page, and a
+  // sheet lying on a table does not float. `shadow-raised` stays in the system
+  // for what genuinely does — a menu, a dialog.
+  $card-content-shadow: none,
+
+  // GENEROUS, because that is what Editorial spends instead of lines. The
+  // contract defaults a card's padding to `space-xs` — 8px — which is a dense
+  // product's number, and at 8px the serif title sits against the card's edge
+  // and the whitespace that was supposed to carry the hierarchy is not there.
+  $card-body-pad: var(--app-space-md),
 
   // The same decision, for the shared contract's own surface.
   $surface-border-color: transparent,
@@ -354,7 +379,29 @@ $modal-divider-width: var(--app-border-width) !default;
 $modal-divider-color: var(--app-border-color-subtle) !default;
 
 $card-fg: var(--app-fg-default) !default;
-$card-header-fg: var(--app-fg-heading) !default;
+
+// A card is a leaf of paper: the picture is square, the way every image in this
+// product is, and the two quiet rungs below carry the metadata line and the
+// nutrition line so neither competes with the name of the dish.
+$card-img-ratio: var(--app-ratio-media) !default;
+$card-gap: var(--app-space-xs) !default;
+$card-meta-fg: var(--app-fg-muted) !default;
+$card-meta-font-size: var(--app-font-size-sm) !default;
+$card-footer-fg: var(--app-fg-subtlest) !default;
+$card-footer-font-size: var(--app-font-size-xs) !default;
+$card-img-description-font-size: var(--app-font-size-xs) !default;
+
+// The title is the loudest thing in the card and it gets there by being SET,
+// which in an Editorial product means the serif at a heading step with room
+// above it — never a fill behind it.
+// `heading`, not `heading-sm`. This product maps `heading-sm` onto the BODY
+// size on purpose — a fourth-level heading is a label for what follows it — so
+// a card title set there came out the same size as the paragraph under it and
+// was ranked by the serif alone. It is the loudest thing in the card and needs
+// a step of its own.
+$card-title-font-size: var(--app-font-size-heading) !default;
+$card-title-font-weight: var(--app-font-weight-heading) !default;
+$card-title-line-height: var(--app-line-height-heading) !default;
 
 $choice-title-fg: var(--app-fg-default) !default;
 // `iconStyle: outline`, and icons inherit `currentColor`: the one accent is
@@ -366,6 +413,16 @@ $table-td-mono-fg: var(--app-fg-muted) !default;
 $table-td-accent-fg: var(--app-fg-accent) !default;
 
 $field-selection-fg: var(--app-fg-heading) !default;
+
+// The rail's own two slots. Hover is the PREVIEW of selection, so it is one
+// rung above the chosen fill in the same neutral family — hovering and choosing
+// read as the same gesture at two strengths.
+//
+// The indicator is the only accent the rail spends: a 3px bar, which is a mark
+// rather than a fill, and small enough that a screen still has exactly one
+// filled chromatic on it.
+$nav-bg-hover: var(--app-bg-neutral-subtle-hover) !default;
+$nav-indicator-bg: var(--app-bg-accent) !default;
 
 $notebook-tabs-content-fg: var(--app-fg-default) !default;
 $section-card-item-pad-y: var(--app-pad-control-y) !default;
@@ -385,8 +442,20 @@ $notebook-tabs-content-bg: var(--app-bg-surface) !default;
 $notebook-tabs-bg: var(--app-bg-sunken) !default;
 $notebook-tabs-radius: var(--app-radius-surface) !default;
 $notebook-tabs-shadow: var(--app-shadow-raised) !default;
-$notebook-tabs-bg-active: var(--app-bg-accent) !default;
-$notebook-tabs-fg-active: var(--app-fg-on-accent) !default;
+// THE CHOSEN TAB IS THE PAGE, NOT A BLUE BLOCK.
+//
+// It was a solid accent fill, which is how a filled INVITATION is drawn — the
+// one treatment reserved for the thing that happens when you press it. A tab
+// that is already chosen is not an invitation, and on the notebook page it put
+// a third solid accent patch beside the primary button and the rail's own
+// active item.
+//
+// The tab that is open is the one continuous with the sheet behind it, which
+// is what an index tab physically is: the others are still tucked under. So
+// the active tab takes the content surface and the resting ones stay sunken,
+// and the whole affordance costs no pigment at all.
+$notebook-tabs-bg-active: var(--app-bg-surface) !default;
+$notebook-tabs-fg-active: var(--app-fg-heading) !default;
 $section-card-shadow: var(--app-shadow-raised) !default;
 $section-card-border-color: var(--app-border) !default;
 // A SECTION MARK IS NOT A FILLED ACTION. `bg-brand` is optional in the

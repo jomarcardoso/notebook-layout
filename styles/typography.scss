@@ -174,32 +174,41 @@
 // every time, so the relationship between a modifier and its base was
 // something you had to reconstruct by reading.
 //
-// The fill is `bg-sunken`, not `bg-selected`. The dark cocoa band made sense
-// when it sat under a paper texture with `multiply` softening it; with the
-// texture gone it is a heavy dark slab, and the strongest colour on the page
-// was being spent on a label rather than on anything a reader can act on.
-// A sunken well says "a new area starts here" without shouting it.
+// NO FILL. It was a full-width well at `bg-sunken`, and there were two styles of
+// section title on the same page as a result: a serif line with a rule under it
+// for one level, and a serif line inside a tan band for another. The band is the
+// Enterprise vocabulary — Editorial carries hierarchy with SPACE and a rule, and
+// a filled strip behind a heading is the thing that makes a page of serifs read
+// as somebody else's component library with a nice font in it.
+//
+// A rule and the room above it now, which is also the mark a notebook makes.
 .section-title {
   @extend .h2;
 
-  background-color: var(--app-bg-sunken);
+  background-color: transparent;
   border: 0;
-  border-radius: var(--app-radius-surface);
+  border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
+  border-radius: 0;
   color: var(--app-fg-heading);
   display: block;
   max-width: 100%;
-  padding: 0.25em var(--app-pad-control-y) 0.3em;
+  padding: 0 0 0.2em;
+
+  // SPACE IS DIRECTIONAL: a heading belongs to what comes after it, so the room
+  // above is larger than the room below. That ratio is most of what makes a
+  // page read as designed rather than as assembled, and it is the lever that
+  // replaced the fill.
+  margin-block: var(--app-space-xl) var(--app-space-sm);
 
   // One level down: an organiser INSIDE a section, which must not read as
-  // another section. No fill at all — a ruled line under the words, the same
-  // mark a notebook makes.
+  // another section. Smaller, and no rule — the two levels are told apart by
+  // size and by which one carries the line, so a reader arriving mid-scroll can
+  // see the difference without counting.
   &.-sub {
     @extend .h3;
 
-    background-color: transparent;
-    border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
-    border-radius: 0;
-    padding: 0 0 0.2em;
+    border-bottom: 0;
+    margin-block: var(--app-space-lg) var(--app-space-2xs);
   }
 
   &.-center {
@@ -207,9 +216,9 @@
     text-align: center;
   }
 
+  // No rule at all: a title that opens a page rather than a section inside one.
   &.-plain {
-    background-color: transparent;
-    padding-inline: 0;
+    border-bottom: 0;
   }
 }
 
