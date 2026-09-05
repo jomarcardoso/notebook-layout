@@ -156,6 +156,16 @@ $_derived: (
     --cui-#{$cui}-bg-subtle: #{core.ref(_slot($role, subtle))};
     --cui-#{$cui}-border-subtle: #{core.ref(_slot($role, border))};
     --cui-#{$cui}-text-emphasis: #{core.ref(_slot($role, text))};
+
+    // The label the SOLID fill carries. CoreUI 5.4 computes it with
+    // `color-contrast()`, which picks black or white by luminance — a guess
+    // where this system has a measured answer per role, and a guess that cannot
+    // follow a theme.
+    //
+    // It is here rather than in the entry, and not by preference:
+    // `$theme-colors-contrast` lives in `_maps.scss`, which `coreui.scss` does
+    // not forward, so no entry can reach it. See the note there.
+    --cui-#{$cui}-contrast: #{core.ref('fg-on-#{$role}')};
   }
 }
 
@@ -774,10 +784,27 @@ $_derived: (
     --cui-nav-link-disabled-color: #{component.$nav-fg-disabled};
   }
 
-  // Pills: the chosen one is a filled selection, so it takes the pair.
+  // PILLS ARE THE SEGMENTED SHAPE, so the chosen one comes FORWARD out of the
+  // track rather than sinking into it.
+  //
+  // This bound the generic selection pair, and the reasoning was that a pill is
+  // an independent chosen thing. It is not: a pill set is closed, contiguous
+  // and mutually exclusive, which is the exact case `$nav-tab-bg-active` argues
+  // at length two hundred lines above — POSITION has already said which one is
+  // chosen, so the accent would be spending itself on a fact the layout has
+  // stated, and what the chosen one does instead is lift out of the recess.
+  //
+  // Binding the generic pair also made pills the one place in this adapter
+  // where a product could break the fill/ink pairing without noticing. Move
+  // `$nav-bg-active` to the neutral family — a reasonable thing to do for a
+  // navigation rail — and the pill kept `$nav-fg-on-active`, the white measured
+  // against the ACCENT, on a light tan fill at 1.75:1. Both halves correct,
+  // the combination never measured. `check-pair-contrast` is the guard now, and
+  // this binding is what stops the two tokens being able to disagree at all:
+  // the tab pair is one decision, taken once.
   .nav-pills {
-    --cui-nav-pills-link-active-bg: #{component.$nav-bg-active};
-    --cui-nav-pills-link-active-color: #{component.$nav-fg-on-active};
+    --cui-nav-pills-link-active-bg: #{component.$nav-tab-bg-active};
+    --cui-nav-pills-link-active-color: #{component.$nav-tab-fg-active};
     --cui-nav-pills-border-radius: #{component.$nav-radius};
   }
 

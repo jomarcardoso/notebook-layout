@@ -607,7 +607,14 @@ $nav-bg: #{core.ref('bg-sunken')} !default;
 $nav-border-color: #{core.ref('border-color')} !default;
 $nav-radius: #{core.ref('radius-control')} !default;
 $nav-fg-disabled: #{core.ref('fg-disabled')} !default;
-$nav-fg-on-active: #{core.ref('fg-on-selected')} !default;
+// `$nav-fg-on-active` was here, bound only by `.nav-pills`, and it is gone with
+// that binding. A pill takes the tab pair now, which is one decision rather than
+// two variables that can be pointed at different pairs — the way this one ended
+// up as the white measured against the accent, sitting on a neutral fill.
+//
+// Removed rather than kept as a reserved name: the contract's value is the names
+// it reserves, and a name no adapter binds cannot be reached by a product
+// either. It would be declared, documented, and do nothing when set.
 // A NEUTRAL SURFACE, NOT THE WASHED ACCENT — and this looks like a mistake
 // every time someone reads it, so here is why it is not.
 //

@@ -117,12 +117,64 @@ $info: _c(info);
 $warning: _c(warning);
 $danger: _c(danger);
 
-// `light` and `dark` are absolute palette aliases, not theme roles. They take
-// their value from the palette so they are on-brand, and they do not invert,
-// which is what the names promise. Three adapters have been broken by treating
-// one of these as a role.
-$light: srgb(base.color(zinc, 50));
-$dark: srgb(base.color(zinc, 900));
+// THE LIBRARY'S OWN GREY RAMP, WHICH IS A PUBLIC SURFACE WHETHER OR NOT THE
+// LIBRARY READS IT.
+//
+// The first audit of this file asked which `--cui-*` the LIBRARY consumes, found
+// that `--cui-gray-100` … `--cui-gray-900` are read zero times, and concluded
+// they were inert. That conclusion had a boundary nobody stated: the library is
+// not the only reader. An application is one too, and an application that
+// already used CoreUI before this foundation arrived is FULL of
+// `var(--cui-gray-300)` — which is the whole migration case this tool exists to
+// serve. Those lines would have kept rendering CoreUI's blue-greys on a
+// cream-paper product, and the `:root` block would have kept looking metallic
+// to anyone who opened devtools, because it WAS metallic.
+//
+// LITERALS, not references, for two independent reasons.
+//
+// CoreUI computes with them everywhere at Sass time — `$border-color: $gray-300`,
+// `$dropdown-header-color: $gray-600`, the table and input defaults — so a
+// `var()` here would hard-error, and setting them fixes every one of those
+// derivations at the same time.
+//
+// And they must NOT follow a theme flip, which is the more interesting reason.
+// `gray-100` names a POSITION on a ramp: "the lightest step". It does not name a
+// role, and an application that wrote `var(--cui-gray-100)` meant "pale", not
+// "the page". Binding it to `--app-bg-sunken` would invert it in the dark theme
+// and turn every one of those legacy lines inside out. Same call as `$light` and
+// `$dark` below, for the same reason, and this repository has broken three
+// adapters by getting it the other way round.
+//
+// The honest residue, worth telling a migrating team once: a `--cui-gray-*` is
+// an absolute palette entry. It is now the PRODUCT's palette instead of the
+// library's, which is the whole fix — but it still does not follow the theme,
+// and code that needs to should move to `--app-*`.
+//
+// ← CHANGE THIS: your product's neutral ramp, step for step.
+$gray-100: srgb(theme.paper(100));
+$gray-200: srgb(theme.paper(200));
+$gray-300: srgb(theme.paper(300));
+$gray-400: srgb(theme.paper(400));
+$gray-500: srgb(theme.paper(500));
+$gray-600: srgb(theme.paper(600));
+$gray-700: srgb(theme.paper(700));
+$gray-800: srgb(theme.paper(800));
+$gray-900: srgb(theme.paper(900));
+
+// `light` and `dark` are absolute palette aliases, not theme roles. They do not
+// invert, which is what the names promise, and three adapters have been broken
+// by treating one of these as a role.
+//
+// They used to read `base.color(zinc, …)`, and the comment above them claimed
+// they came "from the palette so they are on-brand". Half true, and the wrong
+// half: zinc is the FOUNDATION's palette, not the product's. `.bg-light`
+// measured #fafafa — a COOL near-white — on a cream page, which is the same
+// mistake the radius family was making one section down, and it is the mistake
+// this whole file exists to prevent.
+//
+// ← CHANGE THIS: the two ends of your product's neutral ramp.
+$light: srgb(theme.paper(50));
+$dark: srgb(theme.paper(950));
 
 $body-bg: _c(page);
 $body-color: _c(text);
@@ -160,10 +212,6 @@ $border-color: _c(border);
 // -----------------------------------------------------------------------------
 $border-width: 1px;
 $border-style: solid;
-$border-radius: base.scale(radius, md);
-$border-radius-sm: base.scale(radius, sm);
-$border-radius-lg: base.scale(radius, xl);
-$border-radius-pill: base.scale(radius, full);
 
 $font-family-sans-serif: base.scale(font, sans);
 $font-family-monospace: base.scale(font, mono);
@@ -235,7 +283,159 @@ $enable-gradients: false;
 $enable-shadows: false;
 
 // -----------------------------------------------------------------------------
-// 5. THE LIBRARY
+// 5. THE VARIABLES THE LIBRARY ONLY PASSES THROUGH
+// -----------------------------------------------------------------------------
+//
+// Everything below is a REFERENCE, in the sense section 2 defines: CoreUI writes
+// the value into `:root` and never computes with it, so the string survives the
+// compiler and the token still owns it at runtime — theme flips included.
+//
+// They are here rather than in the adapter for the reason the adapter exists to
+// avoid: an adapter line is an OVERRIDE, a second declaration of something the
+// library already declared, and it only works for the names somebody thought to
+// list. A variable set here is the library's own default, so anything CoreUI
+// derives from it downstream is derived from the product's value.
+//
+// HOW THIS BLOCK WAS FOUND, because the method matters more than the list. Take
+// every `--cui-*` the library declares in its own `:root`, subtract the ones the
+// adapter rebinds, and keep the ones the compiled CSS actually READS back with
+// `var()`. What is left is precisely the set of library decisions that reach the
+// page unopposed. In a build where every gate was green there were fourteen of
+// them, and they were CoreUI's blue-greys on a cream-paper product.
+//
+// The reassuring half of the same audit: `--cui-gray-100` … `--cui-gray-900`,
+// `--cui-blue`, `--cui-pink` and the rest of the named palette are declared in
+// `:root` and read ZERO times. They are the Sass palette echoed out for
+// consumers, they paint nothing, and the metallic ramp people notice in
+// devtools is exactly this — alarming to read, inert on the page.
+
+// SHAPE, and this replaces the block above rather than adding to it. The old
+// lines read `base.scale(radius, md)`, which is the FOUNDATION's default scale
+// and not the product's: a theme that decided on 2 / 4 / 10 was still handing
+// the library 6px, and `--cui-border-radius` is read 51 times — every alert,
+// list group, pagination link, dropdown, toast, tab strip and toggler in the
+// build. `check-radius` could not see it, because it reads `--app-radius-*` and
+// this number never appears there.
+//
+// Safe as a `var()`: CoreUI's `valid-radius()` clamps NUMBERS at zero and
+// appends anything else untouched, so a custom property passes straight through.
+$border-radius: var(--app-radius-control);
+$border-radius-sm: var(--app-radius-sm);
+$border-radius-lg: var(--app-radius-surface);
+$border-radius-xl: var(--app-radius-surface-lg);
+$border-radius-xxl: var(--app-radius-surface-lg);
+$border-radius-pill: var(--app-radius-pill);
+
+// THE BOUNDARY OF A FLOATING SURFACE. CoreUI expresses it as an alpha over the
+// page — `color-translucent($gray-300, .175)` — so that one value can sit on any
+// background, which is a sensible trick for a library with no theme and a
+// blue-grey stain on a product that has one. It is the border of the dropdown,
+// the toast, the popover and the offcanvas; card and modal are rebound by the
+// adapter, which is why this only shows up on the components nobody put on the
+// demonstration page yet.
+//
+// `border-color` and not `border-divider`: these are the OUTER EDGE of a
+// floating thing, which is a boundary, not a line between two things on one
+// plane.
+$border-color-translucent: var(--app-border-color);
+
+// ELEVATION. The library's shadows are built on its own near-black `$black`,
+// and the product has two elevation tokens rather than three sizes, so `lg`
+// takes the overlay with the base. `$box-shadow-inset` keeps the library value:
+// there is no inset token, and inventing one HERE would put a colour decision in
+// an entry file, which is the thing this architecture exists to stop.
+$box-shadow: var(--app-shadow-overlay);
+$box-shadow-sm: var(--app-shadow-raised);
+$box-shadow-lg: var(--app-shadow-overlay);
+
+// CoreUI's own emphasis scale, deprecated in 5.0 and still emitted, still read
+// by the sidebar and by `.text-high-emphasis`. Left alone it is an alpha over a
+// blue-grey, which is why `check-utility-colour` measured `.text-high-emphasis`
+// at 1.35:1 on the dark theme — a near-black ink on a near-black page.
+//
+// The `-inverse` trio is NOT bound, and that is deliberate rather than an
+// oversight: those are white alphas meant for the opposite ground, which makes
+// them absolute names in the same sense as `.text-dark`. Binding one to a role
+// is the mistake this repository has now made three times.
+$high-emphasis: var(--app-fg-default);
+$medium-emphasis: var(--app-fg-muted);
+$disabled: var(--app-fg-disabled);
+
+// THE ONE THAT LOOKED LIKE IT BELONGED HERE AND DOES NOT, recorded because the
+// limit is structural and catches the next person too.
+//
+// `$theme-colors-contrast` — the label a solid fill carries, new in CoreUI 5.4 —
+// lives in `_maps.scss`, and `coreui.scss` `@forward`s `variables` and
+// `variables-dark` but NOT `maps`. A `!default` is only configurable by whoever
+// can see it, and a module reached solely through another module's `@use` is
+// invisible to this file. Setting it here compiles, changes nothing, and looks
+// exactly like working.
+//
+// The same wall stands in front of everything else `_maps.scss` defines:
+// `$utilities-text-colors`, `$theme-colors-text`, `$utilities-bg-subtle` and the
+// rest of the utility source maps. Which is also the real answer to why
+// `.text-warning` cannot be repointed at the ink role from an entry — it is not
+// a decision anybody declined to make, it is a door the library did not open.
+//
+// So `--cui-*-contrast` is bound in the adapter, at runtime, where it can also
+// follow a theme flip. The test for which side of this line a variable falls on
+// is one grep: is its file forwarded by `coreui.scss`?
+
+// VALIDATION. These were already the product's colours and were still wrong,
+// which makes them the most interesting entry in the block: the entry set
+// `$success` and `$danger` as literals, CoreUI derived the four validation
+// variables from them at Sass time, and a literal cannot invert. So a form
+// error in the DARK theme drew the light theme's red.
+//
+// The ink and the border are different roles on purpose. `fg-*` is text and
+// clears AA; the border IDENTIFIES the control and is inside WCAG 1.4.11, so it
+// takes the solid fill and its 3:1.
+//
+// What stays wrong, and is not reachable from here: `$form-feedback-icon-valid`
+// is an SVG data URI with the colour encoded inside it. A `var()` cannot enter a
+// URL. The adapter handles the navbar toggler by turning it into a mask, which
+// is the same fix and belongs there rather than here.
+$form-valid-color: var(--app-fg-success);
+$form-valid-border-color: var(--app-bg-success);
+$form-invalid-color: var(--app-fg-danger);
+$form-invalid-border-color: var(--app-bg-danger);
+
+// `<code>` and `<mark>`. The library ships pink and yellow-100 — the two most
+// visible leftovers of an unthemed build, and both of them prose-level, so they
+// turn up in documentation pages long after the components were signed off.
+//
+// The accent for code ink is a DECISION rather than a derivation, and a product
+// with a tighter accent budget should move it to `--app-fg-muted` and let the
+// monospace face carry the distinction on its own.
+// This one is computed with, and the workaround is worth knowing because it
+// generalises. `_variables-dark.scss` does `$code-color-dark: tint-color($code-color,
+// 40%)`, and `tint-color()` calls the legacy `mix()`, which hard-errors on a
+// `var()`. Setting the DERIVED variable first stops the expression being
+// evaluated at all — `!default` skips its right-hand side when the variable
+// already has a value — so the decision stays in this file instead of being
+// pushed into the adapter as a runtime override.
+$code-color-dark: var(--app-fg-accent);
+$code-color: var(--app-fg-accent);
+$mark-color: var(--app-fg-default);
+$mark-bg: var(--app-bg-warning-subtle);
+
+// A NOTE THAT WAS TRUE FOR ONE COMMIT, kept because the correction is the useful
+// part.
+//
+// `--cui-tertiary-bg-translucent` — the sidebar's hover and active fill — has no
+// `!default` variable of its own: `_root.scss` computes it with
+// `color-translucent()` from `$body-tertiary-bg`. That was written down here as
+// "an adapter override or nothing", and it stopped being true the moment the
+// grey ramp above was bound: `$body-tertiary-bg` defaults to `$gray-100`, so it
+// now derives `rgba(197, 167, 127, .1)` — a warm tan — with nothing overriding it.
+//
+// The general shape, which is worth more than this one variable: a value that
+// looks unreachable is often only unreachable from where you were standing. The
+// question to ask is not "can I set this variable" but "what does it derive
+// from, and can I set THAT".
+
+// -----------------------------------------------------------------------------
+// 6. THE LIBRARY
 // -----------------------------------------------------------------------------
 //
 // Wrapped in `@layer vendor` so the adapter — emitted into `vendor-config`,

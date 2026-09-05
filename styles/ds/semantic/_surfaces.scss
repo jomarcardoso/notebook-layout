@@ -1,53 +1,85 @@
 // =============================================================================
-// SURFACES — WHAT THIS PRODUCT ADDS TO THE FOUNDATION'S CONTEXTS
+// WHAT THIS PRODUCT ADDS TO THE FOUNDATION'S SURFACE CONTEXTS
 // =============================================================================
 //
-// The foundation already emits `base`, `surface`, `raised` and `sunken`, and
-// each one redeclares TWELVE rungs — every fill, every border and every well —
-// shifted by the exact lightness distance between that plane and the page. That
-// is the mechanism, and it is the one idea that explains most colour bugs here:
+// One declaration, and the history of what used to be here is worth more than
+// the declaration is.
+//
+// The foundation emits `base`, `surface`, `raised` and `sunken`, and each one
+// redeclares TWELVE rungs — every fill, every border, every well — shifted by
+// the lightness distance between that plane and the page. That is the whole
+// mechanism, and the idea behind it explains most colour bugs in this system:
 //
 //     A RUNG IS A DISTANCE FROM THE SURFACE, NOT A PROPERTY OF A COMPONENT.
 //
-// This file used to declare a fifth context called `paper`, and `paper` set
-// exactly ONE property:
+// This file used to declare a fifth context called `paper` that set exactly
+// ONE property — the page token remapped to the surface — and `.app-layout`
+// carried it. So the whole application sat one rung lighter than the page while
+// every border, field, well and quiet fill inside it was still calibrated
+// against the page it was no longer on. It looked like a context because it had
+// the same attribute and the same shape; it was a rename wearing a context's
+// clothes.
 //
-//     [data-surface="paper"] { --app-bg-page: var(--app-bg-surface) }
+// -----------------------------------------------------------------------------
+// AND THE FRAME DOES NOT GET A PLANE AT ALL
+// -----------------------------------------------------------------------------
 //
-// One, against the foundation's twelve. So the whole application sat on a
-// ground one rung lighter than the page while every border, every field, every
-// sunken well and every quiet neutral fill inside it was still calibrated
-// against the page it was no longer on. Nothing looked broken; everything
-// looked slightly flat, which is exactly the symptom the foundation warns
-// about and exactly the one nobody can name.
+// Swapping `paper` for the real `surface` context fixed the rungs and broke
+// something else, which is how the ladder's budget got noticed. `ladderSpend`
+// is TWO: the page on one rung, anything raised on the next, and the third
+// reserved for the quiet neutral fill every badge and resting chip is made of.
 //
-// It looked like a context because it had the same attribute and the same
-// shape. It was a rename of a single token wearing a context's clothes.
+// A frame that declares itself a surface spends the second rung on chrome. The
+// cards then had only `raised` left — pure white — and measured 1.03:1 against
+// it, where the same card on the page measures 1.08. Half the separation, spent
+// on a container nobody looks at.
 //
-// What this file keeps is the two things the foundation deliberately leaves to
-// a product:
+// So `.app-layout` carries no plane. It is the page. The elements that carry a
+// context are the ones that genuinely are a sheet on it — a card, a dialog
+// body, a section card — and each names the plane it PAINTS, because that is
+// the ground the rungs inside it are measured from.
 //
-//   the PAINT      `core.context()` emits custom properties and nothing else,
-//                  which is right for a general helper and wrong for a thing
-//                  called `data-surface`: a reader who writes the attribute
-//                  expects a sheet, not a set of variables something else has
-//                  to remember to consume.
+// -----------------------------------------------------------------------------
+// AND NOTHING HERE PAINTS
+// -----------------------------------------------------------------------------
 //
-//   `bg-page`      the foundation shifts the twelve rungs and leaves `bg-page`
-//                  alone, because a context does not change what the PAGE is.
-//                  In this product it has to: a full-bleed zone inside the
-//                  sheet reaches for `bg-page` to mean "the ground I am on",
-//                  and unremapped it painted the zone the exact colour it was
-//                  already sitting on.
+// An earlier version of this file painted every `[data-surface]`, on the
+// argument that a reader who writes the attribute expects a sheet rather than a
+// set of variables something else has to remember to consume. That argument is
+// good and it produced double-painting: every component that carries the
+// attribute already has a fill token of its own — `$card-content-bg`,
+// `$modal-bg`, `$section-card-body-bg` — so the context repainted what the
+// component had just painted, one rung off.
 //
-// Deliberately UNLAYERED, like the theme blocks beside it. Unlayered CSS beats
-// all layered CSS, and `app.scss` puts CoreUI in `@layer vendor-config` so the
-// library cannot repaint a surface the product declared.
+// The attribute shifts the rungs. The component paints the ground. Two jobs,
+// and they were being done twice by one of them.
 // =============================================================================
 
 @use '../src/core';
 
 @mixin emit() {
+  // THE PAGE HAS TO BE PAINTED BY SOMEBODY, and until now it was painted by
+  // accident.
+  //
+  // CoreUI puts `background-color: var(--cui-body-bg)` in `_reboot.scss`, and
+  // this product imports the library SELECTIVELY — `root`, `grid`, `helpers`,
+  // the utilities API and a short list of components. `reboot` is not on the
+  // list, so that rule has never shipped: `--cui-body-bg` resolves correctly to
+  // the page token and nothing reads it.
+  //
+  // Nobody noticed because `.app-layout` painted itself and covered the
+  // viewport. Take that paint away — as the note below explains, the frame is
+  // not a plane — and the ground underneath turns out to be the browser's
+  // white, with a white card on it.
+  //
+  // On `:root` rather than `body`, so the canvas inherits it: a background on
+  // the root element propagates to the whole viewport, which is what makes
+  // overscroll the page's colour instead of white.
+  :root {
+    background-color: #{core.ref('bg-page')};
+    color: #{core.ref('fg-default')};
+  }
+
   // INK BLENDING IS OFF.
   //
   // `emit-theme()` in the vendored `src/` sets `--app-blend-ink` to `multiply`
@@ -68,35 +100,5 @@
   :root,
   :root[data-theme] {
     --app-blend-ink: normal;
-  }
-
-  // THE ONE KEY THE FOUNDATION LEAVES ALONE.
-  //
-  // It lands on the same selector the foundation's own `surface` context uses,
-  // so it is an addendum rather than a competing block: the twelve rungs come
-  // from `src/`, and this adds the thirteenth.
-  //
-  // `fg-default: null` is not filler. The pair invariant requires the key to be
-  // CONSIDERED whenever the background moves, and `null` is how a context says
-  // "considered, unchanged": it satisfies the check and emits nothing. Writing
-  // `core.ref('fg-default')` instead would emit a custom property that
-  // references itself, which is a cycle and is dropped as invalid.
-  @include core.context(
-    '[data-surface="surface"]',
-    (
-      'bg-page': core.ref('bg-surface'),
-      'fg-default': null
-    )
-  );
-
-  // NO TEXTURE. The fibre was tried twice — first as isotropic grain, then
-  // as crossing strands — and neither survived contact with the page: at a
-  // strength you could see it competed with the type, and at a strength that
-  // did not, you could not see it. It is removed rather than dialled down to
-  // invisibility, because an effect nobody can perceive is cost with no
-  // benefit. The notebook is carried by its ELEMENTS, not by its stock.
-  [data-surface='surface'] {
-    background-color: #{core.ref('bg-surface')};
-    color: #{core.ref('fg-default')};
   }
 }
