@@ -139,10 +139,15 @@ $_field-pad: 4px;
   // the label tab came out a grey that appears nowhere else, in a palette that
   // has no greys.
   //
-  // `bg-sunken` is the same fill the notebook tabs use, and that is the right
-  // answer twice over: a label tab and an index tab are the same object — a
-  // grip cut out of the page — so they should be cut from the same stock.
-  $field-label-bg: var(--app-bg-sunken),
+  // THE SAME STOCK AS THE SLIP BELOW IT. A field and its tab are one piece of
+  // stationery — the outline runs up the label, across its top and back down,
+  // and the box continues it — so they cannot be two tones.
+  //
+  // It read `bg-sunken`, matching the notebook's index tabs, and that pairing
+  // was the wrong one: an index tab is the BOOK's furniture and a field label
+  // is part of a control. Following the control is what keeps the tab and the
+  // slip reading as cut from one sheet when `$field-bg` moves.
+  $field-label-bg: var(--app-bg-field),
   // Navigation chrome in this product sits on the sunken surface.
   $nav-bg: var(--app-bg-sunken),
   // --- Avatar ---------------------------------------------------------------
@@ -206,11 +211,23 @@ $_field-pad: 4px;
   // control — a heading face is for what a document says, not for what an
   // interface asks.
   $field-label-font-family: var(--app-font-family-body),
-  // The field is a slip cut from the same stock as its tab — see
-  // `.field__box` in `field.scss`. The default is `bg-surface`, which is the
-  // sheet the field is lying ON, so a field made of it had no material of its
-  // own.
-  $field-bg: var(--app-bg-sunken),
+  // THE WELL A CONTROL IS CUT INTO. `bg-field` is the rung the theme reserves
+  // for it, and this override exists only because it predates the token: it was
+  // written when the contract defaulted a field to `bg-surface` — the sheet the
+  // field is lying ON, so a field made of it had no material of its own — and
+  // `bg-sunken` was the nearest thing with a material.
+  //
+  // `semantic/light.scss` argues against that choice at the point it defines
+  // the rung, and the argument still holds: at `sunken` a text input, a chip at
+  // rest and a recessed panel are three different things wearing one tone, and
+  // a PASSIVE control ends up deeper than the page behind the card it sits in
+  // — more visual weight than the buttons beside it. paper(150) is one step
+  // into the surface: enough to say something goes here, not so much that the
+  // field competes with the card.
+  //
+  // Kept as an explicit line rather than deleted, because the tab below has to
+  // move with it and the two being one piece of stationery is the decision.
+  $field-bg: var(--app-bg-field),
   $field-label-pad: 5px 24px 3px,
   // No `$field-label-font-size` here. It was pinned to `15px`, a value on no
   // ramp and belonging to no face, so the tab was the one piece of type in the
