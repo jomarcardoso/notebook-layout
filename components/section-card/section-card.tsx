@@ -26,7 +26,16 @@ export const SectionCard: FC<SectionCardProps> = ({
   const id = reactId;
 
   return (
-    <section aria-labelledby={id} className={classes} {...props}>
+    <section
+      // `raised`, matching what the body PAINTS. A context names the plane the
+      // element is on, because every rung inside it is a distance from that
+      // plane — declaring `surface` here calibrated the panel's own contents
+      // against a ground one rung below the one they sit on.
+      data-surface="raised"
+      aria-labelledby={id}
+      className={classes}
+      {...props}
+    >
       {(header || title) && (
         // `h3` carries the heading face AND a reading measure, so putting it on
         // the element that also paints the brand band capped the band at the

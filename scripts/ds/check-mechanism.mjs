@@ -89,7 +89,7 @@ const touch = (name) => {
   return components.get(name);
 };
 
-for (const m of css.matchAll(/--[a-z]+-([a-z][a-z0-9-]*?)-(bg|background|border-color|border-width|box-shadow)\s*:\s*([^;]+)/g)) {
+for (const m of css.matchAll(/--[a-z]+-([a-z][a-z0-9-]*?)-(bg|background|border-color|border-width|box-shadow)\s*:\s*([^;}]+)/g)) {
   const [, raw, prop, val] = m;
   const name = raw.replace(/-(hover|active|focus|disabled|checked)$/, '');
   if (/-(hover|active|focus|disabled|checked)-/.test(raw)) continue;

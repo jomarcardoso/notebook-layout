@@ -58,7 +58,7 @@ const css = readFileSync(join(dir, 'ds.css'), 'utf8');
 const answer = (k) => value(doc, k);
 
 /** The value a `--app-*` token holds, from the first theme that declares it. */
-const token = (name) => css.match(new RegExp(`--app-${name}:\\s*([^;]+)`))?.[1]?.trim();
+const token = (name) => css.match(new RegExp(`--app-${name}:\\s*([^;}]+)`))?.[1]?.trim();
 
 /**
  * Which `--app-*` role a library's primary-button fill points at.
@@ -94,7 +94,7 @@ const expect = (label, ok, detail) => {
 // --- surfaceSeparation -------------------------------------------------------
 const sep = answer('surfaceSeparation');
 if (sep) {
-  const card = [...css.matchAll(/--[a-z]+-card-border-(?:color|width):\s*([^;]+)/gi)].map((m) =>
+  const card = [...css.matchAll(/--[a-z]+-card-border-(?:color|width):\s*([^;}]+)/gi)].map((m) =>
     m[1].trim()
   );
   if (!card.length) {

@@ -472,8 +472,18 @@ $notebook-tabs-shadow: var(--app-shadow-raised) !default;
 // and the whole affordance costs no pigment at all.
 $notebook-tabs-bg-active: var(--app-bg-surface) !default;
 $notebook-tabs-fg-active: var(--app-fg-heading) !default;
-$section-card-shadow: var(--app-shadow-raised) !default;
-$section-card-border-color: var(--app-border) !default;
+// A SHEET IS SEPARATED BY ITS TONE, ONCE.
+//
+// The panel carried a fill, a hairline AND a shadow — three mechanisms for one
+// edge, which is the default library look this school exists to avoid, and the
+// same three the card shed. `surfaceSeparation: tones` picks the fill; the
+// other two are the boundary drawn again.
+//
+// The shadow was the worse of the two: this product's elevation is carried by
+// tone and the design language says in as many words that a surface is never
+// separated by a shadow. A panel does not float.
+$section-card-shadow: none !default;
+$section-card-border-color: none !default;
 // A SECTION MARK IS NOT A FILLED ACTION. `bg-brand` is optional in the
 // contract and falls back to the accent, so a title band made of it put a
 // second solid chromatic patch on a screen that already has one filled button
@@ -487,7 +497,15 @@ $section-card-title-fg: var(--app-fg-heading) !default;
 $section-card-title-font-size: var(--app-font-size-heading-sm) !default;
 $section-card-title-border-width: var(--app-border-width) !default;
 $section-card-title-divider-color: var(--app-border-divider) !default;
-$section-card-body-bg: var(--app-bg-surface) !default;
+// THE RAISED RUNG, the same one a card takes, because it is the same object: a
+// sheet lying on the page.
+//
+// At `bg-surface` it measured 1.04:1 against the page — below every band in the
+// theme's own ladder table, so the panel had a fill that could not be seen and
+// was being held together by the hairline and the shadow above. Those are gone,
+// so the tone has to do the work, and at `bg-raised` it measures 1.08:1: the
+// figure the table gives for a surface adjacent to the page.
+$section-card-body-bg: var(--app-bg-raised) !default;
 $choice-border-color-hover: var(--app-border-accent) !default;
 $category-width: 102px !default;
 $category-font-size: var(--app-font-size-sm) !default;

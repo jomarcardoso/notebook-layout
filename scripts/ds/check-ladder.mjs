@@ -74,7 +74,7 @@ for (const dir of dirs) {
   // before the dark one, and the dark theme has its own bands. Auditing both in
   // one pass would average away whichever is worse.
   const tokens = new Map();
-  for (const m of css.matchAll(/--app-([a-z0-9-]+):\s*([^;]+);/g)) {
+  for (const m of css.matchAll(/--app-([a-z0-9-]+):\s*([^;}]+)[;}]/g)) {
     if (!tokens.has(m[1])) tokens.set(m[1], m[2].trim());
   }
   // A TRANSLUCENT FILL IS MEASURED AS IT WILL BE SEEN, composited over the

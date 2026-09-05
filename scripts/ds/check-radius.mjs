@@ -84,7 +84,7 @@ for (const dir of dirs) {
   // returning null for anything else is correct: a value this cannot read is a
   // value it should not be measuring.
   const raw = (name) => {
-    const m = css.match(new RegExp(`--app-${name}:\\s*([^;]+);`));
+    const m = css.match(new RegExp(`--app-${name}:\\s*([^;}]+)[;}]`));
     return m ? m[1].trim() : null;
   };
   const px = (name, depth = 0) => {

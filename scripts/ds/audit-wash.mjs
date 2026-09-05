@@ -67,7 +67,7 @@ const css = readFileSync(join(dir, 'ds.css'), 'utf8');
 // The LIGHT theme block only. Dark has its own ceilings and its own answer, and
 // mixing the two into one verdict would hide whichever is worse.
 const tokens = new Map();
-for (const m of css.matchAll(/--app-([a-z0-9-]+):\s*([^;]+);/g)) {
+for (const m of css.matchAll(/--app-([a-z0-9-]+):\s*([^;}]+)[;}]/g)) {
   if (!tokens.has(m[1])) tokens.set(m[1], m[2].trim());
 }
 const lch = (name) => {
