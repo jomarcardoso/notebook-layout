@@ -69,17 +69,57 @@
   $body-bg: cfg.$body-bg,
   $body-color: cfg.$body-color,
   $body-secondary-color: cfg.$body-secondary-color,
-  $body-tertiary-bg: cfg.$body-tertiary-bg,
 
   $link-color: cfg.$link-color,
   $link-hover-color: cfg.$link-hover-color,
 
   $border-color: cfg.$border-color,
   $border-width: 1px,
+
+  // The radius scale, with steps that are steps. It was 4px and 6px — one
+  // radius written twice, two pixels being a difference no reader can see.
   $border-radius: 4px,
-  $border-radius-sm: 4px,
-  $border-radius-lg: 6px,
+  $border-radius-sm: 2px,
+  $border-radius-lg: 10px,
   $border-radius-pill: 9999px,
+
+  // SPACE IS DIRECTIONAL. A heading belongs to what comes AFTER it, so the room
+  // above has to be larger than the room below. The library ships a bottom
+  // margin and no top margin at all, which leaves every heading floating
+  // equidistant between the paragraph it belongs to and the one it does not —
+  // and that is most of what makes a page read as assembled rather than as
+  // designed. There is no `$headings-margin-top`, so the top margin stays in
+  // the product's own layer; what the entry can do is make the bottom one
+  // deliberate.
+  $headings-margin-bottom: var(--app-space-sm),
+
+  // `_reboot.scss` assigns `font-family: $headings-font-family` with no fallback
+  // logic, so a `var()` reaches the CSS intact and stays theme-reactive. This is
+  // the line that removes the `@layer base` override a product would otherwise
+  // need to put the serif on its headings.
+  $headings-font-family: var(--app-font-family-heading),
+  $headings-font-weight: var(--app-font-weight-heading),
+  $headings-line-height: var(--app-line-height-heading),
+
+  // THE HORIZONTAL RULE, which is a token decision the library expresses as an
+  // OPACITY and therefore hides. `_reboot` renders `hr` as `color: inherit` at
+  // 25% opacity, so every rule is a quarter-strength wash of whatever ink it
+  // happens to inherit — it changes weight depending on where it sits, and no
+  // divider token can reach it. Setting the opacity to 1 hands the colour back
+  // to the adapter.
+  $hr-opacity: 1,
+
+  // Component WEIGHT — compiled, and the residue that keeps a themed build
+  // still reading as Bootstrap. A badge at weight 700 is a chip shouting; at
+  // the body weight it is a label.
+  $badge-font-weight: var(--app-font-weight-body),
+  $btn-font-weight: var(--app-font-weight-body),
+
+  // Asserted rather than assumed. Both are already false in CoreUI 5, and a
+  // product whose design language carries a "never gradients" guardrail should
+  // not depend on a library default staying put across a major version.
+  $enable-gradients: false,
+  $enable-shadows: false,
 
   // Turns on the CSS Grid utilities: `.grid`, `.g-col-*`, `.columns-*`. The
   // application's own layout depends on these, and this flag is the only thing

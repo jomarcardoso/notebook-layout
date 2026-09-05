@@ -10,7 +10,7 @@
   // desktop is still a desktop: its content has to line up with the page it
   // opened over, and a fixed 8px put every row inside it 8px off the rhythm
   // everything outside it keeps.
-  --modal-body-pad: var(--app-pad-surface);
+  --modal-body-pad: #{component.$modal-body-pad};
 
   // These two arrived from the token layer, which used to paint `.modal`
   // directly — a component selector in a file whose job is tokens, and
@@ -44,15 +44,15 @@
   }
 
   .heading {
-    border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
+    border-bottom: component.$modal-divider-width solid component.$modal-divider-color;
   }
 
   &__footer {
     align-items: center;
-    border-top: var(--app-border-width) solid var(--app-border-color-subtle);
+    border-top: component.$modal-divider-width solid component.$modal-divider-color;
     display: flex;
     flex: 0 0 auto;
-    gap: var(--app-gap-inline);
+    gap: component.$modal-footer-gap;
     justify-content: flex-end;
     min-height: component.$modal-footer-min-height;
     padding: var(--modal-body-pad);

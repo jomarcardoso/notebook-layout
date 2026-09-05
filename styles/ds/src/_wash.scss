@@ -1,0 +1,126 @@
+// src/_wash.scss
+
+// =============================================================================
+// THE WASH — a pale fill that mixes with whatever is under it
+// =============================================================================
+//
+// A washed accent built as an opaque colour carries the ground it was mixed
+// with. Take a blue, mix it 12% into white, and you get a pale blue that has
+// WHITE in it — put that on cream paper and the eye sees a cold patch on a warm
+// field. It reads as a stain rather than as a tint of the page, and nobody can
+// say why, because every individual value is defensible.
+//
+// The fix is not a better mix. It is to stop mixing at build time: an ALPHA fill
+// mixes with whatever is actually beneath it, at paint time, in the browser.
+// One value works on the page, inside a card, inside a modal and on a coloured
+// band, and it inherits each ground's temperature for free. It is why Radix
+// publishes an alpha scale beside every solid one.
+//
+// -----------------------------------------------------------------------------
+// WHAT ALPHA FIXES, AND WHAT IT DOES NOT
+// -----------------------------------------------------------------------------
+//
+// It fixes BELONGING. The wash takes the ground's warmth automatically, and a
+// component fill stops needing a per-surface variant.
+//
+// It does NOT fix SATURATION. Twelve percent of a blue over cream has the same
+// low chroma with or without alpha — the arithmetic is identical. If the pigment
+// and the paper are near-complementary, an alpha wash is exactly as muddy as an
+// opaque one, and `$accent-wash: false` is still the answer. Alpha and the
+// viability gate solve different halves.
+//
+// -----------------------------------------------------------------------------
+// WHERE ALPHA IS ALLOWED, BY RUNG
+// -----------------------------------------------------------------------------
+//
+// The rule is by JOB, not by colour, and the line is whether anything has to be
+// legible against it:
+//
+//   rungs 3, 4, 5   component fills          YES — the main case
+//   rungs 6, 7      divider, resting border  yes, no contrast requirement
+//   rung 8          focus ring               only with an audited floor (3:1)
+//   rungs 9, 10     solid fills              NEVER. They carry text, and alpha
+//                                            makes that contrast depend on the
+//                                            ground, which no build can audit
+//   rungs 11, 12    text                     never, same reason
+//
+// This holds for the neutral family as much as for the accent.
+//
+// -----------------------------------------------------------------------------
+// THE COST, STATED PLAINLY
+// -----------------------------------------------------------------------------
+//
+// A build cannot audit an alpha fill on its own, because the result depends on
+// what is underneath. `audit-contrast` opens a real page and reads composited
+// colours, so it still measures the truth — but a token read in isolation no
+// longer tells you what it will look like. That is the trade, and it is why this
+// is opt-in per token rather than the default for the whole system.
+//
+// The percentages are PER THEME, not universal. Twelve percent over white reads
+// strong; the same twelve percent over a dark ground nearly vanishes, because
+// the distance between the accent and the ground is smaller there. Dark themes
+// typically need 1.5 to 2 times the alpha of light ones, which is what
+// `dark-scale()` is for.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:math';
+
+// The default ladder, from the school: rest, hover, pressed. Selected sits at
+// the top of the washed family, around 14–18%.
+//
+// The solid fill is NOT the continuation of this scale. It is 100% and belongs
+// to a different family — filled and washed are different treatments, and there
+// is a jump between them rather than a ramp. Filling in the middle would create
+// steps that mean nothing.
+$rest: 0.08 !default;
+$hover: 0.12 !default;
+$active: 0.16 !default;
+$selected: 0.14 !default;
+
+// A dark theme needs more alpha for the same read, because the accent and the
+// ground are closer together in luminance down there. 1.6 is the middle of the
+// 1.5–2 band the school gives.
+$dark-multiplier: 1.6 !default;
+
+// -----------------------------------------------------------------------------
+
+// `wash($colour, $alpha)` — the colour at that opacity, ready to sit on anything.
+//
+// `color.change()` rather than `rgba()`: the input may already be in oklch, and
+// the legacy `rgba()` refuses one. This keeps the colour in whatever space it
+// arrived in and lets the emission convert once, at the end.
+@function wash($c, $a: $rest) {
+  @if $a <= 0 or $a > 1 {
+    @error 'wash(): alpha must be between 0 and 1, got #{$a}.';
+  }
+  @return color.change($c, $alpha: $a);
+}
+
+// The three states of one washed fill, as a map ready to merge into a theme.
+//
+//     'accent-subtle': wash.set(pen(700))...
+//
+// is not the call — Sass cannot spread a map into sibling keys. Use it as:
+//
+//     $theme: map.merge($theme, wash.states(pen(700), 'accent'));
+//
+// which writes `accent-subtle`, `accent-subtle-hover` and `accent-subtle-active`
+// in one line, correctly spaced, so a theme cannot declare a rest without its
+// states — which is how a control ends up not reacting.
+@function states($c, $prefix, $scale: 1) {
+  @return (
+    '#{$prefix}-subtle': wash($c, $rest * $scale),
+    '#{$prefix}-subtle-hover': wash($c, $hover * $scale),
+    '#{$prefix}-subtle-active': wash($c, $active * $scale)
+  );
+}
+
+// The same three for a dark theme. `derive.dark()` transforms by role and cannot
+// know that a value was an alpha rather than a colour, so a theme that washes
+// with alpha declares its dark states with this instead of relying on the
+// derivation — which would otherwise walk the LIGHTNESS of a translucent colour
+// and produce a fill that is both wrong and invisible.
+@function dark-states($c, $prefix) {
+  @return states($c, $prefix, $dark-multiplier);
+}

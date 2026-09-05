@@ -1,0 +1,257 @@
+// templates/entry-coreui.scss
+
+// =============================================================================
+// TEMPLATE — COMPILING COREUI AS PART OF THE PRODUCT
+// =============================================================================
+//
+// Copy this next to your theme, change the three marked lines, and compile it
+// to a CSS file your application loads BEFORE its token file:
+//
+//     sass --load-path=. --load-path=node_modules \
+//          app/styles/coreui.scss app/styles/coreui.css
+//
+// -----------------------------------------------------------------------------
+// WHY EVERY PRODUCT COMPILES ITS OWN COPY OF THE LIBRARY
+// -----------------------------------------------------------------------------
+//
+// This is not an optimisation and it is not a preference. It is the only
+// correct arrangement, and the repository shipped the incorrect one for
+// months without noticing.
+//
+// CoreUI derives hundreds of values from `$primary` and its siblings AT SASS
+// TIME, using `shade-color()` and `tint-color()`. Those become literals in the
+// compiled CSS: the hover of a button, the focus ring triplet, every variant of
+// alert, badge, table and link. A literal cannot follow a runtime theme, and no
+// adapter can reach it — the adapter can only overwrite the properties it knows
+// to name.
+//
+// So a SHARED library build is a build carrying one product's colours into
+// every other product. In this repository that shared build was compiled
+// against the demonstration theme, and `dist/coreui.css` shipped
+// `.btn-primary { --cui-btn-bg: rgb(31%, 22%, 96%) }` — the demo's indigo —
+// to every application that loaded it. Nothing looked wrong, because the
+// adapter rebinds `--cui-btn-bg` at runtime. Everything the adapter did NOT
+// rebind was the demo's colour, silently.
+//
+// `scripts/check-derived.mjs` now fails the build when a library-chosen colour
+// reaches a class the ledger allows. This file is what makes passing that check
+// possible rather than lucky.
+//
+// -----------------------------------------------------------------------------
+// THE RULE FOR WHAT GOES IN THIS FILE
+// -----------------------------------------------------------------------------
+//
+// A library Sass variable can hold two very different things:
+//
+//     $primary: #005bac               A LITERAL. The library's functions run on
+//                                     it. `shade-color()` invents the hover, and
+//                                     the design system has lost that value.
+//
+//     $card-bg: var(--app-bg-surface) A REFERENCE. No function runs, the string
+//                                     travels through the compiler intact, and
+//                                     the token still owns it at runtime —
+//                                     including theme flips and surface
+//                                     contexts.
+//
+// Put a REFERENCE here whenever the library will pass it through untouched.
+// Put a LITERAL here only for the handful of variables the library computes
+// with, and accept that the adapter must overwrite each one.
+//
+// How to tell which is which, without guessing: open the library's own
+// `_variables.scss` and see whether the variable is already a `var()` by
+// default. CoreUI 5 defaults most component variables to `var(--cui-…)`, which
+// is proof that a `var()` survives. `$primary`, `$body-bg`, `$body-color` and
+// the theme-colour family are the ones that do not.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. THE PRODUCT'S CONFIGURATION  ← CHANGE THIS PATH
+// -----------------------------------------------------------------------------
+//
+// This must be the FIRST `@use` in the file. It configures `src/base`,
+// `src/config` and `src/component` for the whole compilation, and a Sass module
+// can only be configured by whoever loads it first. Loading anything from `src/`
+// above this line makes Sass refuse — which is the guard working.
+//
+// The same file is loaded first by the token entry, so both compilations read
+// one set of decisions instead of two copies that have to agree.
+@use '../setup';
+
+@use 'sass:color';
+@use 'sass:map';
+@use '../../src/base';
+@use '../../src/roles';
+
+// ← CHANGE THIS PATH: the product's own theme, never a shared one.
+@use '../theme';
+
+// -----------------------------------------------------------------------------
+// 2. THE LITERALS
+// -----------------------------------------------------------------------------
+//
+// CoreUI inherits Bootstrap's `shade-color()` / `tint-color()`, which call the
+// legacy `mix()` and hard-error on an oklch value. Every colour goes through
+// this first.
+@function srgb($c) {
+  @return color.to-space(color.to-gamut($c, $space: rgb, $method: local-minde), rgb);
+}
+
+// ← CHANGE THIS: the LIGHT theme map. The dark one is not read here, because
+// everything below becomes a build-time literal and a literal cannot invert.
+// Dark is the adapter's job, at runtime.
+$_choices: roles.normalise(theme.$recepta);
+
+@function _c($key) {
+  @return srgb(map.get($_choices, $key));
+}
+
+// The theme-colour family. These are the variables the library computes with,
+// so they have to be literals, and the adapter overwrites all of them on the
+// variant class. They exist so that the corners the adapter does NOT reach —
+// a component nobody has catalogued yet — are at least this product's colours
+// rather than the library's factory indigo.
+$primary: _c(action);
+$secondary: _c(selected);
+$success: _c(success);
+$info: _c(info);
+$warning: _c(warning);
+$danger: _c(danger);
+
+// `light` and `dark` are absolute palette aliases, not theme roles. They take
+// their value from the palette so they are on-brand, and they do not invert,
+// which is what the names promise. Three adapters have been broken by treating
+// one of these as a role.
+$light: srgb(base.color(zinc, 50));
+$dark: srgb(base.color(zinc, 900));
+
+$body-bg: _c(page);
+$body-color: _c(text);
+$body-secondary-color: _c('text-muted');
+$link-color: _c(link);
+$link-hover-color: _c('link-hover');
+$border-color: _c(border);
+
+// `$body-tertiary-bg` IS DELIBERATELY NOT SET, and the reason is a real limit in
+// the library rather than a preference.
+//
+// CoreUI runs it through its own `color-translucent()`, which tries to express
+// the colour as a 10% alpha over white and errors when no such alpha exists:
+//
+//     Cannot reproduce rgb(92.3%, 89.9%, 86.5%) on #fff with alpha 0.1.
+//     Try a higher alpha.
+//
+// Any recessed tone that is warm and light enough hits this — a cool near-white
+// like the demo's zinc-100 happens to survive, which is why the failure only
+// appeared once a real product's paper ramp was used. It is not fixable from
+// here: the alpha is hard-coded in the function's default argument.
+//
+// Leaving it unset costs nothing that matters. `--cui-tertiary-bg` has a runtime
+// path and the adapter binds it, so every recessed surface in the product is
+// still the product's tone; what keeps the library's default is only the
+// translucent variant, which nothing in this system uses. And if a class the
+// ledger allows ever does use it, `check-derived` fails the build.
+//
+// The general shape of this, worth recognising again elsewhere: a library
+// function that DERIVES one value from another is a place the design system
+// cannot reach, and the answer is to stop feeding it rather than to fight it.
+
+// -----------------------------------------------------------------------------
+// 3. SHAPE AND TYPE — constants, never runtime
+// -----------------------------------------------------------------------------
+$border-width: 1px;
+$border-style: solid;
+$border-radius: base.scale(radius, md);
+$border-radius-sm: base.scale(radius, sm);
+$border-radius-lg: base.scale(radius, xl);
+$border-radius-pill: base.scale(radius, full);
+
+$font-family-sans-serif: base.scale(font, sans);
+$font-family-monospace: base.scale(font, mono);
+$font-size-base: base.scale(text, base);
+
+// -----------------------------------------------------------------------------
+// 4. THE PART THAT IS ONLY REACHABLE HERE
+// -----------------------------------------------------------------------------
+//
+// Everything above is colour, and colour has a runtime path. What follows has
+// none, because CoreUI either computes with it at Sass time or bakes it into
+// generated utility rules. Left unset, it can only be corrected afterwards with
+// CSS that overrides the library — which is the thing this architecture exists
+// to avoid.
+//
+// The audit that produced this block: an entry set 24 of CoreUI's 1161 Sass
+// variables, all colour or radius, and a product page then had to write its own
+// `@layer base` rule to give headings the serif face. That override was the
+// evidence — a stylesheet fixing something a variable already controlled.
+
+// SPACING. `$spacers` generates every `.p-*`, `.m-*` and `.gap-*` utility as a
+// LITERAL, so a page using `.gap-2` is spacing itself with CoreUI's scale and
+// not with this system's. Anchoring `$spacer` to four times the base unit lines
+// the two up exactly: .p-1 = space-2xs, .p-2 = space-xs, .p-3 = space-md,
+// .p-4 = space-lg, .p-5 = space-2xl.
+$spacer: base.$spacing-unit * 4;
+
+// Leading feeds `$input-height` and every control that derives from it, so
+// leaving it at CoreUI's 1.5 while the theme emits 1.7 makes library controls
+// and product text disagree about the same measurement.
+$line-height-base: 1.5;
+
+// Headings. `_reboot.scss` assigns `font-family: $headings-font-family` with no
+// fallback logic, so a `var()` reaches the CSS intact and stays theme-reactive.
+// This is the line that removes the `@layer base` override from every product
+// that would otherwise need one.
+$headings-font-family: var(--app-font-family-heading);
+$headings-font-weight: var(--app-font-weight-heading);
+$headings-line-height: var(--app-line-height-heading);
+
+// SPACE IS DIRECTIONAL. A heading belongs to what comes AFTER it, so the room
+// above has to be larger than the room below. The library ships a bottom margin
+// and no top margin at all, which leaves every heading floating equidistant
+// between the paragraph it belongs to and the one it does not — and that is most
+// of what makes a page read as assembled rather than as designed. There is no
+// `$headings-margin-top`, so the top margin stays in the product's own layer;
+// what the entry can do is make the bottom one deliberate.
+$headings-margin-bottom: var(--app-space-sm);
+
+// THE HORIZONTAL RULE, which is a token decision the library expresses as an
+// OPACITY and therefore hides. `_reboot` renders `hr` as `color: inherit` at 25%
+// opacity, so every rule is a quarter-strength wash of whatever ink it happens
+// to inherit — it changes weight depending on where it sits, and no divider
+// token can reach it. Setting the opacity to 1 hands the colour back to the
+// adapter.
+$hr-opacity: 1;
+$hr-margin-y: var(--app-space-lg);
+
+// Component WEIGHT — compiled, and the residue that keeps a themed build still
+// reading as Bootstrap. A badge at weight 700 is a chip shouting; at the body
+// weight it is a label.
+$badge-font-weight: var(--app-font-weight);
+$btn-font-weight: var(--app-font-weight);
+
+// Asserted rather than assumed. Both are already false in CoreUI 5, and a
+// product whose design language carries a "never gradients" guardrail should not
+// depend on a library default staying put across a major version.
+$enable-gradients: false;
+$enable-shadows: false;
+
+// -----------------------------------------------------------------------------
+// 5. THE LIBRARY
+// -----------------------------------------------------------------------------
+//
+// Wrapped in `@layer vendor` so the adapter — emitted into `vendor-config`,
+// declared after it — wins. CoreUI ships unlayered, like Bootstrap, so without
+// this the two would be ordered by whichever `<link>` came last.
+//
+// `@import` rather than `@use`: the library is a module-based package, but its
+// `!default` variables are configured the legacy way by the globals set above.
+// This is the documented Bootstrap arrangement and the fork behaves the same.
+//
+// SELECTIVE IMPORT: replacing this one line with the individual partials —
+// `functions`, `variables`, `maps`, `mixins`, `root`, `reboot`, then only the
+// components the product's ledger lists — is where the bytes are. It is safe
+// only with `check-coverage` running, because a component that is not imported
+// does not error: the class simply does not exist and the markup falls back to
+// something plausible.
+@layer vendor {
+  @import 'node_modules/@coreui/coreui/scss/coreui';
+}

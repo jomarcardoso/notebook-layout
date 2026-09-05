@@ -63,7 +63,7 @@
     display: block;
 
     > * {
-      padding: var(--app-pad-control-y) 0;
+      padding: component.$section-card-item-pad-y 0;
       // The child inherits the band's colour; its own heading rules must not
       // reintroduce a margin that would break the band.
       margin: 0;

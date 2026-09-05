@@ -1,0 +1,177 @@
+// src/adapters/_flowbite.scss
+
+// =============================================================================
+// ADAPTER — Flowbite 4
+// =============================================================================
+//
+// An adapter is a LEAF: nothing in the system depends on it, and it is the only
+// file that knows this library exists.
+//
+// Flowbite is the first library here with no vocabulary of its own to translate.
+// It ships ZERO component classes — its components are copy-paste markup made of
+// Tailwind utilities — so there is no `.btn` to bind and no `--fb-*` namespace.
+// Its entire theming surface is Tailwind's `@theme`, written as SEMANTIC colour
+// names: `--color-brand`, `--color-body`, `--color-neutral-primary`,
+// `--color-default` and so on.
+//
+// That makes this the closest thing to a peer the project has. Flowbite is not
+// a component library with a theming bolt-on; it is a semantic token layer that
+// happens to ship markup. The mapping below is therefore nearly one-to-one, and
+// that is the interesting result: two teams solving this independently produced
+// the same shape.
+//
+// -----------------------------------------------------------------------------
+// WHERE IT DIFFERS, AND WHY IT MATTERS
+// -----------------------------------------------------------------------------
+//
+// Flowbite names its surfaces by PROMINENCE — primary, secondary, tertiary,
+// quaternary — where layer 2 names them by ROLE: page, surface, raised, sunken.
+// Prominence is a description of how something looks; role is a statement about
+// what it is for. The difference shows up the moment a theme inverts: `raised`
+// means "closer to the viewer" in both light and dark, while "primary neutral"
+// means white in one and near-black in the other and the name stops helping.
+//
+// The mapping is still clean, because prominence and role happen to run
+// parallel in a light theme. It is worth knowing which direction the translation
+// goes.
+//
+// -----------------------------------------------------------------------------
+// THE HALF FLOWBITE OMITS
+// -----------------------------------------------------------------------------
+//
+// There is no `--color-on-brand` in Flowbite's vocabulary. Its own markup writes
+// `class="text-white bg-brand"`, which puts the foreground half of the pair in
+// the MARKUP, where no adapter can reach it — and white on a mid-bright fill is
+// exactly the pairing that fails WCAG (see `semantic.check-contrast()`).
+//
+// So this adapter publishes the missing companions: `--color-on-brand`,
+// `--color-on-success`, `--color-on-danger`, `--color-on-warning`. Markup then
+// writes `text-on-brand` instead of `text-white` and the pair holds in every
+// theme. This is not inventing a token — layer 2 already guarantees the pair,
+// and the adapter is exporting what it already knows.
+// =============================================================================
+
+@use '../core';
+@use '../config';
+
+@mixin emit() {
+  @include core.in-layer(config.$layer-adapter) {
+    // Re-declared at every boundary that can move a layer 2 token, for the
+    // reason the other adapters spell out: a custom property is substituted
+    // where it is declared and inherits as that result.
+    :root,
+    [data-theme],
+    [data-surface] {
+      // --- Text -------------------------------------------------------
+      --color-body: #{core.ref('fg-default')};
+      --color-body-subtle: #{core.ref('fg-muted')};
+      --color-heading: #{core.ref('fg-heading')};
+      // Was `fg-subtlest` — the faintest READABLE text tone borrowed for a
+      // state that is not text prominence at all. Flowbite names the pair
+      // itself (`fg-disabled` / `disabled`), which is the clearest evidence
+      // that layer 2 was the side missing it.
+      --color-fg-disabled: #{core.ref('fg-disabled')};
+
+      // --- Foreground intents -----------------------------------------
+      --color-fg-brand: #{core.ref('fg-action')};
+      --color-fg-brand-subtle: #{core.ref('fg-link')};
+      --color-fg-brand-strong: #{core.ref('fg-link-hover')};
+      --color-fg-success: #{core.ref('fg-success')};
+      --color-fg-success-strong: #{core.ref('fg-success')};
+      --color-fg-danger: #{core.ref('fg-danger')};
+      --color-fg-danger-strong: #{core.ref('fg-danger')};
+      --color-fg-warning: #{core.ref('fg-warning')};
+      --color-fg-warning-subtle: #{core.ref('fg-warning')};
+
+      // --- Surfaces ---------------------------------------------------
+      // Flowbite's four neutral steps run white -> gray-50 -> gray-100 ->
+      // gray-200. Layer 2's surfaces run surface -> page -> sunken -> border,
+      // which is the same descending ramp expressed as roles.
+      --color-neutral-primary: #{core.ref('bg-surface')};
+      --color-neutral-primary-soft: #{core.ref('bg-surface')};
+      --color-neutral-primary-medium: #{core.ref('bg-surface')};
+      --color-neutral-primary-strong: #{core.ref('bg-raised')};
+      --color-neutral-secondary: #{core.ref('bg-page')};
+      --color-neutral-secondary-soft: #{core.ref('bg-page')};
+      --color-neutral-secondary-medium: #{core.ref('bg-page')};
+      --color-neutral-secondary-strong: #{core.ref('bg-sunken')};
+      --color-neutral-secondary-strongest: #{core.ref('bg-sunken')};
+      --color-neutral-tertiary: #{core.ref('bg-sunken')};
+      --color-neutral-tertiary-soft: #{core.ref('bg-sunken')};
+      --color-neutral-tertiary-medium: #{core.ref('bg-sunken')};
+      --color-neutral-quaternary: #{core.ref('border-color')};
+      --color-neutral-quaternary-medium: #{core.ref('border-color-strong')};
+
+      --color-buffer: #{core.ref('bg-surface')};
+      --color-buffer-medium: #{core.ref('bg-surface')};
+      --color-buffer-strong: #{core.ref('bg-raised')};
+      --color-muted: #{core.ref('bg-sunken')};
+      --color-disabled: #{core.ref('bg-disabled')};
+
+      // --- Fills ------------------------------------------------------
+      --color-brand: #{core.ref('bg-action')};
+      --color-brand-light: #{core.ref('bg-action')};
+      --color-brand-strong: #{core.ref('bg-action-hover')};
+      --color-brand-soft: #{core.ref('bg-action-subtle')};
+      --color-brand-softer: #{core.ref('bg-action-subtle')};
+      --color-brand-medium: #{core.ref('bg-action-subtle')};
+      --color-brand-subtle: #{core.ref('border-action')};
+
+      --color-success: #{core.ref('bg-success')};
+      --color-success-strong: #{core.ref('bg-success-hover')};
+      --color-success-soft: #{core.ref('bg-success-subtle')};
+      --color-success-medium: #{core.ref('bg-success-subtle')};
+      --color-success-subtle: #{core.ref('border-success')};
+
+      --color-danger: #{core.ref('bg-danger')};
+      --color-danger-strong: #{core.ref('bg-danger-hover')};
+      --color-danger-soft: #{core.ref('bg-danger-subtle')};
+      --color-danger-medium: #{core.ref('bg-danger-subtle')};
+      --color-danger-subtle: #{core.ref('border-danger')};
+
+      --color-warning: #{core.ref('bg-warning')};
+      --color-warning-strong: #{core.ref('bg-warning-hover')};
+      --color-warning-soft: #{core.ref('bg-warning-subtle')};
+      --color-warning-medium: #{core.ref('bg-warning-subtle')};
+      --color-warning-subtle: #{core.ref('border-warning')};
+
+      // Flowbite's `dark` family is a fill, not a theme — the near-black
+      // surface it puts light text on.
+      --color-dark: #{core.ref('bg-inverted-base')};
+      --color-dark-soft: #{core.ref('bg-inverted-base')};
+      --color-dark-strong: #{core.ref('bg-inverted-base')};
+      --color-dark-subtle: #{core.ref('bg-inverted-base')};
+      --color-dark-backdrop: #{core.ref('bg-overlay')};
+
+      // --- Lines ------------------------------------------------------
+      --color-default: #{core.ref('border-color')};
+      --color-default-subtle: #{core.ref('border-color-subtle')};
+      --color-default-medium: #{core.ref('border-color')};
+      --color-default-strong: #{core.ref('border-color-strong')};
+      --color-light: #{core.ref('border-color-subtle')};
+      --color-light-subtle: #{core.ref('border-color-subtle')};
+      --color-light-medium: #{core.ref('border-color')};
+      --color-gray: #{core.ref('border-color-strong')};
+
+      // The pair halves Flowbite omits — `--color-on-brand` and friends — are
+      // NOT declared here. They are new names, and a Tailwind utility only
+      // exists if the token was visible at BUILD time, so declaring them at
+      // runtime would produce variables that no generated class reads. They
+      // live in `flowbite-entry.css` under `@theme inline`; see the note there.
+      //
+      // The declarations above are different: every one re-points a name
+      // Flowbite already declared, so the utility exists and still holds the
+      // `var()` reference. Re-pointing works at runtime; ADDING does not.
+
+      // --- Shape and type ---------------------------------------------
+      --radius-xs: #{core.ref('radius-control-sm')};
+      --radius-sm: #{core.ref('radius-control')};
+      --radius-base: #{core.ref('radius-surface')};
+      --radius-lg: #{core.ref('radius-surface-lg')};
+      --default-border-width: #{core.ref('border-width')};
+      --font-sans: #{core.ref('font-family-body')};
+      --font-body: #{core.ref('font-family-body')};
+      --font-mono: #{core.ref('font-family-mono')};
+    }
+  }
+}

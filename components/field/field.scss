@@ -150,7 +150,7 @@
     }
 
     &::selection {
-      color: var(--app-fg-heading);
+      color: component.$field-selection-fg;
       background: component.$field-selection-bg;
     }
 

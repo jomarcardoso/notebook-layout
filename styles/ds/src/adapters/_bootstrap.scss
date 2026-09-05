@@ -1,0 +1,595 @@
+// src/adapters/_bootstrap.scss
+
+// =============================================================================
+// ADAPTER — Bootstrap 5.3
+// =============================================================================
+//
+// REPLACES the 957-line `bootstrap_config.scss`. Read this header before
+// deleting that file, because the reasoning matters more than the code.
+//
+// -----------------------------------------------------------------------------
+// WHAT WENT WRONG IN THE ORIGINAL
+// -----------------------------------------------------------------------------
+//
+// The original adapter mapped 446 `--bs-*` variables onto 627 `--app-*` names,
+// descending all the way into component internals:
+//
+//     --bs-btn-hover-border-color: var(--app-button-primary-hover-border-color, …);
+//     --bs-offcanvas-title-line-height: var(--app-offcanvas-title-line-height, 1.5);
+//
+// Two distinct problems, and only one of them is about volume:
+//
+//   1. The adapter was doing layer 3's job. `--app-offcanvas-title-line-height`
+//      is a component token, and it fails all three admission tests in
+//      _component.scss — no theme changes it, no consumer will set it, and it
+//      has no meaning outside Bootstrap. It exists solely because Bootstrap has
+//      a variable with that name.
+//
+//   2. Bootstrap's shape leaked upward into the foundation. Once
+//      `--app-button-primary-focus-rgb` is part of the vocabulary, switching
+//      libraries means either abandoning those names or emulating Bootstrap's
+//      anatomy inside a library that does not share it. The foundation stopped
+//      being framework-independent, which was the whole objective.
+//
+// -----------------------------------------------------------------------------
+// THE FIX: SPLIT BY WHEN THE VALUE CAN CHANGE
+// -----------------------------------------------------------------------------
+//
+// Bootstrap is a Sass framework. Its ~400 component variables are compiled from
+// Sass `$` variables, not derived from `--bs-*` custom properties at runtime.
+// So there are two completely different jobs, and the original file did both
+// with the wrong tool:
+//
+//   BUILD TIME — everything that never changes at runtime. Set Bootstrap's Sass
+//   variables before importing it and all ~400 component variables receive
+//   correct compiled values for free. This is `bootstrap-entry.scss`. It is
+//   where roughly 400 of the original 446 mappings disappear.
+//
+//   RUNTIME — only what a theme or context must be able to swap: the root
+//   colour set and `[data-bs-theme]`. That is this file.
+//
+// The cut is mechanical: if the value is the same under light and dark, it does
+// NOT belong here. Radii, border width, the font stacks and the focus-ring
+// geometry are all set once in `bootstrap-entry.scss`; emitting them here as
+// custom properties would be paying runtime bytes for a constant.
+//
+// -----------------------------------------------------------------------------
+// THE RGB TRIPLET PROBLEM
+// -----------------------------------------------------------------------------
+//
+// Bootstrap carries `--bs-primary-rgb: 13, 110, 253` for its opacity utilities
+// (`rgba(var(--bs-primary-rgb), var(--bs-bg-opacity))`), and an oklch() value
+// cannot be fed into that.
+//
+// Resolved at build time rather than worked around: `rgb-triplet()` converts a
+// palette colour to comma-separated sRGB channels during compilation, so the
+// triplet is a literal in the output. Requires Sass >= 1.79 for the colour
+// space API. Where a triplet is needed for a value that changes at runtime,
+// prefer Bootstrap 5.3's own `color-mix()` paths instead of a triplet.
+//
+// -----------------------------------------------------------------------------
+// THE BINDING RULE — how layer 3 hooks into a library without breaking it
+// -----------------------------------------------------------------------------
+//
+// Two failure modes, both of which the previous version of this file hit:
+//
+//   CYCLE. A custom property may not reference itself, not even from inside a
+//   `var()` fallback. This is invalid at computed-value time and the whole
+//   declaration is dropped:
+//
+//       --bs-btn-bg: var(--app-button-bg, var(--app-bg-action, var(--bs-btn-bg)));
+//                    ^ declares --bs-btn-bg          references itself ^
+//
+//   VARIANT COLLAPSE. Bootstrap expresses `.btn-primary` vs `.btn-danger` by
+//   setting `--bs-btn-bg` per variant class. This adapter lives in the
+//   `vendor-config` layer, which is declared AFTER `vendor`, so any
+//   `--bs-btn-bg` written on `.btn` here beats every variant — and all buttons
+//   become one colour.
+//
+// So:
+//
+//   Library variable driven by a VARIANT (--bs-btn-bg, --bs-btn-color,
+//   --bs-btn-hover-bg) -> bind on the PROPERTY, with the library variable as
+//   the fallback. `background-color` is a different property from
+//   `--bs-btn-bg`, so there is no cycle; and `.btn-danger` still resolves
+//   `--bs-btn-bg` to its own value, so variants survive.
+//
+//       .btn { background-color: var(--app-button-bg, var(--bs-btn-bg)); }
+//
+//   Library variable NOT driven by a variant (--bs-card-bg, --bs-modal-bg) ->
+//   bind on the variable, but terminate the chain on a DIFFERENT property.
+//   Never close a chain on the property being declared.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:math';
+@use 'sass:map';
+@use '../core';
+@use '../config';
+@use '../component';
+
+@function rgb-triplet($c) {
+  // Gamut-map BEFORE converting, or a saturated oklch colour produces channels
+  // outside 0–255 — `--bs-primary-rgb: 202, 53, -25` for a vivid orange. A
+  // browser clamps that, so it looks fine until the value is used in a
+  // `color-mix()` or an opacity utility and the result is wrong.
+  //
+  // The built-in themes never hit this, which is exactly why it survived: they
+  // sit comfortably inside sRGB. The first project to pick a colour at the edge
+  // of the gamut found it immediately.
+  $srgb: color.to-space(color.to-gamut($c, $space: rgb, $method: local-minde), rgb);
+  @return #{math.round(color.channel($srgb, 'red', $space: rgb))},
+    #{math.round(color.channel($srgb, 'green', $space: rgb))},
+    #{math.round(color.channel($srgb, 'blue', $space: rgb))};
+}
+
+// Bootstrap theme-colour name -> the semantic role that drives it.
+// `light` and `dark` are Bootstrap's own surface aliases, not themes.
+$_map: (
+  primary: 'action',
+  // `secondary` is Bootstrap's GREY button (#6c757d in stock), and it was bound
+  // to `selected` — the role that means "this item is currently chosen". So a
+  // cancel button rendered in the same colour as an active menu entry, and a
+  // Bootstrap user lost the grey button the library ships.
+  //
+  // The rule this now follows: `selected` may only drive something a user can
+  // actually mark as selected — a chip, a checkbox, a radio, an active nav
+  // item, the current breadcrumb. Reaching for it because no other colour was
+  // available is precisely how a reader learns that the colour means nothing.
+  secondary: 'neutral',
+  success: 'success',
+  info: 'info',
+  warning: 'warning',
+  danger: 'danger',
+);
+
+// The derived slots a role provides. Every intent role spells them the same way
+// (`bg-X-subtle`, `border-X`, `fg-X`), and `neutral` is the exception: it is
+// the SURFACE family wearing a fill, so its subtle, line and text levels
+// already exist under surface names.
+//
+// Aliasing them into `bg-neutral-subtle` / `border-neutral` / `fg-neutral`
+// would have kept this loop uniform at the cost of three tokens that are
+// duplicates of tokens one line away — the exact mistake `fg-on-surface` was.
+$_derived: (
+  'neutral': (
+    subtle: 'bg-sunken',
+    border: 'border-color-strong',
+    text: 'fg-muted',
+  ),
+);
+
+@function _slot($role, $slot) {
+  $override: map.get($_derived, $role);
+
+  @if $override != null and map.get($override, $slot) != null {
+    @return map.get($override, $slot);
+  }
+  @if $slot == subtle {
+    @return 'bg-#{$role}-subtle';
+  }
+  @if $slot == border {
+    @return 'border-#{$role}';
+  }
+  @return 'fg-#{$role}';
+}
+
+// -----------------------------------------------------------------------------
+// ROOT — colour only, because colour is the only thing a theme swaps
+// -----------------------------------------------------------------------------
+//
+// Deliberately absent, and set in `bootstrap-entry.scss` instead:
+//   --bs-border-width / --bs-border-style
+//   --bs-border-radius{,-sm,-lg,-xl,-pill}
+//   --bs-focus-ring-width / --bs-focus-ring-offset
+//   --bs-body-font-family / --bs-body-font-size / --bs-body-line-height
+//   --bs-font-monospace
+// Thirteen constants that were being shipped as runtime custom properties for
+// no reason. `--bs-focus-ring-COLOR` stays: that one does change with the theme.
+
+@mixin _refs() {
+  // --- Core surfaces and text -------------------------------------------
+  --bs-body-bg: #{core.ref('bg-page')};
+  --bs-body-color: #{core.ref('fg-default')};
+  --bs-emphasis-color: #{core.ref('fg-heading')};
+  --bs-secondary-color: #{core.ref('fg-muted')};
+  --bs-secondary-bg: #{core.ref('bg-sunken')};
+  --bs-tertiary-color: #{core.ref('fg-subtlest')};
+  --bs-tertiary-bg: #{core.ref('bg-sunken')};
+  --bs-heading-color: #{core.ref('fg-heading')};
+
+  // --- Links -------------------------------------------------------------
+  --bs-link-color: #{core.ref('fg-link')};
+  --bs-link-hover-color: #{core.ref('fg-link-hover')};
+
+  // --- Inline code -------------------------------------------------------
+  //
+  // Bootstrap bakes `#d63384` here, which follows no theme and lands at
+  // 4.31:1 on a light page — below AA for what is, structurally, body text.
+  //
+  // Layer 2 has no "code" role and should not grow one: a foundation does not
+  // need an opinion about `<code>`. So this compresses onto `fg-default` and
+  // reserves a layer 3 name, the same shape as `accent`. Projects that want
+  // code to stand out set `--app-code-fg` and get their colour back, with the
+  // difference that theirs will be measured.
+  --bs-code-color: #{component.$code-fg};
+
+  // --- Lines -------------------------------------------------------------
+  --bs-border-color: #{core.ref('border-color')};
+  --bs-border-color-translucent: #{core.ref('border-color-subtle')};
+
+  // --- Focus -------------------------------------------------------------
+  --bs-focus-ring-color: #{core.ref('ring-color')};
+
+  // --- Elevation ---------------------------------------------------------
+  --bs-box-shadow: #{core.ref('shadow-overlay')};
+  --bs-box-shadow-sm: #{core.ref('shadow-raised')};
+
+  // --- Theme colour family, generated ------------------------------------
+  // Four variables per colour x six colours. Written by hand this is
+  // twenty-four lines that drift; here it is one loop that cannot.
+  @each $bs, $role in $_map {
+    --bs-#{$bs}: #{core.ref('bg-#{$role}')};
+    --bs-#{$bs}-bg-subtle: #{core.ref(_slot($role, subtle))};
+    --bs-#{$bs}-border-subtle: #{core.ref(_slot($role, border))};
+    --bs-#{$bs}-text-emphasis: #{core.ref(_slot($role, text))};
+  }
+}
+
+// The one part of the mapping that CANNOT be a `var()` reference.
+//
+// Bootstrap's opacity utilities do `rgba(var(--bs-primary-rgb), …)`, which
+// needs three bare numbers, and `rgba()` cannot take an oklch value or a
+// `var()`. So the triplet is computed from the theme's own colour at build
+// time, which makes it the only theme-SPECIFIC thing this adapter emits and
+// the reason the emit block below is split in two.
+@mixin _triplets($choices) {
+  @each $bs, $role in $_map {
+    --bs-#{$bs}-rgb: #{rgb-triplet(map.get($choices, $role))};
+  }
+
+  // The four non-family triplets, and the reason they are here at all.
+  //
+  // `--bs-link-color` was bound in `_root()` and looked correct in devtools,
+  // but Bootstrap's anchor rule does not read it:
+  //
+  //     a { color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1)) }
+  //
+  // So every link on every Bootstrap page kept the triplet compiled from the
+  // BUILD-TIME link colour and did not follow the theme at all — indigo-700 on
+  // a near-black dark page, 2.46:1. The variable we were setting was real,
+  // spelled right, and simply never consumed. `--bs-emphasis-color-rgb` is read
+  // in fourteen places and had the same problem.
+  //
+  // This is the "a library variable that exists is not necessarily read" trap,
+  // and the lesson is narrow: grep the built CSS for who CONSUMES a variable,
+  // not for who declares it.
+  // ONE focus colour, for every button and every variant.
+  //
+  // Bootstrap derives each variant's focus ring from that variant's own colour,
+  // so a focused outline button glowed in the action colour — the same signal
+  // the SOLID button carries at rest. Two buttons side by side, one focused,
+  // and both read as primary.
+  //
+  // Focus is not a property of the variant. It answers "where is the keyboard",
+  // which has to look the same everywhere and unlike anything else on screen.
+  // That is what `ring` is for, and why it is a role of its own.
+  --bs-btn-focus-shadow-rgb: #{rgb-triplet(map.get($choices, ring))};
+  --bs-focus-ring-color: #{core.ref('ring-color')};
+
+  --bs-link-color-rgb: #{rgb-triplet(map.get($choices, link))};
+  // The hover half of the same pair, and it was missing for as long as the
+  // resting half was present. `a:hover` reads the triplet exactly as `a` does,
+  // so a themed link went back to Bootstrap's own blue on hover. Found by
+  // `check-adapter-forms.mjs` rather than by eye — which is the difference
+  // between a rule written in a comment and a rule that runs.
+  --bs-link-hover-color-rgb: #{rgb-triplet(map.get($choices, 'link-hover'))};
+  --bs-body-color-rgb: #{rgb-triplet(map.get($choices, text))};
+  --bs-body-bg-rgb: #{rgb-triplet(map.get($choices, page))};
+  --bs-emphasis-color-rgb: #{rgb-triplet(map.get($choices, heading))};
+
+  // The SURFACE triplets. `--bs-secondary-bg` and `--bs-tertiary-bg` are bound
+  // in `_refs()` above and looked correct in devtools, but the utilities that
+  // paint with them do not read those variables:
+  //
+  //     .bg-body-tertiary { background-color: rgba(var(--bs-tertiary-bg-rgb), …) }
+  //
+  // So a navbar using `bg-body-tertiary` kept the neutral grey compiled at
+  // build time while the rest of the page followed a warm theme. Found by
+  // building a product with a palette that is not grey — the demonstration
+  // themes are all neutral enough that the mismatch was invisible.
+  --bs-secondary-bg-rgb: #{rgb-triplet(map.get($choices, sunken))};
+  --bs-tertiary-bg-rgb: #{rgb-triplet(map.get($choices, sunken))};
+}
+
+// -----------------------------------------------------------------------------
+// COMPONENTS — the layer 3 injection points
+// -----------------------------------------------------------------------------
+//
+// `_root()` above themes Bootstrap by COLOUR, which is what makes every
+// component follow the design system without any per-component work. This mixin
+// adds something different: the named hooks a consumer reaches for when ONE
+// instance has to diverge from the semantic default, without editing the
+// component's CSS and without changing the semantic token for everyone else.
+//
+// Deliberately a SMALL, curated set — the parts teams actually customise. It is
+// NOT the 400-variable catalogue. Anything not listed here still themes
+// correctly through `_root()`.
+//
+// Each binding follows THE BINDING RULE in the file header.
+
+@mixin _components() {
+  // --- Buttons, bound PER VARIANT ---------------------------------------
+  //
+  // This is the subtle part of the whole adapter, so the reasoning is worth
+  // more than the code.
+  //
+  // Bootstrap compiles `.btn-primary { --bs-btn-bg: <literal> }` — a literal,
+  // not a reference — so a runtime theme swap cannot move it on its own.
+  // Something has to override it. There are two tempting ways to do that and
+  // BOTH collapse every button into one colour:
+  //
+  //   .btn { --bs-btn-bg: … }
+  //     This adapter sits in `vendor-config`, declared after `vendor`, so a
+  //     declaration on `.btn` beats `.btn-danger` no matter the specificity.
+  //
+  //   .btn { background-color:
+  //            var(--app-button-bg, var(--app-bg-action, var(--bs-btn-bg))) }
+  //     Looks safe, because `--bs-btn-bg` is still in the chain. It is not:
+  //     `--app-bg-action` is ALWAYS emitted, so resolution stops at level 2
+  //     every single time and the variant level is unreachable. Same collapse,
+  //     much harder to see — it survives a code review and dies in the browser.
+  //
+  // So the fallback chain cannot carry the variant. The VARIANT SELECTOR has to,
+  // with each Bootstrap variant bound to the semantic role it means. Level 1
+  // stays `--app-button-bg`, which is what a consumer sets on one instance and
+  // which correctly wins for that instance whatever its variant.
+  //
+  // Every value below is a layer 2 token, including hover. An earlier version
+  // computed hover here with `color-mix()` because the status roles had no
+  // hover token — which quietly moved a design decision into the adapter,
+  // where no theme could reach it and no hand-written component could match
+  // it. The fix was to add `bg-{role}-hover` to layer 2, not to be clever
+  // here. If an adapter ever needs to invent a colour, that is the signal
+  // that layer 2 is missing a token.
+  @each $bs, $role in $_map {
+    $bg: core.ref('bg-#{$role}');
+    $bg-hover: core.ref('bg-#{$role}-hover');
+
+    .btn-#{$bs} {
+      background-color: #{$bg};
+      border-color: #{$bg};
+      color: #{core.ref('fg-on-#{$role}')};
+    }
+
+    .btn-#{$bs}:hover {
+      background-color: #{core.ref('button-bg-hover', $bg-hover)};
+      border-color: #{core.ref('button-bg-hover', $bg-hover)};
+    }
+  }
+
+  // --- `.text-bg-*`, the other baked foreground -------------------------
+  //
+  // Bootstrap compiles these as
+  //
+  //     .text-bg-primary { color: #fff; background-color: RGBA(var(--bs-primary-rgb), …) }
+  //
+  // The background follows the theme, because the adapter emits
+  // `--bs-primary-rgb` per theme. The COLOUR does not: Bootstrap picks it at
+  // Sass time with `color-contrast()`, measured against the build-time
+  // `$primary`. In the dark theme the fill brightens to a 400 step and that
+  // baked `#fff` lands at 3.13:1.
+  //
+  // Identical in kind to Flowbite's `text-white` — a foreground fixed at build
+  // time against a background that is not — and found the same way, by
+  // measuring rendered pages rather than tokens.
+  @each $bs, $role in $_map {
+    .text-bg-#{$bs} {
+      color: #{core.ref('fg-on-#{$role}')};
+    }
+  }
+
+  // --- `.btn-outline-*`, the third baked foreground ---------------------
+  //
+  // This block used to say outline buttons needed no binding because "the
+  // colour already comes from the variant, and `_root()` themes that". Reading
+  // the compiled CSS disproves it:
+  //
+  //     .btn-outline-primary { --bs-btn-color: rgb(31.08%, 22.44%, 96.62%) }
+  //
+  // A literal, resolved from the build-time `$primary`, exactly like
+  // `.text-bg-*` above. So an outline button kept the LIGHT theme's colour on a
+  // dark page — five variants between 3.08:1 and 4.12:1 — and none of it was
+  // visible until the audit learned to measure text on a transparent
+  // background. An outline button has no fill, so a fill-shaped check skips it.
+  //
+  // The right colour here is `fg-{role}`, not `bg-{role}`: the fill tone is
+  // chosen to carry white text, and reusing it as text on the page is the same
+  // mistake daisyUI's soft variant makes. `fg-{role}` is the tone layer 2
+  // already validates against a light surface, and the surface matrix now
+  // checks it against all four.
+  @each $bs, $role in $_map {
+    .btn-outline-#{$bs} {
+      color: #{core.ref(_slot($role, text))};
+      border-color: #{core.ref(_slot($role, border))};
+    }
+
+    // Outline hover keeps the OUTLINE.
+    //
+    // This used to fill with the variant colour and flip the label to the
+    // paired foreground — Bootstrap's own convention, which the adapter copied
+    // without arguing with it. It destroys the one thing outline exists to
+    // express: put a hovered secondary beside a primary and you have two
+    // primaries, so the screen momentarily has two main actions.
+    //
+    // A tint plus the border it already had says "you are on this" without
+    // promoting it. Emphasis is fill / border / nothing, and an interaction
+    // state must never move a control up that ladder.
+    .btn-outline-#{$bs}:hover {
+      background-color: #{core.ref(_slot($role, subtle))};
+      border-color: #{core.ref(_slot($role, border))};
+      color: #{core.ref(_slot($role, text))};
+    }
+  }
+
+  // `.btn-light` and `.btn-dark` are deliberately NOT bound, for the reason the
+  // Bulma adapter spells out at length: `light` and `dark` are absolute colour
+  // names, not theme roles. They already take their value from this palette,
+  // via `$light` and `$dark` in `bootstrap-entry.scss`, so they are on-brand —
+  // they simply do not invert with the theme, which is what Bootstrap itself
+  // does and what the class name promises.
+
+  // Left to Bootstrap on purpose:
+  //   .btn-light / .btn-dark / .btn-link  no semantic role maps to them.
+  //   :active         selected by `.btn:first-child:active` and friends;
+  //                   rebinding it on a plainer selector would widen WHEN the
+  //                   active style applies. `button-bg-active` stays reserved
+  //                   in the contract for hand-written components.
+
+  // Fields have no per-component Bootstrap variable — `.form-control` reads
+  // the GLOBAL `--bs-body-bg` and `--bs-border-color` directly. Overriding
+  // those on the element would leak to every descendant, so bind on the
+  // property and terminate on the semantic token, which is always emitted.
+  .form-control,
+  .form-select {
+    background-color: #{component.$field-bg};
+    border-color: #{component.$field-border-color};
+    border-radius: #{component.$field-radius};
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #{component.$field-border-color-focus};
+  }
+
+  // Not variant-driven: bind on the variable. Every chain below terminates on
+  // a DIFFERENT property than the one being declared, so none of them cycle.
+  .card {
+    --bs-card-bg: #{component.$surface-bg};
+    --bs-card-color: #{component.$surface-fg};
+    --bs-card-border-color: #{component.$surface-border-color};
+    --bs-card-border-radius: #{component.$surface-radius};
+    --bs-card-cap-bg: #{component.$table-header-bg};
+
+    // Padding and elevation were reserved in the layer 3 contract and then read
+    // by nobody, so a Bootstrap card and a hand-written card disagreed on both.
+    // A dangling contract entry is worse than no entry: it reads as a promise.
+    //
+    // Two levels, not three, because Bootstrap has no non-self variable to fall
+    // back to here and the semantic token is always emitted anyway. Binding
+    // padding at runtime rather than in `bootstrap-entry.scss` is deliberate —
+    // it derives from `--app-space-unit`, so the card now follows
+    // `[data-density="compact"]` like everything else.
+    --bs-card-spacer-y: #{component.$surface-pad-y};
+    --bs-card-spacer-x: #{component.$surface-pad-x};
+
+    // Elevation binds on the PROPERTY, not on `--bs-card-box-shadow`, and the
+    // reason is a trap worth remembering: Bootstrap declares that variable but
+    // only READS it through its `box-shadow()` mixin, which compiles to nothing
+    // while `$enable-shadows: false`. Setting the variable looks correct in
+    // devtools and renders nothing.
+    //
+    // Flipping `$enable-shadows` on is the wrong fix — it also turns on inset
+    // shadows for buttons and inputs across all of Bootstrap. The design system
+    // has an opinion about one thing here (a surface is raised), so it states
+    // that one thing.
+    box-shadow: #{core.ref('surface-shadow', core.ref('shadow-raised'))};
+  }
+
+  .table {
+    --bs-table-color: #{component.$table-fg};
+    --bs-table-border-color: #{component.$table-border-color};
+    --bs-table-striped-bg: #{component.$table-row-bg-striped};
+    --bs-table-hover-bg: #{component.$table-row-bg-hover};
+  }
+
+  .modal {
+    --bs-modal-bg: #{component.$overlay-bg};
+    --bs-modal-border-radius: #{component.$overlay-radius};
+  }
+
+  // Dropdowns carry their own variable namespace; the previous version wrote
+  // `--bs-modal-bg` here, which Bootstrap never reads on this element.
+  .dropdown-menu {
+    --bs-dropdown-bg: #{component.$overlay-bg};
+    --bs-dropdown-border-radius: #{component.$overlay-radius};
+  }
+
+  .nav-link {
+    --bs-nav-link-color: #{component.$nav-fg};
+    --bs-nav-link-hover-color: #{component.$nav-fg-hover};
+  }
+
+  .alert {
+    --bs-alert-border-radius: #{component.$alert-radius};
+  }
+
+  .badge {
+    --bs-badge-border-radius: #{component.$badge-radius};
+  }
+}
+
+// `$themes` is a map of `name: choices`, and it is REQUIRED — see
+// `core.require-themes()` for why an adapter that needs colour channels cannot
+// be given a sensible default.
+//
+// The triplets below are computed from a theme's actual colours (see
+// `_triplets`), so the adapter needs the choice maps. It used to read them out
+// of a registry of themes that shipped with the tool; the tool ships none now,
+// and a project's theme is the only kind there is.
+@mixin emit($themes: null) {
+  $set: core.require-themes('bootstrap', $themes);
+
+  @include core.in-layer(config.$layer-adapter) {
+    // Everything that is a plain `var(--app-…)` goes here, once.
+    //
+    // The selector list is doing real work. A custom property is SUBSTITUTED
+    // where it is declared and then inherits as that result, so declaring
+    // these only on `:root` would freeze Bootstrap at the root's theme: a
+    // `[data-theme="brand"]` section or a `[data-surface="inverted"]` band
+    // would move the layer 2 tokens underneath and Bootstrap would not follow.
+    // Re-declaring at every boundary that can change a token is what makes
+    // contexts propagate into the library.
+    :root,
+    [data-theme],
+    [data-bs-theme],
+    [data-surface] {
+      @include _refs();
+    }
+
+    // The triplets, per theme, generated from `$themes` rather than listed by
+    // hand. This is what keeps the promise that adding a theme touches no
+    // adapter: write the map, pass it to `emit()`, done.
+    $names: map.keys($set);
+    $default-theme: null;
+
+    @if list.length($names) > 0 {
+      $default-theme: list.nth($names, 1);
+    }
+
+    @each $name, $choices in $set {
+      @if $name == $default-theme {
+        :root,
+        [data-theme='#{$name}'] {
+          @include _triplets($choices);
+        }
+      } @else {
+        [data-theme='#{$name}'] {
+          @include _triplets($choices);
+        }
+      }
+
+      // Bootstrap keys dark mode off its own attribute. Aliasing it here keeps
+      // `data-theme` as the single switch the product toggles and leaves
+      // `data-bs-theme` an implementation detail.
+      @if $name == dark {
+        [data-bs-theme='dark'] {
+          @include _triplets($choices);
+        }
+      }
+    }
+
+    @include _components();
+  }
+}

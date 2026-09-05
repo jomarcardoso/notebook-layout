@@ -20,14 +20,9 @@
 // than shadow, generous leading.
 //
 // Every value below is the archetype's own, taken from the matrix in
-// `references/archetypes.md`, with one override:
-//
-//   size-control  40px -> 44px
-//
-// Mobile-first outranks the archetype here. The app is used one-handed at a
-// counter, and 40px is a miss target on a phone. `archetypes.md` calls this an
-// OVERRIDE rather than a deviation, because it is the system working: an
-// ergonomic floor is allowed to beat a stylistic preference.
+// `references/archetypes.md`, with the two overrides recorded beside them:
+// `size-control`, which an ergonomic floor raises, and `letter-spacing-heading`,
+// which the chosen faces make unnecessary.
 // =============================================================================
 
 // THE FOUR FACES, one job each. Shared by both themes: two covers of one
@@ -66,8 +61,48 @@ $structure: (
   'letter-spacing-heading': 0,
 
   'line-height': 1.7,
+
+  // LEADING AND TRACKING ARE SIZE-DEPENDENT, and one value for every heading is
+  // not enough. Leading runs inversely to size — body at 1.7 is the archetype's
+  // own generosity, and an h1 at 3rem with the same 1.25 as a 1.25rem h3 has
+  // lines that do not know each other. Tracking only helps from about 32px, so
+  // the display sizes get their own pair and the small headings keep the
+  // untightened one.
+  'line-height-heading': 1.25,
+  'line-height-display': 1.1,
+  'letter-spacing-display': -0.02em,
+
+  // THE RADIUS SCALE, WITH STEPS THAT ARE STEPS.
+  //
+  // It was 4px and 6px, and that is a single radius written twice: two pixels
+  // apart is a difference a reader cannot see, so the product looked like it
+  // had one corner by accident rather than by restraint. `check-radius` fails a
+  // build for it now.
+  //
+  // The fix is not more radii. It is the same four jobs with real distance
+  // between them — a mark, a control, a surface and the pill. The control stays
+  // sharp, which is what Editorial means here; the card is the one that moved.
+  'radius-sm': 2px,
   'radius-control': 4px,
-  'radius-surface': 6px,
+  'radius-surface': 10px,
+
+  // `imagery: supporting`. The photograph takes the CONTROL radius rather than
+  // the surface one, on purpose: it sits inside the card rather than being one,
+  // and a picture as round as its container reads as a second card.
+  //
+  // One proportion for the whole product, from the thumbnail beside a title to
+  // the photograph on the recipe itself — which is what it means for the image
+  // to be support rather than the thing being sold.
+  'radius-image': 4px,
+  'ratio-media': 1,
+
+  'size-icon': 20px,
+  'icon-stroke': 1.25px,
+
+  // 44px, and the archetype asks for 40. Mobile-first outranks it: the app is
+  // used one-handed at a counter, and 40px is a miss target on a phone.
+  // `archetypes.md` calls this an OVERRIDE rather than a deviation, because it
+  // is the system working — an ergonomic floor beats a stylistic preference.
   'size-control': 44px,
 
   // -----------------------------------------------------------------------

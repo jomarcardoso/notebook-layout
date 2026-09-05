@@ -1,8 +1,14 @@
+// styles/ds/ds.scss
+
 // =============================================================================
 // NOTEBOOK-LAYOUT — the design system build
 // =============================================================================
 //
 //     npm run build:tokens
+//
+// This file is an INDEX and nothing else: it calls each layer's `emit()` in
+// cascade order. Every decision it looks like it is making was made in
+// `tokens.scss`, which both this compilation and the CoreUI one load first.
 //
 // Two adapters, which the foundation normally forbids. It is legal here because
 // it was MEASURED rather than assumed: compiled side by side, CoreUI-as-imported
@@ -14,127 +20,64 @@
 // `check-collisions.mjs` and `check-dangling-refs.mjs` both run on every build.
 //
 // -----------------------------------------------------------------------------
-// WHERE THE THEME WENT
+// WHERE EACH THING LIVES
 // -----------------------------------------------------------------------------
 //
-// There is no `theme.scss` any more. It held four unrelated things behind one
-// namespace — two theme maps, the structure map, the surfaces, and a mixin of
-// leftover component tokens — so `theme.$light` told a reader nothing about
-// which theme they were reading. It is now one file per thing under
-// `semantic/`, named after what it is:
+//   palette.scss              what the colours ARE                   (layer 1)
+//   tokens.scss               the school, the type scale, layer 3
+//   semantic/light.scss       the theme's map                        (layer 2)
+//   semantic/_structure.scss  type, radius, viewport                 (layer 2)
+//   semantic/_surfaces.scss   the paper surface context              (layer 2)
 //
-//   semantic/light.scss       the light theme's map      (layer 2)
-//   semantic/dark.scss        the dark theme's map       (layer 2)
-//   semantic/_structure.scss  type, radius, viewport     (layer 2)
-//   semantic/_surfaces.scss   the two surface contexts   (layer 2)
-//   palette.scss              what the colours ARE       (layer 1)
-//   tokens.scss               the component contract     (layer 3)
+// There is no `dark.scss`. Night is GENERATED — see below.
 // =============================================================================
 
-// FOUR CONSECUTIVE STEPS FOR THE HEADINGS, and the smallest one at body size.
+// THE CONFIGURATION, AND IT HAS TO BE FIRST.
 //
-// The foundation's default skips `xl`, which is right for the hand-tuned ramp
-// it ships and wrong for the modular one below: on a strict 1.25 ramp that skip
-// is the single place the ratio breaks, and it is the gap a reader compares the
-// two smallest headings across.
-//
-// `heading-sm` lands ON the body size. A fourth-level heading is a label for
-// what follows it, and a label larger than the text it labels inverts its own
-// job; it separates itself by weight and face instead — see `.h4` in
-// `typography.scss`.
-//
-// This is CONFIGURATION, not a patch. The mapping used to be edited directly in
-// the vendored `src/_semantic.scss`, which meant a product decision was sitting
-// in a file that gets overwritten the next time the foundation is updated. The
-// foundation now exposes it, and `src/` is an unmodified copy again.
-@use './src/config' with (
-  $adapters: (),
-  $colour-strategy: 'functional',
-  $type-scale-steps: (
-    'heading-sm': base,
-    'heading': lg,
-    'heading-lg': xl,
-    'heading-xl': '2xl'
-  )
-);
+// `tokens.scss` forwards `config`, `base` and `component` with this product's
+// values. A Sass module can be configured once, by whoever loads it first, so
+// anything from `src/` loaded above this line would be configured with its
+// defaults and Sass would then refuse to go on. That error is the guard
+// working, not the guard being in the way.
+@use './tokens';
 
-// THE MODULAR SCALE — major third, 1.25, anchored at a 16px body.
-//
-// The ramp it replaced grew by five different factors (1.125, 1.11, 1.2, 1.25,
-// 1.2), so a product that needed a level between two of them had nowhere to
-// put it. Here every step above the body is exactly 1.25 from the one below:
-//
-//     base  16px    body, and h4
-//     lg    20px    h3
-//     xl    25px    h2
-//     2xl   31.2px  h1
-//
-// BELOW the body the ratio deliberately flattens — 12.8 → 14.24 → 16 grows by
-// about 1.11, not 1.25. A strict 1.25 downward gives 12.8 and 10.2, and 10px
-// is not a size a caption can be set in. Small text is bounded by legibility
-// rather than by proportion, so the ramp is modular where it is free to be and
-// floored where it is not. Written down because a reader checking the ratio
-// will find it broken at the bottom and should know it was broken on purpose.
-//
-//     xs    12.8px   the kicker
-//     sm    14.24px  captions, secondary labels
-//
-// The steps above 2xl continue the ratio and nothing consumes them yet.
-@use './src/base' with (
-  $text: (
-    xs: 0.8rem,
-    sm: 0.89rem,
-    base: 1rem,
-    lg: 1.25rem,
-    xl: 1.56rem,
-    '2xl': 1.95rem,
-    '3xl': 2.44rem,
-    '4xl': 3.05rem,
-    '5xl': 3.81rem,
-    '6xl': 4.77rem
-  )
-);
+@use './src/base';
 @use './src/semantic';
 @use './src/component';
+@use './src/derive';
 @use './src/adapters/coreui' as coreui-adapter;
 @use './semantic/light';
-@use './semantic/dark';
-@use './semantic/two';
-@use './src/derive';
 @use './semantic/structure';
 @use './semantic/surfaces';
 
-// Layer 1 — both palettes compile away. Neither emits a byte.
+// Layer 1 — the ramps compile away. Neither pigment emits a byte.
 @include base.emit();
 
-// Layer 2 — the archetype's structure, then the theme. `emit-theme()` runs the
-// contrast gate and the role-distinction check itself.
+// Layer 2 — the archetype's structure first (theme-independent: spacing,
+// radius, typography, the icon stroke), then the day theme. `emit-theme()`
+// runs the contrast gate and the role-distinction check itself.
 @include semantic.emit-structure(structure.$structure);
 @include semantic.emit-theme('light', light.$tokens, $default: true);
 
-// Night. `emit-theme()` measures its page colour and emits `color-scheme: dark`,
-// and it runs the same contrast gate — a dark theme that ships unreadable text
-// does not compile.
-@include semantic.emit-theme('dark', dark.$tokens, $auto: true);
-
-// THEME TWO — the kraft-covered notebook. Same structure, different materials:
-// kraft acts, graphite marks what is chosen, fountain pen links. See
-// `semantic/two.scss` for why that is one sentence rather than a palette swap.
+// NIGHT, GENERATED.
 //
-// Its night is DERIVED rather than hand-written. `derive.dark()` transforms by
-// ROLE in OKLCH — a fill carrying light text keeps darkening, a fill carrying
-// dark text brightens — and its output goes through the same contrast gate as
-// everything else. A hand-written second night can replace it later if the
-// theme earns the attention; a generated one nobody measured could not.
-@include semantic.emit-theme('two', two.$tokens);
-@include semantic.emit-theme('two-dark', derive.dark(two.$tokens));
+// `derive.dark()` transforms by ROLE in OKLCH rather than per colour: the pen
+// comes up the ramp until it separates from a dark page and its label goes dark
+// with it, and every interaction state then brightens, because a fill moves
+// away from its own label. Its output goes through the same contrast gate as
+// the hand-written day theme — a dark theme that ships unreadable text does not
+// compile.
+//
+// The hand-written `dark.scss` this replaced was written against six palette
+// families that no longer exist. A hand-written night can come back if it earns
+// the attention; a stale one nobody re-measured could not.
+@include semantic.emit-theme('dark', derive.dark(light.$tokens), $auto: true);
 
 // Still layer 2: the two tokens whose value depends on the viewport, so a
 // component never mentions a breakpoint.
 @include structure.responsive();
 
-// The product's own surfaces, replacing the three mixins that used to live in
-// `utils/theme-white/_theme.scss`.
+// The product's own surface contexts.
 @include surfaces.emit();
 
 // Layer 3.5 — the adapter. ONE, for the one third-party library.
@@ -143,9 +86,13 @@
 // does not know the foundation exists; this IS the design system, built on the
 // foundation, so its components read layer 2 directly. Wrapping it in an
 // adapter meant maintaining a translation layer between a system and itself.
-// The theme is passed in because this product declares it itself rather than
-// registering it with the tool. Without it the adapter emits references but no
-// rgb triplets, and every CoreUI opacity utility, focus ring and `.text-bg-*`
-// silently keeps the library default. The adapter now refuses to compile in
+//
+// The themes are passed in because this product declares them itself rather
+// than registering them with the tool. Without them the adapter emits
+// references but no rgb triplets, and every CoreUI opacity utility, focus ring
+// and `.text-bg-*` silently keeps the library default. It refuses to compile in
 // that state instead of shipping it.
-@include coreui-adapter.emit((light: light.$tokens));
+@include coreui-adapter.emit((
+  'light': light.$tokens,
+  'dark': derive.dark(light.$tokens)
+));

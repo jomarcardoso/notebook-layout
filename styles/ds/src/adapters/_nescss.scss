@@ -1,0 +1,353 @@
+// src/adapters/_nescss.scss
+
+// =============================================================================
+// ADAPTER — NES.css
+// =============================================================================
+//
+// The ninth library, and the one that breaks the assumption every other adapter
+// here rests on: **NES.css declares no custom properties at all.** Not few —
+// zero. Every colour is a Sass literal compiled into the stylesheet.
+//
+//     Bulma      1416 custom properties
+//     Bootstrap   446
+//     Water.css    21
+//     NES.css       0
+//
+// So there is no variable to point at our tokens, and the split that made the
+// Bootstrap adapter small applies here in its most extreme form:
+//
+//   BUILD TIME — `nescss-entry.scss` sets the library's Sass variables before
+//   importing it. This is where most of the work happens, and it is the only
+//   place some of it CAN happen (see the border note below).
+//
+//   RUNTIME — this file, binding real declarations. With no variables to set,
+//   an adapter that wants a theme to move anything must write properties.
+//
+// -----------------------------------------------------------------------------
+// THE PIXEL BORDER, WHICH IS THE WHOLE PROBLEM
+// -----------------------------------------------------------------------------
+//
+// NES.css draws its border with `border-image-source`, and the image is an SVG
+// data URI with the colour written INSIDE it:
+//
+//     border-image-source: url('data:image/svg+xml;utf8,…<path … fill="rgb(33,37,41)"/>…')
+//
+// Two things make that harder than it looks, and the second is the one that
+// matters:
+//
+//   1. The mixins that emit it use `$color-black` and `$color-white` — RAW
+//      palette entries, not `$base-color`. So configuring the library's
+//      documented colour variables does not reach the border.
+//   2. `$color-black` is declared WITHOUT `!default`, so assigning it before
+//      the import does not work either: the library overwrites it.
+//
+// The first reading of this file concluded the border was therefore unthemeable
+// and NES.css a single-theme library. That was wrong in the same way the
+// daisyUI note was wrong — "the library will not configure it" is not "CSS
+// cannot reach it".
+//
+// `border-image-source` is an ordinary property, and this adapter sits in a
+// later layer than the library, so it can simply declare its own. The URI has
+// to be generated at BUILD time (a data URI cannot contain a `var()`), which is
+// why `emit()` takes the theme maps: it writes one static border image per
+// theme, scoped by `[data-theme]`.
+//
+// The cost is honest and worth stating: each themed border is about 400 bytes
+// of data URI per component group per theme, where every other adapter here
+// pays nothing per theme. A library that encodes colour into an asset charges
+// for theming by the theme.
+//
+// -----------------------------------------------------------------------------
+// WHY BINDING BY PROPERTY IS SAFE HERE
+// -----------------------------------------------------------------------------
+//
+// NES.css ships unlayered, so `nescss-entry.scss` wraps it in `@layer vendor`.
+// This adapter lands in `vendor-config`, declared after it, so a plain property
+// binding wins — no `!important`, no specificity escalation.
+//
+// The trap to avoid is the one the MVP adapter hit: binding a base selector
+// beats the library's more specific STATE rule, because layer order outranks
+// specificity. `.nes-btn { color }` would defeat `.nes-btn:hover { color }`. So
+// every state the library models is re-bound explicitly rather than left to
+// inherit from a base rule this adapter has just overridden.
+// =============================================================================
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use '../core';
+@use '../config';
+@use '../component';
+
+// NES.css variant name -> the semantic role that drives it.
+//
+// `error`, not `danger`: vocabulary translation is exactly what an adapter is
+// for. The library keeps its spelling and the foundation keeps its own.
+$_map: (
+  'primary': 'action',
+  'success': 'success',
+  'warning': 'warning',
+  'error': 'danger'
+);
+
+// -----------------------------------------------------------------------------
+// Build-time configuration
+// -----------------------------------------------------------------------------
+//
+// Returns the Sass colour maps NES.css expects, computed from a theme's choice
+// map. Lives here rather than in the entry so the conversion is written once
+// and every project's entry — including one with its own theme — reads the same
+// logic.
+//
+// The gamut mapping is not optional. NES.css interpolates these values into an
+// SVG `fill` attribute, and an SVG attribute parser does not understand
+// `oklch()`. An out-of-gamut colour would silently produce an invalid fill and
+// a border that does not paint at all.
+
+@function _srgb($c) {
+  @return color.to-space(color.to-gamut($c, $space: rgb, $method: local-minde), rgb);
+}
+
+// Public: one theme colour, gamut-mapped into sRGB. Entries read the theme
+// through this rather than reaching into layer 1, so the conversion rule lives
+// in one place.
+@function srgb-of($choices, $key) {
+  $c: map.get($choices, $key);
+
+  @if $c == null {
+    @error 'nescss: the theme has no "#{$key}".';
+  }
+
+  @return _srgb($c);
+}
+
+@function variant-colors($choices, $role) {
+  @return (
+    normal: _srgb(map.get($choices, $role)),
+    hover: _srgb(map.get($choices, '#{$role}-hover')),
+    // NES.css draws its 3D edge with the shadow colour. Layer 2 has no token
+    // for "one step darker than the hover step", and inventing one for a single
+    // library would be exactly the contamination this architecture forbids — so
+    // the ACTIVE step is used, which is the darkest the role legitimately goes.
+    shadow: _srgb(map.get($choices, '#{$role}-active') or map.get($choices, '#{$role}-hover'))
+  );
+}
+
+// -----------------------------------------------------------------------------
+// The border image, regenerated
+// -----------------------------------------------------------------------------
+//
+// Byte-for-byte the library's own SVG, with the fill substituted. Copied rather
+// than imported because the mixins take no colour we can pass — see the header.
+
+@function _rgb-args($c) {
+  $s: _srgb($c);
+  @return '#{math.round(color.channel($s, "red", $space: rgb))},'
+        + '#{math.round(color.channel($s, "green", $space: rgb))},'
+        + '#{math.round(color.channel($s, "blue", $space: rgb))}';
+}
+
+// The 5x5 border used by buttons, inputs, progress and bordered tables.
+@function compact-border($c) {
+  @return url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="5" height="5" xmlns="http://www.w3.org/2000/svg"><path d="M2 1 h1 v1 h-1 z M1 2 h1 v1 h-1 z M3 2 h1 v1 h-1 z M2 3 h1 v1 h-1 z" fill="rgb(#{_rgb-args($c)})" /></svg>');
+}
+
+// The 8x8 border used by balloons, dialogs and rounded containers.
+@function rounded-border($c) {
+  @return url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8" ?><svg version="1.1" width="8" height="8" xmlns="http://www.w3.org/2000/svg"><path d="M3 1 h1 v1 h-1 z M4 1 h1 v1 h-1 z M2 2 h1 v1 h-1 z M5 2 h1 v1 h-1 z M1 3 h1 v1 h-1 z M6 3 h1 v1 h-1 z M1 4 h1 v1 h-1 z M6 4 h1 v1 h-1 z M2 5 h1 v1 h-1 z M5 5 h1 v1 h-1 z M3 6 h1 v1 h-1 z M4 6 h1 v1 h-1 z" fill="rgb(#{_rgb-args($c)})" /></svg>');
+}
+
+@mixin _borders($choices) {
+  $line: map.get($choices, text);
+  $inverted: map.get($choices, page);
+
+  .nes-btn,
+  .nes-input,
+  .nes-textarea,
+  .nes-select select,
+  .nes-progress,
+  .nes-table.is-bordered {
+    border-image-source: #{compact-border($line)};
+  }
+
+  .nes-balloon,
+  .nes-container.is-rounded,
+  .nes-dialog.is-rounded {
+    border-image-source: #{rounded-border($line)};
+  }
+
+  // The library's dark variants draw the border in the opposite tone, which is
+  // the page colour here rather than a literal white.
+  .nes-container.is-rounded.is-dark,
+  .nes-dialog.is-rounded.is-dark,
+  .nes-table.is-dark.is-bordered {
+    border-image-source: #{rounded-border($inverted)};
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Runtime
+// -----------------------------------------------------------------------------
+
+// `$themes` is a map of `name: choices`, and it is REQUIRED for the reason
+// `core.require-themes()` gives — plus one specific to this library: the border
+// images below are SVG data URIs generated per theme, and a colour inside an
+// asset cannot be expressed as a `var()` at all.
+@mixin emit($themes: null) {
+  $set: core.require-themes('nescss', $themes);
+
+  @include core.in-layer(config.$layer-adapter) {
+    // Surfaces. NES.css has no page/surface distinction, so `body` takes the
+    // page and `.nes-container` takes the surface — the same choice the daisyUI
+    // adapter makes for the same reason.
+    body {
+      color: #{core.ref('fg-default')};
+      background-color: #{core.ref('bg-page')};
+      font-family: #{core.ref('font-family-body')};
+    }
+
+    .nes-container {
+      color: #{core.ref('fg-default')};
+      background-color: #{core.ref('bg-surface')};
+    }
+
+    // `.nes-container` draws a plain `border-color: black` — a literal that
+    // follows no theme. The border COLOUR is a role, so it binds; the border
+    // WIDTH stays four pixels, which is the grid this library draws on.
+    .nes-container {
+      border-color: #{core.ref('border-color')};
+    }
+
+    // `.is-dark` is deliberately NOT bound, and this is the third time the same
+    // rule has decided an adapter: an absolute colour name is a fixed palette
+    // entry, not a theme role. Bootstrap's `.btn-light`, Bulma's `.is-light`
+    // and this are the same trap.
+    //
+    // The first version of this file bound it as "the inverted surface",
+    // mapping its background to `fg-default`. That works on a light theme,
+    // where the foreground IS dark — and inverts backwards on a dark one, where
+    // it turned a black panel WHITE. The name says "dark", so it means dark,
+    // and a theme has nothing to say about it.
+    //
+    // A product that wants a themed dark panel writes one in its own layer,
+    // which is what the Carmageddon example does.
+
+    // --- Buttons ------------------------------------------------------
+    //
+    // The default button, which NES.css paints with the page background rather
+    // than a role. Bound to the surface so it stays readable when the page and
+    // the surface diverge.
+    .nes-btn {
+      color: #{core.ref('button-fg', core.ref('fg-default'))};
+      background-color: #{core.ref('button-bg', core.ref('bg-surface'))};
+    }
+
+    .nes-btn:hover,
+    .nes-btn:focus {
+      color: #{core.ref('fg-default')};
+      background-color: #{core.ref('bg-sunken')};
+    }
+
+    .nes-btn::after {
+      box-shadow: inset -4px -4px #{core.ref('border-color-strong')};
+    }
+
+    @each $nes, $role in $_map {
+      .nes-btn.is-#{$nes} {
+        color: #{core.ref('fg-on-#{$role}')};
+        background-color: #{core.ref('bg-#{$role}')};
+      }
+
+      // Re-bound rather than inherited: this adapter has already overridden the
+      // base rule from a later layer, so the library's own hover would lose.
+      .nes-btn.is-#{$nes}:hover,
+      .nes-btn.is-#{$nes}:focus {
+        color: #{core.ref('fg-on-#{$role}')};
+        background-color: #{core.ref('bg-#{$role}-hover')};
+      }
+
+      .nes-btn.is-#{$nes}::after {
+        box-shadow: inset -4px -4px #{core.ref('bg-#{$role}-hover')};
+      }
+    }
+
+    // Disabled is the library's own decision about a state layer 2 does not
+    // model, and WCAG exempts it from contrast. Left alone deliberately.
+
+    // --- Fields -------------------------------------------------------
+    .nes-input,
+    .nes-textarea,
+    .nes-select select {
+      color: #{core.ref('field-fg', core.ref('fg-default'))};
+      background-color: #{core.ref('field-bg', core.ref('bg-surface'))};
+    }
+
+    // --- Data ---------------------------------------------------------
+    .nes-table {
+      color: #{core.ref('table-fg', core.ref('fg-default'))};
+      background-color: #{core.ref('bg-surface')};
+    }
+
+    // --- Speech and dialogue -----------------------------------------
+    // The two components that make this library what it is. Both are surfaces
+    // with a tail or a frame, so both take the raised surface.
+    .nes-balloon,
+    .nes-dialog {
+      color: #{core.ref('overlay-fg', core.ref('fg-default'))};
+      background-color: #{core.ref('overlay-bg', core.ref('bg-raised'))};
+    }
+
+    // --- Progress -----------------------------------------------------
+    // `<progress>` needs the pseudo-elements; the element's own background is
+    // the track and the pseudo is the fill. Both vendor prefixes are required —
+    // there is no shared selector, and grouping them makes the whole rule
+    // invalid in every browser.
+    .nes-progress {
+      background-color: #{core.ref('bg-sunken')};
+    }
+
+    .nes-progress::-webkit-progress-bar {
+      background-color: #{core.ref('bg-sunken')};
+    }
+
+    .nes-progress::-webkit-progress-value {
+      background-color: #{core.ref('bg-action')};
+    }
+
+    .nes-progress::-moz-progress-bar {
+      background-color: #{core.ref('bg-action')};
+    }
+
+    @each $nes, $role in $_map {
+      .nes-progress.is-#{$nes}::-webkit-progress-value {
+        background-color: #{core.ref('bg-#{$role}')};
+      }
+
+      .nes-progress.is-#{$nes}::-moz-progress-bar {
+        background-color: #{core.ref('bg-#{$role}')};
+      }
+    }
+
+    // --- Pixel borders, one static set per theme ----------------------
+    $names: map.keys($set);
+    $default-theme: null;
+
+    @if list.length($names) > 0 {
+      $default-theme: list.nth($names, 1);
+    }
+
+    @each $name, $choices in $set {
+      @if $name == $default-theme {
+        :root,
+        [data-theme='#{$name}'] {
+          @include _borders($choices);
+        }
+      } @else {
+        [data-theme='#{$name}'] {
+          @include _borders($choices);
+        }
+      }
+    }
+  }
+}

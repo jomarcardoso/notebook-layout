@@ -1,3 +1,5 @@
+// src/_config.scss
+
 // =============================================================================
 // BUILD CONFIGURATION
 // =============================================================================
@@ -162,9 +164,41 @@ $colour-strategy: 'functional' !default;
 //
 // Lowering this is a real decision, not a workaround: it says the product
 // accepts pairs that only work at large sizes. If a project does it, the
-// `deviations` block in DESIGN-LANGUAGE.md is where the reason belongs — a
+// `deviations` block in DESIGN_LANGUAGE.md is where the reason belongs — a
 // threshold nobody wrote down reads as an accident to the next person.
 $contrast-min: 4.5 !default;
+
+// -----------------------------------------------------------------------------
+// THE WASHED ACCENT, AND THE PALETTES THAT CANNOT HAVE ONE
+// -----------------------------------------------------------------------------
+//
+// A washed accent — the pale tint meaning "the interface is currently in this
+// state" — is not always possible, and whether it is gets decided by physics
+// before anyone opens a design tool. `scripts/audit-wash.mjs` computes it; the
+// three tests are chroma against the neutral beneath, the sRGB gamut ceiling for
+// that hue at that lightness, and hue distance from the neutral.
+//
+// sRGB does not let a colour be light and saturated at once, and how much it
+// refuses depends on hue: a pale blue is obligatorily low-chroma, a pale amber
+// is not. And past about 150° of hue distance, a pale patch of the accent reads
+// as a stain on the surface rather than as a tint of it. Cream and blue — the
+// classic notebook pairing — is about 165° apart. It is a beautiful combination
+// as dark ink on paper and a bad one as pale blue on cream.
+//
+// SETTING THIS TO FALSE IS NOT A DOWNGRADE. It routes every subtle SLOT of the
+// accent family onto the neutral family instead, so a selected chip, an active
+// nav item, a marked tab and an outlined button's hover all take a quiet neutral
+// fill — while the accent stays where a near-complementary pair has always been
+// good: the solid fill, the ink, and small solid indicators.
+//
+// It is one switch rather than a component-by-component decision on purpose.
+// The alternative is a product where four different people each decide what to
+// do about the wash in their own component, and the answer drifts.
+//
+// The accent BORDER is deliberately untouched. A line needs no chroma headroom,
+// so a neutral fill with an accent edge stays available and is the cheapest way
+// to keep a selected state recognisably branded.
+$accent-wash: true !default;
 
 // -----------------------------------------------------------------------------
 // Which step of the ramp each emitted size takes

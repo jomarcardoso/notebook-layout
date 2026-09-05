@@ -1,3 +1,5 @@
+// src/_semantic.scss
+
 // =============================================================================
 // LAYER 2 — SEMANTIC
 // =============================================================================
@@ -29,7 +31,7 @@
 //
 //   --app-{property}-{role}[-{prominence}][-{state}]
 //
-//   property    bg fg border ring shadow radius space size duration ease z
+//   property    bg fg border ring shadow radius ratio space size duration ease z
 //               opacity | font-family font-size font-weight line-height
 //               letter-spacing
 //   role        page surface raised sunken overlay | default muted subtlest
@@ -62,7 +64,10 @@
 // idea, and keeping it is precisely why the daisyUI adapter is thirty lines.
 // =============================================================================
 
+@use 'sass:color';
+@use 'sass:math';
 @use 'sass:list';
+@use 'sass:meta';
 @use 'sass:map';
 @use 'base';
 @use 'core';
@@ -127,9 +132,34 @@ $_type-scale-steps: (
     // --- Radius ---------------------------------------------------------
     // Named by what they wrap, not by size. `radius-md` forces every consumer
     // to re-decide which size a button is; `radius-control` decides once.
+    // The fourth entry, and it was missing. A checkbox, a badge and a small
+    // indicator are not controls — they are marks, and a control's radius on a
+    // 16px square reads as a circle attempt that did not commit. The school's
+    // table has four jobs and layer 2 had three, so every product was rounding
+    // its checkbox with the button's value and nobody had a token to say
+    // otherwise.
+    'radius-sm': base.scale(radius, xs),
     'radius-control': base.scale(radius, md),
     'radius-surface': base.scale(radius, xl),
     'radius-pill': base.scale(radius, full),
+
+    // An image is not a surface. A card can be softly rounded and the
+    // photograph inside it square-cornered, and the reverse — a rounded photo
+    // on a square card — is a different product. Defaulting to
+    // `radius-surface` costs a product with no opinion nothing and gives one
+    // with an opinion somewhere to put it.
+    'radius-image': core.ref('radius-surface'),
+
+    // --- Proportion -----------------------------------------------------
+    // Unitless, for `aspect-ratio`. Two, because a product almost always has
+    // one shape for the image that carries content and a second for the one
+    // that identifies a person or a thing — and they are rarely the same.
+    //
+    // `auto` is a legal value for `ratio-media` and means the images are not
+    // this product's to crop. It is an answer, not an absence, and it has
+    // consequences a dense grid does not survive.
+    'ratio-media': math.div(16, 9),
+    'ratio-thumb': 1,
 
     // --- Spacing --------------------------------------------------------
     // The original sketch had one general padding and one general gap. One
@@ -155,6 +185,12 @@ $_type-scale-steps: (
     'pad-surface': core.ref('space-lg'),
     'gap-inline': core.ref('space-xs'),
     'gap-stack': core.ref('space-md'),
+
+    // The gutter between columns of a layout grid. Separate from `gap-stack`
+    // because horizontal and vertical rhythm answer to different things: the
+    // stack follows the type's leading, the gutter follows how many columns
+    // have to fit before they stop being readable.
+    'gap-grid': core.ref('space-lg'),
 
     // --- Typography -----------------------------------------------------
     //
@@ -236,6 +272,20 @@ $_type-scale-steps: (
     'line-height-heading': base.scale(leading, tight),
     'letter-spacing-heading': base.scale(tracking, tight),
 
+    // LEADING AND TRACKING ARE SIZE-DEPENDENT, and one value for every heading
+    // gets both wrong at one end.
+    //
+    // Leading runs inversely to size: an h1 at 3rem with the same 1.25 as a
+    // 1.25rem h3 has lines that do not know each other. Tracking only helps
+    // from about 32px, because typefaces are drawn for body size and look loose
+    // above it — applied to a 20px heading it is a heading squeezed for nothing.
+    //
+    // Optional, defaulting to the heading values, so a theme that has not
+    // thought about it changes nothing and one that has can tighten only where
+    // tightening helps.
+    'line-height-display': core.ref('line-height-heading'),
+    'letter-spacing-display': core.ref('letter-spacing-heading'),
+
     // --- Control sizing -------------------------------------------------
     // Without this, an input and a button next to each other are never the
     // same height, and every team rediscovers it independently.
@@ -243,6 +293,20 @@ $_type-scale-steps: (
     'size-control-sm': calc(#{core.ref('space-unit')} * 7),
     'size-control-lg': calc(#{core.ref('space-unit')} * 11),
     'size-icon': calc(#{core.ref('space-unit')} * 4),
+
+    // The reading measure — how wide a column of prose is allowed to get. In
+    // `ch` on purpose: the constraint is a count of characters, so it has to
+    // follow the typeface rather than a pixel count chosen against one.
+    'size-measure': 68ch,
+
+    // The width of a drawn icon stroke. Set against the BODY type weight, not
+    // against whatever the icon set ships: a 2px stroke beside a light serif is
+    // a different product in the same screen. `iconStroke` in DESIGN_LANGUAGE.md
+    // decides it; the archetype table has a value per archetype.
+    //
+    // Unitless multiples of the unit would be wrong here — this is a drawn line,
+    // not a layout measure, and it does not scale with density.
+    'icon-stroke': 1.5px,
 
     // --- Focus ring -----------------------------------------------------
     // Missing from most homegrown systems and the first thing an accessibility
@@ -260,7 +324,21 @@ $_type-scale-steps: (
     'duration-fast': base.scale(duration, fast),
     'duration-base': base.scale(duration, base),
     'duration-slow': base.scale(duration, slow),
+    // THREE CURVES, AND TWO OF THEM WERE MISSING.
+    //
+    // Every design language in this repository says the same sentence — a thing
+    // arriving decelerates, a thing leaving does not linger — and layer 2 emitted
+    // ONE easing token, so the sentence had nowhere to land. Found by
+    // `check-doc-tokens`, from the direction nobody was watching: a document
+    // naming `--app-ease-out` and `--app-ease-in` that the build never emitted.
+    //
+    // `ease` stays and stays `out`, because deceleration is the right default
+    // for almost everything and a product that never thinks about motion should
+    // get the good curve for free.
     'ease': base.scale(ease, out),
+    'ease-out': base.scale(ease, out),
+    'ease-in': base.scale(ease, in),
+    'ease-in-out': base.scale(ease, 'in-out'),
 
     // --- Layering -------------------------------------------------------
     // A scale, not arbitrary numbers. Prevents the z-index arms race.
@@ -360,59 +438,6 @@ $_type-scale-steps: (
 // EXPLICIT ALWAYS WINS. `_alias` only fills a canonical key that is absent, so a
 // monochrome product that genuinely wants its links a step lighter than its
 // buttons writes `link` and keeps it.
-@function _alias($c, $from, $to) {
-  @if map.has-key($c, $to) or not map.has-key($c, $from) {
-    @return $c;
-  }
-  @return map.merge($c, ($to: map.get($c, $from)));
-}
-
-@function _normalise($c) {
-  $s: config.strategy();
-
-  @if $s == 'monochrome' {
-    $c: _alias($c, accent, action);
-    $c: _alias($c, 'on-accent', 'on-action');
-    $c: _alias($c, 'accent-hover', 'action-hover');
-    $c: _alias($c, 'accent-active', 'action-active');
-    $c: _alias($c, 'accent-subtle', 'action-subtle');
-    $c: _alias($c, 'accent-text', 'action-text');
-    $c: _alias($c, 'accent-border', 'action-border');
-
-    // The collapse. Three canonical families, one declared accent.
-    @each $suffix in ('', '-hover', '-active', '-subtle', '-text', '-border') {
-      $c: _alias($c, 'action#{$suffix}', 'selected#{$suffix}');
-    }
-    $c: _alias($c, 'on-action', 'on-selected');
-    $c: _alias($c, 'action-text', link);
-    $c: _alias($c, 'action-hover', 'link-hover');
-    // `link-visited` is deliberately NOT aliased. The school says one hue, not
-    // one state, and letting a visited link look unvisited is an accessibility
-    // regression dressed as minimalism.
-    $c: _alias($c, 'action-text', 'link-visited');
-  } @else if $s == 'brand' {
-    $c: _alias($c, primary, action);
-    $c: _alias($c, 'on-primary', 'on-action');
-    $c: _alias($c, 'primary-hover', 'action-hover');
-    $c: _alias($c, 'primary-active', 'action-active');
-    $c: _alias($c, 'primary-container', 'action-subtle');
-    $c: _alias($c, 'primary-text', 'action-text');
-    $c: _alias($c, 'primary-border', 'action-border');
-
-    // The brand hue marking what is chosen IS this school, so selection
-    // defaults to the container rather than to the solid fill — which is what
-    // Material actually renders for a selected list item.
-    $c: _alias($c, 'primary-container', selected);
-    $c: _alias($c, 'on-primary-container', 'on-selected');
-    $c: _alias($c, 'primary-hover', 'selected-hover');
-    $c: _alias($c, 'primary-active', 'selected-active');
-    $c: _alias($c, 'primary-container', 'selected-subtle');
-    $c: _alias($c, 'primary-text', 'selected-text');
-    $c: _alias($c, 'primary-border', 'selected-border');
-  }
-
-  @return $c;
-}
 
 // Canonical keys in, EMITTED keys out.
 //
@@ -444,7 +469,7 @@ $_type-scale-steps: (
 }
 
 @function colors($c, $name: 'unnamed') {
-  $c: _normalise($c);
+  $c: roles.normalise($c);
   $tokens: (
     // Surfaces. The original sketch had a single "background colour"; a real
     // UI needs a hierarchy or a card on a card is impossible to express.
@@ -465,6 +490,31 @@ $_type-scale-steps: (
     'border-color': _req($c, border, $name),
 
     'bg-sunken': _req($c, sunken, $name),
+
+    // THE WELL A CONTROL IS CUT INTO, and it needed a name of its own.
+    //
+    // A field was pointing at `bg-sunken`, and in at least one product those
+    // resolved to the same value as `bg-neutral-subtle` — so a text input, a
+    // chip at rest and a recessed panel were three different things wearing one
+    // tone. The symptom was a field two levels inside a card coming out darker
+    // than the page behind the card: an element nested inward, deeper than the
+    // plane below it, and the screen stopped making physical sense.
+    //
+    // The naming question is what unlocked it. `sunken` is on the RELATION axis
+    // — it names a plane — and a field is not a plane, it is an OBJECT. An
+    // object wearing a plane's name is the same error that made a chip resolve
+    // to the tone of the card it sat in. This is on the ROLE axis, with the
+    // other component fills, and it answers "what does it do": it receives
+    // typed content.
+    //
+    // Shallower than `sunken` on purpose. A field is one step into the surface
+    // it sits on, not two — deep enough to say "something goes here", not so
+    // deep that a passive control outweighs the buttons beside it.
+    //
+    // OPTIONAL, falling back to `sunken`, so every theme written before this
+    // keeps exactly today's behaviour and a theme that has thought about it can
+    // separate the two.
+    'bg-field': _opt($c, field, sunken, $name),
     'bg-overlay': _req($c, overlay, $name),
 
     // The third step down. Named `subtlest`, not `subtle`, because `-subtle`
@@ -514,6 +564,33 @@ $_type-scale-steps: (
     'bg-neutral-hover': _req($c, 'neutral-hover', $name),
     'bg-neutral-active': _req($c, 'neutral-active', $name),
 
+    // THE QUIET FILL, and the rung this contract was missing.
+    //
+    // `bg-action-subtle` and `bg-selected-subtle` existed from the start; the
+    // neutral had no subtle step, so anything wanting a soft neutral chip had
+    // to reach for a page surface (which is not a fill and has no edge) or for
+    // `bg-neutral` (which is a SOLID, with inverted ink). A badge built on the
+    // solid comes out as a small dark button — which is exactly what happened
+    // on the first accent-driven page built with a library under it.
+    //
+    // In the accent-driven school this is the workhorse: it is what badges,
+    // chips, tags, resting secondary buttons and ghost-button hover are made
+    // of. A school with one accent needs a neutral that can hold a shape
+    // WITHOUT inverting, or every quiet element on the page shouts.
+    //
+    // It carries ordinary body ink, like the other `-subtle` fills, which is
+    // why it is paired with `fg-default` rather than getting an `on-` token.
+    //
+    // OPTIONAL, falling back to `sunken`. Adding a required key would break
+    // every theme that already exists, and the recessed page surface is the
+    // nearest thing most of them already have. The fallback is a starting
+    // point rather than an answer: `sunken` is a PAGE-level recess and this is
+    // an ELEMENT fill, so a product that puts chips on a page will want to
+    // separate them.
+    'bg-neutral-subtle': _opt($c, 'neutral-subtle', sunken, $name),
+    'bg-neutral-subtle-hover': _opt($c, 'neutral-subtle-hover', 'surface-hover', $name),
+    'bg-neutral-subtle-active': _opt($c, 'neutral-subtle-active', 'surface-active', $name),
+
     // DISABLED. The contract used to offer `opacity-disabled` and nothing
     // else, so adapters invented a pair: Flowbite reached for `fg-subtlest`
     // and `bg-sunken`, two tokens borrowed for a third meaning.
@@ -535,6 +612,19 @@ $_type-scale-steps: (
     'bg-action-hover': _req($c, action-hover, $name),
     'bg-action-active': _req($c, action-active, $name),
     'bg-action-subtle': _req($c, action-subtle, $name),
+
+    // The STATES of the subtle fill, which `accentFill: washed` needs and the
+    // contract did not have. The neutral family got hover and active in 0.7.0
+    // and the action family did not, so a product whose primary action rests at
+    // the subtle step had nowhere to put its hover — and hover is where a fill
+    // moves. The omission meant a washed button either did not react at all or
+    // jumped to the solid, inverting its own ink mid-gesture.
+    //
+    // Optional, falling back to the subtle fill itself: a theme that has not
+    // thought about it keeps today's behaviour, and one that has can move a
+    // step without leaving the pale end of the ramp.
+    'bg-action-subtle-hover': _opt($c, 'action-subtle-hover', 'action-subtle', $name),
+    'bg-action-subtle-active': _opt($c, 'action-subtle-active', 'action-subtle', $name),
     'fg-action': _req($c, 'action-text', $name),
     // Defaults to the fill, which is what most brands want. A brand whose
     // outline button is a DIFFERENT hue from its solid one sets 'action-border'
@@ -607,6 +697,33 @@ $_type-scale-steps: (
     // default for component outlines, `strong` for hover and emphasis.
     'border-color-subtle': _req($c, border-subtle, $name),
     'border-color-strong': _req($c, border-strong, $name),
+
+    // --- The two border ROLES -------------------------------------------
+    //
+    // The three names above are TONES. Tone is prominence; it does not say
+    // what a border is FOR, and a border does two unrelated jobs:
+    //
+    //   divider      separates content on the same plane. A rule under a
+    //                header, the edge of an aside, a line between rows. It
+    //                never implies that anything can be clicked.
+    //   interactive  affordance and state. A control at rest, a selectable
+    //                card, a field waiting for input. It never separates two
+    //                pieces of static content.
+    //
+    // With one name for both, every component author picks a tone by eye, and
+    // the page fills with lines that mean different things and look the same —
+    // at which point the eye cannot tell which rectangle it may click.
+    //
+    // Primer splits border.default from border.emphasis; Material splits
+    // outline from outline-variant. Both arrived at it from the same failure.
+    //
+    // These default to the plain border tone, so a theme that has never thought
+    // about it changes nothing. derivations.md section R says which tone each
+    // takes from the answer to question 9, and carries the REDUNDANCY rule:
+    // under surfaceModel elevated, a card lighter than the page needs no
+    // divider, because the two fills already draw the line.
+    'border-divider': _opt($c, 'border-divider', border, $name),
+    'border-interactive': _opt($c, 'border-interactive', border, $name),
 
     'ring-color': _req($c, ring, $name),
 
@@ -762,6 +879,50 @@ $_contrast-pairs: (
 
 // Public: `emit-theme()` calls it, and it is also usable standalone to measure
 // a theme map without emitting it.
+// -----------------------------------------------------------------------------
+// THE RUNGS A SURFACE CONTEXT MOVES
+// -----------------------------------------------------------------------------
+//
+// Rungs 3 to 8 — everything whose job is defined by its distance from the ground
+// it sits on. The list is explicit rather than pattern-matched because the
+// distinction it encodes is a design decision, and a regex would quietly pick up
+// the next token somebody adds. Notably absent: every `fg-*`, every solid fill,
+// and `bg-page` / `bg-surface` themselves, which ARE the grounds.
+$_shifts: (
+  'bg-neutral-subtle', 'bg-neutral-subtle-hover', 'bg-neutral-subtle-active',
+  'bg-action-subtle', 'bg-action-subtle-hover', 'bg-action-subtle-active',
+  'bg-selected-subtle',
+  'bg-surface-hover', 'bg-surface-active',
+
+  // `bg-sunken` IS in this list, and it is the entry that fixes the worst
+  // symptom of not having one: a form field two levels inside a card came out
+  // DARKER THAN THE PAGE BEHIND THE CARD. An element nested inward had ended up
+  // deeper than the plane below it, and the screen stopped making physical
+  // sense.
+  //
+  // It happened because a local excavation was written as an absolute value. A
+  // hole is relative to the thing it is cut into: one rung below the card when
+  // it is in a card, one rung below the page when it is on the page. That is a
+  // different job from `bg-page` and `bg-surface`, which ARE grounds and stay
+  // put — which is why they are not here and this is.
+  'bg-sunken', 'bg-field',
+  'border-color', 'border-color-subtle', 'border-color-strong',
+  'border-divider', 'border-interactive'
+);
+
+@function _lightness($c) {
+  @return math.div(color.channel(color.to-space($c, oklch), 'lightness', $space: oklch), 100%);
+}
+
+// Move a colour by a lightness delta, keeping hue and chroma. The clamp is not
+// defensive tidiness: a fill already near white shifted up would leave the
+// gamut, and Sass would hand back something silently clipped rather than error.
+@function _shift($c, $delta) {
+  $l: _lightness($c) + $delta;
+  $l: math.max(0, math.min(1, $l));
+  @return color.change(color.to-space($c, oklch), $lightness: $l * 100%, $space: oklch);
+}
+
 @mixin check-contrast($name, $choices) {
   @each $pair in $_contrast-pairs {
     $bg-key: list.nth($pair, 1);
@@ -770,7 +931,33 @@ $_contrast-pairs: (
     $fg: map.get($choices, $fg-key);
 
     @if $bg != null and $fg != null {
-      $ratio: base.contrast($fg, $bg);
+      // A TRANSLUCENT FILL IS COMPOSITED OVER THE PAGE BEFORE MEASURING.
+      //
+      // An alpha wash exists precisely so that its final colour depends on what
+      // is beneath it, which is the one thing a build cannot know. Measured raw,
+      // `rgb(0 210 255 / 13%)` looks like a near-transparent cyan and the ratio
+      // comes back at 1.25:1 — a failure that would never appear on screen.
+      //
+      // The page is the honest stand-in. It is the theme's own default ground,
+      // it is where most of these fills actually land, and using it means the
+      // gate keeps measuring something real rather than being switched off for
+      // the whole family.
+      //
+      // What it does NOT cover: the same fill inside a card, a modal or a
+      // coloured band. Those grounds differ, and on a light theme they differ in
+      // the SAFE direction — a lighter ground makes a dark ink more legible, not
+      // less. On a dark theme the raised surfaces are lighter, so the worst case
+      // is the page again. `audit-contrast` opens the real page and reads
+      // composited values, which is what covers the rest.
+      $solid-bg: $bg;
+      $a: color.channel($bg, 'alpha');
+      @if $a < 1 {
+        $ground: map.get($choices, page);
+        @if $ground != null {
+          $solid-bg: color.mix(color.change($bg, $alpha: 1), $ground, math.percentage($a), $method: oklab);
+        }
+      }
+      $ratio: base.contrast($fg, $solid-bg);
 
       // One threshold, and it ERRORS. The old ladder warned between 3.0 and
       // 4.5 on the grounds that large text may legitimately sit there — true,
@@ -960,6 +1147,76 @@ $_contrast-pairs: (
       &[data-surface="base"],
       [data-surface="base"] {
         @include core.emit($base-set);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // SURFACE CONTEXTS — the rungs move with the ground they sit on
+    // -------------------------------------------------------------------------
+    //
+    // THE BUG THIS EXISTS TO END, in one sentence: a rung is a DISTANCE FROM THE
+    // SURFACE, not a property of the component. `bg-neutral-subtle` is calibrated
+    // against the page, so inside a card — a different ground — the same token is
+    // a different distance, and the same chip that looks right in one place looks
+    // flat in the other. The symptom is unmistakable once you know it: everything
+    // inside cards works and everything on the page looks washed out.
+    //
+    // Fixing that per component is how a design system dies. There is one
+    // arithmetic answer and it belongs here: every rung shifts by the SAME ΔL
+    // that separates the two surfaces. If the sunken panel is 0.05 of lightness
+    // below the page, then every fill, every state and every line inside it moves
+    // 0.05 too, and the distances the theme chose are preserved exactly.
+    //
+    // WHAT MOVES AND WHAT DOES NOT, and the asymmetry is the important part:
+    //
+    //   rungs 3–8 move.   Component fills, their states, dividers, borders.
+    //                     These are defined by their distance from the ground.
+    //   rungs 9–12 do NOT. Solid fills and text. Adjacent surfaces sit ΔL 0.02–
+    //                     0.04 apart and the text rungs clear their contrast
+    //                     floor on both with room, so shifting them would be
+    //                     work for nothing and a source of bugs. A region that
+    //                     wants quieter text does not get a weaker `fg-default`;
+    //                     it chooses `fg-muted`, which is a different ROLE. That
+    //                     distinction is worth holding: a surface context is
+    //                     automatic and derived, a choice of role is composition
+    //                     and is recorded.
+    //
+    // A TRANSLUCENT FILL IS SKIPPED, because it has already solved this problem
+    // by itself — an alpha wash mixes with whatever is beneath it at paint time,
+    // which is the entire reason `src/_wash.scss` exists. Shifting it as well
+    // would apply the correction twice.
+    // `surface` is in this list and is the MOST important entry, because it is
+    // the card — and "everything inside cards works and everything on the page
+    // looks flat" is the exact sentence that started this. A theme calibrates its
+    // rungs against the page; a card is a different ground, so inside one every
+    // rung has to move by the distance between them or the chip that looked right
+    // on the page looks wrong here. It shifts UP in an elevated model and DOWN in
+    // a recessed one, and neither is special-cased: the delta carries the sign.
+    @each $surface in (surface, sunken, raised) {
+      $ground: map.get($choices, $surface);
+      $page-bg: map.get($choices, page);
+
+      @if $ground != null and $page-bg != null {
+        $delta: _lightness($ground) - _lightness($page-bg);
+
+        // Below this the two surfaces are not really different planes and the
+        // shift is noise — a rounding error emitted as thirteen declarations.
+        @if math.abs($delta) >= 0.01 {
+          $shifted: ();
+          @each $key in $_shifts {
+            $v: map.get($resolved, $key);
+            @if $v != null and meta.type-of($v) == color and color.channel($v, 'alpha') >= 1 {
+              $shifted: map.merge($shifted, ($key: _shift($v, $delta)));
+            }
+          }
+
+          @include core.theme($name, $default, $scheme) {
+            &[data-surface="#{$surface}"],
+            [data-surface="#{$surface}"] {
+              @include core.emit($shifted);
+            }
+          }
+        }
       }
     }
   }

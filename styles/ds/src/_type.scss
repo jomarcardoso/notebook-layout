@@ -1,0 +1,75 @@
+// src/_type.scss
+
+// =============================================================================
+// LAYER 1 — GENERATED TYPE SCALE
+// =============================================================================
+//
+//     $text: type.scale(1rem, 1.25);   // major third
+//
+// One base size and one ratio in, a full scale out, with the same step keys the
+// hand-written default uses. So `base.scale(text, '2xl')` keeps working and a
+// product can swap the shipped scale for a generated one without touching
+// layer 2 — the same promise `_ramp.scss` makes for colour.
+//
+// -----------------------------------------------------------------------------
+// WHY THE RATIO IS A DECISION AND NOT A DETAIL
+// -----------------------------------------------------------------------------
+//
+// The scale this file replaces is Tailwind's, and Tailwind's is hand-tuned
+// rather than geometric: 12, 14, 16, 18, 20, 24, 30, 36, 48, 60. It is a good
+// scale and it is also THE scale, shipped in a large share of the interfaces
+// built in the last five years. A product that keeps it has inherited a
+// typographic signature it never chose.
+//
+// The ratio is the single number that most changes how a page FEELS at a
+// glance, more than any colour:
+//
+//   1.125  minor second   barely a hierarchy; dense tools, data
+//   1.200  minor third    restrained; the safe default for applications
+//   1.250  major third    clear steps; the common editorial choice
+//   1.333  perfect fourth | dramatic; marketing, magazines, few levels
+//   1.500  perfect fifth  very dramatic; posters, rarely a whole product
+//
+// A tighter ratio needs weight and colour to build hierarchy, because size
+// alone will not do it. A wider one builds hierarchy from size and then has to
+// be careful, because the third step up is already very large.
+//
+// -----------------------------------------------------------------------------
+// WHY IT IS NOT ON BY DEFAULT
+// -----------------------------------------------------------------------------
+//
+// Same reason `ramp.neutral()` is not: generating something is a claim that the
+// generated version is better, and for a product that never thought about type
+// the shipped scale is a better answer than a ratio picked at random. This is
+// here for the product that HAS thought about it.
+// =============================================================================
+
+@use 'sass:map';
+@use 'sass:math';
+
+// The steps, in order, and where the base sits. Named rather than numbered so
+// the output is a drop-in for `base.$text`.
+$_steps: (xs: -2, sm: -1, base: 0, lg: 1, xl: 2, '2xl': 3, '3xl': 4, '4xl': 5, '5xl': 6, '6xl': 7);
+
+// Rounded to a quarter of a pixel at a 16px root, which is fine enough that
+// nobody sees the rounding and coarse enough that the values stay readable in
+// devtools. Unrounded, a ratio of 1.333 produces 2.3696546rem.
+@function _round($rem) {
+  @return math.div(math.round($rem * 64), 64) * 1rem;
+}
+
+// `$base` is the body size — the one size a reader spends most of their time
+// looking at, which is why the scale is anchored there rather than at the top.
+@function scale($base: 1rem, $ratio: 1.25) {
+  @if $ratio <= 1 {
+    @error 'type.scale() needs a ratio above 1; #{$ratio} would make every '
+         + 'heading smaller than the body.';
+  }
+
+  $out: ();
+  @each $name, $step in $_steps {
+    $out: map.merge($out, ($name: _round(math.div($base, 1rem) * math.pow($ratio, $step))));
+  }
+
+  @return $out;
+}

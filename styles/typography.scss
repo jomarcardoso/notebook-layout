@@ -12,16 +12,15 @@
 // WHY NOT `fg-selected`
 // -----------------------------------------------------------------------------
 //
-// `.h3` and `.h4` read `var(--app-fg-selected)` for a while, and it rendered
-// correctly, because in this theme the brand hue is also the selection hue. It
-// was still wrong: nothing about a heading is selected. The name was chosen for
-// the colour it produced rather than the job it names, and the day selection
-// diverges from the brand — a redesign, a second theme — every heading in the
-// product would have followed it.
+// A HEADING IS NEVER TINTED. It takes `fg-heading` — the darkest rung, the ink
+// in its heading role — and nothing about a heading is selected, actionable or
+// branded. The size, the serif face and the space above it are what rank it,
+// which is two levers plus one and already the limit.
 //
-// The foundation now has `fg-brand` for "the brand hue, as ink". Headings use
-// `fg-heading`, which is that ink in its heading role; the section rubric uses
-// `fg-brand` directly.
+// Reaching for an interactive token here renders correctly in a monochrome
+// product, because one pigment carries every interactive job, and that is
+// exactly what makes the mistake invisible: the heading looks right and is
+// wearing the colour of something you can press.
 //
 // -----------------------------------------------------------------------------
 // WHY THE SIZES ARE TOKENS AND THE REST IS NOT
@@ -112,10 +111,15 @@
 // no name.
 //
 // It is the product speaking rather than labelling: "Seu caderninho, do seu
-// jeito", a marginal note, a badge of a line. `fg-brand` is the accent ink each
-// theme reserves for exactly this.
+// jeito", a marginal note, a badge of a line.
+//
+// NOT the accent. A handwritten aside is decoration, and the one pigment is
+// spent on what is actionable or currently chosen — a blue phrase nobody can
+// press is the "grey test" failing, colour doing a job that belongs to the
+// face. The Caveat face and the size already say this is a margin note, which
+// is two levers and the limit.
 .display-title {
-  color: var(--app-fg-brand);
+  color: var(--app-fg-muted);
   font-family: var(--app-font-family-display);
   font-size: var(--app-font-size-heading-lg);
   font-weight: var(--app-font-weight-heading);
@@ -137,20 +141,21 @@
 // subject and nothing else, so a reader arriving mid-scroll has size to tell
 // them what is important and nothing to tell them what section they are in.
 //
-// It carries `fg-brand`, the same accent ink as `.display-title` above, and
-// NOT pen blue — which was the first attempt and was wrong for a reason worth
-// keeping written down: in this product blue means "you can act on this". A
-// kicker is not actionable, so a blue one reads as a link that does nothing.
+// A NEUTRAL RUNG, and the reason is the same one that decides most questions
+// in this school: treatment replaces hue, because there is no second hue to
+// reach for. A kicker is not actionable, and in a product where blue means "you
+// can act on this" a blue kicker reads as a link that does nothing.
 //
-// The defence offered for the blue was that a kicker is a MARK rather than a
-// fill. That does not survive contact with the button vocabulary: a ghost
-// button is also nothing but coloured text, so "it is only text" cannot be
-// what separates a decorative colour from an interactive one.
+// The defence once offered for making it blue was that a kicker is a MARK
+// rather than a fill. That does not survive contact with the button vocabulary:
+// a ghost button is also nothing but coloured text, so "it is only text" cannot
+// be what separates a decorative colour from an interactive one. Caps, tracking
+// and the caption size are what mark it, and they cost no pigment.
 //
 // Uppercase in CSS rather than in the markup, so the accessible name stays the
 // sentence someone wrote.
 .eyebrow {
-  color: var(--app-fg-brand);
+  color: var(--app-fg-muted);
   display: block;
   font-family: var(--app-font-family-body);
   font-size: var(--app-font-size-xs);
@@ -209,14 +214,14 @@
 }
 
 .link {
-  color: var(--app-fg-link);
+  color: var(--app-fg-accent);
   text-decoration: underline;
   text-decoration-color: currentcolor;
   text-underline-offset: 0.14em;
 
   &:active,
   &:hover {
-    color: var(--app-fg-link-hover);
+    color: var(--app-fg-accent-hover);
   }
 }
 

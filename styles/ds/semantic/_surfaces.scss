@@ -3,7 +3,7 @@
 // =============================================================================
 //
 // A surface is a CONTEXT: a partial override that inherits everything it does
-// not mention. These two were hand-written rule blocks in the old
+// not mention. There is one. These two were hand-written rule blocks in the old
 // `theme.scss`, which is the reason they are being rewritten rather than moved.
 //
 // `core.context()` refuses to compile a context that overrides a background
@@ -38,9 +38,11 @@
 //
 //   theme-primary  named for the brand and implemented as another light sheet,
 //                  with brown table sections bolted on. It was two ideas at
-//                  once and neither was finished. Replaced by `brand`, which is
-//                  what the name always promised: the brand fill with the
-//                  foreground that is measured against it.
+//                  once and neither was finished, and nothing replaced it.
+//                  There is ONE surface context in this product, because a
+//                  coloured band is a second chromatic fill and the school has
+//                  one pigment to spend. Chrome that needs separating from the
+//                  page gets a rung and a rule, which is what `app-frame` means.
 // =============================================================================
 
 @use '../src/core';
@@ -94,45 +96,6 @@
   // invisibility, because an effect nobody can perceive is cost with no
   // benefit. The notebook is carried by its ELEMENTS, not by its stock.
   [data-surface='paper'] {
-    background-color: #{core.ref('bg-surface')};
-    color: #{core.ref('fg-default')};
-  }
-
-  // THE COVER rides on the `brand` surface below — the board the sheets are
-  // bound into. It is a MATERIAL, not a deeper well, which is why it is a
-  // context and not a step on the surface ramp: the first attempt made
-  // `sunken` the cover and the contrast gate refused it, since a link in an
-  // ordinary paper well would then have sat on cover stock at 3.16:1.
-
-  // A real brand band. `fg-on-brand` is the foreground the contrast gate
-  // measured against `bg-brand`, so every text token that lands here is legible
-  // by construction rather than by inspection.
-  //
-  // `bg-page` and `bg-surface` both move, because a band is a ground: a card
-  // dropped inside one must not read the light-theme surface and punch a white
-  // hole in it.
-  @include core.context(
-    '[data-surface="brand"]',
-    (
-      'bg-page': core.ref('bg-brand'),
-      'bg-surface': core.ref('bg-brand'),
-      'fg-default': core.ref('fg-on-brand'),
-      'fg-heading': core.ref('fg-on-brand'),
-      'fg-muted': core.ref('fg-on-brand'),
-      'fg-brand': core.ref('fg-on-brand'),
-      'border-color': core.ref('bg-brand-deep'),
-
-      // Links on a brand band cannot stay toffee — it is a brown on a brown.
-      // On a dark ground the underline carries the affordance and the colour
-      // cannot, because any hue dark enough to read as a link on paper is too
-      // dark to read on the band.
-      'fg-link': core.ref('fg-on-brand'),
-      'fg-link-hover': core.ref('fg-on-brand'),
-      'fg-link-visited': core.ref('fg-on-brand')
-    )
-  );
-
-  [data-surface='brand'] {
     background-color: #{core.ref('bg-surface')};
     color: #{core.ref('fg-default')};
   }

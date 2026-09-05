@@ -1,3 +1,5 @@
+@use '../ds/tokens' as component;
+
 .progress-indicator {
   display: inline-grid;
   gap: 8px;
@@ -5,7 +7,7 @@
   &__header {
     display: flex;
     align-items: center;
-    color: var(--app-fg-default);
+    color: component.$progress-indicator-fg;
     justify-content: space-between;
     font-weight: bold;
     text-transform: uppercase;

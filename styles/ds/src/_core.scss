@@ -1,3 +1,5 @@
+// src/_core.scss
+
 // =============================================================================
 // CORE — emission machinery
 // =============================================================================
@@ -260,6 +262,12 @@ $_pairs: (
   'bg-neutral': 'fg-on-neutral',
   'bg-neutral-hover': 'fg-on-neutral',
   'bg-neutral-active': 'fg-on-neutral',
+  // The subtle neutral does NOT invert — that is what separates it from the
+  // solid. It is a quiet fill under ordinary body ink, so it is measured
+  // against `fg-default` like the page surfaces are.
+  'bg-neutral-subtle': 'fg-default',
+  'bg-neutral-subtle-hover': 'fg-default',
+  'bg-neutral-subtle-active': 'fg-default',
   // `bg-disabled` is deliberately ABSENT. Its foreground is `fg-disabled` and
   // the two do move together, but listing it here would push adapters to
   // treat a disabled control as an ordinary readable pair — and WCAG 2.2
@@ -333,7 +341,21 @@ $_pairs: (
          + '  @include #{$adapter}-adapter.emit((<name>: $<theme>));';
   }
 
-  @return $themes;
+  // Normalised HERE so every adapter gets it from one line.
+  //
+  // A theme map is authored in the school's vocabulary — a monochrome product
+  // writes `accent` and never writes `link`. Adapters that read a colour
+  // CHANNEL out of the map (rgb triplets, HSL components) do `map.get($choices,
+  // link)` and got null, which surfaces as "$color: null is not a color" from
+  // somewhere three frames deep in the adapter rather than as anything about
+  // schools. Every adapter already calls this function; none of them should
+  // have to know the vocabulary rules.
+  $normalised: ();
+  @each $name, $choices in $themes {
+    $normalised: map.merge($normalised, ($name: roles.normalise($choices)));
+  }
+
+  @return $normalised;
 }
 
 @mixin context($selector, $tokens) {

@@ -73,12 +73,12 @@
   }
 
   &__td--mono {
-    color: var(--app-fg-muted);
+    color: component.$table-td-mono-fg;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   }
 
   &__td--accent {
-    color: var(--app-fg-brand);
+    color: component.$table-td-accent-fg;
   }
 
   &__td--section {

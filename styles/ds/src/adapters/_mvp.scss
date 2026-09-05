@@ -1,0 +1,145 @@
+// src/adapters/_mvp.scss
+
+// =============================================================================
+// ADAPTER — MVP.css 1
+// =============================================================================
+//
+// An adapter is a LEAF: nothing in the system depends on it, and it is the only
+// file that knows this library exists.
+//
+// Classless like Pico and Water, and it brings a shape none of the others do:
+// MVP derives interaction with a FILTER rather than a colour.
+//
+//     button:hover  { filter: brightness(var(--hover-brightness)); }   /* 1.2 */
+//     button:active { filter: brightness(var(--active-brightness)); }  /* 0.85 */
+//
+// -----------------------------------------------------------------------------
+// WHY THE FILTER IS NEUTRALISED RATHER THAN LEFT ALONE
+// -----------------------------------------------------------------------------
+//
+// The standing rule in this project is to leave a library's own character where
+// the design system has no token for it — daisyUI keeps `--depth`, Water keeps
+// its caret SVG. A brightness filter is the exception, for two reasons:
+//
+//   1. Layer 2 DOES have the token. `bg-action-hover` is a decision the theme
+//      made, and in the brand theme it goes one step DARKER. A multiplier of
+//      1.2 does the opposite of what the theme asked for.
+//
+//   2. A filter moves the background without the foreground, so it breaks the
+//      pair invariant by construction — and it does so invisibly, because the
+//      build-time contrast check measures token pairs and cannot see a runtime
+//      filter. On a light theme, brightening a mid fill under white text walks
+//      contrast down with nothing to catch it.
+//
+// So the multipliers go to 1 and the hover and active colours are bound on the
+// property, from the tokens. What is lost is MVP's automatic derivation; what
+// is gained is that hover is a decision the theme makes rather than a constant
+// the library multiplies by.
+//
+// -----------------------------------------------------------------------------
+// TWO NAMING TRAPS
+// -----------------------------------------------------------------------------
+//
+// `--color-link` is not just the link colour: it is also the BUTTON FILL
+// (`button, input[type=submit] { background-color: var(--color-link) }`). One
+// variable, two jobs. It takes `bg-action` here, which serves both because the
+// link and action roles share a family in every theme — worth knowing if a
+// theme ever pulls them apart.
+//
+// `--box-shadow` is GEOMETRY ONLY (`2px 2px 10px`), composed at the use site as
+// `box-shadow: var(--box-shadow) var(--color-bg-secondary)`. Pointing it at
+// `shadow-raised` — a complete shadow — would emit two shadows concatenated and
+// produce invalid CSS. It stays MVP's. This is the same decomposition problem
+// as Bulma's HSL channels, in miniature.
+// =============================================================================
+
+@use '../core';
+@use '../config';
+
+@mixin emit() {
+  @include core.in-layer(config.$layer-adapter) {
+    :root,
+    [data-theme],
+    [data-surface] {
+      // --- Surfaces and text ------------------------------------------
+      --color-bg: #{core.ref('bg-page')};
+      --color-bg-secondary: #{core.ref('bg-sunken')};
+      --color-text: #{core.ref('fg-default')};
+      --color-text-secondary: #{core.ref('fg-muted')};
+
+      // --- Accent -----------------------------------------------------
+      // `--color-link` fills buttons as well as colouring links; see the header.
+      --color-link: #{core.ref('bg-action')};
+      // A translucent tint by default, used behind `code` and `samp`.
+      --color-accent: #{core.ref('bg-sunken')};
+      // MVP's second brand colour: `sup`, visited links, aside links.
+      --color-secondary: #{core.ref('bg-selected')};
+      --color-secondary-accent: #{core.ref('bg-selected-subtle')};
+      // `table thead` fill, which MVP pairs with `--color-bg` as its text.
+      --color-table: #{core.ref('bg-action')};
+
+      --color-shadow: #{core.ref('border-color-subtle')};
+      --color-scrollbar: #{core.ref('border-color-strong')};
+
+      // --- Shape and type ---------------------------------------------
+      --border-radius: #{core.ref('radius-control')};
+      --font-family: #{core.ref('font-family-body')};
+      --line-height: #{core.ref('line-height')};
+
+      // --- Interaction, moved from filter to colour --------------------
+      // See the header for why. 1 is the identity multiplier, so the filters
+      // still run and change nothing.
+      --hover-brightness: 1;
+      --active-brightness: 1;
+    }
+
+    // The hover and active colours the filter used to approximate. Bound on the
+    // property because MVP has no variable for them — the whole mechanism was
+    // the multiplier.
+    a:hover {
+      color: #{core.ref('fg-link-hover')};
+    }
+
+    // `:not(:disabled)` here too — MVP explicitly cancels the hover filter on
+    // disabled buttons, and re-introducing a hover colour would undo that.
+    button:not(:disabled):hover,
+    input[type='submit']:not(:disabled):hover {
+      background-color: #{core.ref('bg-action-hover')};
+    }
+
+    button:not(:disabled):active,
+    input[type='submit']:not(:disabled):active {
+      background-color: #{core.ref('bg-action-active')};
+    }
+
+    // MVP writes `color: var(--color-bg)` on its filled elements — the page
+    // colour as text on a fill. That is its pair convention, and it happens to
+    // hold in every theme here, but it is a coincidence rather than a
+    // guarantee: nothing measures `page` against `action`. Naming the real
+    // paired foreground makes it a guarantee.
+    // `:not(:disabled)` is load-bearing, and its absence is the variant-collapse
+    // bug in another costume. MVP already models the disabled pair correctly —
+    // `button:disabled { background: var(--color-bg-secondary); color:
+    // var(--color-text-secondary) }` — and that rule is MORE specific than a
+    // bare `button`. It still loses, because this adapter is in a later cascade
+    // layer and layer order beats specificity. The result was light text on a
+    // light disabled fill at 1.19:1.
+    //
+    // The general rule: an adapter binding a base selector overrides every
+    // state rule the library wrote. Exclude the states the library already
+    // handles rather than re-implementing them.
+    button:not(:disabled),
+    input[type='submit']:not(:disabled),
+    table thead {
+      color: #{core.ref('fg-on-action')};
+    }
+
+    // `sup` is filled from `--color-secondary`, so its pair is the selected
+    // one. Getting this wrong is easy and invisible until the two roles are
+    // different colours — which they only became when the brand theme pulled
+    // `action` and `selected` apart.
+    sup {
+      color: #{core.ref('fg-on-selected')};
+    }
+  }
+}

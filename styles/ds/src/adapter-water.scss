@@ -1,0 +1,19 @@
+// src/adapter-water.scss
+
+// Standalone build of the water adapter.
+//
+// Adapters are leaves: nothing depends on them, and nothing they need comes
+// from each other. Compiling one on its own is therefore the honest shape —
+// and the necessary one, because two adapters can claim the same custom
+// property name and no adapter can avoid that, since the names belong to the
+// libraries.
+//
+// Load this alongside the token build:
+//
+//     <link rel="stylesheet" href="app.css">              tokens + baseline
+//     <link rel="stylesheet" href="dist/adapter-water.css">  this file
+//     <link rel="stylesheet" href="dist/water.css">          the library
+
+@use 'adapters/water';
+
+@include water.emit();

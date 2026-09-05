@@ -1,319 +1,95 @@
+// styles/ds/palette.scss
+
 // =============================================================================
-// NOTEBOOK-LAYOUT — LAYER 1, THE PRODUCT'S PALETTE
+// LAYER 1 — TWO PIGMENTS
 // =============================================================================
 //
-// This is the design system for Caderninho de Receitas. It lives here, in the
-// library, rather than in any application: `www` is one consumer and there will
-// be others, and a palette that lives in a consumer is a palette the next
-// consumer has to copy.
+// The whole palette of this product is the two seed lines at the bottom of
+// this file. Everything else is a ladder computed off them in OKLCH by
+// `src/ramp`, and it compiles away: nothing in the application ever names a
+// step, and this file emits not one byte.
 //
-// Layer 1's three rules hold:
+// Layer 1's three rules hold, as they always did:
 //
 //   1. Values are LITERAL. Nothing here points at another token.
 //   2. Values are STATIC. A ramp does not change between themes; what changes
 //      is which STEP a role reaches for.
-//   3. Values carry NO MEANING. `cocoa-800` does not mean "selected".
+//   3. Values carry NO MEANING. `pen(700)` does not mean "action".
 //      Assigning meaning is the only job of the maps under `semantic/`.
 //
-// It emits nothing: those maps read it at build time and inline literals.
-//
 // -----------------------------------------------------------------------------
-// THE TWO CHOCOLATES
+// A NOTEBOOK IS A NEUTRAL AND ONE PEN
 // -----------------------------------------------------------------------------
 //
-// The one thing to understand before reading `semantic/light.scss`: there are
-// two browns doing two different jobs, and they are deliberately far apart.
+// This product used to carry six hand-tuned families — paper, board, cocoa,
+// toffee, slate and pen — because the school was `functional`: a colour per
+// job, so what ACTS, what is CHOSEN and where text GOES each needed its own.
 //
-//   cocoa    dark chocolate — desaturated, deep. Marks what is CHOSEN.
-//   toffee   milk chocolate — saturated, lighter. Marks a LINK.
+// The school is now `monochrome`. One accent carries all three jobs, and
+// everything that is not the accent is a position on the neutral ladder. Six
+// families collapse to two, and the two that survive are the two a notebook
+// physically has: the paper, and the pen lying on it.
 //
-// Measured against the paper: cocoa-800 sits at 10.24:1 and toffee-500 at
-// 5.48:1, a 1.87× separation in luminance on top of a 13-point jump in
-// saturation. They do not read as two steps of one colour; they read as two
-// colours, which is the whole requirement.
+// The status hues are NOT here. They come from the foundation's own `red`,
+// `amber` and `green`, which is where a colour that reports an outcome belongs:
+// it is not part of the brand, and a product that tunes its own error red is
+// tuning the one colour it wants a reader to recognise instantly.
+//
+// -----------------------------------------------------------------------------
+// A SEED IS A PIGMENT, NOT THE LIGHTEST STEP
+// -----------------------------------------------------------------------------
+//
+// The seed's own chroma is the PEAK the ramp curve multiplies, and `$pigment`
+// scales that peak. So a seed has to be the colour at full strength — the ink
+// in the bottle — not the pale surface it will produce. Handing `neutral()` a
+// near-white paper colour looks right and is not: its chroma is already near
+// zero, the peak comes out lower still, and the ramp is an ordinary grey with
+// nothing reporting an error, because a grey ramp is a perfectly valid ramp.
 // =============================================================================
 
 @use 'sass:map';
+@use './src/ramp';
 
-// -----------------------------------------------------------------------------
-// Paper — the neutral family, running from card-white to ink-black
-// -----------------------------------------------------------------------------
+// PAPER — the neutral. Kraft/straw at full strength, held back to 0.6.
 //
-// One family rather than two. A notebook's paper and its ink are the same
-// substance at two ends of a range, and splitting them would mean deciding
-// arbitrarily where one stops. The dark end IS the ink.
-$paper: (
-  // The light end was BUTTER, not paper: #fdfaf4 and #f6f1e8 carry enough
-  // yellow that a full screen of them reads as parchment, and it was the whole
-  // background of the product. Warmth stays — this is not a cold white — but
-  // the cast comes down, so the sheet reads as stock and the ink on it reads
-  // as ink instead of as grey on cream.
-  0: #ffffff,    // not paper at all — a sheet lifted clear off the page
-  50: #fdfcf9,   // a card: the reading surface
-  100: #f9f7f4,  // the page itself, under the fibre
-  150: #f2efe9,  // a card's header — one step down from its body
-  200: #eae6de,  // sunken wells, table stripes
-  300: #ded8ce,  // the soft rule between list items. Decorative, by design.
-  400: #d8ccbb,  // the default border
-  500: #b3a288,  // the strongest neutral line
-  600: #7d6c55,  // subtlest legible text
-  700: #5c4e3d,
-  800: #403831,  // muted text, icons
-  900: #28211c,  // body text
-  950: #140b08   // maximum emphasis
-);
+// THE HUE DOES MORE WORK THAN THE PIGMENT. A seed in the orange-yellows, near
+// 67 degrees, gives cream: the page stays near-neutral because it is the
+// lightest step, but the borders and the sunken panels land in beige. Recycled
+// stock is not cream — it has a grey-GREEN cast from the fibre, which sits
+// nearer 100 degrees. Same pigment number, different hue, and it stops looking
+// like a wedding invitation.
+$paper: ramp.neutral(#8a6b3d, $pigment: 0.6);
 
-// -----------------------------------------------------------------------------
-// Board — kraft cardboard. The COVER, and everything that is not the sheet.
-// -----------------------------------------------------------------------------
+// PEN — the accent. Ballpoint blue, the one live colour on the page.
 //
-// The material the design language names first and the palette did not have.
-// Without it the whole light theme came out of `paper` alone: page, surface,
-// raised, sunken, borders, text and the action fill were all steps of ONE
-// family, which is why the product read as a single yellow wash with grey
-// boxes on it. There was no second colour at fill size anywhere on screen.
+// NOT AZURE. #1d51c4 measures within a degree and a hundredth of Bootstrap's
+// own #0d6efd, and reads as "a framework's blue" because it is one. Ballpoint
+// ink is darker, less saturated and shifted toward violet: the dye sits ON the
+// fibre rather than soaking into it, which is why a scan of a biro line comes
+// back closer to indigo than to sky.
 //
-// A recipe notebook's cover is unbleached board — recycled, fibrous, warmer
-// and greyer than chocolate. It is deliberately NOT cocoa: cocoa is a
-// confection colour and marks what is chosen, while this is a material and
-// marks what is not paper. Two browns doing two jobs, kept apart the same way
-// cocoa and toffee are.
-$board: (
-  50: #f0e7d8,
-  100: #e4d5be,  // the desk the sheet lies on
-  200: #d3bd9c,  // the cover itself
-  300: #bfa47e,
-  400: #a88a63,
-  500: #8f7350,
-  600: #775f42,
-  700: #5f4c35,
-  800: #483929,
-  900: #32281d,
-  950: #1e1811
-);
-
-// -----------------------------------------------------------------------------
-// Cocoa — dark chocolate. What is CHOSEN, and the voice of headings.
-// -----------------------------------------------------------------------------
-$cocoa: (
-  50: #f7efe8,
-  100: #ecdbcc,  // the tint behind a chosen item — and behind a hovered one
-  200: #d9bda3,
-  300: #c09a76,
-  400: #a17a52,
-  500: #8d6d4f,
-  600: #806147,
-  700: #6d4423,
-  800: #5f3212,  // the brand: what is selected
-  900: #4c2711,  // pressed
-  950: #3a1d0d
-);
-
-// -----------------------------------------------------------------------------
-// Toffee — milk chocolate. A LINK.
-// -----------------------------------------------------------------------------
-//
-// The same hue family as cocoa and nothing like it in the eye: where cocoa is
-// 68% saturated at 22% lightness, toffee-500 is 81% at 33%. Warm, saturated,
-// closer to melted than to baked.
-//
-// The exact step was chosen BY THE BUILD, not by eye. #a25a12 was the first
-// pick and it measured 4.99:1 on the page — comfortable — but 4.42:1 on
-// `surface-active`, and the contrast gate refused to compile. This is the most
-// saturated step that clears 4.5:1 on all four surfaces a link can sit on.
-$toffee: (
-  50: #fdf1e4,
-  100: #f8ddc0,
-  200: #eebd8b,
-  300: #d99a55,
-  400: #bd7524,
-  500: #9a5410,  // a link. 4.85:1 at its worst, on a pressed surface.
-  600: #8a4a14,  // hovered: darker, so the contrast rises rather than falls
-  700: #743d13,
-  800: #5e3110,
-  900: #48250c,
-  950: #321908
-);
-
-// -----------------------------------------------------------------------------
-// Slate — the action fill
-// -----------------------------------------------------------------------------
-//
-// A desaturated blue, and a FILL: chosen to carry white text, which is exactly
-// what makes it the wrong colour to set a word in.
-$slate: (
-  50: #eef2f6,
-  100: #dbe3ec,
-  200: #b9c6d5,
-  300: #91a3b8,
-  400: #7c93a8,
-  500: #62798f,
-  600: #506679,
-  700: #425668,  // the primary button — white at 7.60:1
-  800: #354557,
-  900: #283442,
-  950: #1a222a
-);
-
-// -----------------------------------------------------------------------------
-// Pen — ballpoint blue. What the USER wrote, and nothing else.
-// -----------------------------------------------------------------------------
-//
-// Its scope is deliberately narrow: the text inside a field, and the tick in a
-// checkbox — a box on paper is ticked, not filled, and the tick is the user's
-// own mark. It is never an action colour and never a link.
-$pen: (
-  50: #e7eef8,
-  100: #cfe0f2,
-  200: #a5c6e6,
-  300: #6ea5d6,
-  400: #2d80c4,
-  500: #0e6bb8,
-  600: #005bac,  // the pen itself
-  700: #004a8c,
-  800: #003f78,
-  900: #002b52,
-  950: #001c36
-);
-
-// -----------------------------------------------------------------------------
-// Status — muted and earthy
-// -----------------------------------------------------------------------------
-//
-// The traditional hues pulled toward the notebook's warmth: unmistakably red,
-// green and amber, at a chroma that sits beside a photograph of food without
-// shouting over it.
-//
-// `info` has no ramp — it borrows `pen`. An informational note in a notebook
-// IS a pen note, and a fourth blue would be a colour with no job.
-$red: (
-  50: #fbeae7, 100: #f6d3cd, 200: #e9a89d, 300: #d97b6b, 400: #c85340,
-  500: #b23b28, 600: #9a2f1e, 700: #7f2617, 800: #661d11, 900: #4d160d,
-  950: #350f09
-);
-
-$green: (
-  50: #eef4e9, 100: #d9e7cd, 200: #b4cf9f, 300: #8db370, 400: #6b954b,
-  500: #547a37, 600: #44632c, 700: #375024, 800: #2b3f1c, 900: #203015,
-  950: #16210e
-);
-
-$amber: (
-  50: #fdf3e0, 100: #f9e2b8, 200: #f0c477, 300: #e3a441, 400: #d18a1f,
-  500: #b57315, 600: #945d11, 700: #784b0f, 800: #5e3b0c, 900: #472d09,
-  950: #301e06
-);
+// Cold against a warm neutral on purpose. The accent's job is to be the only
+// thing on screen that is not paper.
+$pen: ramp.chromatic(#2a3b8f);
 
 // -----------------------------------------------------------------------------
 // Reaching a step
 // -----------------------------------------------------------------------------
-// THEME TWO's own materials
-// -----------------------------------------------------------------------------
 //
-// A second notebook, not a recolour of the first. Where theme one is ink on
-// cream with cocoa marking what is chosen, this one is a kraft-covered book
-// written in fountain-pen blue: the ACTION is the cardboard itself, the LINK is
-// the pen, and what is CHOSEN is pencilled.
-//
-// Sketched by Gemini as flat hex values in `tasks/gemini-second-theme/`. The
-// concepts are kept and the shape is not: single values cannot express hover,
-// pressed or subtle states, and this system checks contrast per state — so each
-// material is a ramp, with the sketch's value sitting at the step it belongs to.
-
-// Kraft — the cardboard cover, and this theme's action fill.
-$kraft: (
-  50: #faf4ec,
-  100: #f3ebe0,  // the sketch's "papel kraft claro": secondary surfaces
-  200: #e5d3ba,
-  300: #d0b28a,
-  400: #b98a55,
-  500: #9d6a34,
-  600: #7f4f24,  // the sketch's cardboard brown: what ACTS
-  700: #6a4120,
-  800: #55341a,
-  900: #3f2713,
-  950: #2a1a0d
-);
-
-// Fountain-pen blue — this theme's LINK. Denser and greyer than theme one's
-// ballpoint `pen`, which is a bright modern blue; this is bottled ink.
-$fountain: (
-  50: #eaf0f5,
-  100: #cfdde8,
-  200: #a3bed2,
-  300: #6f97b4,
-  400: #3f7194,
-  500: #23577a,
-  600: #1b4965,  // the sketch's ink blue
-  700: #163b53,
-  800: #112d40,
-  900: #0c202e,
-  950: #08141d
-);
-
-// Graphite — pencil. Marks what has been CHOSEN, and carries the quiet text.
-$graphite: (
-  50: #f4f2ef,
-  100: #e2ddd4,  // the sketch's notebook rule
-  200: #ccc5b8,
-  300: #aca392,
-  400: #8b8272,
-  500: #6e685e,  // the sketch's pencil lead
-  600: #5a554d,
-  700: #46423b,
-  800: #33302b,
-  900: #1c1917,  // the sketch's india-ink black
-  950: #100e0d
-);
-
-// Ivory — the paper of this book. Lighter and less yellow than theme one's
-// `paper`, with only a whisper between page and card.
-$ivory: (
-  0: #ffffff,
-  50: #fffdf9,   // the sketch's card
-  100: #fbf8f1,  // the sketch's page
-  150: #f6f2e9,
-  200: #efe9dd,
-  300: #e2ddd4,
-  400: #cfc8bb,
-  500: #b0a897,
-  600: #857d6d,
-  700: #625b4f,
-  800: #46413a,
-  900: #2b2723,
-  950: #171512
-);
-
-// -----------------------------------------------------------------------------
-//
-// This lookup used to live beside the theme maps. It moved here when those maps
-// were split into `semantic/light.scss` and `semantic/dark.scss`: two files
-// needed it, and duplicating a family-name switch is how the two themes start
-// disagreeing about which ramps exist.
+// Kept from the hand-tuned palette this replaced, because the theme maps read
+// through it and a generated ramp has the same step keys a written one had.
 //
 // It errors rather than returning `null` because `null` in a colour slot is
 // invisible — Sass omits the declaration and the browser inherits, so a typo in
-// a step number ships as "that one role is unstyled" rather than as a build
-// failure.
-// An index rather than a chain of `if($family == red, …)`. Two of the family
-// names — `red` and `green` — are CSS colour keywords, so the old chain compared
-// an argument against a literal colour and stylelint's `color-named` rule read
-// the file as if it were painting something. Interpolating to a string sidesteps
-// both: `'#{red}'` is the word, not the colour.
+// a step number would ship as "that one role is unstyled" rather than as a
+// build failure.
+//
+// An index rather than a chain of `if($family == paper, …)`: interpolating the
+// name to a string keeps stylelint's `color-named` rule from reading a family
+// called `red` or `green` as a colour being painted.
 $_families: (
   'paper': $paper,
-  'ivory': $ivory,
-  'kraft': $kraft,
-  'fountain': $fountain,
-  'graphite': $graphite,
-  'board': $board,
-  'cocoa': $cocoa,
-  'toffee': $toffee,
-  'slate': $slate,
-  'pen': $pen,
-  'red': $red,
-  'green': $green,
-  'amber': $amber
+  'pen': $pen
 );
 
 @function pal($family, $step) {
@@ -325,4 +101,3 @@ $_families: (
   }
   @return map.get($map, $step);
 }
-

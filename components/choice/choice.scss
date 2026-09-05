@@ -19,16 +19,15 @@
   &__img {
     grid-area: choice__img;
     font-size: 3.5rem;
-    color: var(--app-fg-brand);
+    color: component.$choice-img-fg;
     line-height: 1;
   }
 
   &__title {
     grid-area: choice__title;
-    border: component.$choice-title-border-width solid var(--app-fg-default);
+    border: component.$choice-title-border-width solid component.$choice-title-fg;
     padding: 8px;
     border-radius: component.$choice-title-radius;
-    text-transform: uppercase;
     text-decoration: none;
     background-color: component.$choice-title-bg;
   }

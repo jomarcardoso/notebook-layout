@@ -41,7 +41,7 @@
 .card:not(.slim-card) {
   .card__content {
     background-color: component.$card-content-bg;
-    color: var(--app-fg-default);
+    color: component.$card-fg;
 
     box-shadow: component.$card-content-shadow;
     border: component.$card-content-border-color;
@@ -79,7 +79,7 @@
   // hue and the selection hue are the same colour in this theme.
   .card__header {
     background-color: component.$card-header-bg;
-    color: var(--app-fg-heading);
+    color: component.$card-header-fg;
     font-weight: bold;
   }
 
@@ -94,12 +94,12 @@
     grid-area: card__body;
     padding: component.$card-body-pad var(--app-pad-surface);
     align-self: center;
-    color: var(--app-fg-default);
+    color: component.$card-fg;
   }
 
   .card__footer {
     background-color: component.$card-footer-bg;
-    color: var(--app-fg-default);
+    color: component.$card-fg;
 
     border-top: component.$card-footer-border-color;
     display: flex;

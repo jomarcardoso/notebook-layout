@@ -59,7 +59,7 @@
   // control on a filled button and from the page on an outline one, without
   // needing a second colour that only exists to be seen.
   --cui-btn-focus-box-shadow:
-    0 0 0 #{component.$button-ring-width} var(--app-bg-raised),
+    0 0 0 #{component.$button-ring-width} #{component.$button-ring-offset-color},
     0 0 0 calc(#{component.$button-ring-width} * 2) #{component.$button-ring};
 
   --button__icon-font-size: 1.2em;
@@ -76,11 +76,20 @@
   // Was `gap-2` on a `<span>` the React wrapper injected around every child.
   // The wrapper is gone and the gap belongs here anyway: spacing between a
   // button's icon and its label is the button's anatomy, not a call site's.
-  gap: var(--app-space-xs);
+  gap: component.$button-gap;
   max-width: 320px;
   min-height: component.$button-size;
   position: relative;
-  text-transform: uppercase;
+  // NOT UPPERCASE. A button label is a sentence someone wrote — "Guarde a
+  // receita" — and setting it in caps is the interface raising its voice at the
+  // one moment it is asking for something. The archetype is Editorial and the
+  // posture is quiet: one thing stands out because everything around it
+  // recedes, and a page where every control is shouting has nothing left to
+  // make the primary action louder than the secondary one.
+  //
+  // Caps survive in this product only as a KICKER — `.eyebrow`, the notebook's
+  // index tabs, a definition term — where the text is a label at caption size
+  // with tracking to open the letterforms, and is not read as a phrase.
   white-space: nowrap;
 
   ion-icon,
@@ -128,9 +137,9 @@
 // was the last place in this file where a colour decision was being made by
 // picking a value instead of naming a job.
 .btn-link {
-  --cui-btn-color: var(--app-fg-link);
-  --cui-btn-hover-color: var(--app-fg-link-hover);
-  --cui-btn-active-color: var(--app-fg-link-hover);
+  --cui-btn-color: #{component.$button-link-fg};
+  --cui-btn-hover-color: #{component.$button-link-fg-hover};
+  --cui-btn-active-color: #{component.$button-link-fg-hover};
   --cui-btn-disabled-color: #{component.$button-fg-disabled};
   --cui-btn-padding-x: #{component.$button-pad-y};
 

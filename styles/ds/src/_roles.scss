@@ -1,3 +1,5 @@
+// src/_roles.scss
+
 // =============================================================================
 // SCHOOL VOCABULARIES
 // =============================================================================
@@ -73,6 +75,8 @@ $_monochrome: (
   'bg-action-hover': 'bg-accent-hover',
   'bg-action-active': 'bg-accent-active',
   'bg-action-subtle': 'bg-accent-subtle',
+  'bg-action-subtle-hover': 'bg-accent-subtle-hover',
+  'bg-action-subtle-active': 'bg-accent-subtle-active',
   'fg-action': 'fg-accent',
   'border-action': 'border-accent',
 
@@ -81,6 +85,8 @@ $_monochrome: (
   'bg-selected-hover': 'bg-accent-hover',
   'bg-selected-active': 'bg-accent-active',
   'bg-selected-subtle': 'bg-accent-subtle',
+  'bg-selected-subtle-hover': 'bg-accent-subtle-hover',
+  'bg-selected-subtle-active': 'bg-accent-subtle-active',
   'fg-selected': 'fg-accent',
   'border-selected': 'border-accent',
 
@@ -144,6 +150,120 @@ $_brand: (
 // passes through unchanged, which is every surface, every piece of ink, every
 // border and the whole status family — they are common to all three schools and
 // renaming them per school would be vocabulary for its own sake.
+// -----------------------------------------------------------------------------
+// NORMALISATION — the school's names in, canonical names out
+// -----------------------------------------------------------------------------
+//
+// A theme map is AUTHORED in the school's vocabulary: a monochrome product
+// writes `accent`, not `action`. Everything downstream — `colors()`, the
+// contrast gate, and every adapter that reads a channel out of the map — works
+// in CANONICAL names, so the map has to be translated once on the way in.
+//
+// It lives here rather than in `_semantic.scss` because adapters need it too
+// and cannot reach into that module. `core.require-themes()` calls it, which is
+// the one line every adapter already runs.
+
+@function _alias($c, $from, $to) {
+  @if map.has-key($c, $to) or not map.has-key($c, $from) {
+    @return $c;
+  }
+  @return map.merge($c, ($to: map.get($c, $from)));
+}
+
+@function normalise($c) {
+  $s: config.strategy();
+
+  @if $s == 'monochrome' {
+    $c: _alias($c, accent, action);
+    $c: _alias($c, 'on-accent', 'on-action');
+    $c: _alias($c, 'accent-hover', 'action-hover');
+    $c: _alias($c, 'accent-active', 'action-active');
+    $c: _alias($c, 'accent-subtle', 'action-subtle');
+    $c: _alias($c, 'accent-subtle-hover', 'action-subtle-hover');
+    $c: _alias($c, 'accent-subtle-active', 'action-subtle-active');
+    $c: _alias($c, 'accent-text', 'action-text');
+    $c: _alias($c, 'accent-border', 'action-border');
+
+    // The collapse. Three canonical families, one declared accent.
+    @each $suffix in ('', '-hover', '-active', '-subtle', '-text', '-border') {
+      $c: _alias($c, 'action#{$suffix}', 'selected#{$suffix}');
+    }
+    $c: _alias($c, 'on-action', 'on-selected');
+    $c: _alias($c, 'action-text', link);
+    $c: _alias($c, 'action-hover', 'link-hover');
+    // `link-visited` is deliberately NOT aliased. The school says one hue, not
+    // one state, and letting a visited link look unvisited is an accessibility
+    // regression dressed as minimalism.
+    $c: _alias($c, 'action-text', 'link-visited');
+  } @else if $s == 'brand' {
+    $c: _alias($c, primary, action);
+    $c: _alias($c, 'on-primary', 'on-action');
+    $c: _alias($c, 'primary-hover', 'action-hover');
+    $c: _alias($c, 'primary-active', 'action-active');
+    $c: _alias($c, 'primary-container', 'action-subtle');
+    $c: _alias($c, 'primary-text', 'action-text');
+    $c: _alias($c, 'primary-border', 'action-border');
+
+    // The brand hue marking what is chosen IS this school, so selection
+    // defaults to the container rather than to the solid fill — which is what
+    // Material actually renders for a selected list item.
+    $c: _alias($c, 'primary-container', selected);
+    $c: _alias($c, 'on-primary-container', 'on-selected');
+    $c: _alias($c, 'primary-hover', 'selected-hover');
+    $c: _alias($c, 'primary-active', 'selected-active');
+    $c: _alias($c, 'primary-container', 'selected-subtle');
+    $c: _alias($c, 'primary-text', 'selected-text');
+    $c: _alias($c, 'primary-border', 'selected-border');
+  }
+
+  // THE WASH, ROUTED TO THE NEUTRAL FAMILY WHEN THE PALETTE CANNOT HOLD ONE.
+  //
+  // This runs AFTER the school aliases and overwrites what they produced, which
+  // is the correct order: the school says which family the wash belongs to, and
+  // this says whether that family can supply it at all.
+  //
+  // `map.merge` rather than `_alias`, because `_alias` refuses to overwrite a
+  // key that already exists — it exists to fill gaps. Here the key is present
+  // and wrong, and being polite about it was the first version's bug: nothing
+  // changed and the build reported success.
+  //
+  // Which slots move, and which deliberately do not:
+  //
+  //   subtle fills  ->  the neutral quiet fill and its states. Everything that
+  //                     was going to be a pale patch of accent.
+  //   border        ->  UNTOUCHED. A line needs no chroma headroom, so a neutral
+  //                     fill with an accent edge is still available and is the
+  //                     cheapest way to keep a selected state branded.
+  //   solid, text   ->  UNTOUCHED. Near-complementary pairs are at their best
+  //                     here; this is where the accent goes instead.
+  @if not config.$accent-wash {
+    $quiet: if(map.has-key($c, 'neutral-subtle'), map.get($c, 'neutral-subtle'), map.get($c, sunken));
+    $quiet-h: if(map.has-key($c, 'neutral-subtle-hover'), map.get($c, 'neutral-subtle-hover'), $quiet);
+    $quiet-a: if(map.has-key($c, 'neutral-subtle-active'), map.get($c, 'neutral-subtle-active'), $quiet-h);
+
+    $c: map.merge($c, (
+      'action-subtle': $quiet,
+      'action-subtle-hover': $quiet-h,
+      'action-subtle-active': $quiet-a,
+      // SELECTED STAYS ON THE SAME RUNG HERE, AND THAT IS THE SCHOOL SPEAKING.
+      //
+      // The obvious move is to send it two rungs deeper, so a chosen chip is
+      // darker than a resting one without needing a border. `check-roles`
+      // refused: in the monochrome school `action-subtle` and `selected-subtle`
+      // COLLAPSE ONTO ONE EMITTED TOKEN, and giving them different values is the
+      // product asking for a school it did not choose.
+      //
+      // The guard is right. Which rung a selected CHIP uses is a component
+      // decision, not a role decision, and it belongs at layer 3 —
+      // `$chip-bg-selected` — where one product can go deeper without splitting
+      // a role the school says is single. See `monochrome.md` §12.
+      'selected-subtle': $quiet
+    ));
+  }
+
+  @return $c;
+}
+
 @function resolve($name) {
   $mapped: map.get(_map(), '#{$name}');
 

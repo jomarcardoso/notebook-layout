@@ -11,7 +11,7 @@
   // because this is plain CSS with no access to `component.ref-chain()`.
   border-radius: component.$progress-radius;
   background-color: component.$progress-track-bg;
-  border: component.$progressbar-border-width solid var(--app-border-color);
+  border: component.$progressbar-border-width solid component.$progressbar-border-color;
 
   &::-webkit-progress-bar {
     background-color: inherit;

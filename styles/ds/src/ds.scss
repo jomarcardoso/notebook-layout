@@ -1,0 +1,107 @@
+// src/ds.scss
+
+// =============================================================================
+// DESIGN SYSTEM ENTRY
+// =============================================================================
+//
+// Compiles to `dist/ds.css`, which the application imports. This file is an
+// index and nothing else: it calls each layer's `emit()` in cascade order.
+//
+// -----------------------------------------------------------------------------
+// THIS BUILD CONTAINS NO THEME, AND THAT IS THE POINT
+// -----------------------------------------------------------------------------
+//
+// `dist/ds.css` used to carry three: `light`, `dark` and `brand`. They were
+// demonstration content, and shipping them made a TOOL look like a design
+// system — a consumer got three palettes it never chose and a
+// `[data-theme="brand"]` block it could only remove by editing a vendored file.
+//
+// A theme is whatever you define. Write a map, hand it to
+// `semantic.emit-theme()`, and you have one; hand that map to `derive.dark()`
+// and you have its opposite-scheme counterpart, which is the only theme this
+// tool generates on its own. Every product under `example/ds-*/` does exactly
+// that, and each one is its own entry file rather than a configuration of this
+// one — see `example/ds-hot-tone-bootstrap-phase1/ds.scss` for the shortest.
+//
+// So what is left here is the theme-INDEPENDENT half: spacing, radius,
+// typography, motion, z-index, plus whichever adapters are bundled.
+//
+// To configure, edit `_config.scss` directly. These files are vendored into
+// your project, so editing the config IS the supported override mechanism —
+// there is no package boundary to reach across.
+// =============================================================================
+
+@use 'sass:list';
+@use 'config';
+@use 'base';
+@use 'semantic';
+@use 'component';
+@use 'adapters/daisyui';
+@use 'adapters/pico';
+@use 'adapters/flowbite';
+@use 'adapters/preline';
+@use 'adapters/water';
+@use 'adapters/mvp';
+
+// Layer 1 — normally emits nothing (see _base.scss).
+@include base.emit();
+
+// Layer 2 — structure only. Colour arrives with a theme, and the theme is
+// yours.
+@include semantic.emit-structure();
+
+// Layer 3 — only if `$emit-component-vars` is on. The naming contract works
+// either way; emission just writes defaults (see _component.scss).
+
+// Layer 3.5 — adapters. The guard is compile time, so an unselected adapter
+// contributes zero bytes rather than dead rules.
+//
+// FOUR ADAPTERS CANNOT BE BUNDLED HERE, and the reason is a property of their
+// libraries rather than a limitation of this file. Bootstrap, CoreUI, Bulma and
+// NES.css need colour CHANNELS — rgb triplets, HSL components, a colour baked
+// into an SVG border image — and a channel cannot be read out of a `var()`, so
+// their `emit()` takes the theme MAPS. This entry has no theme to give them.
+//
+// They are compiled from their own entry instead, which is where the theme
+// lives anyway:
+//
+//     @use 'ds/src/adapters/bootstrap';
+//     @include bootstrap.emit(('my-theme': theme.$my-theme));
+//
+// Listing one in `$adapters` therefore fails loudly rather than emitting an
+// adapter with no triplets — a shape that looks themed until something
+// translucent, focused or outlined appears.
+@each $_needs-theme in (bootstrap, bulma, coreui, nescss) {
+  @if list.index(config.$adapters, $_needs-theme) {
+    @error 'config.$adapters lists "#{$_needs-theme}", which cannot be bundled '
+         + 'into dist/ds.css: that adapter needs the theme MAPS (it derives '
+         + 'colour channels), and this entry ships no theme. Compile it from '
+         + 'its own entry and pass the map: '
+         + '`@include #{$_needs-theme}.emit((<name>: $<theme>));`.';
+  }
+}
+
+@if list.index(config.$adapters, daisyui) {
+  @include daisyui.emit();
+}
+
+@if list.index(config.$adapters, pico) {
+  @include pico.emit();
+}
+
+@if list.index(config.$adapters, flowbite) {
+  @include flowbite.emit();
+}
+
+@if list.index(config.$adapters, preline) {
+  @include preline.emit();
+}
+
+@if list.index(config.$adapters, water) {
+  @include water.emit();
+}
+
+@if list.index(config.$adapters, mvp) {
+  @include mvp.emit();
+}
+

@@ -1,0 +1,22 @@
+// src/adapter-pico.scss
+
+// Standalone build of the pico adapter.
+//
+// Adapters are leaves: nothing depends on them, and nothing they need comes
+// from each other. Compiling one on its own is therefore the honest shape —
+// and the necessary one, because two adapters can claim the same custom
+// property name (daisyUI's `--border` is a width, Preline's is a colour) and
+// no adapter can avoid that, since the names belong to the libraries.
+//
+// Load this alongside the token build:
+//
+//     <link rel="stylesheet" href="app.css">              tokens + baseline
+//     <link rel="stylesheet" href="dist/adapter-pico.css">  this file
+//     <link rel="stylesheet" href="dist/pico.css">          the library
+//
+// A project on one library can instead list it in `$adapters` and get it
+// bundled into `dist/ds.css`; both routes emit the same declarations.
+
+@use 'adapters/pico';
+
+@include pico.emit();

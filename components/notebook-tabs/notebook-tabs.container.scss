@@ -40,7 +40,7 @@
 
     &__content {
       background-color: component.$notebook-tabs-content-bg;
-    color: var(--app-fg-default);
+    color: component.$notebook-tabs-content-fg;
 
       z-index: 1;
       // box-shadow: var(--app-shadow-raised);
