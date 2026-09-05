@@ -10,15 +10,6 @@
   overflow-x: auto;
   width: 100%;
 
-  // Flat on the textured sheet, which is also how paper works: you put a clean
-  // card down on top of the page. The cancellation used to sit inside the
-  // surface's own rule in the token layer, where a file of tokens had to know
-  // this component existed. The component states its own relationship to the
-  // sheet instead.
-  [data-surface='paper'] & {
-    background-image: none;
-  }
-
   &--light {
     --table-container-bg: #{component.$table-container-bg};
     --table-container-border: #{component.$table-container-border-width} solid

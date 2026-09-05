@@ -43,11 +43,12 @@ export const Modal: FC<ModalProps> = ({
       {children && (
         <div
           className="modal__body"
-          // The dialog's content area IS the paper sheet. The token layer used
-          // to assert that by naming `.modal__body` in its own selector, which
-          // put a component's class name in a file that should not know one;
-          // the element asks for the surface itself instead.
-          data-surface="paper"
+          // The dialog's content area is the sheet, and it is at the RAISED
+          // rung: it has no fill of its own and inherits `.modal`'s
+          // `$modal-bg`, which is `bg-raised`. The attribute names the plane
+          // the element is painted on, so everything inside is calibrated
+          // against the ground it is actually sitting on.
+          data-surface="raised"
           id="alert-dialog-description"
           {...bodyProps}
         >

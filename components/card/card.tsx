@@ -44,7 +44,13 @@ export const Card: FC<CardProps> = ({
   });
 
   return (
-    <article className={classes} {...props}>
+    // `raised`, not `surface`, and the difference is one rung. The context has
+    // to name the plane this element PAINTS — `$card-content-bg` is
+    // `bg-raised` — because every rung inside is redeclared as a distance from
+    // it. Declaring `surface` on something painted `raised` calibrates the
+    // chips, fields and borders inside the card against a ground the card is
+    // not.
+    <article data-surface="raised" className={classes} {...props}>
       <div className="card__content">
         {img && <div className="card__img">{img}</div>}
         {imgDescription && (

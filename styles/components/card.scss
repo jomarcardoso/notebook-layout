@@ -40,13 +40,6 @@
 .card {
   container-type: inline-size;
 
-  // Flat on the sheet, which is also how paper works: you put a clean card down
-  // on top of the page. The component states its own relationship to the sheet
-  // rather than the token layer having to know this component exists.
-  [data-surface='paper'] & {
-    background-image: none;
-  }
-
   &__content {
     background-color: component.$card-content-bg;
     color: component.$card-fg;

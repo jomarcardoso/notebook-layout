@@ -1,48 +1,48 @@
 // =============================================================================
-// SURFACES — LAYER 2 CONTEXTS
+// SURFACES — WHAT THIS PRODUCT ADDS TO THE FOUNDATION'S CONTEXTS
 // =============================================================================
 //
-// A surface is a CONTEXT: a partial override that inherits everything it does
-// not mention. There is one. These two were hand-written rule blocks in the old
-// `theme.scss`, which is the reason they are being rewritten rather than moved.
+// The foundation already emits `base`, `surface`, `raised` and `sunken`, and
+// each one redeclares TWELVE rungs — every fill, every border and every well —
+// shifted by the exact lightness distance between that plane and the page. That
+// is the mechanism, and it is the one idea that explains most colour bugs here:
 //
-// `core.context()` refuses to compile a context that overrides a background
-// without its foreground. The hand-written version accepted exactly that, in
-// silence — the invariant that protects every other context in this system was
-// simply not applied to the two surfaces the product actually ships. Going
-// through the helper makes the pairs DATA, which is the only form the check can
-// read.
+//     A RUNG IS A DISTANCE FROM THE SURFACE, NOT A PROPERTY OF A COMPONENT.
 //
-// A surface also has to PAINT itself. `core.context()` emits custom properties
-// and nothing else, which is right for the general helper and wrong for a thing
-// called `data-surface`: a reader who writes the attribute expects a sheet, not
-// a set of variables something else must remember to consume. The foundation
-// shipped a transparent header once for exactly this reason.
+// This file used to declare a fifth context called `paper`, and `paper` set
+// exactly ONE property:
+//
+//     [data-surface="paper"] { --app-bg-page: var(--app-bg-surface) }
+//
+// One, against the foundation's twelve. So the whole application sat on a
+// ground one rung lighter than the page while every border, every field, every
+// sunken well and every quiet neutral fill inside it was still calibrated
+// against the page it was no longer on. Nothing looked broken; everything
+// looked slightly flat, which is exactly the symptom the foundation warns
+// about and exactly the one nobody can name.
+//
+// It looked like a context because it had the same attribute and the same
+// shape. It was a rename of a single token wearing a context's clothes.
+//
+// What this file keeps is the two things the foundation deliberately leaves to
+// a product:
+//
+//   the PAINT      `core.context()` emits custom properties and nothing else,
+//                  which is right for a general helper and wrong for a thing
+//                  called `data-surface`: a reader who writes the attribute
+//                  expects a sheet, not a set of variables something else has
+//                  to remember to consume.
+//
+//   `bg-page`      the foundation shifts the twelve rungs and leaves `bg-page`
+//                  alone, because a context does not change what the PAGE is.
+//                  In this product it has to: a full-bleed zone inside the
+//                  sheet reaches for `bg-page` to mean "the ground I am on",
+//                  and unremapped it painted the zone the exact colour it was
+//                  already sitting on.
 //
 // Deliberately UNLAYERED, like the theme blocks beside it. Unlayered CSS beats
 // all layered CSS, and `app.scss` puts CoreUI in `@layer vendor-config` so the
 // library cannot repaint a surface the product declared.
-//
-// -----------------------------------------------------------------------------
-// WHAT THESE REPLACED
-// -----------------------------------------------------------------------------
-//
-// `utils/theme-white/_theme.scss` held three mixins. Two survived the
-// translation; the third did not, and the reason is worth keeping.
-//
-//   theme-base     a near-white sheet. The foundation already has this, and it
-//                  is called `base`. Deleted rather than duplicated.
-//
-//   theme-light    a lighter sheet UNDER THE PAPER TEXTURE. This one is the
-//                  product's signature and it is preserved here as `paper`.
-//
-//   theme-primary  named for the brand and implemented as another light sheet,
-//                  with brown table sections bolted on. It was two ideas at
-//                  once and neither was finished, and nothing replaced it.
-//                  There is ONE surface context in this product, because a
-//                  coloured band is a second chromatic fill and the school has
-//                  one pigment to spend. Chrome that needs separating from the
-//                  page gets a rung and a rule, which is what `app-frame` means.
 // =============================================================================
 
 @use '../src/core';
@@ -70,11 +70,11 @@
     --app-blend-ink: normal;
   }
 
-  // THE PAPER SHEET.
+  // THE ONE KEY THE FOUNDATION LEAVES ALONE.
   //
-  // It changes no ink — the notebook's text colour is already the right one on
-  // its own paper — so the only token it moves is the answer to "what is the
-  // ground under me". Inside the sheet that is `bg-surface`, not the page.
+  // It lands on the same selector the foundation's own `surface` context uses,
+  // so it is an addendum rather than a competing block: the twelve rungs come
+  // from `src/`, and this adds the thirteenth.
   //
   // `fg-default: null` is not filler. The pair invariant requires the key to be
   // CONSIDERED whenever the background moves, and `null` is how a context says
@@ -82,7 +82,7 @@
   // `core.ref('fg-default')` instead would emit a custom property that
   // references itself, which is a cycle and is dropped as invalid.
   @include core.context(
-    '[data-surface="paper"]',
+    '[data-surface="surface"]',
     (
       'bg-page': core.ref('bg-surface'),
       'fg-default': null
@@ -95,7 +95,7 @@
   // did not, you could not see it. It is removed rather than dialled down to
   // invisibility, because an effect nobody can perceive is cost with no
   // benefit. The notebook is carried by its ELEMENTS, not by its stock.
-  [data-surface='paper'] {
+  [data-surface='surface'] {
     background-color: #{core.ref('bg-surface')};
     color: #{core.ref('fg-default')};
   }
