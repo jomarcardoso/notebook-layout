@@ -104,8 +104,23 @@ $_derived: (
   $o: map.get($_derived, $role);
   @if $o != null and map.get($o, $slot) != null { @return map.get($o, $slot); }
   @if $slot == subtle { @return 'bg-#{$role}-subtle'; }
+  // The two rungs ABOVE a subtle fill. Optional in layer 2 — only `accent` and
+  // `neutral` carry them today — so every caller passes a fallback and a role
+  // without them keeps the flat behaviour it had.
+  @if $slot == 'subtle-hover' { @return 'bg-#{$role}-subtle-hover'; }
+  @if $slot == 'subtle-active' { @return 'bg-#{$role}-subtle-active'; }
   @if $slot == border { @return 'border-#{$role}'; }
   @return 'fg-#{$role}';
+}
+
+// A subtle fill's next rung, with the flat value behind it.
+//
+// Two things make the fallback the right shape rather than a hedge. The token is
+// genuinely optional — a status role has one subtle tone and no ladder above it —
+// and the fallback is the value the binding had BEFORE this existed, so a role
+// without the ladder is unchanged rather than broken.
+@function _step($role, $slot) {
+  @return core.ref(_slot($role, $slot), core.ref(_slot($role, subtle)));
 }
 
 // -----------------------------------------------------------------------------
@@ -314,7 +329,9 @@ $_derived: (
       --cui-btn-hover-bg: #{core.ref(_slot($role, subtle))};
       --cui-btn-hover-border-color: #{core.ref(_slot($role, text))};
       --cui-btn-hover-color: #{core.ref(_slot($role, text))};
-      --cui-btn-active-bg: #{core.ref(_slot($role, subtle))};
+      // Same rung and the same bug as the ghost below: hover and pressed were
+      // one value, so an outlined button had two states and three names.
+      --cui-btn-active-bg: #{_step($role, 'subtle-hover')};
       --cui-btn-active-border-color: #{core.ref(_slot($role, text))};
       --cui-btn-active-color: #{core.ref(_slot($role, text))};
     }
@@ -343,7 +360,14 @@ $_derived: (
       --cui-btn-hover-bg: #{core.ref(_slot($role, subtle))};
       --cui-btn-hover-border-color: transparent;
       --cui-btn-hover-color: #{core.ref(_slot($role, text))};
-      --cui-btn-active-bg: #{core.ref(_slot($role, subtle))};
+      // ONE RUNG PAST HOVER, and it was the same value as hover.
+      //
+      // The comment above already said "pressed is one rung past hover" and the
+      // binding repeated the hover slot, so pressing a ghost button did nothing
+      // at all — the state existed in prose and not on screen. Found while
+      // answering a different question about ghost hover, which is the ordinary
+      // way this kind of thing surfaces: a state nobody exercised.
+      --cui-btn-active-bg: #{_step($role, 'subtle-hover')};
       --cui-btn-active-border-color: transparent;
       --cui-btn-active-color: #{core.ref(_slot($role, text))};
       --cui-btn-disabled-bg: transparent;

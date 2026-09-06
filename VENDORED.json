@@ -1,7 +1,7 @@
 {
   "source": "design-system",
-  "version": "0.9.5",
-  "commit": "6704cf7",
+  "version": "0.9.6",
+  "commit": "f2b9859",
   "date": "2026-09-06",
   "layout": {
     "styles": "styles/ds/src",
@@ -18,7 +18,7 @@
     "styles/ds/src/adapter-water.scss": "e987f0123d696526",
     "styles/ds/src/adapters/_bootstrap.scss": "644c26b9ea772fee",
     "styles/ds/src/adapters/_bulma.scss": "305fb4f0e3a2df34",
-    "styles/ds/src/adapters/_coreui.scss": "bd5b27486f89b927",
+    "styles/ds/src/adapters/_coreui.scss": "103e5e0423ca3cea",
     "styles/ds/src/adapters/_daisyui.scss": "744b1c9df0fb43a8",
     "styles/ds/src/adapters/_flowbite.scss": "d56c3b2a490ae80e",
     "styles/ds/src/adapters/_mvp.scss": "c2c44b1b4bca196b",
