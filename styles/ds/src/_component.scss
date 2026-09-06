@@ -969,7 +969,37 @@ $tabs-radius: #{core.ref('radius-surface')} !default;
 // The segment at rest is the track showing through — no fill of its own, so
 // that only the chosen one is a shape.
 $tabs-tab-fg: #{core.ref('fg-muted')} !default;
-$tabs-tab-radius: #{core.ref('radius-control')} !default;
+
+// DERIVED, and it is the one radius in this file that is arithmetic rather than
+// a step off the scale. The reason is that it is not an independent decision:
+// once the track's radius and its inset are chosen, the segment's radius is a
+// CONSEQUENCE, and picking it from the scale instead means picking a number that
+// disagrees with two decisions already made.
+//
+// The rule is outer = inner + inset, so inner = outer - inset, and it is worth
+// seeing what the alternatives actually do. Track 10px, inset 4px, and the gap
+// measured on the DIAGONAL through the corner against the 4px it is on the
+// straight edges:
+//
+//     segment 2px   corner gap 2.34px   41% tighter
+//     segment 4px   corner gap 3.17px   21% tighter     <- what this was
+//     segment 6px   corner gap 4.00px   constant        <- outer minus inset
+//     segment 8px   corner gap 4.83px   21% looser
+//
+// A segment SQUARER than concentric pushes its corner out toward the track's
+// corner and the two edges close in on each other — which is the "they almost
+// touch" that a product reported and that nobody could name. A segment rounder
+// than concentric does the opposite and leaves a puddle at each corner. Only one
+// value keeps the gap constant all the way round, and it is not on any scale.
+//
+// `max(0px, …)` because an inset larger than the track's radius would otherwise
+// compute negative, which is a product deciding its track is nearly square and
+// is a legitimate thing to decide.
+//
+// This reverses the note that stood here for one release, which said arithmetic
+// between scale steps lands between steps. True of a value somebody CHOOSES.
+// This one is measured off two that were already chosen.
+$tabs-tab-radius: max(0px, calc(#{$tabs-radius} - #{$tabs-pad})) !default;
 
 // HOVER, and it was missing entirely: a pill set changed its label colour and
 // nothing else, so the only feedback on a control built to be clicked was a

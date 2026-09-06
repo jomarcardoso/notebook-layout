@@ -824,11 +824,11 @@ $_derived: (
     color: #{component.$tabs-tab-fg};
   }
 
-  // Concentric corners: the track's radius is the segment's plus the inset, so
-  // the two curves stay parallel instead of the outer one looking flattened.
-  // `$tabs-radius` carries the outer value directly rather than a `calc()`,
-  // because a product's radius scale has steps and arithmetic between them lands
-  // between steps.
+  // Concentric corners. The track takes the SURFACE radius — it is a container
+  // and it should agree with the cards around it — and the segment's radius is
+  // then derived from it and the inset rather than chosen, which is why
+  // `$tabs-tab-radius` is the one `calc()` in layer 3. See the note there for
+  // what each alternative does to the corner gap.
 
   .nav-pills .nav-link:hover:not(.active):not(.disabled) {
     background-color: #{component.$tabs-tab-bg-hover};
