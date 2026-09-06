@@ -1,6 +1,5 @@
 @use '../../styles/ds/tokens' as component;
 
-
 @mixin notebook-tabs-container {
   display: flex;
 
@@ -39,9 +38,6 @@
     }
 
     &__content {
-      background-color: component.$notebook-tabs-content-bg;
-    color: component.$notebook-tabs-content-fg;
-
       z-index: 1;
       // box-shadow: var(--app-shadow-raised);
     }

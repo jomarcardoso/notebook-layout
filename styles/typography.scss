@@ -36,27 +36,6 @@
 // it; alignment, weight and tracking are literals, here, where they are read.
 // =============================================================================
 
-// A HEADING GETS A MEASURE TOO, at a different number and for a different
-// reason.
-//
-// 45–75ch is the reading measure: it exists so the eye can return to the left
-// margin and find the next line. A heading is not read that way — it is taken
-// in as a shape, in one or two lines — and `ch` scales with font size, so 45ch
-// of a 31px h1 is over a thousand pixels. The same *principle* at display size
-// lands near 30 characters, which is also where a title stops being a title
-// and starts being a sentence.
-//
-// `text-wrap: balance` is the other half: with a cap, the last line of a
-// two-line heading is whatever happens to overflow. Balanced, the browser
-// evens the lines out.
-.h1,
-.h2,
-.h3,
-.h4 {
-  max-width: 30ch;
-  text-wrap: balance;
-}
-
 .h1 {
   color: component.$heading-1-fg;
   font-family: var(--app-font-family-heading);

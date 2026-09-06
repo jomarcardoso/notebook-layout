@@ -44,7 +44,7 @@ export const Tabs: FC<TabsProps> = ({
 
   return (
     <nav className={classes}>
-      <ul className="nav nav-pills" {...props}>
+      <ul className="nav nav-tabs" {...props}>
         {tabs.map((tab, index) => {
           const tabValue = tab.value ?? `${index}`;
           const inputId = tab.id || `${groupName}-${index}`;
