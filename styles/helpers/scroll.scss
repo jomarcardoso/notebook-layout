@@ -28,12 +28,11 @@
 // width must be given one. `auto` resolving to zero looks identical to a
 // display bug and is invisible to every check we run.
 .horizontal-scroll {
-  display: grid;
-  gap: var(--app-gap-stack);
-
   // Phone: one shelf, scrolled with the thumb, the next card peeking so the
   // row announces itself as scrollable without a scrollbar.
   @media (orientation: portrait) {
+    display: grid;
+    gap: var(--app-gap-stack);
     grid-auto-flow: column;
     grid-auto-columns: min(88%, 420px);
     overflow-x: auto;
@@ -44,11 +43,5 @@
     > * {
       scroll-snap-align: start;
     }
-  }
-
-  // Desktop: it wraps. `auto-fill` rather than `auto-fit` so a list with one
-  // recipe does not stretch that card across the whole row.
-  @media (orientation: landscape) {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
 }

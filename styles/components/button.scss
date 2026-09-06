@@ -33,7 +33,7 @@
 //
 // The three emphases come from the adapter and are one colour at three
 // strengths — `.btn-primary` filled, `.btn-outline-primary` bordered,
-// `.btn-ghost-primary` label-only. Emphasis is carried by fill, border and
+// `.btn-ghost-secondary` label-only. Emphasis is carried by fill, border and
 // nothing; never by hue.
 // =============================================================================
 
@@ -67,7 +67,11 @@
   --button__small-font-size: 0.75em;
   --button__small-text-transform: none;
   --size-difference: calc(
-    (((44px - component.$button-size) / 2) + #{component.$button-border-width}) * -1
+    (
+        ((44px - component.$button-size) / 2) +
+          #{component.$button-border-width}
+      ) *
+      -1
   );
 
   align-items: center;

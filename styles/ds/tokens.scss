@@ -47,7 +47,9 @@
 // hues, and the question it could never answer was "which brown is primary".
 // A school with one accent cannot be asked that question.
 @forward './src/config' with (
-  $adapters: (coreui),
+  $adapters: (
+    coreui,
+  ),
   $colour-strategy: 'monochrome',
 
   // FOUR CONSECUTIVE STEPS FOR THE HEADINGS, and the smallest one at body size.
@@ -62,11 +64,11 @@
   // job; it separates itself by weight and face instead — see `.h4` in
   // `typography.scss`.
   $type-scale-steps: (
-    'heading-sm': base,
-    'heading': lg,
-    'heading-lg': xl,
-    'heading-xl': '2xl'
-  ),
+      'heading-sm': base,
+      'heading': lg,
+      'heading-lg': xl,
+      'heading-xl': '2xl',
+    ),
 
   // NO WASHED ACCENT, and it is the palette that decides rather than taste.
   //
@@ -118,7 +120,7 @@
     '3xl': 2.44rem,
     '4xl': 3.05rem,
     '5xl': 3.81rem,
-    '6xl': 4.77rem
+    '6xl': 4.77rem,
   )
 );
 
@@ -279,7 +281,6 @@ $_field-pad: 4px;
 
   $nav-bg-active: var(--app-bg-neutral-subtle-active),
   $nav-fg-active: var(--app-fg-heading),
-
   // HOVER PREVIEWS SELECTION, AND SELECTION IS NO LONGER ACCENT.
   //
   // The contract defaults this to the selection INK, which is right: hovering a
@@ -292,7 +293,6 @@ $_field-pad: 4px;
   // commitment does not use. The heading ink is what the chosen item takes, so
   // it is what the hover shows.
   $nav-fg-hover: var(--app-fg-heading),
-
   $card-content-border-color: none,
 
   // NO SHADOW EITHER. The tone already separates the card from the page, and a
@@ -305,7 +305,6 @@ $_field-pad: 4px;
   // product's number, and at 8px the serif title sits against the card's edge
   // and the whitespace that was supposed to carry the hierarchy is not there.
   $card-body-pad: var(--app-space-md),
-
   // The same decision, for the shared contract's own surface.
   $surface-border-color: transparent,
 
@@ -317,14 +316,12 @@ $_field-pad: 4px;
   // A badge is a MARK, so it takes the mark radius rather than the control one.
   // It was pointed at the control radius back when there was no smaller step to
   // point at.
-  $badge-fg: var(--app-fg-muted),
+  $badge-fg: var(--app-fg-subtlest),
   $badge-radius: var(--app-radius-sm),
-
   // The tab track is a thin rule across the whole width, decorative, at the
   // divider rung; the solid accent mark under the chosen tab is an INDICATOR of
   // state and not a border.
   $nav-border-color: var(--app-border-divider),
-
   // A SELECTED CHIP GOES DEEPER, IT DOES NOT GAIN AN EDGE.
   //
   // With no wash available, `bg-accent-subtle` routes to the quiet neutral rung
@@ -401,7 +398,7 @@ $card-fg: var(--app-fg-default) !default;
 // nutrition line so neither competes with the name of the dish.
 $card-img-ratio: var(--app-ratio-media) !default;
 $card-gap: var(--app-space-xs) !default;
-$card-meta-fg: var(--app-fg-muted) !default;
+$card-meta-fg: var(--app-fg-subtlest) !default;
 $card-meta-font-size: var(--app-font-size-sm) !default;
 $card-footer-fg: var(--app-fg-subtlest) !default;
 $card-footer-font-size: var(--app-font-size-xs) !default;
@@ -425,7 +422,7 @@ $choice-title-fg: var(--app-fg-default) !default;
 // a whole, so its glyph identifies the choice rather than advertising it.
 $choice-img-fg: currentColor !default;
 
-$table-td-mono-fg: var(--app-fg-muted) !default;
+$table-td-mono-fg: var(--app-fg-subtlest) !default;
 $table-td-accent-fg: var(--app-fg-accent) !default;
 
 $field-selection-fg: var(--app-fg-heading) !default;

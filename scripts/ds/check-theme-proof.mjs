@@ -10,7 +10,7 @@
 // theme:
 //
 //     .field__label {
-//       color: var(--app-fg-muted);   /* correct, from layer 2 */
+//       color: var(--app-fg-subtlest);   /* correct, from layer 2 */
 //       mix-blend-mode: multiply;     /* and now it is black anyway */
 //     }
 //
@@ -121,14 +121,18 @@ const NEUTRAL = /^(normal|none|inherit|initial|unset|revert)$/;
 // `filter` has plenty of theme-independent uses — `blur()`, `drop-shadow()`
 // with a token colour. Only the ones that rewrite lightness or colour are a
 // theme problem.
-const LIGHTNESS_FILTERS = /\b(invert|brightness|contrast|grayscale|sepia|saturate|hue-rotate)\s*\(/;
+const LIGHTNESS_FILTERS =
+  /\b(invert|brightness|contrast|grayscale|sepia|saturate|hue-rotate)\s*\(/;
 
 const problems = [];
 
 for (const f of files) {
   const src = readFileSync(f, 'utf8')
     .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
-    .replace(/(^|[^:])\/\/[^\n]*/g, (m, p) => p + ' '.repeat(m.length - p.length));
+    .replace(
+      /(^|[^:])\/\/[^\n]*/g,
+      (m, p) => p + ' '.repeat(m.length - p.length),
+    );
 
   src.split('\n').forEach((line, i) => {
     const m = line.match(/^\s*([a-z-]+)\s*:\s*([^;{]+);?\s*$/);
@@ -162,7 +166,7 @@ for (const f of files) {
 
 if (problems.length === 0) {
   console.log(
-    'check-theme-proof: ok — no blend or filter bakes in an assumption about the backdrop.'
+    'check-theme-proof: ok — no blend or filter bakes in an assumption about the backdrop.',
   );
   process.exit(0);
 }
@@ -174,7 +178,7 @@ console.error(
     'black while the computed `color` stays correct and every other check passes.\n\n' +
     'Route it through a token — the foundation emits `--app-blend-ink`, which is\n' +
     '`multiply` on a light theme and `screen` on a dark one:\n\n' +
-    '    mix-blend-mode: var(--app-blend-ink);\n'
+    '    mix-blend-mode: var(--app-blend-ink);\n',
 );
 for (const p of problems) {
   console.error(`  ${p.file}:${p.line}`);

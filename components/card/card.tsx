@@ -51,7 +51,7 @@ export const Card: FC<CardProps> = ({
     // chips, fields and borders inside the card against a ground the card is
     // not.
     <article data-surface="raised" className={classes} {...props}>
-      <div className="card__content">
+      <div className="card__content border">
         {img && <div className="card__img">{img}</div>}
         {imgDescription && (
           <div className="card__img-description">{imgDescription}</div>
