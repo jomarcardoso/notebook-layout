@@ -71,7 +71,17 @@
 // The hand-written `dark.scss` this replaced was written against six palette
 // families that no longer exist. A hand-written night can come back if it earns
 // the attention; a stale one nobody re-measured could not.
-@include semantic.emit-theme('dark', derive.dark(light.$tokens), $auto: true);
+//
+// NOT `$auto`, so the OS preference does not reach it. The product has no
+// control for picking a theme at the moment, and `prefers-color-scheme` without
+// one is a switch the visitor cannot see and cannot undo: a machine set to dark
+// got the night theme with no way back to the day one.
+//
+// The block is still emitted and still measured, reachable at
+// `[data-theme="dark"]`. Keeping it costs a few hundred bytes and means
+// restoring the control is a commit that adds a control, rather than one that
+// has to derive and re-measure a theme.
+@include semantic.emit-theme('dark', derive.dark(light.$tokens));
 
 // Still layer 2: the two tokens whose value depends on the viewport, so a
 // component never mentions a breakpoint.

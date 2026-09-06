@@ -431,6 +431,11 @@ $nav-indicator-bg: var(--app-bg-accent) !default;
 $notebook-tabs-content-fg: var(--app-fg-default) !default;
 $section-card-item-pad-y: var(--app-pad-control-y) !default;
 $tabs-layout-content-fg: var(--app-fg-default) !default;
+// The panel an enclosed tab strip sits on. It carries a line rather than a tone
+// because the tab above it is fused to it — the border runs up one side of the
+// chosen tab, across the panel and back, and that continuity is the whole shape.
+$tabs-layout-content-border-width: var(--app-border-width) !default;
+$tabs-layout-content-border-color: var(--app-border-color) !default;
 $progress-indicator-fg: var(--app-fg-default) !default;
 $progressbar-border-color: var(--app-border-color) !default;
 

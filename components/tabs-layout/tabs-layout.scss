@@ -31,8 +31,14 @@
     background-color: component.$tabs-layout-content-bg;
     color: component.$tabs-layout-content-fg;
     // box-shadow: var(--app-shadow-raised);
+    border: component.$tabs-layout-content-border-width solid
+      component.$tabs-layout-content-border-color;
+    border-top: 0;
     height: 100%;
     position: relative;
+    border-radius: component.$card-radius;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 
     &::before {
       // it hides tabs shadow

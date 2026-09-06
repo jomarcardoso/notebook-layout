@@ -1,7 +1,7 @@
 {
   "source": "design-system",
   "version": "0.9.6",
-  "commit": "f2b9859",
+  "commit": "a2bb846",
   "date": "2026-09-06",
   "layout": {
     "styles": "styles/ds/src",
@@ -35,7 +35,7 @@
     "styles/ds/src/_derive.scss": "b072f13be7102721",
     "styles/ds/src/_ramp.scss": "d9ce53235ba55787",
     "styles/ds/src/_roles.scss": "75ce565dfa79e92e",
-    "styles/ds/src/_semantic.scss": "a2ed3e84e3659ed2",
+    "styles/ds/src/_semantic.scss": "76886c7c7bc2195c",
     "styles/ds/src/_type.scss": "117e3f2790e8cddf",
     "styles/ds/src/_wash.scss": "253342316248cc96",
     "styles/ds/src/templates/entry-coreui.scss": "f53a4d734f0ebe7e",

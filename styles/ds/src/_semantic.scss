@@ -1050,6 +1050,19 @@ $_shifts: (
   }
 }
 
+// One surface context, emitted under whichever theme selector is open.
+//
+// It exists so the `$auto` branch can repeat a block without repeating its
+// body: a surface context that is written for `[data-theme]` and not for
+// `prefers-color-scheme` is a context that does not exist for the visitor who
+// never touched the toggle, which is most of them.
+@mixin _surface-context($surface, $set) {
+  &[data-surface="#{$surface}"],
+  [data-surface="#{$surface}"] {
+    @include core.emit($set);
+  }
+}
+
 @mixin emit-theme($name, $choices, $default: false, $auto: false) {
   // Not optional, and not a separate call a caller can forget. See above.
   @include check-contrast($name, $choices);
@@ -1144,9 +1157,12 @@ $_shifts: (
     // later declaration won. The native controls went light on a dark page,
     // from a block whose only job was to restore surface tokens.
     @include core.theme($name, $default, $scheme) {
-      &[data-surface="base"],
-      [data-surface="base"] {
-        @include core.emit($base-set);
+      @include _surface-context('base', $base-set);
+    }
+
+    @if $auto {
+      @include core.theme-auto($scheme) {
+        @include _surface-context('base', $base-set);
       }
     }
 
@@ -1211,9 +1227,12 @@ $_shifts: (
           }
 
           @include core.theme($name, $default, $scheme) {
-            &[data-surface="#{$surface}"],
-            [data-surface="#{$surface}"] {
-              @include core.emit($shifted);
+            @include _surface-context($surface, $shifted);
+          }
+
+          @if $auto {
+            @include core.theme-auto($scheme) {
+              @include _surface-context($surface, $shifted);
             }
           }
         }
