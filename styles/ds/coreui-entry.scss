@@ -124,7 +124,31 @@
   // Turns on the CSS Grid utilities: `.grid`, `.g-col-*`, `.columns-*`. The
   // application's own layout depends on these, and this flag is the only thing
   // that generates them.
-  $enable-cssgrid: true
+  $enable-cssgrid: true,
+
+  // WHERE THE SIDEBAR STOPS DECIDING FOR ITSELF.
+  //
+  // CoreUI turns `.sidebar` into a hidden off-canvas panel below this
+  // breakpoint, and its default is `lg` — 992px. A consuming product that
+  // switches its own chrome on something else then has a window where both are
+  // hidden: a phone held sideways is 844px, which is `lg`-down to CoreUI and
+  // landscape to a layout that switches on orientation, so the rail was gone
+  // and the bottom bar was gone with it.
+  //
+  // `sm` puts the library's own switch below any width a rail is shown at, so
+  // the product decides when the sidebar appears and the library only decides
+  // what it looks like. That is the division every other value in this file
+  // keeps.
+  $mobile-breakpoint: sm,
+
+  // THE FOLD CONTROL'S TARGET, which is padding and therefore compiled.
+  //
+  // CoreUI exposes the toggler's glyph as a CSS variable and its padding only
+  // as Sass, so the adapter can size the icon and only this line can size the
+  // thing you have to hit. 20px of glyph inside 12px a side is 44px — the
+  // product's `size-control`, and the override that raised it from 40 says why.
+  $sidebar-toggler-padding-x: 12px,
+  $sidebar-toggler-padding-y: 12px
 );
 
 @use '@coreui/coreui/scss/variables-dark';
@@ -138,8 +162,8 @@
 // this. They need no configuration — only the variables module did — and by the
 // time they load, the modules above have already been configured.
 //
-// Imported SELECTIVELY: `card`, `table` and `modal` are deliberately absent
-// because this package owns those components. Adding one would create the class
+// Imported SELECTIVELY: `table` and `modal` are deliberately absent because
+// this package owns those components. Adding one would create the class
 // collision that `check-collisions` currently reports as absent.
 @import '@coreui/coreui/scss/functions.import';
 @import '@coreui/coreui/scss/variables.import';
@@ -155,6 +179,29 @@
 // build and would say so — and the collapse is driven by React state rather
 // than by CoreUI's JS, which this project does not ship.
 @import '@coreui/coreui/scss/accordion.import';
+
+// CARD, and the library owns it outright.
+//
+// This package used to ship its own BEM `.card` — the reason `card` sat on the
+// exclusion list above — and two components consumed it. CoreUI's card brings
+// the horizontal form, the group, the image caps and the footer for free, and
+// keeping a private reimplementation beside it is the duplication the exclusion
+// list exists to prevent, only in the other direction. The adapter binds
+// `--cui-card-*` to this system's tokens, the same way it does for buttons.
+//
+// `images` comes with it: `.img-fluid` is what CoreUI's own card examples put
+// on the picture, and nothing else here supplied it.
+@import '@coreui/coreui/scss/card.import';
+@import '@coreui/coreui/scss/images.import';
+
+// SIDEBAR — the desktop rail, with the narrow/unfoldable behaviour.
+//
+// It brings `.sidebar`, `.sidebar-nav` and `.sidebar-narrow*`, all of them
+// scoped under `.sidebar`, so nothing here meets a class this package declares.
+// `.nav-group`, `.nav-icon` and `.nav-title` arrive with it and exist only
+// inside `.sidebar-nav` — they are the collapsible sub-level a rail needs and
+// `nav.import` alone does not carry.
+@import '@coreui/coreui/scss/sidebar.import';
 
 // Badges. Added so counters stop being hand-rolled: `.filed-recipes__count`
 // was a bespoke pill reimplementing `.badge` with its own padding, radius and

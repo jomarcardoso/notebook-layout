@@ -22,7 +22,7 @@ const meta = {
   argTypes: {
     theme: {
       control: 'radio',
-      options: ['theme-base', 'theme-light', 'theme-primary'],
+      options: ['theme-base', 'theme-light'],
       description: 'Selects which global theme class is applied to preview.',
     },
     className: { control: false },
@@ -37,7 +37,7 @@ const meta = {
       const body = document.body;
 
       // Remove qualquer tema anterior
-      body.classList.remove('theme-base', 'theme-light', 'theme-primary');
+      body.classList.remove('theme-base', 'theme-light');
 
       // Adiciona o novo tema
       body.classList.add(theme);

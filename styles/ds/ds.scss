@@ -14,7 +14,7 @@
 // it was MEASURED rather than assumed: compiled side by side, CoreUI-as-imported
 // and notebook-layout share exactly one class name (`d-none`, identical
 // declaration) and zero custom properties. They partition cleanly — CoreUI owns
-// the grid, buttons, nav and breadcrumb; notebook-layout owns cards, tables,
+// the grid, buttons, cards, nav and breadcrumb; notebook-layout owns tables,
 // modals, dialogs and categories.
 //
 // `check-collisions.mjs` and `check-dangling-refs.mjs` both run on every build.

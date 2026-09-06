@@ -13,7 +13,6 @@
 //
 //     .theme-base    { @include theme-base; }
 //     .theme-light   { @include theme-light; }
-//     .theme-primary { @include theme-primary; }
 //     :root          { @extend .theme-light; }
 //
 // All four are gone, along with the six files behind them. The design system is
@@ -56,7 +55,6 @@
 @forward 'components/button';
 @forward 'components/img';
 @forward 'components/category';
-@forward 'components/card';
 @forward 'components/heading';
 @forward 'components/table';
 @forward 'components/dialog';

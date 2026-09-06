@@ -13,7 +13,6 @@ export const globalTypes = {
       items: [
         { value: 'theme-base', title: 'Base' },
         { value: 'theme-light', title: 'Light' },
-        { value: 'theme-primary', title: 'Primary' },
       ],
       showName: true,
     },
@@ -26,7 +25,6 @@ const withTheme = (StoryFn: any, context: any) => {
 
   useEffect(() => {
     const body = document.body;
-    body.classList.remove('theme-base', 'theme-light', 'theme-primary');
     body.classList.add(theme);
   }, [theme]);
 

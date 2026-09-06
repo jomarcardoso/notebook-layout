@@ -69,7 +69,10 @@
 // beyond 0–255, and a browser clamps them silently. See `_bootstrap.scss`,
 // where a vivid orange produced `202, 53, -25`.
 @function rgb-triplet($c) {
-  $srgb: color.to-space(color.to-gamut($c, $space: rgb, $method: local-minde), rgb);
+  $srgb: color.to-space(
+    color.to-gamut($c, $space: rgb, $method: local-minde),
+    rgb
+  );
   @return #{math.round(color.channel($srgb, 'red', $space: rgb))},
     #{math.round(color.channel($srgb, 'green', $space: rgb))},
     #{math.round(color.channel($srgb, 'blue', $space: rgb))};
@@ -90,26 +93,40 @@ $_map: (
   success: 'success',
   info: 'info',
   warning: 'warning',
-  danger: 'danger'
+  danger: 'danger',
 );
 
 // The slots `neutral` spells differently, because it IS the surface family
 // wearing a fill. See the Bootstrap adapter for why these are not aliased into
 // `bg-neutral-subtle` and friends.
 $_derived: (
-  'neutral': (subtle: 'bg-sunken', border: 'border-color-strong', text: 'fg-muted'),
+  'neutral': (
+    subtle: 'bg-sunken',
+    border: 'border-color-strong',
+    text: 'fg-muted',
+  ),
 );
 
 @function _slot($role, $slot) {
   $o: map.get($_derived, $role);
-  @if $o != null and map.get($o, $slot) != null { @return map.get($o, $slot); }
-  @if $slot == subtle { @return 'bg-#{$role}-subtle'; }
+  @if $o != null and map.get($o, $slot) != null {
+    @return map.get($o, $slot);
+  }
+  @if $slot == subtle {
+    @return 'bg-#{$role}-subtle';
+  }
   // The two rungs ABOVE a subtle fill. Optional in layer 2 — only `accent` and
   // `neutral` carry them today — so every caller passes a fallback and a role
   // without them keeps the flat behaviour it had.
-  @if $slot == 'subtle-hover' { @return 'bg-#{$role}-subtle-hover'; }
-  @if $slot == 'subtle-active' { @return 'bg-#{$role}-subtle-active'; }
-  @if $slot == border { @return 'border-#{$role}'; }
+  @if $slot == 'subtle-hover' {
+    @return 'bg-#{$role}-subtle-hover';
+  }
+  @if $slot == 'subtle-active' {
+    @return 'bg-#{$role}-subtle-active';
+  }
+  @if $slot == border {
+    @return 'border-#{$role}';
+  }
   @return 'fg-#{$role}';
 }
 
@@ -221,7 +238,13 @@ $_derived: (
   // `neutral-subtle` is OPTIONAL in layer 2 — it falls back to `sunken` for
   // themes written before it existed — so the same fallback has to be repeated
   // here, where the raw authored map is what is being read.
-  --cui-secondary-bg-rgb: #{rgb-triplet(if(map.has-key($choices, 'neutral-subtle'), map.get($choices, 'neutral-subtle'), map.get($choices, sunken)))};
+  --cui-secondary-bg-rgb: #{rgb-triplet(
+      if(
+        map.has-key($choices, 'neutral-subtle'),
+        map.get($choices, 'neutral-subtle'),
+        map.get($choices, sunken)
+      )
+    )};
   --cui-tertiary-bg-rgb: #{rgb-triplet(map.get($choices, sunken))};
 
   // The non-button focus ring, which CoreUI does drive from `:root`.
@@ -460,7 +483,6 @@ $_derived: (
     --cui-btn-disabled-color: #{component.$button-fg-disabled};
   }
 
-
   // --- ONE focus colour, for every button and every variant --------------
   //
   // Bound on the PROPERTY, because `--cui-btn-focus-shadow-rgb` is compiled per
@@ -489,7 +511,8 @@ $_derived: (
   .form-check-input:focus-visible {
     box-shadow:
       0 0 0 #{core.ref('ring-offset')} #{core.ref('bg-page')},
-      0 0 0 calc(#{core.ref('ring-offset')} + #{core.ref('ring-width')}) #{core.ref('ring-color')};
+      0 0 0 calc(#{core.ref('ring-offset')} + #{core.ref('ring-width')})
+        #{core.ref('ring-color')};
   }
 
   // --- CHIP — the reason this adapter exists ----------------------------
@@ -614,13 +637,13 @@ $_derived: (
   }
 
   // --- Surfaces ---------------------------------------------------------
-  .card {
-    --cui-card-bg: #{component.$surface-bg};
-    --cui-card-color: #{component.$surface-fg};
-    --cui-card-border-color: #{component.$surface-border-color};
-    --cui-card-border-radius: #{component.$surface-radius};
-  }
-
+  //
+  // `.card` is NOT here. It read the generic `$surface-*` family, which is the
+  // right default for a library whose card is any panel; this system has a card
+  // contract of its own — padding, title face, the two quiet rungs, the footer
+  // rule — and binding the same four properties in two places is how the two
+  // ended up disagreeing about the card's own background. It lives with the
+  // rest of the card, below.
   .modal {
     --cui-modal-bg: #{component.$overlay-bg};
     --cui-modal-color: #{component.$overlay-fg};
@@ -802,10 +825,187 @@ $_derived: (
     --cui-badge-border-radius: #{component.$badge-radius};
   }
 
+  // CARD — a sheet laid on the page, and the library draws it now.
+  //
+  // Every value below already existed as a decision in this system; what
+  // changed is who reads it. `surfaceModel: elevated` with
+  // `surfaceSeparation: tones` is the whole shape of it: the card is one rung
+  // LIGHTER than the page, and that tone is the entire separation. No rule, no
+  // shadow — a second mechanism separating the same thing twice is what makes a
+  // quiet product look busy for a reason nobody can name.
+  //
+  // A card that does want an edge asks for one with `.border`, which is a
+  // utility and therefore `!important`: it beats this shorthand without any
+  // card variant having to exist.
+  .card {
+    --cui-card-bg: #{component.$card-content-bg};
+    --cui-card-color: #{component.$card-fg};
+    --cui-card-border-width: #{component.$card-border-width};
+    --cui-card-border-color: #{component.$card-content-border-color};
+    --cui-card-border-radius: #{component.$card-radius};
+    --cui-card-inner-border-radius: #{component.$card-content-radius};
+    --cui-card-box-shadow: #{component.$card-content-shadow};
+
+    // Editorial spends space where other archetypes spend lines, which is why
+    // this is `space-md` and not the contract's dense default.
+    --cui-card-spacer-y: #{component.$card-body-pad};
+    --cui-card-spacer-x: #{component.$card-body-pad};
+    --cui-card-title-spacer-y: #{component.$card-gap};
+
+    // The subtitle is the metadata line — how much it makes, how long it takes
+    // — and it sits at the quietest legible rung so it never competes with the
+    // name of the dish.
+    --cui-card-subtitle-color: #{component.$card-meta-fg};
+
+    // Header and footer bands. The footer is where a card's repeated actions
+    // live, so it takes the same inset as the body rather than the contract's
+    // tighter cap padding, and no fill of its own: a filled strip inside a
+    // raised sheet is a third rung spent on a row of icon buttons.
+    --cui-card-cap-bg: #{component.$card-footer-bg};
+    --cui-card-cap-color: #{component.$card-footer-fg};
+    --cui-card-cap-padding-y: #{component.$card-footer-pad};
+    --cui-card-cap-padding-x: #{component.$card-body-pad};
+  }
+
+  // The two quiet rungs. A card's metadata and its footer are things you check
+  // after you have read the name of the dish, and they are sized and inked so
+  // they never read first.
+  .card-subtitle {
+    font-size: #{component.$card-meta-font-size};
+  }
+
+  // A hairline, and it is the one line a card is allowed. It does not separate
+  // the card from the page — the tone already did that — it divides two regions
+  // of ONE plane, which is the job a tone cannot do. CoreUI draws this edge
+  // from `--cui-card-border-width`, which is zero here, so it has to be said.
+  .card-footer,
+  .card-header {
+    font-size: #{component.$card-footer-font-size};
+  }
+
+  .card-footer {
+    border-block-start: #{component.$card-divider-width} solid
+      #{component.$card-footer-border-color};
+  }
+
+  .card-header {
+    border-block-end: #{component.$card-divider-width} solid
+      #{component.$card-footer-border-color};
+  }
+
   .nav {
     --cui-nav-link-color: #{component.$nav-fg};
     --cui-nav-link-hover-color: #{component.$nav-fg-hover};
     --cui-nav-link-disabled-color: #{component.$nav-fg-disabled};
+  }
+
+  // SIDEBAR — the desktop rail.
+  //
+  // Its nav reads the `$nav-*` family and nothing of its own, which is the
+  // point: a rail's items are nav items, and a product that themes the two
+  // separately ends up with a hover in the rail that does not match the hover
+  // in a tab strip, for no reason anybody can state.
+  //
+  // The colours are LEFT AS REFERENCES rather than resolved here, so the rail
+  // takes whatever plane it is placed on. Dropped into the product's brand
+  // surface it comes out as the notebook's cover; on the page it comes out as
+  // the page. That is what a surface context is for, and it is why there is no
+  // `sidebar-dark` anywhere near this.
+  .sidebar {
+    --cui-sidebar-bg: #{component.$surface-bg};
+    --cui-sidebar-color: #{component.$nav-fg};
+    --cui-sidebar-padding-x: #{component.$surface-pad};
+    --cui-sidebar-padding-y: #{component.$surface-pad};
+    --cui-sidebar-brand-bg: transparent;
+    --cui-sidebar-brand-color: #{component.$nav-fg-active};
+  }
+
+  // ON `.sidebar-nav`, AND THAT IS NOT A DETAIL.
+  //
+  // CoreUI declares the `--cui-sidebar-nav-*` family on `.sidebar-nav`, not on
+  // `.sidebar` — the same split it uses for `.card` and `.card-*`. Bound one
+  // level up they resolve correctly on the sidebar element and are then
+  // REDECLARED by the library on the list inside it, so every one of them is
+  // silently replaced by the library default before a nav link ever reads it.
+  //
+  // It fails quietly and it fails convincingly: the ink and the weight below
+  // come from rules of ours that do land, so the rail looks themed while its
+  // fills are still CoreUI's translucent blues. A variable has to be set where
+  // the library sets it.
+  .sidebar-nav {
+    --cui-sidebar-nav-link-color: #{component.$nav-fg};
+    --cui-sidebar-nav-link-border-radius: #{component.$nav-radius};
+    --cui-sidebar-nav-link-hover-color: #{component.$nav-fg-hover};
+    --cui-sidebar-nav-link-hover-bg: #{component.$nav-bg-hover};
+    --cui-sidebar-nav-link-active-color: #{component.$nav-fg-active};
+    --cui-sidebar-nav-link-active-bg: #{component.$nav-bg-active};
+    --cui-sidebar-nav-link-disabled-color: #{component.$nav-fg-disabled};
+
+    // The icon inherits the label at every state. `iconStyle: outline` with
+    // `currentColor` is the system's rule — an icon tinted apart from its own
+    // label is decoration spending a colour.
+    --cui-sidebar-nav-link-icon-color: inherit;
+    --cui-sidebar-nav-link-hover-icon-color: inherit;
+    --cui-sidebar-nav-link-active-icon-color: inherit;
+
+    // A SUB-LEVEL IS INDENTED, NOT PAINTED. The group opens inside the rail on
+    // the same plane; what says the items belong to the one above them is the
+    // indent and the space, which is the cheapest mechanism and the one this
+    // archetype spends. A fill here would be a third rung on chrome.
+    --cui-sidebar-nav-group-bg: transparent;
+    --cui-sidebar-nav-group-border-width: 0;
+    --cui-sidebar-nav-group-indicator-color: #{component.$nav-fg};
+    --cui-sidebar-nav-group-indicator-hover-color: #{component.$nav-fg-hover};
+    --cui-sidebar-nav-group-toggle-show-color: #{component.$nav-fg-active};
+
+    // The rail's section label — the quietest legible rung, because it is a
+    // caption for the items under it and never competes with them.
+    --cui-sidebar-nav-title-color: #{component.$nav-fg-disabled};
+  }
+
+  // Bound on the narrow classes, where CoreUI declares it, so a layout can
+  // reserve the same gutter from the same name.
+  .sidebar-narrow,
+  .sidebar-narrow-unfoldable {
+    --cui-sidebar-narrow-width: #{component.$sidebar-narrow-width};
+  }
+
+  // The fold control. Its ink is the rail's own, and its glyph is the icon size
+  // rather than the library's 8px — see the note on the tokens.
+  .sidebar-toggler {
+    --cui-sidebar-toggler-width: #{component.$sidebar-toggler-width};
+    --cui-sidebar-toggler-height: #{component.$sidebar-toggler-height};
+    --cui-sidebar-toggler-color: #{component.$sidebar-toggler-fg};
+    --cui-sidebar-toggler-hover-color: #{component.$sidebar-toggler-fg-hover};
+    --cui-sidebar-toggler-focus-color: #{component.$sidebar-toggler-fg-hover};
+  }
+
+  // THE CHOSEN ITEM'S THIRD CUE, AND THE MARK.
+  //
+  // Fill and ink come from the variables above. The weight and the bar are
+  // properties because CoreUI has neither — its sidebar has no indicator, and
+  // no `--cui-sidebar-nav-link-active-font-weight`.
+  //
+  // The bar rather than a stronger fill: `posture: quiet` puts the chosen item
+  // two neutral rungs down, and a 3px bar at full strength is the cheapest
+  // accent there is — the budget is area times chroma, so it reads as
+  // unambiguously coloured while painting a fraction of what a washed row does.
+  //
+  // `::before`, not `::after`: CoreUI draws a group's disclosure chevron with
+  // `.nav-group-toggle::after`, and a toggle that is also the current item
+  // would have had the two fighting for the same element.
+  .sidebar-nav .nav-link.active {
+    position: relative;
+    font-weight: #{component.$nav-font-weight-active};
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: 0;
+      inline-size: 3px;
+      background-color: #{component.$nav-indicator-bg};
+    }
   }
 
   // PILLS ARE THE SEGMENTED SHAPE, so the chosen one comes FORWARD out of the
@@ -1017,7 +1217,11 @@ $_derived: (
       // a dark page. The theme knows whether it is dark; its name does not.
       $page: map.get($choices, page);
 
-      @if $page != null and base.contrast($page, #fff) > base.contrast($page, #000) {
+      @if $page !=
+        null and
+        base.contrast($page, #fff) >
+        base.contrast($page, #000)
+      {
         [data-coreui-theme='dark'] {
           @include _triplets($choices);
         }

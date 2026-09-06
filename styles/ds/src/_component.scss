@@ -237,6 +237,24 @@ $field-label-fg: #{core.ref('fg-default')} !default;
 $field-label-bg: null !default;
 
 // --- Surface / card ----------------------------------------------------
+// THE COLLAPSED RAIL'S THICKNESS, and it is `size-bar` rather than a number of
+// its own: a rail folded down to its icons IS a bar stood on end, and the
+// product already decided how thick a bar is. A second value here is how the
+// phone's bottom bar and the desktop's rail end up disagreeing about the size of
+// the same icon.
+//
+// A layout that reserves a column for the rail reads this same name, so the
+// gutter and the sidebar cannot drift apart.
+$sidebar-narrow-width: #{core.ref('size-bar')} !default;
+// The control that folds and unfolds the rail. The library draws it at 8px
+// square inside 4px of padding — a 16px target, where this system's floor is
+// `size-control` and the reason is written down: 40px is a miss on a phone held
+// over a pan. The glyph is an icon; the padding around it in `coreui-entry`
+// carries the rest of the target.
+$sidebar-toggler-width: #{core.ref('size-icon')} !default;
+$sidebar-toggler-height: #{core.ref('size-icon')} !default;
+$sidebar-toggler-fg: #{core.ref('fg-muted')} !default;
+$sidebar-toggler-fg-hover: #{core.ref('fg-heading')} !default;
 $surface-bg: #{core.ref('bg-surface')} !default;
 $surface-fg: #{core.ref('fg-default')} !default;
 $surface-border-color: #{core.ref('border-color')} !default;
@@ -284,6 +302,21 @@ $nav-fg-hover: #{core.ref('fg-selected')} !default;
 // fill's measured pair rather than a text colour picked separately.
 $nav-fg-active: #{core.ref('fg-on-selected')} !default;
 $nav-bg-active: #{core.ref('bg-selected')} !default;
+// Hover is the PREVIEW of selection, so it is one rung above the chosen fill in
+// the same family — hovering and choosing read as the same gesture at two
+// strengths. Here rather than in a product file because the adapter has to
+// reach it: a rail drawn by the library gets its hover from this name.
+$nav-bg-hover: #{core.ref('bg-selected-subtle')} !default;
+// The mark on the chosen item's leading edge. A bar and not a fill, which is
+// what lets a rail spend the accent without spending the page's one filled
+// chromatic on permanent chrome.
+$nav-indicator-bg: #{core.ref('bg-accent')} !default;
+// THE THIRD CUE ON THE CHOSEN ITEM, and it is not decoration.
+//
+// Fill and ink are both tone, and "selected" carried by tone alone is a state
+// nobody with a tone-discrimination difficulty can read. Weight is a different
+// channel, and it is the one an Editorial product already spends on rank.
+$nav-font-weight-active: #{core.ref('font-weight-heading')} !default;
 
 // --- Inline code -------------------------------------------------------
 // Libraries like to tint `<code>` (Bootstrap ships a fixed pink). The
@@ -1040,6 +1073,30 @@ $tabs-tab-shadow-selected: #{core.ref('shadow-raised')} !default;
 // little tone to read on its own page needs somewhere to put one.
 $tabs-border-color: transparent !default;
 $tabs-layout-content-bg: #{core.ref('bg-surface')} !default;
+// The four slots a card needs that the contract had no name for: the ink on the
+// sheet, the gap between a title and what follows it, and the two quiet rungs
+// that carry the metadata line and the footer so neither competes with the name
+// of the dish. They were declared in the product's own token file, which made
+// them layer-2 reads with a layer-3 spelling — the adapter cannot reach that
+// file, so a card themed through the library could not see them at all.
+$card-fg: #{core.ref('fg-default')} !default;
+$card-gap: #{core.ref('space-xs')} !default;
+$card-meta-fg: #{core.ref('fg-subtlest')} !default;
+$card-footer-fg: #{core.ref('fg-subtlest')} !default;
+$card-meta-font-size: #{core.ref('font-size-sm')} !default;
+$card-footer-font-size: #{core.ref('font-size-xs')} !default;
+// The title is the loudest thing in the card and it gets there by being SET —
+// the heading face at a heading step with room above it, never a fill behind
+// it. `heading` and not `heading-sm`: a product that maps `heading-sm` onto the
+// body size gives a card title the same size as the paragraph under it, ranked
+// by the face alone.
+$card-title-font-size: #{core.ref('font-size-heading')} !default;
+$card-title-font-weight: #{core.ref('font-weight-heading')} !default;
+$card-title-line-height: #{core.ref('line-height-heading')} !default;
+// The rule under a card's header and above its footer. Separate from
+// `$card-border-width`, which is the card's own edge: a product can drop the
+// edge to zero and still want its footer divided from the body.
+$card-divider-width: #{core.ref('border-width')} !default;
 $card-content-radius: #{core.ref('radius-control-sm')} !default;
 $card-img-bg: #{core.ref('bg-raised')} !default;
 $card-content-bg: #{core.ref('bg-surface')} !default;

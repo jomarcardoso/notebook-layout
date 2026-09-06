@@ -272,6 +272,19 @@ $_field-pad: 4px;
   // which is a mark and not a fill. See `.app-navbar` for the bar.
   $nav-bg-active: var(--app-bg-neutral-subtle-active),
   $nav-fg-active: var(--app-fg-heading),
+  // ONE RUNG FOR HOVER, TWO FOR CHOSEN, and the gap between them is the point.
+  //
+  // Both sink into the page rather than lighting up, which is the rule for
+  // items sitting loose on a surface with no track around them: where a
+  // container has a plane of its own the chosen item RISES to it, and where the
+  // items are on the page it sinks.
+  //
+  // The first rung, not the second. `neutral-subtle-hover` put hover on the
+  // rung immediately under the chosen fill, so the two states were one step
+  // apart on a ramp where a step is 0.03 of lightness — hovering the item next
+  // to the current one made both look current. Starting at `neutral-subtle`
+  // doubles the distance and costs nothing: the ramp has the rung.
+  $nav-bg-hover: var(--app-bg-neutral-subtle),
   // HOVER PREVIEWS SELECTION, AND SELECTION IS NO LONGER ACCENT.
   //
   // The contract defaults this to the selection INK, which is right: hovering a
@@ -281,10 +294,24 @@ $_field-pad: 4px;
   // This school collapses the selection ink onto the accent, so with the
   // default the rail previewed a blue label and then committed to a neutral
   // fill with a small accent bar — the preview promising the one treatment the
-  // commitment does not use. The heading ink is what the chosen item takes, so
-  // it is what the hover shows.
-  $nav-fg-hover: var(--app-fg-heading),
-  $card-content-border-color: none,
+  // commitment does not use.
+  //
+  // The BODY ink, not the heading ink. Hover is a preview and the chosen item
+  // is the commitment, so the two cannot be the same: with both at
+  // `fg-heading`, the only thing separating a hovered item from the current one
+  // was a single rung of fill, and the weight the chosen item carries had
+  // nowhere to read against. Body ink under the pointer, heading ink and the
+  // heading weight where you actually are.
+  $nav-fg-hover: var(--app-fg-default),
+  // `transparent` and a width of zero, rather than the `none` that used to sit
+  // here. CoreUI writes the card's edge as a SHORTHAND —
+  // `border: var(--cui-card-border-width) solid var(--cui-card-border-color)`
+  // — and `none` in the colour position makes the whole declaration invalid, so
+  // the absence of a line depended on a browser dropping a malformed rule. The
+  // width is what expresses absence; the colour is what a `.border` utility
+  // overrides when a card does want an edge.
+  $card-content-border-color: transparent,
+  $card-border-width: 0,
 
   // NO SHADOW EITHER. The tone already separates the card from the page, and a
   // sheet lying on a table does not float. `shadow-raised` stays in the system
@@ -296,6 +323,14 @@ $_field-pad: 4px;
   // product's number, and at 8px the serif title sits against the card's edge
   // and the whitespace that was supposed to carry the hierarchy is not there.
   $card-body-pad: var(--app-space-md),
+
+  // THE FOOTER IS NOT A BAND. `ladderSpend: 2` — the page on one rung and
+  // everything raised on the next — leaves the third rung for the quiet neutral
+  // fill every badge and resting secondary action is made of. A filled strip
+  // inside a raised sheet spends it on a row of icon buttons instead, and the
+  // hairline above the footer already divides the two regions.
+  $card-footer-bg: transparent,
+  $card-footer-border-color: var(--app-border-color-subtle),
   // The same decision, for the shared contract's own surface.
   $surface-border-color: transparent,
 
@@ -382,30 +417,9 @@ $modal-footer-gap: var(--app-gap-inline) !default;
 $modal-divider-width: var(--app-border-width) !default;
 $modal-divider-color: var(--app-border-color-subtle) !default;
 
-$card-fg: var(--app-fg-default) !default;
-
-// A card is a leaf of paper: the picture is square, the way every image in this
-// product is, and the two quiet rungs below carry the metadata line and the
-// nutrition line so neither competes with the name of the dish.
-$card-img-ratio: var(--app-ratio-media) !default;
-$card-gap: var(--app-space-xs) !default;
-$card-meta-fg: var(--app-fg-subtlest) !default;
-$card-meta-font-size: var(--app-font-size-sm) !default;
-$card-footer-fg: var(--app-fg-subtlest) !default;
-$card-footer-font-size: var(--app-font-size-xs) !default;
-$card-img-description-font-size: var(--app-font-size-xs) !default;
-
-// The title is the loudest thing in the card and it gets there by being SET,
-// which in an Editorial product means the serif at a heading step with room
-// above it — never a fill behind it.
-// `heading`, not `heading-sm`. This product maps `heading-sm` onto the BODY
-// size on purpose — a fourth-level heading is a label for what follows it — so
-// a card title set there came out the same size as the paragraph under it and
-// was ranked by the serif alone. It is the loudest thing in the card and needs
-// a step of its own.
-$card-title-font-size: var(--app-font-size-heading) !default;
-$card-title-font-weight: var(--app-font-weight-heading) !default;
-$card-title-line-height: var(--app-line-height-heading) !default;
+// The card's own names moved to `src/_component.scss`, where the CoreUI adapter
+// can reach them. Declared here they were invisible to the adapter, and the
+// library draws the card now.
 
 $choice-title-fg: var(--app-fg-default) !default;
 // `iconStyle: outline`, and icons inherit `currentColor`: the one accent is
@@ -418,15 +432,10 @@ $table-td-accent-fg: var(--app-fg-accent) !default;
 
 $field-selection-fg: var(--app-fg-heading) !default;
 
-// The rail's own two slots. Hover is the PREVIEW of selection, so it is one
-// rung above the chosen fill in the same neutral family — hovering and choosing
-// read as the same gesture at two strengths.
-//
-// The indicator is the only accent the rail spends: a 3px bar, which is a mark
-// rather than a fill, and small enough that a screen still has exactly one
-// filled chromatic on it.
-$nav-bg-hover: var(--app-bg-neutral-subtle-hover) !default;
-$nav-indicator-bg: var(--app-bg-accent) !default;
+// `$nav-bg-hover` and `$nav-indicator-bg` moved to `src/_component.scss`, where
+// the CoreUI adapter can reach them — the sidebar is drawn by the library and
+// takes the same two slots the hand-written rail does. This product's values
+// for them are in the configuration map above.
 
 $notebook-tabs-content-fg: var(--app-fg-default) !default;
 $section-card-item-pad-y: var(--app-pad-control-y) !default;

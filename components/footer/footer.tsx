@@ -21,7 +21,6 @@ export const Footer: FC<FooterProps> = ({
 }) => {
   const classes = generateClasses({
     footer: true,
-    'theme-primary': true,
     'footer--menu': Boolean(footerMenu),
     'footer--open': Boolean(open),
   });
