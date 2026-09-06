@@ -27,12 +27,15 @@
     opacity: 0.5;
   }
 
-  .nav-pills {
-    border: component.$tabs-border-color;
-    border-radius: component.$tabs-radius;
-    padding: 4px;
-    background: component.$tabs-bg;
-  }
+  // THE TRACK BELONGS TO THE ADAPTER NOW. 0.9.4 gave `.nav-pills` its recess,
+  // its inset and its concentric corner as PROPERTIES, because CoreUI ships the
+  // class as bare links and has no variable for any of the three. This block was
+  // painting the same four things a second time, and one of them — the inset —
+  // as a literal `4px` where `$tabs-pad` now exists.
+  //
+  // What stays below is the half the adapter cannot reach: this component marks
+  // its chosen segment with `:checked +` on a sibling label rather than with
+  // `.active`, so the library's own active rule never fires on it.
 
   .nav-link {
     position: relative;

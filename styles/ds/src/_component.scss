@@ -946,18 +946,69 @@ $radio-button-radius: #{core.ref('radius-pill')} !default;
 // draw this control, it is what `claude-4.md` prescribes for a set whose items
 // are adjacent and mutually exclusive, and it spends no accent on a state that
 // POSITION has already made obvious.
+// THIS FAMILY IS THE SEGMENTED CONTROL, AND IT IS NOT THE TAB STRIP.
+//
+// The two were sharing `$nav-tab-*` until a product asked why a pill set looked
+// like an enclosed tab set, and the answer is that they are built on different
+// mechanisms and only one of them has a track.
+//
+//   `$nav-tab-*`   an ENCLOSED tab: the strip sits on the page, the chosen tab
+//                  is a surface fused to the panel below it, and a BORDER closes
+//                  the shape. There is no recess.
+//   `$tabs-*`      a SEGMENTED control: a recessed track holds every segment,
+//                  the chosen one is lifted OUT of it, and no border is drawn at
+//                  all — the tone step is the boundary.
+//
+// Sharing one family across both is a conflict of interest rather than a saving.
+// The moment a product wants the pill's track deeper it also deepens something
+// on the tab strip that has no track, and the only way out is to stop sharing.
 $tabs-bg: #{core.ref('bg-sunken')} !default;
-$tabs-tab-bg-selected: #{core.ref('bg-surface')} !default;
-// Accent as INK, which is the one way a chosen thing may still carry the
-// pigment: small, and on a neutral fill rather than as one.
-$tabs-tab-fg-selected: #{core.ref('fg-selected')} !default;
-// NO SHADOW. The tone difference between the recess and the segment is the
-// mechanism, and a shadow on top of it is the same boundary drawn twice —
-// which is what `check-mechanism` counts. A segment does not float; it is
-// flush with the surface it came from.
-$tabs-tab-shadow-selected: none !default;
-$tabs-border-color: #{core.ref('border')} !default;
+$tabs-pad: #{core.ref('space-2xs')} !default;
 $tabs-radius: #{core.ref('radius-surface')} !default;
+
+// The segment at rest is the track showing through — no fill of its own, so
+// that only the chosen one is a shape.
+$tabs-tab-fg: #{core.ref('fg-muted')} !default;
+$tabs-tab-radius: #{core.ref('radius-control')} !default;
+
+// HOVER, and it was missing entirely: a pill set changed its label colour and
+// nothing else, so the only feedback on a control built to be clicked was a
+// slightly darker word.
+//
+// `bg-surface-hover` and not a neutral fill, because hover is a PREVIEW of the
+// state that comes next, and the next state here is "lifted out of the track".
+// The neutral fill family moves the other way — deeper into the plane — which
+// on a recessed track previews the opposite of what clicking does. Measured on
+// the recepta ramp the three land in order: track #ebe5dd, hover #f2eee7,
+// selected #fdfbf8. The segment rises under the cursor and keeps rising.
+$tabs-tab-bg-hover: #{core.ref('bg-surface-hover')} !default;
+$tabs-tab-fg-hover: #{core.ref('fg-default')} !default;
+
+$tabs-tab-bg-selected: #{core.ref('bg-surface')} !default;
+// NEUTRAL INK, and it was `fg-selected`.
+//
+// The chosen segment is a NEUTRAL SURFACE lifted out of a track — it is not a
+// selection fill — so its label is the ordinary ink, the same one a neutral
+// button carries (`$button-secondary-fg`). Accent ink on it spends pigment
+// saying what the lift has already said, and in a monochrome school, where the
+// accent is the only colour on the page, that is the whole budget going to a
+// state POSITION already made obvious.
+$tabs-tab-fg-selected: #{core.ref('fg-default')} !default;
+// A SHADOW, and this reverses the line that was here.
+//
+// It read "no shadow: the tone difference is the mechanism and a shadow is the
+// same boundary drawn twice". True of a panel. Wrong here, and the difference is
+// the track: a segment is not separating itself from the page, it is claiming to
+// be ABOVE a surface that is still visible on both sides of it. Tone alone gives
+// a lighter patch; tone plus a hairline shadow gives a lifted one, which is the
+// same pair every platform's segmented control uses.
+//
+// `shadow-raised` deliberately — the one-pixel kind. A drop shadow would make it
+// float, and it is lifted, not floating.
+$tabs-tab-shadow-selected: #{core.ref('shadow-raised')} !default;
+// The track draws NO line. Kept as a name because a product whose track has too
+// little tone to read on its own page needs somewhere to put one.
+$tabs-border-color: transparent !default;
 $tabs-layout-content-bg: #{core.ref('bg-surface')} !default;
 $card-content-radius: #{core.ref('radius-control-sm')} !default;
 $card-img-bg: #{core.ref('bg-raised')} !default;

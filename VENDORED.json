@@ -1,7 +1,8 @@
 {
   "source": "design-system",
-  "commit": "031bbe5",
-  "date": "2026-09-05",
+  "version": "0.9.4",
+  "commit": "d985460",
+  "date": "2026-09-06",
   "layout": {
     "styles": "styles/ds/src",
     "scripts": "scripts/ds",
@@ -17,7 +18,7 @@
     "styles/ds/src/adapter-water.scss": "e987f0123d696526",
     "styles/ds/src/adapters/_bootstrap.scss": "644c26b9ea772fee",
     "styles/ds/src/adapters/_bulma.scss": "305fb4f0e3a2df34",
-    "styles/ds/src/adapters/_coreui.scss": "29a979f738bef6a9",
+    "styles/ds/src/adapters/_coreui.scss": "11124ddd9bc56ef8",
     "styles/ds/src/adapters/_daisyui.scss": "744b1c9df0fb43a8",
     "styles/ds/src/adapters/_flowbite.scss": "d56c3b2a490ae80e",
     "styles/ds/src/adapters/_mvp.scss": "c2c44b1b4bca196b",
@@ -28,7 +29,7 @@
     "styles/ds/src/adapters/_water.scss": "ab5bdc9d49c8e452",
     "styles/ds/src/ds.scss": "a38aedc99af617aa",
     "styles/ds/src/_base.scss": "d151bc245a24f617",
-    "styles/ds/src/_component.scss": "8abaf2f4cdfe4952",
+    "styles/ds/src/_component.scss": "6eeb11377844c129",
     "styles/ds/src/_config.scss": "aecb8965efad962b",
     "styles/ds/src/_core.scss": "0515192630153a3e",
     "styles/ds/src/_derive.scss": "b072f13be7102721",

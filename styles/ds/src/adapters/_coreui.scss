@@ -802,10 +802,41 @@ $_derived: (
   // the combination never measured. `check-pair-contrast` is the guard now, and
   // this binding is what stops the two tokens being able to disagree at all:
   // the tab pair is one decision, taken once.
+  // A PILL SET IS A SEGMENTED CONTROL, so it reads `$tabs-*` and not
+  // `$nav-tab-*`. It was reading the tab family, which meant a product could not
+  // deepen the pill track without also moving an enclosed tab strip that has no
+  // track — see the note on `$tabs-bg` in layer 3.
+  //
+  // Three of the four things this control needs have no CoreUI variable at all:
+  // the library ships `.nav-pills` as bare links with an active fill, with no
+  // track, no inset and no hover. Those are written as PROPERTIES here rather
+  // than as invented `--cui-nav-pills-*` names — an adapter may style a class the
+  // library ships, but a variable nobody reads is a feature the product would
+  // lose the moment it stopped loading this file.
   .nav-pills {
-    --cui-nav-pills-link-active-bg: #{component.$nav-tab-bg-active};
-    --cui-nav-pills-link-active-color: #{component.$nav-tab-fg-active};
-    --cui-nav-pills-border-radius: #{component.$nav-radius};
+    --cui-nav-pills-link-active-bg: #{component.$tabs-tab-bg-selected};
+    --cui-nav-pills-link-active-color: #{component.$tabs-tab-fg-selected};
+    --cui-nav-pills-border-radius: #{component.$tabs-tab-radius};
+
+    background-color: #{component.$tabs-bg};
+    padding: #{component.$tabs-pad};
+    border-radius: #{component.$tabs-radius};
+    color: #{component.$tabs-tab-fg};
+  }
+
+  // Concentric corners: the track's radius is the segment's plus the inset, so
+  // the two curves stay parallel instead of the outer one looking flattened.
+  // `$tabs-radius` carries the outer value directly rather than a `calc()`,
+  // because a product's radius scale has steps and arithmetic between them lands
+  // between steps.
+
+  .nav-pills .nav-link:hover:not(.active):not(.disabled) {
+    background-color: #{component.$tabs-tab-bg-hover};
+    color: #{component.$tabs-tab-fg-hover};
+  }
+
+  .nav-pills .nav-link.active {
+    box-shadow: #{component.$tabs-tab-shadow-selected};
   }
 
   // Tabs: the chosen one is a surface that has come forward, so its fill is the

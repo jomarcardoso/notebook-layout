@@ -270,15 +270,6 @@ $_field-pad: 4px;
   // Two rungs down on the neutral ladder, which is the same depth a chosen chip
   // takes, plus a solid accent bar on the leading edge — an INDICATOR of state,
   // which is a mark and not a fill. See `.app-navbar` for the bar.
-  // THE TRACK IS THE MECHANISM, SO IT CARRIES NO RULE.
-  //
-  // A segmented control is a recess with one segment lifted out of it. The
-  // recess is now real — the contract stopped defaulting the track to the page
-  // colour — and a border drawn around it as well is the same boundary stated
-  // twice, which is what makes a quiet product look busy for a reason nobody
-  // can name.
-  $tabs-border-color: none,
-
   $nav-bg-active: var(--app-bg-neutral-subtle-active),
   $nav-fg-active: var(--app-fg-heading),
   // HOVER PREVIEWS SELECTION, AND SELECTION IS NO LONGER ACCENT.

@@ -93,10 +93,7 @@
 // legacy `mix()` and hard-error on an oklch value. Every colour goes through
 // this first.
 @function srgb($c) {
-  @return color.to-space(
-    color.to-gamut($c, $space: rgb, $method: local-minde),
-    rgb
-  );
+  @return color.to-space(color.to-gamut($c, $space: rgb, $method: local-minde), rgb);
 }
 
 // ← CHANGE THIS: the LIGHT theme map. The dark one is not read here, because
@@ -361,7 +358,7 @@ $box-shadow-lg: var(--app-shadow-overlay);
 // them absolute names in the same sense as `.text-dark`. Binding one to a role
 // is the mistake this repository has now made three times.
 $high-emphasis: var(--app-fg-default);
-$medium-emphasis: var(--app-fg-subtlest);
+$medium-emphasis: var(--app-fg-muted);
 $disabled: var(--app-fg-disabled);
 
 // THE ONE THAT LOOKED LIKE IT BELONGED HERE AND DOES NOT, recorded because the
