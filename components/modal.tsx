@@ -43,12 +43,6 @@ export const Modal: FC<ModalProps> = ({
       {children && (
         <div
           className="modal__body"
-          // The dialog's content area is the sheet, and it is at the RAISED
-          // rung: it has no fill of its own and inherits `.modal`'s
-          // `$modal-bg`, which is `bg-raised`. The attribute names the plane
-          // the element is painted on, so everything inside is calibrated
-          // against the ground it is actually sitting on.
-          data-surface="raised"
           id="alert-dialog-description"
           {...bodyProps}
         >

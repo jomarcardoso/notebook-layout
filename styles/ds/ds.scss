@@ -1,108 +1,12 @@
-// styles/ds/ds.scss
-
-// =============================================================================
-// NOTEBOOK-LAYOUT — the design system build
-// =============================================================================
-//
-//     npm run build:tokens
-//
-// This file is an INDEX and nothing else: it calls each layer's `emit()` in
-// cascade order. Every decision it looks like it is making was made in
-// `tokens.scss`, which both this compilation and the CoreUI one load first.
-//
-// Two adapters, which the foundation normally forbids. It is legal here because
-// it was MEASURED rather than assumed: compiled side by side, CoreUI-as-imported
-// and notebook-layout share exactly one class name (`d-none`, identical
-// declaration) and zero custom properties. They partition cleanly — CoreUI owns
-// the grid, buttons, cards, nav and breadcrumb; notebook-layout owns tables,
-// modals, dialogs and categories.
-//
-// `check-collisions.mjs` and `check-dangling-refs.mjs` both run on every build.
-//
-// -----------------------------------------------------------------------------
-// WHERE EACH THING LIVES
-// -----------------------------------------------------------------------------
-//
-//   palette.scss              what the colours ARE                   (layer 1)
-//   tokens.scss               the school, the type scale, layer 3
-//   semantic/light.scss       the theme's map                        (layer 2)
-//   semantic/_structure.scss  type, radius, viewport                 (layer 2)
-//   semantic/_surfaces.scss   the paper surface context              (layer 2)
-//
-// There is no `dark.scss`. Night is GENERATED — see below.
-// =============================================================================
-
-// THE CONFIGURATION, AND IT HAS TO BE FIRST.
-//
-// `tokens.scss` forwards `config`, `base` and `component` with this product's
-// values. A Sass module can be configured once, by whoever loads it first, so
-// anything from `src/` loaded above this line would be configured with its
-// defaults and Sass would then refuse to go on. That error is the guard
-// working, not the guard being in the way.
 @use './tokens';
-
 @use './src/base';
+
 @use './src/semantic';
 @use './src/component';
-@use './src/derive';
 @use './src/adapters/coreui' as coreui-adapter;
-@use './semantic/light';
-@use './semantic/structure';
-@use './semantic/surfaces';
 
-// Layer 1 — the ramps compile away. Neither pigment emits a byte.
-@include base.emit();
-
-// Layer 2 — the archetype's structure first (theme-independent: spacing,
-// radius, typography, the icon stroke), then the day theme. `emit-theme()`
-// runs the contrast gate and the role-distinction check itself.
-@include semantic.emit-structure(structure.$structure);
-@include semantic.emit-theme('light', light.$tokens, $default: true);
-
-// NIGHT, GENERATED.
-//
-// `derive.dark()` transforms by ROLE in OKLCH rather than per colour: the pen
-// comes up the ramp until it separates from a dark page and its label goes dark
-// with it, and every interaction state then brightens, because a fill moves
-// away from its own label. Its output goes through the same contrast gate as
-// the hand-written day theme — a dark theme that ships unreadable text does not
-// compile.
-//
-// The hand-written `dark.scss` this replaced was written against six palette
-// families that no longer exist. A hand-written night can come back if it earns
-// the attention; a stale one nobody re-measured could not.
-//
-// NOT `$auto`, so the OS preference does not reach it. The product has no
-// control for picking a theme at the moment, and `prefers-color-scheme` without
-// one is a switch the visitor cannot see and cannot undo: a machine set to dark
-// got the night theme with no way back to the day one.
-//
-// The block is still emitted and still measured, reachable at
-// `[data-theme="dark"]`. Keeping it costs a few hundred bytes and means
-// restoring the control is a commit that adds a control, rather than one that
-// has to derive and re-measure a theme.
-@include semantic.emit-theme('dark', derive.dark(light.$tokens));
-
-// Still layer 2: the two tokens whose value depends on the viewport, so a
-// component never mentions a breakpoint.
-@include structure.responsive();
-
-// The product's own surface contexts.
-@include surfaces.emit();
-
-// Layer 3.5 — the adapter. ONE, for the one third-party library.
-//
-// There is no adapter for this package. An adapter translates a library that
-// does not know the foundation exists; this IS the design system, built on the
-// foundation, so its components read layer 2 directly. Wrapping it in an
-// adapter meant maintaining a translation layer between a system and itself.
-//
-// The themes are passed in because this product declares them itself rather
-// than registering them with the tool. Without them the adapter emits
-// references but no rgb triplets, and every CoreUI opacity utility, focus ring
-// and `.text-bg-*` silently keeps the library default. It refuses to compile in
-// that state instead of shipping it.
-@include coreui-adapter.emit((
-  'light': light.$tokens,
-  'dark': derive.dark(light.$tokens)
-));
+@include coreui-adapter.emit(
+  (
+    'light': semantic.$adapter-light,
+  )
+);

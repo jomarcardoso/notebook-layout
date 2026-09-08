@@ -30,8 +30,7 @@
 // Aliased. This file also declares a `$light` of its own further down — that is
 // CoreUI's name for the pale end of the neutral ramp, a palette alias and not a
 // theme, and reading `light.$tokens` two lines above it invited the confusion.
-@use './semantic/light' as light-theme;
-@use './src/roles';
+@use './src/semantic' as light-theme;
 
 // CoreUI inherits Bootstrap's `shade-color()` / `tint-color()`, which call the
 // legacy `mix()` and hard-error on an oklch value. Gamut-map first.
@@ -42,7 +41,7 @@
   );
 }
 
-$_choices: roles.normalise(light-theme.$tokens);
+$_choices: light-theme.$adapter-light;
 
 @function _c($key) {
   @return srgb(map.get($_choices, $key));
@@ -51,11 +50,6 @@ $_choices: roles.normalise(light-theme.$tokens);
 // `primary` is CoreUI's name for its main button, and in this school that is
 // the ACCENT — the pen, and the only chromatic decision in the product.
 //
-// The theme map is authored in the school's own vocabulary, so `roles.normalise()`
-// is what turns `accent` back into the canonical `action` this lookup asks for.
-// Reading `accent` directly here would work today and break the moment the
-// school changes, which is the whole reason the canonical names exist.
-//
 // `secondary` is CoreUI's GREY button and maps to the neutral ramp. It is not
 // the accent at a lighter step: a supporting action carries no opinion, and a
 // cancel button the colour of an active menu item is the confusion this school
@@ -63,17 +57,17 @@ $_choices: roles.normalise(light-theme.$tokens);
 $primary: _c(action);
 $secondary: _c(neutral);
 $success: _c(success);
-$info: _c(info);
+$info: _c(action);
 $warning: _c(warning);
 $danger: _c(danger);
 
 // Absolute palette aliases in Bootstrap's vocabulary, not theme roles. They keep
 // that nature and take the ends of the paper ramp so they are on-brand rather
 // than stock grey.
-$light: _c(surface);
+$light: _c(canvas);
 $dark: _c(text);
 
-$body-bg: _c(page);
+$body-bg: _c(canvas);
 $body-color: _c(text);
 $body-secondary-color: _c('text-muted');
 // `$body-tertiary-bg` IS DELIBERATELY NOT SET, and the reason is a real limit in

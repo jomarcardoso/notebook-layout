@@ -18,13 +18,6 @@ This is a public local UI/layout library consumed by the private app.
 When changing this package, verify that `www` still builds with the local import.
 
 
-## Design
-
-Colour, fill, border and elevation are governed by the `compose-monochrome`
-skill; shape, spacing, type and voice by `compose-archetype`. Invoke the
-relevant one before writing markup or a stylesheet — see the root `AGENTS.md`
-for which question goes where.
-
 ## CSS
 
 Use the BEM naming convention: a block, its elements, and modifiers on either.

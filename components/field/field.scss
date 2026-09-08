@@ -76,7 +76,6 @@
     align-self: flex-start;
     font-size: component.$field-label-font-size;
     font-family: component.$field-label-font-family;
-    mix-blend-mode: var(--app-blend-ink);
     transition:
       background-color var(--app-duration-base) var(--app-ease),
       border-color var(--app-duration-base) var(--app-ease);
@@ -128,7 +127,6 @@
     width: 80%;
     height: 100%;
     margin: auto;
-    mix-blend-mode: var(--app-blend-ink);
 
     svg {
       height: 92%;

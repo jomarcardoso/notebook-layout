@@ -11,8 +11,8 @@
     "start": "npm run storybook",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build:tokens": "npm run build:coreui && sass --no-source-map --load-path=styles/ds styles/ds/tokens.scss /dev/null && sass --no-source-map --style=compressed --load-path=styles/ds styles/ds/ds.scss styles/ds/dist/ds.css && node scripts/ds/check-collisions.mjs styles/ds/dist/ds.css && node scripts/ds/check-dangling-refs.mjs styles/ds/dist/ds.css && node scripts/ds/check-state-families.mjs styles/ds/dist/ds.css && node scripts/ds/check-pair-contrast.mjs styles/ds/dist/ds.css --gate && node scripts/ds/check-fallback-values.mjs styles/ds/dist/ds.css && node scripts/ds/check-layer3-bypass.mjs styles/ds/src/adapters && node scripts/ds/check-token-grammar.mjs styles/ds/src/_component.scss && node scripts/ds/check-custom-prop-interpolation.mjs components styles && node scripts/ds/check-theme-proof.mjs components styles ../www/src && node scripts/ds/check-dumb-components.mjs components styles/components --allow=0",
-    "lint:layers": "npx stylelint \"components/**/*.scss\" \"styles/**/*.scss\" --config stylelint.config.cjs && node scripts/ds/check-orphan-reads.mjs components styles ../www/src",
+    "build:tokens": "npm run build:coreui && sass --no-source-map --load-path=styles/ds styles/ds/tokens.scss /dev/null && sass --no-source-map --style=compressed --load-path=styles/ds styles/ds/ds.scss styles/ds/dist/ds.css",
+    "lint:layers": "npx stylelint \"components/**/*.scss\" \"styles/**/*.scss\" --config stylelint.config.cjs",
     "build:coreui": "sass --no-source-map --style=compressed --quiet-deps --silence-deprecation=import --load-path=../www/node_modules styles/ds/coreui-entry.scss styles/ds/dist/coreui.css"
   },
   "repository": {

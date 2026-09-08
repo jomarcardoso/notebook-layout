@@ -1,86 +1,12 @@
-// =============================================================================
-// NOTEBOOK-LAYOUT — the entry a consuming application imports
-// =============================================================================
-//
-//     @import 'notebook-layout/styles/app';
-//
-// One line. Everything a consumer needs — the cascade order, the tokens, both
-// libraries wrapped, the reset — is here, because the alternative is every
-// application re-deriving it and getting it slightly differently.
-//
-// `www` is the first consumer and will not be the last. Anything an application
-// has to remember to do is something the second application will forget.
-//
-// -----------------------------------------------------------------------------
-// WHY THE LIBRARIES ARE WRAPPED
-// -----------------------------------------------------------------------------
-//
-// UNLAYERED CSS BEATS ALL LAYERED CSS — regardless of layer order and
-// regardless of specificity. Layers sit BELOW unlayered styles, always.
-//
-// Both CoreUI and this library ship unlayered. Wrapping the design system in
-// layers while leaving them outside would make the design system lose
-// everywhere, including against a bare element selector, and the adapters —
-// whose entire job is to beat library defaults — would never win once.
-//
-// `@import` rather than `@use` for them, because Sass does not permit `@use`
-// inside `@layer` and these need to be inside one.
-// =============================================================================
-
-// -----------------------------------------------------------------------------
-// 1. The order, before anything else
-// -----------------------------------------------------------------------------
-//
-// A layer's position is fixed by its FIRST appearance, so declaring the whole
-// order up front is what stops a later import reordering it by accident.
 @layer legacy, theme, base, ds.base, ds.semantic, ds.component, vendor,
   vendor-config, components, ds.overrides, utilities;
-
-// -----------------------------------------------------------------------------
-// 2. The tokens — layers 1-3 plus both adapters
-// -----------------------------------------------------------------------------
-//
-// Compiled by `npm run build:tokens`, which is also where the contrast gate,
-// the collision check and the dangling-reference check run.
-//
-// The extension is omitted ON PURPOSE. With `.css` on the end Sass keeps it as
-// a runtime `@import`, and because CSS requires `@import` to precede every
-// other rule, Sass HOISTS it above the `@layer` statement — fixing the layer
-// positions before the order declaration runs, which is the one thing that
-// declaration exists to prevent. Without the extension Sass inlines it.
-@import './ds/dist/ds';
-
-// -----------------------------------------------------------------------------
-// 3. The reset
-// -----------------------------------------------------------------------------
-//
-// Pulled in explicitly, into `base`, rather than left to `main.scss`.
-//
-// `main.scss` reaches for it with a runtime `@import`, which worked while this
-// library was unlayered — Sass hoisted it to the top of the file, where CSS
-// requires `@import` to be. Inside `@layer vendor` the same statement becomes a
-// NESTED `@import`: invalid CSS, dropped by every browser in silence, and the
-// reset simply disappears with nothing reporting it.
+@import './ds/ds';
 @layer base {
   @import 'the-new-css-reset/css/reset';
 }
 
-// -----------------------------------------------------------------------------
-// 4. The libraries
-// -----------------------------------------------------------------------------
-
 @layer vendor {
-  // CoreUI, PRE-COMPILED by `ds/coreui-entry.scss` and inlined here.
-  //
-  // It cannot be imported directly inside a layer: its variables module needs
-  // `@use … with (…)` to configure, `@use` is not allowed inside `@layer`, and
-  // the `.import` shims are one-line `@forward`s that do not read globals. The
-  // attempt to do it in one file left `$enable-cssgrid` inert and deleted every
-  // CSS Grid utility from the application without a word.
-  //
-  // Compiled CSS has no modules left to configure, so inlining it here puts the
-  // whole library in `vendor` where the adapter can beat it.
-  @import './ds/dist/coreui';
+  @import './ds/coreui-entry';
 
   // This library's own components.
   @import './main';

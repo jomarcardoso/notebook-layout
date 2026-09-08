@@ -27,11 +27,6 @@ export const SectionCard: FC<SectionCardProps> = ({
 
   return (
     <section
-      // `raised`, matching what the body PAINTS. A context names the plane the
-      // element is on, because every rung inside it is a distance from that
-      // plane — declaring `surface` here calibrated the panel's own contents
-      // against a ground one rung below the one they sit on.
-      data-surface="raised"
       aria-labelledby={id}
       className={classes}
       {...props}

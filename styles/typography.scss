@@ -98,7 +98,7 @@
 // face. The Caveat face and the size already say this is a margin note, which
 // is two levers and the limit.
 .display-title {
-  color: var(--app-fg-subtlest);
+  color: var(--app-fg-muted);
   font-family: var(--app-font-family-display);
   font-size: var(--app-font-size-heading-lg);
   font-weight: var(--app-font-weight-heading);
@@ -134,7 +134,7 @@
 // Uppercase in CSS rather than in the markup, so the accessible name stays the
 // sentence someone wrote.
 .eyebrow {
-  color: var(--app-fg-subtlest);
+  color: var(--app-fg-muted);
   display: block;
   font-family: var(--app-font-family-body);
   font-size: var(--app-font-size-xs);

@@ -1,831 +1,300 @@
-// src/_base.scss
+// notebook-layout/styles/ds/src/_base.scss
 
-// =============================================================================
-// LAYER 1 — BASE
-// =============================================================================
-//
-// Also known as:
-//   reference tokens   (Material Design 3)
-//   primitive tokens   (Adobe Spectrum, Atlassian, Salesforce Lightning)
-//   option tokens      (Nathan Curtis / EightShapes — the original naming)
-//   global tokens      (Design Tokens W3C Community Group, DTCG format)
-//   core / literal / raw / absolute tokens  (common informal names)
-//
-// Defining properties of this layer, all of which this file obeys:
-//
-//   1. Values are LITERAL. A base token never points at another token. This is
-//      what makes the layer a terminal node in the dependency graph and what
-//      makes it safe to resolve at build time.
-//   2. Values are STATIC. Nothing here changes between themes, contexts,
-//      breakpoints, or user preferences. A red is a red in dark mode too.
-//   3. Values carry NO MEANING. `red-600` does not mean "danger". Assigning
-//      meaning is layer 2's only job. If a name here implies usage, it is
-//      misplaced and belongs in the semantic layer.
-//   4. Values are NOT part of the public API. Application code, component code
-//      and adapters must never read this layer directly — only layer 2 may.
-//      The stylelint rule shipped with this project enforces that.
-//
-// -----------------------------------------------------------------------------
-// WHY SCSS MAPS INSTEAD OF CSS CUSTOM PROPERTIES
-// -----------------------------------------------------------------------------
-//
-// A CSS custom property always ships. Declaring the full palette as
-// `--color-red-500: …` in `:root` writes roughly 250 declarations (~9 KB before
-// compression) into every page, whether or not a single one is referenced.
-//
-// A SCSS map ships NOTHING. Only the entries actually read via `color()` are
-// inlined, as literal values, at the point of use. Unused families cost zero
-// bytes. This is the cheapest possible answer to "unused values must not reach
-// the final CSS", and it is only available because of property 1 and 2 above:
-// static literals have no reason to exist at runtime.
-//
-// The trade-off is that `var(--color-red-500)` is not available at runtime.
-// That is intentional, and it is not a loss — by definition nothing may
-// reference a base token at runtime except layer 2, which is compiled here.
-//
-// If a specific project genuinely needs runtime access (a colour picker
-// binding to the palette, a canvas renderer reading computed styles), set
-// `$emit-base-vars: true` in `_config.scss` and this file will additionally
-// emit the palette as custom properties under the `ds.base` cascade layer.
-// That is opt-in, not the default.
-//
-// -----------------------------------------------------------------------------
-// SOURCE
-// -----------------------------------------------------------------------------
-//
-// Colour ramps and scales below mirror the Tailwind CSS v4 default theme, plus
-// four project-specific neutral families (mauve, olive, mist, taupe). Keeping
-// the same names and steps as Tailwind means layer 1 needs no adapter of its
-// own: `bg-red-500` from a Tailwind utility and `color(red, 500)` from this map
-// resolve to the same value.
-// =============================================================================
+@layer ds.base {
+  :root {
+    --accent-1: #fbfdff;
+    --accent-2: #f5f9ff;
+    --accent-3: #eaf1ff;
+    --accent-4: #dde9ff;
+    --accent-5: #cfdfff;
+    --accent-6: #bcd0ff;
+    --accent-7: #a3bdff;
+    --accent-8: #83a2ff;
+    --accent-9: #2a3b8f;
+    --accent-10: #394da3;
+    --accent-11: #4d67d7;
+    --accent-12: #1b277a;
+    --accent-a1: #0080ff04;
+    --accent-a2: #0066ff0a;
+    --accent-a3: #0055ff15;
+    --accent-a4: #005aff22;
+    --accent-a5: #0055ff30;
+    --accent-a6: #004dff43;
+    --accent-a7: #0049ff5c;
+    --accent-a8: #0040ff7c;
+    --accent-a9: #001479d5;
+    --accent-a10: #001a89c6;
+    --accent-a11: #0025c6b2;
+    --accent-a12: #000d6ae4;
+    --accent-contrast: #fff;
+    --accent-surface: #f3f8ffcc;
+    --accent-indicator: #2a3b8f;
+    --accent-track: #2a3b8f;
 
-@use 'sass:color';
-@use 'sass:list';
-@use 'sass:map';
-@use 'sass:math';
-@use 'config';
+    --neutral-1: #fffcfa;
+    --neutral-2: #fdf8f5;
+    --neutral-3: #f6efe9;
+    --neutral-4: #f2e6de;
+    --neutral-5: #ecded6;
+    --neutral-6: #e7d6ca;
+    --neutral-7: #dfcabc;
+    --neutral-8: #d0b5a3;
+    --neutral-9: #a58570;
+    --neutral-10: #987b67;
+    --neutral-11: #745d4e;
+    --neutral-12: #2e1b0d;
+    --neutral-a1: #ff660005;
+    --neutral-a2: #cc4d000a;
+    --neutral-a3: #97460016;
+    --neutral-a4: #9b3e0021;
+    --neutral-a5: #89320029;
+    --neutral-a6: #8c3a0035;
+    --neutral-a7: #86360043;
+    --neutral-a8: #7d32005c;
+    --neutral-a9: #5f26008f;
+    --neutral-a10: #53220098;
+    --neutral-a11: #371600b1;
+    --neutral-a12: #230f00f2;
+    --neutral-contrast: #ffffff;
+    --neutral-surface: #ffffffcc;
+    --neutral-indicator: #a58570;
+    --neutral-track: #a58570;
 
-// -----------------------------------------------------------------------------
-// Colour ramps
-// -----------------------------------------------------------------------------
+    --success-1: #fcfefb;
+    --success-2: #f7faf5;
+    --success-3: #eef5e8;
+    --success-4: #e2eed9;
+    --success-5: #d5e5c7;
+    --success-6: #c3d9b0;
+    --success-7: #acc893;
+    --success-8: #8db168;
+    --success-9: #698f3f;
+    --success-10: #5f8139;
+    --success-11: #55772f;
+    --success-12: #2d3921;
+    --success-a1: #40c00004;
+    --success-a2: #3380000a;
+    --success-a3: #43910017;
+    --success-a4: #3d8d0026;
+    --success-a5: #40890038;
+    --success-a6: #3e85004f;
+    --success-a7: #3c7e006c;
+    --success-a8: #3f7c0097;
+    --success-a9: #386a00c0;
+    --success-a10: #315d00c6;
+    --success-a11: #2f5800d0;
+    --success-a12: #0e1c00de;
+    --success-contrast: #fff;
+    --success-surface: #f5f9f3cc;
+    --success-indicator: #698f3f;
+    --success-track: #698f3f;
 
-$palette: (
-  red: (
-    50: oklch(97.1% 0.013 17.38),
-    100: oklch(93.6% 0.032 17.717),
-    200: oklch(88.5% 0.062 18.334),
-    300: oklch(80.8% 0.114 19.571),
-    400: oklch(70.4% 0.191 22.216),
-    500: oklch(63.7% 0.237 25.331),
-    600: oklch(57.7% 0.245 27.325),
-    700: oklch(50.5% 0.213 27.518),
-    800: oklch(44.4% 0.177 26.899),
-    900: oklch(39.6% 0.141 25.723),
-    950: oklch(25.8% 0.092 26.042),
-  ),
-  orange: (
-    50: oklch(98% 0.016 73.684),
-    100: oklch(95.4% 0.038 75.164),
-    200: oklch(90.1% 0.076 70.697),
-    300: oklch(83.7% 0.128 66.29),
-    400: oklch(75% 0.183 55.934),
-    500: oklch(70.5% 0.213 47.604),
-    600: oklch(64.6% 0.222 41.116),
-    700: oklch(55.3% 0.195 38.402),
-    800: oklch(47% 0.157 37.304),
-    900: oklch(40.8% 0.123 38.172),
-    950: oklch(26.6% 0.079 36.259),
-  ),
-  amber: (
-    50: oklch(98.7% 0.022 95.277),
-    100: oklch(96.2% 0.059 95.617),
-    200: oklch(92.4% 0.12 95.746),
-    300: oklch(87.9% 0.169 91.605),
-    400: oklch(82.8% 0.189 84.429),
-    500: oklch(76.9% 0.188 70.08),
-    600: oklch(66.6% 0.179 58.318),
-    700: oklch(55.5% 0.163 48.998),
-    800: oklch(47.3% 0.137 46.201),
-    900: oklch(41.4% 0.112 45.904),
-    950: oklch(27.9% 0.077 45.635),
-  ),
-  yellow: (
-    50: oklch(98.7% 0.026 102.212),
-    100: oklch(97.3% 0.071 103.193),
-    200: oklch(94.5% 0.129 101.54),
-    300: oklch(90.5% 0.182 98.111),
-    400: oklch(85.2% 0.199 91.936),
-    500: oklch(79.5% 0.184 86.047),
-    600: oklch(68.1% 0.162 75.834),
-    700: oklch(55.4% 0.135 66.442),
-    800: oklch(47.6% 0.114 61.907),
-    900: oklch(42.1% 0.095 57.708),
-    950: oklch(28.6% 0.066 53.813),
-  ),
-  lime: (
-    50: oklch(98.6% 0.031 120.757),
-    100: oklch(96.7% 0.067 122.328),
-    200: oklch(93.8% 0.127 124.321),
-    300: oklch(89.7% 0.196 126.665),
-    400: oklch(84.1% 0.238 128.85),
-    500: oklch(76.8% 0.233 130.85),
-    600: oklch(64.8% 0.2 131.684),
-    700: oklch(53.2% 0.157 131.589),
-    800: oklch(45.3% 0.124 130.933),
-    900: oklch(40.5% 0.101 131.063),
-    950: oklch(27.4% 0.072 132.109),
-  ),
-  green: (
-    50: oklch(98.2% 0.018 155.826),
-    100: oklch(96.2% 0.044 156.743),
-    200: oklch(92.5% 0.084 155.995),
-    300: oklch(87.1% 0.15 154.449),
-    400: oklch(79.2% 0.209 151.711),
-    500: oklch(72.3% 0.219 149.579),
-    600: oklch(62.7% 0.194 149.214),
-    700: oklch(52.7% 0.154 150.069),
-    800: oklch(44.8% 0.119 151.328),
-    900: oklch(39.3% 0.095 152.535),
-    950: oklch(26.6% 0.065 152.934),
-  ),
-  emerald: (
-    50: oklch(97.9% 0.021 166.113),
-    100: oklch(95% 0.052 163.051),
-    200: oklch(90.5% 0.093 164.15),
-    300: oklch(84.5% 0.143 164.978),
-    400: oklch(76.5% 0.177 163.223),
-    500: oklch(69.6% 0.17 162.48),
-    600: oklch(59.6% 0.145 163.225),
-    700: oklch(50.8% 0.118 165.612),
-    800: oklch(43.2% 0.095 166.913),
-    900: oklch(37.8% 0.077 168.94),
-    950: oklch(26.2% 0.051 172.552),
-  ),
-  teal: (
-    50: oklch(98.4% 0.014 180.72),
-    100: oklch(95.3% 0.051 180.801),
-    200: oklch(91% 0.096 180.426),
-    300: oklch(85.5% 0.138 181.071),
-    400: oklch(77.7% 0.152 181.912),
-    500: oklch(70.4% 0.14 182.503),
-    600: oklch(60% 0.118 184.704),
-    700: oklch(51.1% 0.096 186.391),
-    800: oklch(43.7% 0.078 188.216),
-    900: oklch(38.6% 0.063 188.416),
-    950: oklch(27.7% 0.046 192.524),
-  ),
-  cyan: (
-    50: oklch(98.4% 0.019 200.873),
-    100: oklch(95.6% 0.045 203.388),
-    200: oklch(91.7% 0.08 205.041),
-    300: oklch(86.5% 0.127 207.078),
-    400: oklch(78.9% 0.154 211.53),
-    500: oklch(71.5% 0.143 215.221),
-    600: oklch(60.9% 0.126 221.723),
-    700: oklch(52% 0.105 223.128),
-    800: oklch(45% 0.085 224.283),
-    900: oklch(39.8% 0.07 227.392),
-    950: oklch(30.2% 0.056 229.695),
-  ),
-  sky: (
-    50: oklch(97.7% 0.013 236.62),
-    100: oklch(95.1% 0.026 236.824),
-    200: oklch(90.1% 0.058 230.902),
-    300: oklch(82.8% 0.111 230.318),
-    400: oklch(74.6% 0.16 232.661),
-    500: oklch(68.5% 0.169 237.323),
-    600: oklch(58.8% 0.158 241.966),
-    700: oklch(50% 0.134 242.749),
-    800: oklch(44.3% 0.11 240.79),
-    900: oklch(39.1% 0.09 240.876),
-    950: oklch(29.3% 0.066 243.157),
-  ),
-  blue: (
-    50: oklch(97% 0.014 254.604),
-    100: oklch(93.2% 0.032 255.585),
-    200: oklch(88.2% 0.059 254.128),
-    300: oklch(80.9% 0.105 251.813),
-    400: oklch(70.7% 0.165 254.624),
-    500: oklch(62.3% 0.214 259.815),
-    600: oklch(54.6% 0.245 262.881),
-    700: oklch(48.8% 0.243 264.376),
-    800: oklch(42.4% 0.199 265.638),
-    900: oklch(37.9% 0.146 265.522),
-    950: oklch(28.2% 0.091 267.935),
-  ),
-  indigo: (
-    50: oklch(96.2% 0.018 272.314),
-    100: oklch(93% 0.034 272.788),
-    200: oklch(87% 0.065 274.039),
-    300: oklch(78.5% 0.115 274.713),
-    400: oklch(67.3% 0.182 276.935),
-    500: oklch(58.5% 0.233 277.117),
-    600: oklch(51.1% 0.262 276.966),
-    700: oklch(45.7% 0.24 277.023),
-    800: oklch(39.8% 0.195 277.366),
-    900: oklch(35.9% 0.144 278.697),
-    950: oklch(25.7% 0.09 281.288),
-  ),
-  violet: (
-    50: oklch(96.9% 0.016 293.756),
-    100: oklch(94.3% 0.029 294.588),
-    200: oklch(89.4% 0.057 293.283),
-    300: oklch(81.1% 0.111 293.571),
-    400: oklch(70.2% 0.183 293.541),
-    500: oklch(60.6% 0.25 292.717),
-    600: oklch(54.1% 0.281 293.009),
-    700: oklch(49.1% 0.27 292.581),
-    800: oklch(43.2% 0.232 292.759),
-    900: oklch(38% 0.189 293.745),
-    950: oklch(28.3% 0.141 291.089),
-  ),
-  purple: (
-    50: oklch(97.7% 0.014 308.299),
-    100: oklch(94.6% 0.033 307.174),
-    200: oklch(90.2% 0.063 306.703),
-    300: oklch(82.7% 0.119 306.383),
-    400: oklch(71.4% 0.203 305.504),
-    500: oklch(62.7% 0.265 303.9),
-    600: oklch(55.8% 0.288 302.321),
-    700: oklch(49.6% 0.265 301.924),
-    800: oklch(43.8% 0.218 303.724),
-    900: oklch(38.1% 0.176 304.987),
-    950: oklch(29.1% 0.149 302.717),
-  ),
-  fuchsia: (
-    50: oklch(97.7% 0.017 320.058),
-    100: oklch(95.2% 0.037 318.852),
-    200: oklch(90.3% 0.076 319.62),
-    300: oklch(83.3% 0.145 321.434),
-    400: oklch(74% 0.238 322.16),
-    500: oklch(66.7% 0.295 322.15),
-    600: oklch(59.1% 0.293 322.896),
-    700: oklch(51.8% 0.253 323.949),
-    800: oklch(45.2% 0.211 324.591),
-    900: oklch(40.1% 0.17 325.612),
-    950: oklch(29.3% 0.136 325.661),
-  ),
-  pink: (
-    50: oklch(97.1% 0.014 343.198),
-    100: oklch(94.8% 0.028 342.258),
-    200: oklch(89.9% 0.061 343.231),
-    300: oklch(82.3% 0.12 346.018),
-    400: oklch(71.8% 0.202 349.761),
-    500: oklch(65.6% 0.241 354.308),
-    600: oklch(59.2% 0.249 0.584),
-    700: oklch(52.5% 0.223 3.958),
-    800: oklch(45.9% 0.187 3.815),
-    900: oklch(40.8% 0.153 2.432),
-    950: oklch(28.4% 0.109 3.907),
-  ),
-  rose: (
-    50: oklch(96.9% 0.015 12.422),
-    100: oklch(94.1% 0.03 12.58),
-    200: oklch(89.2% 0.058 10.001),
-    300: oklch(81% 0.117 11.638),
-    400: oklch(71.2% 0.194 13.428),
-    500: oklch(64.5% 0.246 16.439),
-    600: oklch(58.6% 0.253 17.585),
-    700: oklch(51.4% 0.222 16.935),
-    800: oklch(45.5% 0.188 13.697),
-    900: oklch(41% 0.159 10.272),
-    950: oklch(27.1% 0.105 12.094),
-  ),
-  slate: (
-    50: oklch(98.4% 0.003 247.858),
-    100: oklch(96.8% 0.007 247.896),
-    200: oklch(92.9% 0.013 255.508),
-    300: oklch(86.9% 0.022 252.894),
-    400: oklch(70.4% 0.04 256.788),
-    500: oklch(55.4% 0.046 257.417),
-    600: oklch(44.6% 0.043 257.281),
-    700: oklch(37.2% 0.044 257.287),
-    800: oklch(27.9% 0.041 260.031),
-    900: oklch(20.8% 0.042 265.755),
-    950: oklch(12.9% 0.042 264.695),
-  ),
-  gray: (
-    50: oklch(98.5% 0.002 247.839),
-    100: oklch(96.7% 0.003 264.542),
-    200: oklch(92.8% 0.006 264.531),
-    300: oklch(87.2% 0.01 258.338),
-    400: oklch(70.7% 0.022 261.325),
-    500: oklch(55.1% 0.027 264.364),
-    600: oklch(44.6% 0.03 256.802),
-    700: oklch(37.3% 0.034 259.733),
-    800: oklch(27.8% 0.033 256.848),
-    900: oklch(21% 0.034 264.665),
-    950: oklch(13% 0.028 261.692),
-  ),
-  zinc: (
-    50: oklch(98.5% 0 0),
-    100: oklch(96.7% 0.001 286.375),
-    200: oklch(92% 0.004 286.32),
-    300: oklch(87.1% 0.006 286.286),
-    400: oklch(70.5% 0.015 286.067),
-    500: oklch(55.2% 0.016 285.938),
-    600: oklch(44.2% 0.017 285.786),
-    700: oklch(37% 0.013 285.805),
-    800: oklch(27.4% 0.006 286.033),
-    900: oklch(21% 0.006 285.885),
-    950: oklch(14.1% 0.005 285.823),
-  ),
-  neutral: (
-    50: oklch(98.5% 0 0),
-    100: oklch(97% 0 0),
-    200: oklch(92.2% 0 0),
-    300: oklch(87% 0 0),
-    400: oklch(70.8% 0 0),
-    500: oklch(55.6% 0 0),
-    600: oklch(43.9% 0 0),
-    700: oklch(37.1% 0 0),
-    800: oklch(26.9% 0 0),
-    900: oklch(20.5% 0 0),
-    950: oklch(14.5% 0 0),
-  ),
-  stone: (
-    50: oklch(98.5% 0.001 106.423),
-    100: oklch(97% 0.001 106.424),
-    200: oklch(92.3% 0.003 48.717),
-    300: oklch(86.9% 0.005 56.366),
-    400: oklch(70.9% 0.01 56.259),
-    500: oklch(55.3% 0.013 58.071),
-    600: oklch(44.4% 0.011 73.639),
-    700: oklch(37.4% 0.01 67.558),
-    800: oklch(26.8% 0.007 34.298),
-    900: oklch(21.6% 0.006 56.043),
-    950: oklch(14.7% 0.004 49.25),
-  ),
-  // Project-specific neutrals — not part of Tailwind's default theme.
-  mauve: (
-      50: oklch(98.5% 0 0),
-      100: oklch(96% 0.003 325.6),
-      200: oklch(92.2% 0.005 325.62),
-      300: oklch(86.5% 0.012 325.68),
-      400: oklch(71.1% 0.019 323.02),
-      500: oklch(54.2% 0.034 322.5),
-      600: oklch(43.5% 0.029 321.78),
-      700: oklch(36.4% 0.029 323.89),
-      800: oklch(26.3% 0.024 320.12),
-      900: oklch(21.2% 0.019 322.12),
-      950: oklch(14.5% 0.008 326),
-    ),
-  olive: (
-    50: oklch(98.8% 0.003 106.5),
-    100: oklch(96.6% 0.005 106.5),
-    200: oklch(93% 0.007 106.5),
-    300: oklch(88% 0.011 106.6),
-    400: oklch(73.7% 0.021 106.9),
-    500: oklch(58% 0.031 107.3),
-    600: oklch(46.6% 0.025 107.3),
-    700: oklch(39.4% 0.023 107.4),
-    800: oklch(28.6% 0.016 107.4),
-    900: oklch(22.8% 0.013 107.4),
-    950: oklch(15.3% 0.006 107.1),
-  ),
-  mist: (
-    50: oklch(98.7% 0.002 197.1),
-    100: oklch(96.3% 0.002 197.1),
-    200: oklch(92.5% 0.005 214.3),
-    300: oklch(87.2% 0.007 219.6),
-    400: oklch(72.3% 0.014 214.4),
-    500: oklch(56% 0.021 213.5),
-    600: oklch(45% 0.017 213.2),
-    700: oklch(37.8% 0.015 216),
-    800: oklch(27.5% 0.011 216.9),
-    900: oklch(21.8% 0.008 223.9),
-    950: oklch(14.8% 0.004 228.8),
-  ),
-  taupe: (
-    50: oklch(98.6% 0.002 67.8),
-    100: oklch(96% 0.002 17.2),
-    200: oklch(92.2% 0.005 34.3),
-    300: oklch(86.8% 0.007 39.5),
-    400: oklch(71.4% 0.014 41.2),
-    500: oklch(54.7% 0.021 43.1),
-    600: oklch(43.8% 0.017 39.3),
-    700: oklch(36.7% 0.016 35.7),
-    800: oklch(26.8% 0.011 36.5),
-    900: oklch(21.4% 0.009 43.1),
-    950: oklch(14.7% 0.004 49.3),
-  ),
-  // ---------------------------------------------------------------------------
-  // Brand families
-  // ---------------------------------------------------------------------------
-  //
-  // Built from five colours supplied as a brand palette:
-  //
-  //   #fbf9f6  #f8f4ec  #28211c   -> `parchment` 50 / 100 / 900
-  //   #5f3212                     -> `cocoa` 700
-  //   #425668                     -> `steel` 600
-  //
-  // The first three are one family, not three colours: at chroma 0.005-0.014
-  // and hue 58-85 they are the light, lighter and dark ends of the same warm
-  // neutral. Reading them that way is what makes surfaces, text and borders
-  // fall out of the palette instead of being decided one at a time.
-  //
-  // Each supplied colour is pinned to its step EXACTLY — a brand colour that
-  // arrives as `#5f3212` must still be `#5f3212` after the round trip. The
-  // remaining steps interpolate lightness with a chroma curve that peaks in the
-  // middle, which is what keeps the pale end from looking dirty and the dark
-  // end from looking muddy.
-  //
-  // These are layer 1: only a theme map may name them, and a theme map is not
-  // part of this tool — see `src/ds.scss`.
-  parchment: (
-    50: oklch(98.3% 0.005 78.3),
-    100: oklch(96.8% 0.011 84.6),
-    200: oklch(92.5% 0.012 80),
-    300: oklch(86.5% 0.013 74),
-    400: oklch(74% 0.014 68),
-    500: oklch(60% 0.014 64),
-    600: oklch(48.5% 0.014 62),
-    700: oklch(39% 0.014 60),
-    800: oklch(31.5% 0.014 58),
-    900: oklch(25.4% 0.014 57.6),
-    950: oklch(17% 0.012 56),
-  ),
-  cocoa: (
-    50: oklch(97.2% 0.008 60),
-    100: oklch(94% 0.018 58),
-    200: oklch(88% 0.034 56),
-    300: oklch(79% 0.052 55),
-    400: oklch(66% 0.07 54),
-    500: oklch(53% 0.082 53),
-    600: oklch(44% 0.083 53),
-    700: oklch(36.9% 0.079 52.7),
-    800: oklch(30.5% 0.066 52),
-    900: oklch(25.5% 0.054 51),
-    950: oklch(17% 0.036 50),
-  ),
-  steel: (
-    50: oklch(97% 0.005 240),
-    100: oklch(93.5% 0.01 242),
-    200: oklch(87% 0.018 244),
-    300: oklch(78% 0.026 245),
-    400: oklch(62.5% 0.034 245),
-    500: oklch(52% 0.038 246),
-    600: oklch(44.4% 0.039 246),
-    700: oklch(38% 0.036 246),
-    800: oklch(31% 0.03 247),
-    900: oklch(25% 0.024 248),
-    950: oklch(17% 0.016 249),
-  ),
-  black: (
-    base: #000,
-  ),
-  white: (
-    base: #fff,
-  ),
-);
+    --danger-1: #fffcfb;
+    --danger-2: #fff8f6;
+    --danger-3: #ffeae5;
+    --danger-4: #ffd9d0;
+    --danger-5: #ffc9be;
+    --danger-6: #ffb8aa;
+    --danger-7: #ffa292;
+    --danger-8: #f98573;
+    --danger-9: #ff331f;
+    --danger-10: #f11902;
+    --danger-11: #e00000;
+    --danger-12: #641e15;
+    --danger-a1: #ff400004;
+    --danger-a2: #ff390009;
+    --danger-a3: #ff32001a;
+    --danger-a4: #ff31002f;
+    --danger-a5: #ff2c0041;
+    --danger-a6: #ff2a0055;
+    --danger-a7: #ff26006d;
+    --danger-a8: #f421008c;
+    --danger-a9: #ff1700e0;
+    --danger-a10: #f11700fd;
+    --danger-a11: #e00000;
+    --danger-a12: #560a00ea;
+    --danger-contrast: #fff;
+    --danger-surface: #fff6f4cc;
+    --danger-indicator: #ff331f;
+    --danger-track: #ff331f;
 
-// -----------------------------------------------------------------------------
-// Non-colour scales
-// -----------------------------------------------------------------------------
-
-// -----------------------------------------------------------------------------
-// WHY SPACING AND RADIUS ARE px AND TEXT IS NOT
-// -----------------------------------------------------------------------------
-//
-// The two decisions look like one and are not, so the split is deliberate.
-//
-// SPACING and RADIUS are px. When a phone's font size is turned up, `rem`
-// spacing grows with it: gaps, padding and control heights all inflate at once
-// and a layout that fitted stops fitting. The person who needed larger text
-// ends up with a page they can no longer use — the accessibility setting
-// defeats itself. Nobody enlarges their font in order to get more padding.
-//
-// TEXT stays `rem`, and that is the half that must not change. A reader raising
-// their browser's font size expects the TEXT to grow; `px` type ignores that
-// preference entirely. WCAG 2.2 asks for text to survive being resized to 200%
-// (1.4.4), and `rem` is how a document honours the setting rather than only
-// surviving page zoom.
-//
-// So: the words scale with the reader, the frame around them does not.
-//
-// BREAKPOINTS also stay `rem` — a layout that switches to its wide form should
-// do so when the CONTENT no longer fits, and content width follows text size.
-//
-// One consequence worth knowing: `--app-space-unit` is a px value, so the
-// density contexts scale the frame without touching the type scale, which is
-// what a density control should do.
-$spacing-unit: 4px;
-
-$radius: (
-  xs: 2px,
-  sm: 4px,
-  md: 6px,
-  lg: 8px,
-  xl: 12px,
-  '2xl': 16px,
-  '3xl': 24px,
-  '4xl': 32px,
-  full: 9999px,
-);
-
-// CONFIGURABLE, because a type scale is a PRODUCT decision.
-//
-// The default below is the familiar hand-tuned ramp — the one Tailwind ships,
-// where the steps are round numbers rather than a single ratio. It is a fine
-// default and it is not a system: 16 → 18 → 20 → 24 → 30 → 36 grows by 1.125,
-// 1.11, 1.2, 1.25 and 1.2, so a product that wants to add a level between two
-// of them has nowhere to put it. A product that wants a strict modular scale
-// sets this once:
-//
-//     @use 'ds/src/base' with ($text: (…));
-//
-// The KEYS are the contract, not the values. `base` is body text and the rest
-// are steps away from it, so `_semantic.scss` keeps mapping the same names
-// whatever ramp a product hands in. WHICH key each emitted size takes is a
-// second, separate decision — see `config.$type-scale-steps`.
-$text: (
-  xs: 0.75rem,
-  sm: 0.875rem,
-  base: 1rem,
-  lg: 1.125rem,
-  xl: 1.25rem,
-  '2xl': 1.5rem,
-  '3xl': 1.875rem,
-  '4xl': 2.25rem,
-  '5xl': 3rem,
-  '6xl': 3.75rem,
-) !default;
-
-$leading: (
-  tight: 1.25,
-  snug: 1.375,
-  normal: 1.5,
-  relaxed: 1.625,
-  loose: 2,
-);
-
-$tracking: (
-  tighter: -0.05em,
-  tight: -0.025em,
-  normal: 0em,
-  wide: 0.025em,
-  wider: 0.05em,
-  widest: 0.1em,
-);
-
-$weight: (
-  thin: 100,
-  extralight: 200,
-  light: 300,
-  normal: 400,
-  medium: 500,
-  semibold: 600,
-  bold: 700,
-  extrabold: 800,
-  black: 900,
-);
-
-$font: (
-  sans: (
-    ui-sans-serif,
-    system-ui,
-    sans-serif,
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-    'Segoe UI Symbol',
-    'Noto Color Emoji',
-  ),
-  serif: (
-    ui-serif,
-    Georgia,
-    Cambria,
-    'Times New Roman',
-    Times,
-    serif,
-  ),
-  mono: (
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    'Liberation Mono',
-    'Courier New',
-    monospace,
-  ),
-);
-
-// -----------------------------------------------------------------------------
-// Shadows, written as PARTS rather than as CSS strings
-// -----------------------------------------------------------------------------
-//
-// `0 4px 6px -1px rgb(0 0 0 / .1)` is five decisions concatenated into one
-// opaque value. Nothing can read the blur out of it, adjust the spread, or
-// re-render it for a platform that does not speak CSS shadow syntax.
-//
-// The W3C Design Tokens format models a shadow as a composite — offsetX,
-// offsetY, blur, spread, color, and an array when a shadow has several layers.
-// Storing the parts here means `dist/tokens.json` can export the real
-// structure, and it costs nothing at runtime: `$_shadow-css` below renders each
-// entry once at build time, so the emitted CSS is byte-for-byte what it was.
-//
-// This is the shape a token should have been in from the start. The string form
-// was a shortcut that only looked equivalent because CSS was the only consumer.
-$shadow-parts: (
-  none: (),
-  '2xs': (
-    (x: 0, y: 1px, blur: 0, spread: 0, color: rgb(0 0 0 / 0.05)),
-  ),
-  xs: (
-    (x: 0, y: 1px, blur: 2px, spread: 0, color: rgb(0 0 0 / 0.05)),
-  ),
-  sm: (
-    (x: 0, y: 1px, blur: 3px, spread: 0, color: rgb(0 0 0 / 0.1)),
-    (x: 0, y: 1px, blur: 2px, spread: -1px, color: rgb(0 0 0 / 0.1)),
-  ),
-  md: (
-    (x: 0, y: 4px, blur: 6px, spread: -1px, color: rgb(0 0 0 / 0.1)),
-    (x: 0, y: 2px, blur: 4px, spread: -2px, color: rgb(0 0 0 / 0.1)),
-  ),
-  lg: (
-    (x: 0, y: 10px, blur: 15px, spread: -3px, color: rgb(0 0 0 / 0.1)),
-    (x: 0, y: 4px, blur: 6px, spread: -4px, color: rgb(0 0 0 / 0.1)),
-  ),
-  xl: (
-    (x: 0, y: 20px, blur: 25px, spread: -5px, color: rgb(0 0 0 / 0.1)),
-    (x: 0, y: 8px, blur: 10px, spread: -6px, color: rgb(0 0 0 / 0.1)),
-  ),
-  '2xl': (
-    (x: 0, y: 25px, blur: 50px, spread: -12px, color: rgb(0 0 0 / 0.25)),
-  ),
-);
-
-// Renders the parts back into the CSS value. Runs at build time, so the output
-// is identical to the string form it replaced.
-@function shadow-css($key) {
-  $layers: map.get($shadow-parts, $key);
-
-  @if $layers == null {
-    @error 'base.shadow-css("#{$key}") — no such shadow.';
+    --warning-1: #fefdfb;
+    --warning-2: #fff8ed;
+    --warning-3: #ffeed0;
+    --warning-4: #ffe1b2;
+    --warning-5: #ffd498;
+    --warning-6: #ffc887;
+    --warning-7: #f1b676;
+    --warning-8: #e39f50;
+    --warning-9: #ffa630;
+    --warning-10: #f29c28;
+    --warning-11: #b16500;
+    --warning-12: #4d351b;
+    --warning-a1: #c0800004;
+    --warning-a2: #ff9c0012;
+    --warning-a3: #ffa3002f;
+    --warning-a4: #ff9c004d;
+    --warning-a5: #ff950067;
+    --warning-a6: #ff8b0078;
+    --warning-a7: #e5780089;
+    --warning-a8: #d67300af;
+    --warning-a9: #ff9100cf;
+    --warning-a10: #f08a00d7;
+    --warning-a11: #b16500;
+    --warning-a12: #381d00e4;
+    --warning-contrast: #2e1e0b;
+    --warning-surface: #fff6e9cc;
+    --warning-indicator: #ffa630;
+    --warning-track: #ffa630;
   }
 
-  @if list.length($layers) == 0 {
-    @return none;
-  }
-
-  $out: ();
-
-  @each $l in $layers {
-    $out: list.append(
-      $out,
-      map.get($l, x) map.get($l, y) map.get($l, blur) map.get($l, spread)
-        map.get($l, color),
-      comma
-    );
-  }
-
-  @return $out;
-}
-
-$shadow: (
-  none: shadow-css(none),
-  '2xs': shadow-css('2xs'),
-  xs: shadow-css(xs),
-  sm: shadow-css(sm),
-  md: shadow-css(md),
-  lg: shadow-css(lg),
-  xl: shadow-css(xl),
-  '2xl': shadow-css('2xl'),
-);
-
-$ease: (
-  in: cubic-bezier(0.4, 0, 1, 1),
-  out: cubic-bezier(0, 0, 0.2, 1),
-  in-out: cubic-bezier(0.4, 0, 0.2, 1),
-);
-
-$duration: (
-  fast: 120ms,
-  base: 200ms,
-  slow: 320ms,
-);
-
-$breakpoint: (
-  sm: 40rem,
-  md: 48rem,
-  lg: 64rem,
-  xl: 80rem,
-  '2xl': 96rem,
-);
-
-// -----------------------------------------------------------------------------
-// Accessors — the ONLY way layer 2 reads this layer
-// -----------------------------------------------------------------------------
-
-@function color($family, $step: base) {
-  $ramp: map.get($palette, $family);
-  @if $ramp == null {
-    @error 'base: unknown colour family "#{$family}".';
-  }
-  $value: map.get($ramp, $step);
-  @if $value == null {
-    @error 'base: "#{$family}" has no step "#{$step}".';
-  }
-  @return $value;
-}
-
-@function scale($name, $key) {
-  $maps: (
-    radius: $radius,
-    text: $text,
-    leading: $leading,
-    tracking: $tracking,
-    weight: $weight,
-    font: $font,
-    shadow: $shadow,
-    ease: $ease,
-    duration: $duration,
-    breakpoint: $breakpoint,
-  );
-  $m: map.get($maps, $name);
-  @if $m == null {
-    @error 'base: unknown scale "#{$name}".';
-  }
-  $value: map.get($m, $key);
-  @if $value == null {
-    @error 'base: scale "#{$name}" has no key "#{$key}".';
-  }
-  @return $value;
-}
-
-// Multiples of the spacing unit. `space(4)` -> 1rem.
-@function space($steps) {
-  @return $spacing-unit * $steps;
-}
-
-// -----------------------------------------------------------------------------
-// Contrast — so a theme's readability is checked, not assumed
-// -----------------------------------------------------------------------------
-//
-// The pair invariant in `_core.scss` guarantees that a background always has a
-// foreground DECLARED. It cannot say whether that foreground is readable, and
-// the gap between those two things is where accessibility bugs live: every
-// theme in this repository declared a complete set of pairs, and two of them
-// were failing WCAG AA.
-//
-// Both misses were the same shape — white text on a mid-bright colour, which
-// looks fine in a swatch and fails in a paragraph. Amber and teal are the usual
-// culprits, because their perceived lightness runs ahead of their step number.
-//
-// WCAG 2.1 relative luminance. sRGB, because that is the space the ratio is
-// defined in; oklch values are gamut-mapped first for the same reason the
-// Bulma adapter maps before decomposing.
-
-@function _linear($v) {
-  @if $v <= 0.03928 {
-    @return math.div($v, 12.92);
-  }
-  @return math.pow(math.div($v + 0.055, 1.055), 2.4);
-}
-
-@function _luminance($c) {
-  $srgb: color.to-gamut($c, $space: rgb, $method: local-minde);
-  @return 0.2126 * _linear(math.div(color.channel($srgb, 'red', $space: rgb), 255)) +
-    0.7152 * _linear(math.div(color.channel($srgb, 'green', $space: rgb), 255)) +
-    0.0722 * _linear(math.div(color.channel($srgb, 'blue', $space: rgb), 255));
-}
-
-// The WCAG contrast ratio between two colours, 1 to 21.
-// 4.5 is AA for body text, 3 is AA for large text only.
-@function contrast($a, $b) {
-  $x: _luminance($a);
-  $y: _luminance($b);
-  @if $x < $y {
-    $swap: $x;
-    $x: $y;
-    $y: $swap;
-  }
-  @return math.div(math.round(math.div($x + 0.05, $y + 0.05) * 100), 100);
-}
-
-// -----------------------------------------------------------------------------
-// Optional runtime emission — OFF by default
-// -----------------------------------------------------------------------------
-//
-// Emits the palette as custom properties under `ds.base`. Only turn this on
-// when something genuinely needs to read primitives at runtime. Note that even
-// here the scales stay compile-time; there is no scenario where a runtime
-// consumer needs `--radius-2xl` but not a semantic radius token.
-
-@mixin emit() {
-  @if config.$emit-base-vars {
-    @layer ds.base {
+  @supports (color: color(display-p3 1 1 1)) {
+    @media (color-gamut: p3) {
       :root {
-        @each $family, $ramp in $palette {
-          @each $step, $value in $ramp {
-            @if $step == base {
-              --#{config.$prefix}-base-#{$family}: #{$value};
-            } @else {
-              --#{config.$prefix}-base-#{$family}-#{$step}: #{$value};
-            }
-          }
-        }
+        --accent-1: oklch(99.3% 0.0047 270);
+        --accent-2: oklch(98.1% 0.0137 270);
+        --accent-3: oklch(96% 0.0283 270);
+        --accent-4: oklch(93.7% 0.0531 270);
+        --accent-5: oklch(90.6% 0.0768 270);
+        --accent-6: oklch(86.4% 0.0987 270);
+        --accent-7: oklch(80.9% 0.1272 270);
+        --accent-8: oklch(73.5% 0.1741 270);
+        --accent-9: oklch(39.1% 0.14 270);
+        --accent-10: oklch(45.2% 0.14 270);
+        --accent-11: oklch(55.6% 0.1741 270);
+        --accent-12: oklch(32.4% 0.14 270);
+        --accent-a1: color(display-p3 0.0235 0.5137 1 / 0.016);
+        --accent-a2: color(display-p3 0.0235 0.349 0.8941 / 0.036);
+        --accent-a3: color(display-p3 0.0078 0.3059 0.9529 / 0.079);
+        --accent-a4: color(display-p3 0.0078 0.3176 0.9412 / 0.126);
+        --accent-a5: color(display-p3 0.0039 0.2706 0.9373 / 0.177);
+        --accent-a6: color(display-p3 0.0039 0.2431 0.9373 / 0.248);
+        --accent-a7: color(display-p3 0.0039 0.2314 0.9451 / 0.342);
+        --accent-a8: color(display-p3 0.0039 0.2039 0.9412 / 0.463);
+        --accent-a9: color(display-p3 0 0.0627 0.4392 / 0.82);
+        --accent-a10: color(display-p3 0 0.0784 0.502 / 0.761);
+        --accent-a11: color(display-p3 0 0.1176 0.7294 / 0.679);
+        --accent-a12: color(display-p3 0 0.0431 0.3882 / 0.887);
+        --accent-contrast: #fff;
+        --accent-surface: color(display-p3 0.9569 0.9686 1 / 0.8);
+        --accent-indicator: oklch(39.1% 0.14 270);
+        --accent-track: oklch(39.1% 0.14 270);
+
+        --neutral-1: oklch(99.4% 0.0054 55.56);
+        --neutral-2: oklch(98.2% 0.0072 55.56);
+        --neutral-3: oklch(95.6% 0.011 55.56);
+        --neutral-4: oklch(93.2% 0.0164 55.56);
+        --neutral-5: oklch(91% 0.0186 55.56);
+        --neutral-6: oklch(88.6% 0.0241 55.56);
+        --neutral-7: oklch(85.3% 0.0301 55.56);
+        --neutral-8: oklch(79.2% 0.0403 55.56);
+        --neutral-9: oklch(64.1% 0.0498 55.56);
+        --neutral-10: oklch(60.6% 0.0465 55.56);
+        --neutral-11: oklch(49.8% 0.0382 55.56);
+        --neutral-12: oklch(24.3% 0.0385 55.56);
+        --neutral-a1: color(display-p3 0.8039 0.4118 0.0196 / 0.02);
+        --neutral-a2: color(display-p3 0.7098 0.3176 0.0235 / 0.04);
+        --neutral-a3: color(display-p3 0.5294 0.2471 0.0078 / 0.083);
+        --neutral-a4: color(display-p3 0.5333 0.2235 0.0078 / 0.126);
+        --neutral-a5: color(display-p3 0.4784 0.1765 0.0039 / 0.157);
+        --neutral-a6: color(display-p3 0.4824 0.2314 0.0039 / 0.204);
+        --neutral-a7: color(display-p3 0.4471 0.2039 0.0039 / 0.255);
+        --neutral-a8: color(display-p3 0.4353 0.1922 0.0039 / 0.353);
+        --neutral-a9: color(display-p3 0.3216 0.1373 0 / 0.55);
+        --neutral-a10: color(display-p3 0.2745 0.1216 0 / 0.585);
+        --neutral-a11: color(display-p3 0.1843 0.0824 0 / 0.687);
+        --neutral-a12: color(display-p3 0.1176 0.0549 0 / 0.942);
+        --neutral-contrast: #ffffff;
+        --neutral-surface: color(display-p3 1 1 1 / 80%);
+        --neutral-indicator: oklch(64.1% 0.0498 55.56);
+        --neutral-track: oklch(64.1% 0.0498 55.56);
+
+        --success-1: oklch(99.4% 0.0044 130.4);
+        --success-2: oklch(98.2% 0.0076 130.4);
+        --success-3: oklch(96.1% 0.0192 130.4);
+        --success-4: oklch(93.4% 0.0306 130.4);
+        --success-5: oklch(90.1% 0.0438 130.4);
+        --success-6: oklch(85.8% 0.0591 130.4);
+        --success-7: oklch(79.8% 0.0787 130.4);
+        --success-8: oklch(71.6% 0.1077 130.4);
+        --success-9: oklch(60.3% 0.1172 130.4);
+        --success-10: oklch(56.1% 0.1073 130.4);
+        --success-11: oklch(52.7% 0.1073 130.4);
+        --success-12: oklch(32.7% 0.0443 130.4);
+        --success-a1: color(display-p3 0.2667 0.7569 0.0235 / 0.016);
+        --success-a2: color(display-p3 0.3176 0.5137 0.0235 / 0.04);
+        --success-a3: color(display-p3 0.2824 0.5529 0.0118 / 0.087);
+        --success-a4: color(display-p3 0.2549 0.5333 0.0078 / 0.142);
+        --success-a5: color(display-p3 0.2667 0.4941 0.0039 / 0.208);
+        --success-a6: color(display-p3 0.2588 0.4824 0.0039 / 0.295);
+        --success-a7: color(display-p3 0.2431 0.4588 0.0039 / 0.404);
+        --success-a8: color(display-p3 0.2549 0.4471 0 / 0.561);
+        --success-a9: color(display-p3 0.2157 0.3765 0 / 0.71);
+        --success-a10: color(display-p3 0.1922 0.3294 0 / 0.742);
+        --success-a11: color(display-p3 0.1765 0.3098 0 / 0.777);
+        --success-a12: color(display-p3 0.051 0.098 0 / 0.859);
+        --success-contrast: #fff;
+        --success-surface: color(display-p3 0.9647 0.9765 0.9529 / 0.8);
+        --success-indicator: oklch(60.3% 0.1172 130.4);
+        --success-track: oklch(60.3% 0.1172 130.4);
+
+        --danger-1: oklch(99.4% 0.0038 30.2);
+        --danger-2: oklch(98.4% 0.009 30.2);
+        --danger-3: oklch(95.5% 0.0269 30.2);
+        --danger-4: oklch(92.6% 0.058 30.2);
+        --danger-5: oklch(89.3% 0.077 30.2);
+        --danger-6: oklch(85.3% 0.0944 30.2);
+        --danger-7: oklch(80.3% 0.1153 30.2);
+        --danger-8: oklch(74.2% 0.1448 30.2);
+        --danger-9: oklch(64.7% 0.239 30.2);
+        --danger-10: oklch(60.7% 0.241 30.2);
+        --danger-11: oklch(56.5% 0.239 30.2);
+        --danger-12: oklch(34.5% 0.1031 30.2);
+        --danger-a1: color(display-p3 0.7569 0.2667 0.0235 / 0.016);
+        --danger-a2: color(display-p3 0.8941 0.2392 0.0235 / 0.036);
+        --danger-a3: color(display-p3 0.8431 0.2078 0.0118 / 0.099);
+        --danger-a4: color(display-p3 0.8706 0.1804 0.0039 / 0.177);
+        --danger-a5: color(display-p3 0.8745 0.1804 0.0039 / 0.248);
+        --danger-a6: color(display-p3 0.8667 0.1725 0.0039 / 0.322);
+        --danger-a7: color(display-p3 0.8784 0.1529 0.0039 / 0.412);
+        --danger-a8: color(display-p3 0.8471 0.1412 0 / 0.53);
+        --danger-a9: color(display-p3 0.902 0.1059 0 / 0.804);
+        --danger-a10: color(display-p3 0.8471 0.0941 0 / 0.867);
+        --danger-a11: color(display-p3 0.7765 0.0627 0 / 0.883);
+        --danger-a12: color(display-p3 0.2902 0.0431 0 / 0.902);
+        --danger-contrast: #fff;
+        --danger-surface: color(display-p3 0.9961 0.9647 0.9569 / 0.8);
+        --danger-indicator: oklch(64.7% 0.239 30.2);
+        --danger-track: oklch(64.7% 0.239 30.2);
+
+        --warning-1: oklch(99.3% 0.0023 67.93);
+        --warning-2: oklch(98.3% 0.0183 67.93);
+        --warning-3: oklch(96.4% 0.0503 67.93);
+        --warning-4: oklch(93.5% 0.0855 67.93);
+        --warning-5: oklch(90.7% 0.1098 67.93);
+        --warning-6: oklch(87.1% 0.1056 67.93);
+        --warning-7: oklch(81.8% 0.1062 67.93);
+        --warning-8: oklch(75.3% 0.1244 67.93);
+        --warning-9: oklch(79.6% 0.1605 67.93);
+        --warning-10: oklch(76.2% 0.1563 67.93);
+        --warning-11: oklch(57.9% 0.1465 67.93);
+        --warning-12: oklch(35.1% 0.0522 67.93);
+        --warning-a1: color(display-p3 0.7569 0.5137 0.0235 / 0.016);
+        --warning-a2: color(display-p3 0.9451 0.5922 0.0078 / 0.067);
+        --warning-a3: color(display-p3 0.9333 0.6392 0.0039 / 0.173);
+        --warning-a4: color(display-p3 0.9333 0.5961 0.0039 / 0.279);
+        --warning-a5: color(display-p3 0.9294 0.5725 0.0039 / 0.373);
+        --warning-a6: color(display-p3 0.9216 0.5255 0.0039 / 0.436);
+        --warning-a7: color(display-p3 0.8235 0.4471 0 / 0.502);
+        --warning-a8: color(display-p3 0.7647 0.4235 0 / 0.632);
+        --warning-a9: color(display-p3 0.9294 0.5255 0 / 0.702);
+        --warning-a10: color(display-p3 0.8667 0.4941 0 / 0.734);
+        --warning-a11: color(display-p3 0.6 0.3176 0 / 0.863);
+        --warning-a12: color(display-p3 0.1882 0.102 0 / 0.879);
+        --warning-contrast: #2e1e0b;
+        --warning-surface: color(display-p3 1 0.9686 0.9176 / 0.8);
+        --warning-indicator: oklch(79.6% 0.1605 67.93);
+        --warning-track: oklch(79.6% 0.1605 67.93);
       }
     }
   }

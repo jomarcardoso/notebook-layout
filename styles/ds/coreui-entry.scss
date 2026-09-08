@@ -1,61 +1,5 @@
-// =============================================================================
-// COREUI BUILD ENTRY
-// =============================================================================
-//
-//     compiled by `npm run build:coreui` into ./dist/coreui.css
-//
-// -----------------------------------------------------------------------------
-// WHY THE COLOURS ARE SET HERE AND NOT IN THE ADAPTER
-// -----------------------------------------------------------------------------
-//
-// CoreUI builds every button, alert, badge and background utility from a Sass
-// `@each` over `$theme-colors`. That loop runs at COMPILE time, so whatever
-// `$primary` holds when the library is configured is what a hundred compiled
-// declarations get — including the ones no custom property can reach, like
-// `shade-color($primary, 20%)` for the hover state.
-//
-// Until this file configured them, the library compiled with its stock indigo:
-//
-//     .btn-primary { --cui-btn-bg: #5856d6; --cui-btn-hover-bg: rgb(74.8, 73.1, 181.9) }
-//
-// and the adapter repainted every variant at runtime. That worked and it was
-// waste twice over: ~190KB of library CSS carrying the wrong colour, an override
-// layer on top of it, and the derived hover and active shades still computed
-// from indigo underneath.
-//
-// This is what the architecture document means by adapting the library natively
-// rather than fighting it in the browser.
-//
-// -----------------------------------------------------------------------------
-// THE ORDERING RULE THAT SHAPES THIS FILE
-// -----------------------------------------------------------------------------
-//
-// `@use 'lib' with (…)` is the only way to configure a module's `!default`
-// variables. Setting them as globals before an `@import` does nothing when the
-// imported file is a module — which CoreUI's `_variables.scss` is. The first
-// attempt did exactly that and the library kept its indigo while the file read
-// as if it were themed.
-//
-// And because `@use` must come first, a `with ()` clause cannot call a function
-// defined in this file. Hence `_coreui-config.scss`: it computes the values, and
-// this file passes them in.
-//
-// -----------------------------------------------------------------------------
-// WHAT STILL BELONGS TO THE RUNTIME ADAPTER
-// -----------------------------------------------------------------------------
-//
-// Only what a THEME SWAP has to move. A build-time colour is one colour; the
-// adapter's `:root` bindings are what would let `[data-theme]` change it without
-// recompiling. This product has one theme, so that layer is currently doing
-// little — it is kept because the day a dark mode arrives it is the only thing
-// that makes it possible.
-// =============================================================================
-
 @use './coreui-config' as cfg;
-
-// The library, configured. Every value below reaches CoreUI's own `@each` loops,
-// so `.btn-danger` and `.btn-success` come out of the compiler already correct
-// rather than being repainted afterwards.
+@use './src/component';
 @use '@coreui/coreui/scss/variables' with (
   $primary: cfg.$primary,
   $secondary: cfg.$secondary,
@@ -76,95 +20,59 @@
   $border-color: cfg.$border-color,
   $border-width: 1px,
 
-  // The radius scale, with steps that are steps. It was 4px and 6px — one
-  // radius written twice, two pixels being a difference no reader can see.
   $border-radius: 4px,
   $border-radius-sm: 2px,
   $border-radius-lg: 10px,
   $border-radius-pill: 9999px,
 
-  // SPACE IS DIRECTIONAL. A heading belongs to what comes AFTER it, so the room
-  // above has to be larger than the room below. The library ships a bottom
-  // margin and no top margin at all, which leaves every heading floating
-  // equidistant between the paragraph it belongs to and the one it does not —
-  // and that is most of what makes a page read as assembled rather than as
-  // designed. There is no `$headings-margin-top`, so the top margin stays in
-  // the product's own layer; what the entry can do is make the bottom one
-  // deliberate.
   $headings-margin-bottom: var(--app-space-sm),
-
-  // `_reboot.scss` assigns `font-family: $headings-font-family` with no fallback
-  // logic, so a `var()` reaches the CSS intact and stays theme-reactive. This is
-  // the line that removes the `@layer base` override a product would otherwise
-  // need to put the serif on its headings.
   $headings-font-family: var(--app-font-family-heading),
   $headings-font-weight: var(--app-font-weight-heading),
   $headings-line-height: var(--app-line-height-heading),
-
-  // THE HORIZONTAL RULE, which is a token decision the library expresses as an
-  // OPACITY and therefore hides. `_reboot` renders `hr` as `color: inherit` at
-  // 25% opacity, so every rule is a quarter-strength wash of whatever ink it
-  // happens to inherit — it changes weight depending on where it sits, and no
-  // divider token can reach it. Setting the opacity to 1 hands the colour back
-  // to the adapter.
   $hr-opacity: 1,
 
-  // Component WEIGHT — compiled, and the residue that keeps a themed build
-  // still reading as Bootstrap. A badge at weight 700 is a chip shouting; at
-  // the body weight it is a label.
   $badge-font-weight: var(--app-font-weight-body),
   $btn-font-weight: var(--app-font-weight-body),
-
-  // Asserted rather than assumed. Both are already false in CoreUI 5, and a
-  // product whose design language carries a "never gradients" guardrail should
-  // not depend on a library default staying put across a major version.
   $enable-gradients: false,
   $enable-shadows: false,
 
-  // Turns on the CSS Grid utilities: `.grid`, `.g-col-*`, `.columns-*`. The
-  // application's own layout depends on these, and this flag is the only thing
-  // that generates them.
   $enable-cssgrid: true,
 
-  // WHERE THE SIDEBAR STOPS DECIDING FOR ITSELF.
-  //
-  // CoreUI turns `.sidebar` into a hidden off-canvas panel below this
-  // breakpoint, and its default is `lg` — 992px. A consuming product that
-  // switches its own chrome on something else then has a window where both are
-  // hidden: a phone held sideways is 844px, which is `lg`-down to CoreUI and
-  // landscape to a layout that switches on orientation, so the rail was gone
-  // and the bottom bar was gone with it.
-  //
-  // `sm` puts the library's own switch below any width a rail is shown at, so
-  // the product decides when the sidebar appears and the library only decides
-  // what it looks like. That is the division every other value in this file
-  // keeps.
   $mobile-breakpoint: sm,
 
-  // THE FOLD CONTROL'S TARGET, which is padding and therefore compiled.
-  //
-  // CoreUI exposes the toggler's glyph as a CSS variable and its padding only
-  // as Sass, so the adapter can size the icon and only this line can size the
-  // thing you have to hit. 20px of glyph inside 12px a side is 44px — the
-  // product's `size-control`, and the override that raised it from 40 says why.
   $sidebar-toggler-padding-x: 12px,
-  $sidebar-toggler-padding-y: 12px
+  $sidebar-toggler-padding-y: 12px,
+
+  // $card-spacer-y: $spacer;
+  // $card-spacer-x: $spacer;
+  // $card-title-spacer-y: $spacer * 0.5;
+  // $card-title-color: null;
+  // $card-subtitle-color: null;
+  // $card-border-width: var(--#{$prefix}border-width);
+  $card-border-color: component.$card-content-border-color,
+  // $card-border-radius: var(--#{$prefix}border-radius);
+  // $card-box-shadow: null;
+  // $card-inner-border-radius: subtract($card-border-radius, $card-border-width);
+  // $card-cap-padding-y: $card-spacer-y * 0.5;
+  // $card-cap-padding-x: $card-spacer-x;
+  // $card-cap-bg: rgba(var(--#{$prefix}body-color-rgb), 0.03);
+  // $card-cap-color: null;
+  // $card-height: null;
+  // $card-color: null;
+  // $card-bg: var(--#{$prefix}body-bg);
+  // $card-img-overlay-padding: $spacer;
+   // $card-group-margin: $grid-gutter-width * 0.5;
 );
 
 @use '@coreui/coreui/scss/variables-dark';
 @use '@coreui/coreui/scss/root';
 @use '@coreui/coreui/scss/containers';
-@use '@coreui/coreui/scss/grid' with ($include-column-box-sizing: true);
+@use '@coreui/coreui/scss/grid' with (
+  $include-column-box-sizing: true
+);
 @use '@coreui/coreui/scss/helpers';
 @use '@coreui/coreui/scss/utilities/api';
 
-// The component families, through the `@import` shims CoreUI ships for exactly
-// this. They need no configuration — only the variables module did — and by the
-// time they load, the modules above have already been configured.
-//
-// Imported SELECTIVELY: `table` and `modal` are deliberately absent because
-// this package owns those components. Adding one would create the class
-// collision that `check-collisions` currently reports as absent.
 @import '@coreui/coreui/scss/functions.import';
 @import '@coreui/coreui/scss/variables.import';
 @import '@coreui/coreui/scss/variables-dark.import';
@@ -174,49 +82,11 @@
 @import '@coreui/coreui/scss/nav.import';
 @import '@coreui/coreui/scss/buttons.import';
 
-// Added for the "already filed" disclosure on the notebook page. CoreUI owns
-// no class this package also declares here — `check-collisions` runs on every
-// build and would say so — and the collapse is driven by React state rather
-// than by CoreUI's JS, which this project does not ship.
 @import '@coreui/coreui/scss/accordion.import';
 
-// CARD, and the library owns it outright.
-//
-// This package used to ship its own BEM `.card` — the reason `card` sat on the
-// exclusion list above — and two components consumed it. CoreUI's card brings
-// the horizontal form, the group, the image caps and the footer for free, and
-// keeping a private reimplementation beside it is the duplication the exclusion
-// list exists to prevent, only in the other direction. The adapter binds
-// `--cui-card-*` to this system's tokens, the same way it does for buttons.
-//
-// `images` comes with it: `.img-fluid` is what CoreUI's own card examples put
-// on the picture, and nothing else here supplied it.
-@import '@coreui/coreui/scss/card.import';
 @import '@coreui/coreui/scss/images.import';
 
-// SIDEBAR — the desktop rail, with the narrow/unfoldable behaviour.
-//
-// It brings `.sidebar`, `.sidebar-nav` and `.sidebar-narrow*`, all of them
-// scoped under `.sidebar`, so nothing here meets a class this package declares.
-// `.nav-group`, `.nav-icon` and `.nav-title` arrive with it and exist only
-// inside `.sidebar-nav` — they are the collapsible sub-level a rail needs and
-// `nav.import` alone does not carry.
 @import '@coreui/coreui/scss/sidebar.import';
 
-// Badges. Added so counters stop being hand-rolled: `.filed-recipes__count`
-// was a bespoke pill reimplementing `.badge` with its own padding, radius and
-// colours, and every counter after it would have been another one.
 @import '@coreui/coreui/scss/badge.import';
-
-// NOT CoreUI's carousel. It was imported for §16.8 and taken straight back
-// out: this package already owns `.carousel` — a BEM component with
-// `.carousel__banner` — and CoreUI declares the same base class. That is the
-// collision the selective import list above exists to avoid, and it is why
-// `card`, `table` and `modal` are absent too.
-//
-// `check-collisions` did NOT catch it, which is worth knowing: it compares
-// ADAPTERS against each other, and `notebook-layout`'s own components are not
-// an adapter. A green build was not evidence of safety here.
-//
-// The sideways track for §16.8 is `card-carousel` in the app, under a name
-// nothing else claims.
+@import '@coreui/coreui/scss/card.import';

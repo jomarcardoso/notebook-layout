@@ -255,7 +255,7 @@ guardrails:
     enforcement: ledger
 ---
 
-<!-- DESIGN-LANGUAGE.md -->
+<!-- DESIGN_LANGUAGE.md -->
 
 # Design language — Recepta
 

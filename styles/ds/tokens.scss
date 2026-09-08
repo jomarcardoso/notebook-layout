@@ -1,190 +1,16 @@
-// styles/ds/tokens.scss
+@forward './src/config';
 
-// =============================================================================
-// THE PRODUCT'S CONFIGURATION, AND ITS OWN LAYER 3
-// =============================================================================
-//
-// This file is read by BOTH compilations — `ds.scss`, which emits the tokens and
-// the adapter, and `coreui-entry.scss`, which compiles CoreUI with this
-// product's values. Every choice below reaches both. Written twice they would
-// drift, and the drift would be silent: a `$spacer` on one side that no longer
-// lines up with `space-md` on the other is a page a few pixels wrong everywhere
-// and obviously wrong nowhere.
-//
-// `@forward … with ()` rather than `@use … with ()`: a Sass module can be
-// configured exactly once, by whoever loads it first, and forwarding lets THIS
-// file be that one without every entry having to repeat the clause. The order
-// below is the dependency order and is not decorative — `config` is read by
-// `core`, which is read by `component`.
-//
-// THE CONSEQUENCE FOR AN ENTRY: this must be its first `@use`. Load anything
-// from `src/` above it and that module is already configured with its defaults,
-// and Sass refuses to go on — which is the guard working.
-//
-// It has a second job, at the bottom: the components only this product has.
-// A component reaches both through one `@use` and never has to know which of
-// the two a name came from.
-//
-//     @use '../../styles/ds/tokens' as component;
-//
-// =============================================================================
-
-@use 'sass:map';
-@use './palette' as p;
-
-// -----------------------------------------------------------------------------
-// THE SCHOOL
-// -----------------------------------------------------------------------------
-//
-// `monochrome`: one accent carries what acts, what is chosen and where text
-// goes, and everything else is a position on the neutral ladder. It is the
-// load-bearing line in this file — it tells `check-roles()` that action,
-// selected and link all resolving to the same pen is the DESIGN rather than a
-// collapse, and it is what makes `accent` the emitted token name rather than
-// `action`.
-//
-// The product spent months in the `functional` school with four hand-tuned
-// hues, and the question it could never answer was "which brown is primary".
-// A school with one accent cannot be asked that question.
-@forward './src/config' with (
-  $adapters: (
-    coreui,
-  ),
-  $colour-strategy: 'monochrome',
-
-  // FOUR CONSECUTIVE STEPS FOR THE HEADINGS, and the smallest one at body size.
-  //
-  // The foundation's default skips `xl`, which is right for the hand-tuned ramp
-  // it ships and wrong for the modular one below: on a strict 1.25 ramp that
-  // skip is the single place the ratio breaks, and it is the gap a reader
-  // compares the two smallest headings across.
-  //
-  // `heading-sm` lands ON the body size. A fourth-level heading is a label for
-  // what follows it, and a label larger than the text it labels inverts its own
-  // job; it separates itself by weight and face instead — see `.h4` in
-  // `typography.scss`.
-  $type-scale-steps: (
-      'heading-sm': base,
-      'heading': lg,
-      'heading-lg': xl,
-      'heading-xl': '2xl',
-    ),
-
-  // NO WASHED ACCENT, and it is the palette that decides rather than taste.
-  //
-  // `audit-wash` measures the hue distance between the pen and the paper. Past
-  // about 150 degrees a pale patch of the accent stops reading as a tint of the
-  // surface and starts reading as a STAIN on it — a cold mark on warm paper —
-  // and no amount of chroma repairs that. The chroma itself is fine, which is
-  // worth saying because it is the first thing suspected: the ramp is a real
-  // OKLCH ladder rather than a mix with white, so the pigment survives. What
-  // fails is distance.
-  //
-  // Cream and blue is a beautiful pairing and this is the form it takes: dark
-  // ink and solid fills, navy on a page, never pale blue on cream. The accent
-  // lives at the solid step and at small indicators; every subtle slot routes
-  // to the neutral family.
-  $accent-wash: false
-);
-
-// THE MODULAR SCALE — major third, 1.25, anchored at a 16px body.
-//
-// The ramp it replaced grew by five different factors (1.125, 1.11, 1.2, 1.25,
-// 1.2), so a product that needed a level between two of them had nowhere to
-// put it. Here every step above the body is exactly 1.25 from the one below:
-//
-//     base  16px    body, and h4
-//     lg    20px    h3
-//     xl    25px    h2
-//     2xl   31.2px  h1
-//
-// BELOW the body the ratio deliberately flattens — 12.8 → 14.24 → 16 grows by
-// about 1.11, not 1.25. A strict 1.25 downward gives 12.8 and 10.2, and 10px
-// is not a size a caption can be set in. Small text is bounded by legibility
-// rather than by proportion, so the ramp is modular where it is free to be and
-// floored where it is not. Written down because a reader checking the ratio
-// will find it broken at the bottom and should know it was broken on purpose.
-//
-//     xs    12.8px   the kicker
-//     sm    14.24px  captions, secondary labels
-//
-// The steps above 2xl continue the ratio and nothing consumes them yet.
-@forward './src/base' with (
-  $text: (
-    xs: 0.8rem,
-    sm: 0.89rem,
-    base: 1rem,
-    lg: 1.25rem,
-    xl: 1.56rem,
-    '2xl': 1.95rem,
-    '3xl': 2.44rem,
-    '4xl': 3.05rem,
-    '5xl': 3.81rem,
-    '6xl': 4.77rem,
-  )
-);
+@forward './src/base';
 
 $_field-pad: 4px;
 
 @forward './src/component' with (
-  // A BORDER COLOUR WAS BEING USED AS A FILL.
-  //
-  // The contract leaves this `null` because no library has a semantic source
-  // for it: most design systems do not put a background on a field label at
-  // all. `null` is the honest default there, and it is also a trap in Sass —
-  // `background-color: null` omits the declaration entirely, so a component
-  // reading an unconfigured `null` silently loses the property rather than
-  // failing. This line is what stops that here.
-  //
-  // `border-color-subtle` is paper-300, the decorative rule between list items,
-  // and this was the only place in the product painting a SURFACE with it — so
-  // the label tab came out a grey that appears nowhere else, in a palette that
-  // has no greys.
-  //
-  // THE SAME STOCK AS THE SLIP BELOW IT. A field and its tab are one piece of
-  // stationery — the outline runs up the label, across its top and back down,
-  // and the box continues it — so they cannot be two tones.
-  //
-  // It read `bg-sunken`, matching the notebook's index tabs, and that pairing
-  // was the wrong one: an index tab is the BOOK's furniture and a field label
-  // is part of a control. Following the control is what keeps the tab and the
-  // slip reading as cut from one sheet when `$field-bg` moves.
-  $field-label-bg: var(--app-bg-field),
-  // Navigation chrome in this product sits on the sunken surface.
-  $nav-bg: var(--app-bg-sunken),
-  // --- Avatar ---------------------------------------------------------------
-  //
-  // The contract defaults an avatar to a pill at control height, which is what
-  // a name-badge in a menu bar wants. This product renders a photo frame: a
-  // large rounded square with a thick paper-white mount around it, like a
-  // print taped into a notebook.
-  //
-  // These three lines are what the layer is FOR. Before them the component
-  // read layer 2 directly and `$avatar-size` was declared, documented and
-  // unread — setting it changed nothing on screen.
+  $field-label-bg: var(--app-bg-inset),
+  $nav-bg: var(--app-bg-inset),
   $avatar-radius: var(--app-radius-surface),
   $avatar-size: 80px,
   $avatar-border-width: 4px,
-
-  // The contract defaults a chip to a pill. Here it is a rounded square,
-  // because a chip in this product is a torn-off paper tag, not a token in
-  // a chat input.
   $chip-radius: var(--app-radius-surface),
-  // --- Folded in from the theme file ---------------------------------------
-  //
-  // These were custom properties in the old `theme.scss`, a second layer 3 with
-  // its own vocabulary. Same values, one contract.
-  // WHAT THE USER TYPES IS INK, NOT A HIGHLIGHT.
-  //
-  // This pinned the field's text to `pen-600` #005bac — a bright ballpoint
-  // blue, hardcoded past layer 2, so every input in the product was the
-  // loudest thing on its screen and no theme could move it. The idea was that
-  // a field holds the user's own writing; the effect was a page competing with
-  // itself for attention.
-  //
-  // Body ink instead, which is what the foundation's default already said. The
-  // pen ramp survives in the palette for a mark that genuinely is the user's —
-  // the tick in a checkbox — and nowhere else.
   $field-fg: var(--app-fg-default),
   $button-pad-y: 2px,
   $button-pad-x: 16px,
@@ -194,255 +20,58 @@ $_field-pad: 4px;
   $field-line-offset-x: 3px,
   $field-box-pad-y: calc(#{$_field-pad} + 2px),
   $field-radius: var(--app-radius-surface),
-  // SOLID, both the box and the ruled lines inside it.
-  //
-  // The dashes were the notebook argument taken one step too literally: a
-  // ruled notebook has CONTINUOUS lines, and a dashed one is a worksheet — a
-  // cut-here line, a form to fill in. Dashes also read as provisional, which
-  // is the wrong thing to say about the field holding the user's recipe.
-  //
-  // A solid rule is still unmistakably a ruled page; it just stops adding a
-  // second texture on top of the one the page already has. The dash length and
-  // gap tokens went with them rather than being set to zero, so nothing
-  // survives describing a shape the product no longer draws.
   $field-border: var(--app-border-width) solid var(--app-border-color),
-  // Keep this value to be 22px.
   $field-font-size: 1.375rem,
-  // The tab is a LABEL, so it is set in the label's face. It read
-  // `font-family-heading` by default, which put the printed-book serif on a
-  // control — a heading face is for what a document says, not for what an
-  // interface asks.
   $field-label-font-family: var(--app-font-family-body),
-  // THE WELL A CONTROL IS CUT INTO. `bg-field` is the rung the theme reserves
-  // for it, and this override exists only because it predates the token: it was
-  // written when the contract defaulted a field to `bg-surface` — the sheet the
-  // field is lying ON, so a field made of it had no material of its own — and
-  // `bg-sunken` was the nearest thing with a material.
-  //
-  // `semantic/light.scss` argues against that choice at the point it defines
-  // the rung, and the argument still holds: at `sunken` a text input, a chip at
-  // rest and a recessed panel are three different things wearing one tone, and
-  // a PASSIVE control ends up deeper than the page behind the card it sits in
-  // — more visual weight than the buttons beside it. paper(150) is one step
-  // into the surface: enough to say something goes here, not so much that the
-  // field competes with the card.
-  //
-  // Kept as an explicit line rather than deleted, because the tab below has to
-  // move with it and the two being one piece of stationery is the decision.
-  $field-bg: var(--app-bg-field),
+  $field-bg: var(--app-bg-inset),
   $field-label-pad: 5px 24px 3px,
-  // No `$field-label-font-size` here. It was pinned to `15px`, a value on no
-  // ramp and belonging to no face, so the tab was the one piece of type in the
-  // product the scale could not move. The contract's default is
-  // `--app-font-size-sm`, which is what a secondary label is.
   $carousel-indicator-shadow-active: inset 0 0 3px 0
     var(--app-border-color-strong),
-  // A CARD IS A SHEET LAID ON THE PAGE, so it cannot be the page's own colour.
-  // The default is `bg-surface`, and `bg-surface` is what the notebook's sheet
-  // is made of — so every card rendered at exactly the colour it was sitting
-  // on, and the only thing separating them was a 1.32:1 border. `card.scss`
-  // has always described this component as "a clean card put down on top of
-  // the page"; `raised` is what makes that true instead of aspirational.
-  $card-content-bg: var(--app-bg-raised),
-  // THE CARD LOSES ITS BORDER, and this is the surface model reaching the build
-  // rather than a preference. `surfaceModel: elevated` with
-  // `surfaceSeparation: tones` means the card is ALREADY one rung lighter than
-  // the page: a rule around it separates the same thing twice, and the second
-  // one is the graphic noise that makes a quiet product look busy for a reason
-  // nobody can name. The eye counts the boxes before it reads anything inside
-  // them.
-  //
-  // `none` rather than a token, and it is the one case where that is not a
-  // literal sneaking past layer 2: what is wanted here is the ABSENCE of a
-  // line, and no colour expresses absence.
-  //
-  // What the lines still do is the part a tone cannot — a divider between
-  // ingredients on ONE plane, and the resting edge of a control, which is
-  // affordance rather than separation.
-  // THE CHOSEN NAV ITEM IS A QUIET FILL WITH A MARK, NOT A SOLID BLOCK.
-  //
-  // The contract sends `nav-bg-active` to the selection pair, which this school
-  // resolves to the accent — so the rail carried a full-width blue slab, and a
-  // screen counting the accent found seven occurrences, three of them solid.
-  // The budget is one filled chromatic per viewport, and it belongs to the
-  // primary button.
-  //
-  // Two rungs down on the neutral ladder, which is the same depth a chosen chip
-  // takes, plus a solid accent bar on the leading edge — an INDICATOR of state,
-  // which is a mark and not a fill. See `.app-navbar` for the bar.
   $nav-bg-active: var(--app-bg-neutral-subtle-active),
   $nav-fg-active: var(--app-fg-heading),
-  // ONE RUNG FOR HOVER, TWO FOR CHOSEN, and the gap between them is the point.
-  //
-  // Both sink into the page rather than lighting up, which is the rule for
-  // items sitting loose on a surface with no track around them: where a
-  // container has a plane of its own the chosen item RISES to it, and where the
-  // items are on the page it sinks.
-  //
-  // The first rung, not the second. `neutral-subtle-hover` put hover on the
-  // rung immediately under the chosen fill, so the two states were one step
-  // apart on a ramp where a step is 0.03 of lightness — hovering the item next
-  // to the current one made both look current. Starting at `neutral-subtle`
-  // doubles the distance and costs nothing: the ramp has the rung.
   $nav-bg-hover: var(--app-bg-neutral-subtle),
-  // HOVER PREVIEWS SELECTION, AND SELECTION IS NO LONGER ACCENT.
-  //
-  // The contract defaults this to the selection INK, which is right: hovering a
-  // nav item is a preview of choosing it, and a control that previews one thing
-  // and commits to another is the bug `check-state-families` exists to catch.
-  //
-  // This school collapses the selection ink onto the accent, so with the
-  // default the rail previewed a blue label and then committed to a neutral
-  // fill with a small accent bar — the preview promising the one treatment the
-  // commitment does not use.
-  //
-  // The BODY ink, not the heading ink. Hover is a preview and the chosen item
-  // is the commitment, so the two cannot be the same: with both at
-  // `fg-heading`, the only thing separating a hovered item from the current one
-  // was a single rung of fill, and the weight the chosen item carries had
-  // nowhere to read against. Body ink under the pointer, heading ink and the
-  // heading weight where you actually are.
   $nav-fg-hover: var(--app-fg-default),
-  // `transparent` and a width of zero, rather than the `none` that used to sit
-  // here. CoreUI writes the card's edge as a SHORTHAND —
-  // `border: var(--cui-card-border-width) solid var(--cui-card-border-color)`
-  // — and `none` in the colour position makes the whole declaration invalid, so
-  // the absence of a line depended on a browser dropping a malformed rule. The
-  // width is what expresses absence; the colour is what a `.border` utility
-  // overrides when a card does want an edge.
   $card-content-border-color: transparent,
   $card-border-width: 0,
 
-  // NO SHADOW EITHER. The tone already separates the card from the page, and a
-  // sheet lying on a table does not float. `shadow-raised` stays in the system
-  // for what genuinely does — a menu, a dialog.
   $card-content-shadow: none,
 
-  // GENEROUS, because that is what Editorial spends instead of lines. The
-  // contract defaults a card's padding to `space-xs` — 8px — which is a dense
-  // product's number, and at 8px the serif title sits against the card's edge
-  // and the whitespace that was supposed to carry the hierarchy is not there.
   $card-body-pad: var(--app-space-md),
-
-  // THE FOOTER IS NOT A BAND. `ladderSpend: 2` — the page on one rung and
-  // everything raised on the next — leaves the third rung for the quiet neutral
-  // fill every badge and resting secondary action is made of. A filled strip
-  // inside a raised sheet spends it on a row of icon buttons instead, and the
-  // hairline above the footer already divides the two regions.
   $card-footer-bg: transparent,
   $card-footer-border-color: var(--app-border-color-subtle),
-  // The same decision, for the shared contract's own surface.
   $surface-border-color: transparent,
 
-  // THE MODAL FLOATS, SO THE SHADOW IS ITS BOUNDARY. Carrying a raised tone AND
-  // a hairline AND a shadow is three mechanisms for one edge, which is the
-  // default library look this system exists to avoid.
   $overlay-border-color: transparent,
 
-  // A badge is a MARK, so it takes the mark radius rather than the control one.
-  // It was pointed at the control radius back when there was no smaller step to
-  // point at.
-  $badge-fg: var(--app-fg-subtlest),
+  $badge-fg: var(--app-fg-muted),
   $badge-radius: var(--app-radius-sm),
-  // The tab track is a thin rule across the whole width, decorative, at the
-  // divider rung; the solid accent mark under the chosen tab is an INDICATOR of
-  // state and not a border.
-  $nav-border-color: var(--app-border-divider),
-  // A SELECTED CHIP GOES DEEPER, IT DOES NOT GAIN AN EDGE.
-  //
-  // With no wash available, `bg-accent-subtle` routes to the quiet neutral rung
-  // — the same rung a RESTING chip sits on — so the two states would be one
-  // colour. An accent border on the selected one was tried and fails a
-  // different rule: a thin accent outline is the vocabulary of a focus ring, so
-  // a keyboard user could not tell 'chosen' from 'focused'.
-  //
-  // Both states are a FILL and only the depth changes, with the chosen one two
-  // rungs DOWN. Darker, never lighter — in an elevated model a chosen thing
-  // that recedes is the one direction the eye reads as wrong without being able
-  // to name it.
+  $nav-border-color: var(--app-border-color),
   $chip-bg-selected: var(--app-bg-neutral-subtle-active),
   $chip-fg-selected: var(--app-fg-heading)
 );
 
-// --- This product's own components -----------------------------------------
-//
-// `choice`, `section-card`, `notebook-tabs`, `category`, `intro` and
-// `layout-aside` are this product's inventions. They get layer 3 entries
-// like everything else, and they get them HERE rather than in the shared
-// contract, because the tool has no business naming another team's nouns.
-//
-// Declared alongside the `@forward` above so a component still reaches
-// everything through one `@use`.
-// THE SLOTS A COMPONENT WAS READING LAYER 2 FOR.
-//
-// Every one of these existed as a `var(--app-…)` written straight into a
-// component file. That is not a cosmetic difference: a layer 3 name nobody
-// reads is declared, documented and INERT — setting it changes nothing on
-// screen — and a component reading layer 2 directly is a component whose
-// decisions cannot be moved without editing it. `check-dumb-components` counts
-// them, and the count is meant to fall rather than to be budgeted for.
-//
-// They are here rather than in the shared contract because the tool has no
-// business naming another team's nouns; `$card-fg` is the exception that
-// proves it, and it is only here because the contract happens not to have one.
 $button-gap: var(--app-space-xs) !default;
-// The light gap between a filled control and its focus ring. A single dark
-// ring drawn onto a dark filled button is ink on ink and invisible, so the gap
-// is the sheet colour: the ring separates from the control on a filled button
-// and from the page on an outline one, with no second colour that exists only
-// to be seen.
-$button-ring-offset-color: var(--app-bg-raised) !default;
-// A button that looks like a link takes the accent, which in this school is
-// what acts, what is chosen and where text goes.
+$button-ring-offset-color: var(--app-bg-overlay) !default;
 $button-link-fg: var(--app-fg-accent) !default;
 $button-link-fg-hover: var(--app-fg-accent-hover) !default;
 
-// The rules under a modal's heading and above its footer. They divide two
-// regions of ONE plane, which is the job a tone cannot do and a line still can.
-// THE MODAL'S BODY INSET, and it is layer 3 because a consumer borrows it.
-//
-// It was a private custom property on `.modal` — `--modal-body-pad` — and the
-// recipe form in `www` read it to cancel its own inset. That works at runtime
-// through inheritance and is invisible to every static check: `check-orphan-reads`
-// reported the read as naming a vocabulary nothing declares, because from
-// outside the component nothing does.
-//
-// A name here is the same value with an owner. It is the screen-size padding
-// rather than a number of its own — a dialog on a desktop is still a desktop,
-// and its content has to line up with the page it opened over.
 $modal-body-pad: var(--app-pad-surface) !default;
 
-// The gap between a modal footer's buttons.
 $modal-footer-gap: var(--app-gap-inline) !default;
 $modal-divider-width: var(--app-border-width) !default;
 $modal-divider-color: var(--app-border-color-subtle) !default;
 
-// The card's own names moved to `src/_component.scss`, where the CoreUI adapter
-// can reach them. Declared here they were invisible to the adapter, and the
-// library draws the card now.
-
 $choice-title-fg: var(--app-fg-default) !default;
-// `iconStyle: outline`, and icons inherit `currentColor`: the one accent is
-// spent on actions, never on decoration. A choice tile is already clickable as
-// a whole, so its glyph identifies the choice rather than advertising it.
 $choice-img-fg: currentColor !default;
 
-$table-td-mono-fg: var(--app-fg-subtlest) !default;
+$table-td-mono-fg: var(--app-fg-muted) !default;
 $table-td-accent-fg: var(--app-fg-accent) !default;
 
 $field-selection-fg: var(--app-fg-heading) !default;
 
-// `$nav-bg-hover` and `$nav-indicator-bg` moved to `src/_component.scss`, where
-// the CoreUI adapter can reach them — the sidebar is drawn by the library and
-// takes the same two slots the hand-written rail does. This product's values
-// for them are in the configuration map above.
-
 $notebook-tabs-content-fg: var(--app-fg-default) !default;
 $section-card-item-pad-y: var(--app-pad-control-y) !default;
 $tabs-layout-content-fg: var(--app-fg-default) !default;
-// The panel an enclosed tab strip sits on. It carries a line rather than a tone
-// because the tab above it is fused to it — the border runs up one side of the
-// chosen tab, across the panel and back, and that continuity is the whole shape.
 $tabs-layout-content-border-width: var(--app-border-width) !default;
 $tabs-layout-content-border-color: var(--app-border-color) !default;
 $progress-indicator-fg: var(--app-fg-default) !default;
@@ -452,62 +81,24 @@ $choice-radius: var(--app-radius-surface) !default;
 $choice-gap: var(--app-gap-stack) !default;
 $choice-title-border-width: var(--app-border-width) !default;
 $choice-title-radius: var(--app-radius-control-sm) !default;
-$choice-title-bg: var(--app-bg-raised) !default;
+$choice-title-bg: var(--app-bg-overlay) !default;
 $choice-img-fg-hover: var(--app-fg-accent) !default;
 $choice-title-bg-hover: var(--app-bg-accent-subtle) !default;
 $intro-gap: var(--app-gap-stack) !default;
-$notebook-tabs-content-bg: var(--app-bg-surface) !default;
-$notebook-tabs-bg: var(--app-bg-sunken) !default;
+$notebook-tabs-content-bg: var(--app-bg-canvas) !default;
+$notebook-tabs-bg: var(--app-bg-inset) !default;
 $notebook-tabs-radius: var(--app-radius-surface) !default;
 $notebook-tabs-shadow: var(--app-shadow-raised) !default;
-// THE CHOSEN TAB IS THE PAGE, NOT A BLUE BLOCK.
-//
-// It was a solid accent fill, which is how a filled INVITATION is drawn — the
-// one treatment reserved for the thing that happens when you press it. A tab
-// that is already chosen is not an invitation, and on the notebook page it put
-// a third solid accent patch beside the primary button and the rail's own
-// active item.
-//
-// The tab that is open is the one continuous with the sheet behind it, which
-// is what an index tab physically is: the others are still tucked under. So
-// the active tab takes the content surface and the resting ones stay sunken,
-// and the whole affordance costs no pigment at all.
-$notebook-tabs-bg-active: var(--app-bg-surface) !default;
+$notebook-tabs-bg-active: var(--app-bg-canvas) !default;
 $notebook-tabs-fg-active: var(--app-fg-heading) !default;
-// A SHEET IS SEPARATED BY ITS TONE, ONCE.
-//
-// The panel carried a fill, a hairline AND a shadow — three mechanisms for one
-// edge, which is the default library look this school exists to avoid, and the
-// same three the card shed. `surfaceSeparation: tones` picks the fill; the
-// other two are the boundary drawn again.
-//
-// The shadow was the worse of the two: this product's elevation is carried by
-// tone and the design language says in as many words that a surface is never
-// separated by a shadow. A panel does not float.
 $section-card-shadow: none !default;
 $section-card-border-color: none !default;
-// A SECTION MARK IS NOT A FILLED ACTION. `bg-brand` is optional in the
-// contract and falls back to the accent, so a title band made of it put a
-// second solid chromatic patch on a screen that already has one filled button
-// — and the school allows exactly one per viewport, because its scarcity is
-// the whole reason the button reads as the way forward.
-//
-// The quiet neutral rung is what a mark is made of here, the same one a badge
-// and a resting chip take.
 $section-card-title-bg: var(--app-bg-neutral-subtle) !default;
 $section-card-title-fg: var(--app-fg-heading) !default;
 $section-card-title-font-size: var(--app-font-size-heading-sm) !default;
 $section-card-title-border-width: var(--app-border-width) !default;
-$section-card-title-divider-color: var(--app-border-divider) !default;
-// THE RAISED RUNG, the same one a card takes, because it is the same object: a
-// sheet lying on the page.
-//
-// At `bg-surface` it measured 1.04:1 against the page — below every band in the
-// theme's own ladder table, so the panel had a fill that could not be seen and
-// was being held together by the hairline and the shadow above. Those are gone,
-// so the tone has to do the work, and at `bg-raised` it measures 1.08:1: the
-// figure the table gives for a surface adjacent to the page.
-$section-card-body-bg: var(--app-bg-raised) !default;
+$section-card-title-divider-color: var(--app-border-color) !default;
+$section-card-body-bg: var(--app-bg-overlay) !default;
 $choice-border-color-hover: var(--app-border-accent) !default;
 $category-width: 102px !default;
 $category-font-size: var(--app-font-size-sm) !default;

@@ -2,43 +2,12 @@
 // NOTEBOOK-LAYOUT — the component stylesheets
 // =============================================================================
 //
-// Components only. No variables, no themes, no palette.
+// Components only. No variables, no themes, no palette. Every token comes from
+// the foundation in `styles/ds/`:
 //
-// -----------------------------------------------------------------------------
-// WHAT LEFT THIS FILE
-// -----------------------------------------------------------------------------
-//
-// It used to forward `variables` and `themes/theme-white`, and to define three
-// theme classes of its own:
-//
-//     .theme-base    { @include theme-base; }
-//     .theme-light   { @include theme-light; }
-//     :root          { @extend .theme-light; }
-//
-// All four are gone, along with the six files behind them. The design system is
-// the foundation in `styles/ds/`, which holds every token across three layers:
-//
-//     layer 1  ds/palette.scss           what the colours ARE
-//     layer 2  ds/semantic/light.scss     what they MEAN, by day
-//     layer 2  ds/semantic/dark.scss      what they MEAN, after dark
-//     layer 2  ds/semantic/_structure     type, radius, the viewport steps
-//     layer 2  ds/semantic/_surfaces      the two surface contexts
-//     layer 3  ds/tokens.scss             the component contract
-//
-// The three mixins became two surfaces. `theme-base` was a near-white sheet,
-// which the foundation already had as `base`; `theme-light` was that sheet under
-// the paper texture and survives as `paper`; `theme-primary` was named for the
-// brand and implemented as a third light sheet, so it was replaced by `brand`,
-// which is the brand fill with the foreground the contrast gate measured against
-// it. See `ds/semantic/_surfaces.scss`.
-//
-// The `:root { @extend .theme-light }` at the end is what made the paper texture
-// the document default. A plane is declared in the markup now, by the element
-// that paints it — `.app-layout` is `data-surface="surface"`, a card and a
-// dialog body are `"raised"` — because a context has to name the ground the
-// rungs inside it are measured from. Extending a theme class onto `:root` also
-// dragged its `background-image` onto the html element, where a texture cannot
-// be turned off by any child.
+//     layer 1  ds/src/_base.scss      what the colours ARE
+//     layer 2  ds/src/_semantic.scss  what they MEAN
+//     layer 3  ds/tokens.scss         the component contract
 // =============================================================================
 
 @forward 'resets';

@@ -1,1215 +1,363 @@
-// src/_component.scss
+$button-bg: var(--app-bg-accent) !default;
+$button-fg: var(--app-fg-on-accent) !default;
+$button-bg-hover: var(--app-bg-accent-hover) !default;
+$button-bg-active: var(--app-bg-accent-active) !default;
+$button-border-color: var(--app-border-accent) !default;
+$button-radius: var(--app-radius-control) !default;
+$button-height: var(--app-size-control) !default;
+$button-pad-x: var(--app-pad-control-x) !default;
 
-// =============================================================================
-// LAYER 3 — COMPONENT  (injection points, not components)
-// =============================================================================
-//
-// Also known as: component tokens (Material 3, Spectrum, Atlassian),
-// scoped tokens (Design Tokens W3C CG).
-//
-// This layer does NOT ship components. That is the whole redesign. Shipping
-// `.btn` and `.card` would be building "another Bootstrap that forces its own
-// anatomy" — the opposite of a foundation. Anatomy comes from whichever library
-// the team already chose; this layer never competes with it.
-//
-// What this layer ships is a NAMING CONTRACT: a documented set of
-// `--app-<component>-<part>-<property>` names that adapters consult FIRST and
-// that consumers may set to customise a single instance. It is almost entirely
-// empty by default, and that is correct.
-//
-// -----------------------------------------------------------------------------
-// WHY THE CONTRACT CAN BE EMPTY AND STILL WORK
-// -----------------------------------------------------------------------------
-//
-// Every entry here is a Sass variable holding a POINTER at layer 2:
-//
-//     $button-bg: var(--app-bg-action) !default;
-//
-// An adapter binds that variable and nothing else:
-//
-//     --cui-btn-bg: #{component.$button-bg};
-//
-// which compiles to `--cui-btn-bg: var(--app-bg-action)`. One reference, no
-// chain. Set `$button-bg` before the module is loaded and the same one line
-// compiles to whatever you chose. That is the whole mechanism: the layer is
-// free until someone uses it, because the indirection is resolved at build
-// time rather than paid for at runtime.
-//
-// -----------------------------------------------------------------------------
-// THE 3-LEVEL FALLBACK IS GONE. DO NOT BRING IT BACK.
-// -----------------------------------------------------------------------------
-//
-// This layer used to be custom properties, and adapters resolved a value as a
-// chain: `var(--app-button-bg, var(--app-bg-action, var(--bs-btn-bg)))` —
-// component, then semantic, then the library's own default. It worked, and it
-// cost three references in every declaration for an override almost nobody
-// sets.
-//
-// Two failures killed it, and both are worth remembering because the pattern
-// looks so reasonable written down:
-//
-//   - Ending a chain in the property being DECLARED is a cycle by the CSS
-//     spec, so the whole declaration is invalid. `--bs-btn-bg: var(…,
-//     var(--bs-btn-bg))` silently dropped buttons, cards, tables and modals.
-//
-//   - The library default as a last resort sounds like resilience and is
-//     concealment. A missing token stopped being a bug and became a component
-//     quietly wearing Bootstrap indigo.
-//
-// What replaced the safety of the chain is not a longer chain. It is
-// `check-dangling-refs.mjs`, which fails the BUILD when a `var(--app-…)` has
-// no declaration behind it. A bare `var()` does not "fail fast" on its own —
-// an undefined custom property makes the declaration invalid at computed-value
-// time and the property silently falls back to inherited or initial, which is
-// the same concealment in a different costume. The guard is what makes it
-// loud; the CSS never could.
-//
-// So this layer's value is not the tokens it emits — it is the NAMES it
-// reserves, so that a consumer customising a component reaches for a token
-// instead of editing the component's CSS. That is the exact behaviour you want
-// from teams who do not know design systems: the path of least resistance is a
-// variable, not a fork.
-//
-// -----------------------------------------------------------------------------
-// THE ADMISSION TEST (unchanged, restated with your example)
-// -----------------------------------------------------------------------------
-//
-// A component token is worth RESERVING A NAME for if it answers yes to one:
-//   1. Does a theme/context change it independently of its semantic source?
-//   2. Will a consumer plausibly override it for one instance? (input-label-bg
-//      passes here: unusual to theme, occasionally set per instance.)
-//   3. Does it encode component-specific anatomy with no semantic equivalent?
-//
-// Names that pass are DOCUMENTED below even when we emit nothing for them, so
-// the adapter and the consumer agree on spelling. Names that fail all three do
-// not get reserved; the component reads semantic directly.
-//
-// -----------------------------------------------------------------------------
-// DEFAULT: emit nothing
-// -----------------------------------------------------------------------------
-//
-// `$emit-component-vars` defaults to false. The registry below is the
-// documented contract; turning emission on writes DEFAULTS for a chosen subset,
-// which a project does only when it wants a component token to have a value
-// other than "fall through to semantic". Most projects never turn it on.
-// =============================================================================
-
-@use 'sass:map';
-@use 'core';
-@use 'config';
-
-// -----------------------------------------------------------------------------
-// THE CONTRACT
-// -----------------------------------------------------------------------------
-//
-// This map is the source of truth for component token NAMES. Adapters import it
-// and iterate it, so a name added here is automatically available to every
-// adapter's fallback chain without editing each adapter. The values are the
-// SEMANTIC tokens each component part falls through to — used only when
-// emission is on; otherwise the fallback happens naturally at runtime.
-//
-// Grammar: 'component-part-property': 'semantic-token-it-derives-from'
-//
-// Keep this list SHORT. It covers the parts teams actually customise across
-// libraries. It is not a catalogue of every component a library has — that
-// catalogue is the library's job, and reproducing it here is precisely the
-// 627-token mistake from the old Bootstrap adapter.
-
-// -----------------------------------------------------------------------------
-// SASS VARIABLES, NOT CUSTOM PROPERTIES
-// -----------------------------------------------------------------------------
-//
-// Every name below is a Sass variable holding a POINTER — a `var()` naming a
-// layer 2 token. Three consequences, and they are the whole design:
-//
-//   1. THE LAYER COSTS NOTHING. A Sass variable is not CSS. An entry nobody
-//      reads emits nothing at all, so the layer can be as large as the
-//      libraries demand — one name for every knob any of them exposes — and a
-//      product that uses six of them ships six references.
-//
-//   2. THE CALL SITE IS ONE `var()`. `component.$button-bg` compiles to
-//      `var(--app-bg-action)`. No chain, no fallback, no `--app-button-bg`
-//      indirection in the output. The previous design emitted
-//      `var(--app-button-bg, var(--app-bg-action))` at every site, which meant
-//      the fallback text was duplicated everywhere it was used and had to be
-//      written correctly by hand each time.
-//
-//   3. THEMING STILL WORKS. The pointer resolves in the browser, so a theme
-//      swap on `:root` moves every component that points at it. Layer 2 stays
-//      the only runtime surface, which is the correct division: a theme is a
-//      set of values, and this layer is a set of DECISIONS about which value.
-//
-// -----------------------------------------------------------------------------
-// HOW TO OVERRIDE
-// -----------------------------------------------------------------------------
-//
-//     @use 'ds/src/component' with (
-//       $button-bg: var(--app-bg-selected),
-//       $table-border-color: var(--app-border-color-strong)
-//     );
-//
-// `!default` is what makes that work: the assignment above wins and the line
-// here is skipped. Nothing extra reaches the CSS — the call site simply
-// compiles to the other pointer.
-//
-// -----------------------------------------------------------------------------
-// WHAT THIS COSTS, STATED PLAINLY
-// -----------------------------------------------------------------------------
-//
-// Layer 3 is no longer overridable at RUNTIME. Setting `--app-button-bg` in the
-// browser, or on a scoped element, does nothing — the name is not in the output.
-// That was possible before and is being given up deliberately.
-//
-// What replaces it: a scope re-themes by overriding LAYER 2 —
-// `.promo { --app-bg-action: … }` — which moves everything in that scope
-// coherently rather than one component at a time. And a token that genuinely
-// has to vary at runtime (a density step driven by a media query) is not a
-// pointer at all: the product declares it as a real custom property and points
-// the Sass variable at that. The emission policy already draws that line — a
-// value becomes a custom property when, and only when, it changes at runtime.
-// -----------------------------------------------------------------------------
-
-// --- Button: the most-customised component in every library ------------
-$button-bg: #{core.ref('bg-action')} !default;
-$button-fg: #{core.ref('fg-on-action')} !default;
-$button-bg-hover: #{core.ref('bg-action-hover')} !default;
-$button-bg-active: #{core.ref('bg-action-active')} !default;
-$button-border-color: #{core.ref('border-action')} !default;
-$button-radius: #{core.ref('radius-control')} !default;
-$button-height: #{core.ref('size-control')} !default;
-$button-pad-x: #{core.ref('pad-control-x')} !default;
-
-// THE SECONDARY ACTION, AND IT RESTS ON RUNG 3 — not on the solid neutral.
-//
-// This set did not exist, and its absence is why every adapter here rendered a
-// dark filled secondary. With nothing at layer 3 to read, an adapter generates
-// `.btn-secondary` from the `neutral` ROLE like any other theme colour, which
-// gives it `bg-neutral` — the one solid neutral, rung 9 — and `fg-on-neutral`,
-// which inverts. The result is a small dark button standing beside the primary,
-// competing with it, and nobody could say which rung it was on.
-//
-// claude-4.md is unambiguous: the resting fill of a neutral secondary is rung
-// 3, the same quiet fill a badge and a chip are made of, carrying ORDINARY ink
-// rather than inverted ink. That is the whole difference between a supporting
-// action and a second call to action. And when it feels like it disappears,
-// "a correção é subir o degrau, não adicionar contorno" — raise the rung, never
-// reach for an outline, because a filled secondary and an outlined one on the
-// same screen invent a fourth level of hierarchy nobody asked for.
-//
-// Hover and active move ONE RUNG each — 3 to 4 to 5 — which is the rule for
-// every state in a one-pigment system: change rung, never treatment.
-$button-secondary-bg: #{core.ref('bg-neutral-subtle')} !default;
-$button-secondary-fg: #{core.ref('fg-default')} !default;
-$button-secondary-bg-hover: #{core.ref('bg-neutral-subtle-hover')} !default;
-$button-secondary-bg-active: #{core.ref('bg-neutral-subtle-active')} !default;
-// A FILLED BUTTON HAS NO BORDER. The fill already delimits it, and a border
-// would be the redundant second mechanism. It is bound rather than left alone
-// because the library ships one and `transparent` is how you take it away.
+$button-secondary-bg: var(--app-bg-neutral-subtle) !default;
+$button-secondary-fg: var(--app-fg-default) !default;
+$button-secondary-bg-hover: var(--app-bg-neutral-subtle-hover) !default;
+$button-secondary-bg-active: var(--app-bg-neutral-subtle-active) !default;
 $button-secondary-border-color: transparent !default;
 
-// --- Input / field -----------------------------------------------------
-// The field's OWN fill, rather than a surface borrowed for the purpose.
-//
-// This read `bg-surface` — the tone a CARD is made of — so a field inside a card
-// was the same colour as the card and the only thing marking it was a hairline.
-// That is how a border ends up being asked to reach 3:1 on its own and drags the
-// whole ladder up behind it. It then read `bg-sunken`, which was one rung too
-// deep and collided with the resting component fill.
-//
-// `bg-field` is the token for exactly this job, and it moves with the surface
-// the field is on.
-$field-bg: #{core.ref('bg-field')} !default;
-$field-fg: #{core.ref('fg-default')} !default;
-// The INTERACTIVE role rather than the general border, and the distinction is
-// legal rather than aesthetic: what identifies a control sits inside WCAG
-// 1.4.11 and wants 3:1, while a decorative divider sits outside it and wants
-// 1.2-1.5:1. A field with no perceivable edge is a field nobody can find, and
-// this is the one place a border is not negotiable.
-$field-border-color: #{core.ref('border-interactive')} !default;
-$field-border-color-focus: #{core.ref('border-interactive')} !default;
-$field-radius: #{core.ref('radius-control')} !default;
-$field-height: #{core.ref('size-control')} !default;
-// Your example lives here: unusual to theme, occasionally set per instance.
-$field-label-fg: #{core.ref('fg-default')} !default;
-// No semantic source — a field label has no background unless a product gives
-// it one. `null` rather than a pointer, so reading it without setting it is a
-// Sass error at build time instead of a silent empty value in the CSS.
+$field-bg: var(--app-bg-inset) !default;
+$field-fg: var(--app-fg-default) !default;
+$field-border-color: var(--app-border-color-strong) !default;
+$field-border-color-focus: var(--app-border-color-strong) !default;
+$field-radius: var(--app-radius-control) !default;
+$field-height: var(--app-size-control) !default;
+$field-label-fg: var(--app-fg-default) !default;
 $field-label-bg: null !default;
 
-// --- Surface / card ----------------------------------------------------
-// THE COLLAPSED RAIL'S THICKNESS, and it is `size-bar` rather than a number of
-// its own: a rail folded down to its icons IS a bar stood on end, and the
-// product already decided how thick a bar is. A second value here is how the
-// phone's bottom bar and the desktop's rail end up disagreeing about the size of
-// the same icon.
-//
-// A layout that reserves a column for the rail reads this same name, so the
-// gutter and the sidebar cannot drift apart.
-$sidebar-narrow-width: #{core.ref('size-bar')} !default;
-// The control that folds and unfolds the rail. The library draws it at 8px
-// square inside 4px of padding — a 16px target, where this system's floor is
-// `size-control` and the reason is written down: 40px is a miss on a phone held
-// over a pan. The glyph is an icon; the padding around it in `coreui-entry`
-// carries the rest of the target.
-$sidebar-toggler-width: #{core.ref('size-icon')} !default;
-$sidebar-toggler-height: #{core.ref('size-icon')} !default;
-$sidebar-toggler-fg: #{core.ref('fg-muted')} !default;
-$sidebar-toggler-fg-hover: #{core.ref('fg-heading')} !default;
-$surface-bg: #{core.ref('bg-surface')} !default;
-$surface-fg: #{core.ref('fg-default')} !default;
-$surface-border-color: #{core.ref('border-color')} !default;
-$surface-radius: #{core.ref('radius-surface')} !default;
-$surface-pad: #{core.ref('pad-surface')} !default;
-$surface-shadow: #{core.ref('shadow-raised')} !default;
+$sidebar-narrow-width: var(--app-size-bar) !default;
+$sidebar-toggler-width: var(--app-size-icon) !default;
+$sidebar-toggler-height: var(--app-size-icon) !default;
+$sidebar-toggler-fg: var(--app-fg-muted) !default;
+$sidebar-toggler-fg-hover: var(--app-fg-heading) !default;
+$surface-bg: var(--app-bg-canvas) !default;
+$surface-fg: var(--app-fg-default) !default;
+$surface-border-color: var(--app-border-color) !default;
+$surface-radius: var(--app-radius-surface) !default;
+$surface-pad: var(--app-pad-surface) !default;
+$surface-shadow: var(--app-shadow-raised) !default;
 
-// --- Table: called out as a key parameter ------------------------------
-$table-fg: #{core.ref('fg-default')} !default;
-$table-border-color: #{core.ref('border-color-subtle')} !default;
-$table-header-bg: #{core.ref('bg-sunken')} !default;
-$table-header-fg: #{core.ref('fg-heading')} !default;
-// Hover is a STATE and striping is a resting tint, so they no longer share
-// a source. Both pointed at `bg-sunken` while layer 2 had no interaction
-// token, which is what made a hovered row and a striped row identical —
-// and in the dark theme made the hover invisible outright.
-$table-row-bg-hover: #{core.ref('bg-surface-hover')} !default;
-$table-row-bg-striped: #{core.ref('bg-sunken')} !default;
+$table-fg: var(--app-fg-default) !default;
+$table-border-color: var(--app-border-color-subtle) !default;
+$table-header-bg: var(--app-bg-inset) !default;
+$table-header-fg: var(--app-fg-heading) !default;
+$table-row-bg-hover: var(--app-bg-panel) !default;
+$table-row-bg-striped: var(--app-bg-inset) !default;
 
-// --- Overlay / modal / dropdown ---------------------------------------
-$overlay-bg: #{core.ref('bg-raised')} !default;
-$overlay-fg: #{core.ref('fg-default')} !default;
-$overlay-border-color: #{core.ref('border-color')} !default;
-$overlay-radius: #{core.ref('radius-surface')} !default;
-$overlay-shadow: #{core.ref('shadow-overlay')} !default;
-$overlay-backdrop: #{core.ref('bg-overlay')} !default;
+$overlay-bg: var(--app-bg-overlay) !default;
+$overlay-fg: var(--app-fg-default) !default;
+$overlay-border-color: var(--app-border-color) !default;
+$overlay-radius: var(--app-radius-surface) !default;
+$overlay-shadow: var(--app-shadow-overlay) !default;
+$overlay-backdrop: var(--app-bg-backdrop) !default;
 
-// --- Navigation --------------------------------------------------------
-// Navigation CHROME, not an inline link: a sidebar item that came out toffee
-// would read as a hyperlink in a list. `fg-link` is for text inside prose.
-// AN INACTIVE TAB IS QUIETER THAN BODY TEXT, and it was the same ink.
-//
-// At the body ink an inactive tab has the same weight as the paragraph below
-// it, so the ACTIVE tab has to compete rather than simply dominate — the strip
-// reads as four equal things one of which happens to be coloured. Rung 11 is
-// where a label that is present but not chosen belongs.
-$nav-fg: #{core.ref('fg-muted')} !default;
-// Hover on a nav item PREVIEWS selection, so it comes from the `selected`
-// family. It defaulted to `fg-link-hover` — the link colour — which is how a
-// product ended up previewing one hue and committing to another on the same
-// control. `check-state-families` enforces the rule; this is the default that
-// stops it being violated by accident.
-$nav-fg-hover: #{core.ref('fg-selected')} !default;
-// The chosen item's LABEL, which sits on `nav-bg-active`, so it is that
-// fill's measured pair rather than a text colour picked separately.
-$nav-fg-active: #{core.ref('fg-on-selected')} !default;
-$nav-bg-active: #{core.ref('bg-selected')} !default;
-// Hover is the PREVIEW of selection, so it is one rung above the chosen fill in
-// the same family — hovering and choosing read as the same gesture at two
-// strengths. Here rather than in a product file because the adapter has to
-// reach it: a rail drawn by the library gets its hover from this name.
-$nav-bg-hover: #{core.ref('bg-selected-subtle')} !default;
-// The mark on the chosen item's leading edge. A bar and not a fill, which is
-// what lets a rail spend the accent without spending the page's one filled
-// chromatic on permanent chrome.
-$nav-indicator-bg: #{core.ref('bg-accent')} !default;
-// THE THIRD CUE ON THE CHOSEN ITEM, and it is not decoration.
-//
-// Fill and ink are both tone, and "selected" carried by tone alone is a state
-// nobody with a tone-discrimination difficulty can read. Weight is a different
-// channel, and it is the one an Editorial product already spends on rank.
-$nav-font-weight-active: #{core.ref('font-weight-heading')} !default;
+$nav-fg: var(--app-fg-muted) !default;
+$nav-fg-hover: var(--app-fg-accent) !default;
+$nav-fg-active: var(--app-fg-on-accent) !default;
+$nav-bg-active: var(--app-bg-accent) !default;
+$nav-bg-hover: var(--app-bg-accent-subtle) !default;
+$nav-indicator-bg: var(--app-bg-accent) !default;
+$nav-font-weight-active: var(--app-font-weight-heading) !default;
 
-// --- Inline code -------------------------------------------------------
-// Libraries like to tint `<code>` (Bootstrap ships a fixed pink). The
-// foundation has no opinion about code, so this defaults to body text and
-// exists so a project can have one without editing an adapter.
-$code-fg: #{core.ref('fg-default')} !default;
+$code-fg: var(--app-fg-default) !default;
 
-// --- Chip: the first entry reserved for a component NO library ships ---
-//
-// A chip is a selectable filter token: clickable, carries a pressed state,
-// and reads as a label rather than as a control. Filter panels, faceted
-// search, tag pickers and dashboard segment selectors are all built from it.
-//
-// Nine libraries were checked and none has one. Bulma has `.tag`, which is a
-// read-only label; everyone else has a button and a badge and nothing in
-// between. So this is the first contract entry whose adapters mostly have
-// nothing to bind — and that is precisely the argument for reserving the
-// names anyway.
-//
-// WHY RESERVE NAMES FOR SOMETHING WE DO NOT SHIP
-//
-// Every product that needs a chip writes it. The names decide whether five
-// products write five different vocabularies or the same one: an agent that
-// knows `--app-chip-bg` can theme a chip it has never seen, a documentation
-// generator can describe it, and a product that later adopts a library WITH
-// a chip changes its adapter instead of its markup.
-//
-// The naming is not invented. CoreUI — MIT, built on Bootstrap's class
-// vocabulary — ships a chip, and every name below has a counterpart there:
-//
-//     chip-bg           --cui-chip-bg
-//     chip-fg           --cui-chip-color
-//     chip-border-color --cui-chip-border-color
-//     chip-radius       --cui-chip-border-radius
-//     chip-height       --cui-chip-min-height
-//     chip-pad-x        --cui-chip-padding-x
-//     chip-bg-selected  --cui-chip-active-bg
-//     chip-fg-selected  --cui-chip-active-color
-//
-// That correspondence is the evidence this is ecosystem vocabulary rather
-// than one product's shape — the same bar `accent` and `font-family-display` had to
-// clear.
-//
-// The SELECTED pair points at `selected`, not `action`. Layer 2 draws that
-// distinction deliberately and most products collapse it: a pressed filter
-// is a state the interface is in, not an invitation to act. A chip is the
-// clearest case for the distinction existing at all.
-//
-// No hover entry, on purpose. Hover reads `bg-surface-hover` straight from
-// layer 2,
-// and the admission test asks whether a consumer would plausibly override
-// this ONE part for ONE instance — which is true of the resting and selected
-// fills and not of the hover.
-// RUNG 3, not a surface level — and this was `bg-surface` until it was measured
-// on a page. A chip is an ELEMENT AT REST, which is the job rung 3 exists for;
-// `bg-surface` is a SURFACE LEVEL, the tone a card is made of. Pointing a chip
-// at it meant the chip was the card, so a chip inside a card vanished entirely
-// and a chip on the page measured ΔL 0.015 — invisible, with no border to save
-// it because chips correctly have none.
-//
-// This is the exact confusion claude-5.md opens with: two numbering systems
-// sharing the word "degrau". Surface levels are three or four ROLES with names;
-// rungs are twelve numbered steps. Never number a surface, and never hand a
-// component a surface.
-$chip-bg: #{core.ref('bg-neutral-subtle')} !default;
-$chip-fg: #{core.ref('fg-default')} !default;
-// NO BORDER, because the tone does the whole job. The exception is written
-// down and is a CONTEXT rather than a preference: when a chip sits on a surface
-// that is already rung 3 — inside a filled card — its tone ties with the ground
-// and the mechanism has to change to an outline at rung 7. That is what
-// `.chip-outline` is for, and it is a decision the markup makes because only
-// the markup knows what the chip is standing on.
+$chip-bg: var(--app-bg-neutral-subtle) !default;
+$chip-fg: var(--app-fg-default) !default;
 $chip-border-color: transparent !default;
-$chip-radius: #{core.ref('radius-pill')} !default;
-$chip-height: #{core.ref('size-control-sm')} !default;
-$chip-pad-x: #{core.ref('pad-control-x')} !default;
-// A SELECTED CHIP IS WASHED, NOT SOLID, and this default was wrong until now.
-//
-// It read `bg-selected` + `fg-on-selected`, which in a school where `selected`
-// aliases onto the accent family — monochrome does exactly that, see
-// `_roles.scss` — resolves to the SOLID fill. So every filter chip a product
-// ticked came out as a full-strength accent block.
-//
-// That is the ladder of prominence collapsed, and it is the same mistake as the
-// washed primary button, running the other way:
-//
-//     filled chromatic = an INVITATION to act   (the primary action)
-//     washed chromatic = a CONDITION            (selected, chosen, current)
-//
-// A chip the user has ticked is a condition. Painting it solid puts a second
-// thing on the page claiming to be the way forward, and in a school with one
-// pigment that scarcity is the only hierarchy there is.
-//
-// `bg-selected-subtle` is the washed rung and it already existed. Its ink is
-// `fg-selected`, NOT `fg-on-selected`: the latter is measured against the solid
-// fill and is near-white, which on a pale wash is invisible. `(action-subtle,
-// link)` is a declared pair in `_semantic.scss`, so the gate measures this one.
-//
-// claude-4.md draws the line for when a selected state gets the accent at all:
-// independent, scattered items — filter chips — take the washed accent; a
-// closed, visually contiguous set — a segmented control — takes neutral
-// elevation inside a sunken track and spends no accent whatsoever.
-$chip-bg-selected: #{core.ref('bg-selected-subtle')} !default;
-$chip-fg-selected: #{core.ref('fg-selected')} !default;
-// The selected chip's EDGE — transparent by default, for the same reason the
-// resting one is: the washed accent is the mechanism, and a border beside it is
-// the second one. It is bound at all so that the OUTLINED case stays coherent:
-// a product that turned the resting chip into `.chip-outline` because it sits
-// on rung 3 needs the selected chip to keep an edge too, otherwise the outline
-// disappears at the moment of being chosen and the control stops looking like a
-// control. Such a product sets both, together.
-// THE ACCENT EDGE IS THE FALLBACK WHEN THE WASH IS NOT AVAILABLE.
-//
-// It was `transparent`, on the argument that the washed fill is the mechanism
-// and a border beside it is a second one. That argument holds only while the
-// fill IS washed. A palette that declares `$accent-wash: false` routes the
-// subtle slots onto the neutral family, and a chip whose selected state is a
-// quiet neutral fill with no edge has lost the only thing tying it to the brand
-// — and, worse, sits one rung from its own resting state.
-//
-// `border-selected` costs nothing that the wash was paying: a LINE needs no
-// chroma headroom, so it survives every hue pairing, including the
-// near-complementary ones where a pale fill turns to mud. It is the cheapest
-// way to keep a selected state recognisably branded, and it is the same
-// reasoning as the 3px indicator bar on an active nav item.
-//
-// For a palette that CAN wash, this adds an accent edge around an accent fill,
-// which is one idea drawn twice rather than two mechanisms competing.
-// TRANSPARENT, and it was the accent for one build.
-//
-// The reasoning then: a palette with no wash routes the selected fill to the
-// neutral family, so an accent EDGE keeps the state recognisably branded and a
-// line needs no chroma headroom. Both halves were true and the conclusion was
-// still wrong, because a thin accent outline is what a FOCUS RING looks like —
-// a keyboard user then cannot separate 'this chip is chosen' from 'my keyboard
-// is here'. `check-focus-collision` exists to stop that specific reasoning from
-// being followed again.
-//
-// What replaced it is cheaper and needs no token at all: the selected fill sits
-// two rungs below the resting one, so both states are a FILL and only the depth
-// changes. Same mechanism, different value — which is what the school asks of
-// every state.
+$chip-radius: var(--app-radius-pill) !default;
+$chip-height: var(--app-size-control-sm) !default;
+$chip-pad-x: var(--app-pad-control-x) !default;
+$chip-bg-selected: var(--app-bg-selected) !default;
+$chip-fg-selected: var(--app-fg-selected) !default;
 $chip-border-color-selected: transparent !default;
 
-// THE OUTLINED CHIP, which is not a style but a CONTEXT.
-//
-// claude-4.md names one exception to "chips have no border", and it is
-// mechanical: when the chip sits on a surface that is already rung 3 — inside a
-// filled card — its resting fill ties with the ground, and the boundary has to
-// move from tone to line. Rung 7, the same rung a field's edge uses, because
-// this is the same job: telling a user that a thing can be pressed.
-//
-// It stays outlined when SELECTED. Losing the line at the moment of being
-// chosen would take the boundary away exactly when the chip matters most, and
-// the accent then does two jobs at once — fill and edge — which is one idea
-// drawn twice rather than two mechanisms competing.
-$chip-outline-border-color: #{core.ref('border-interactive')} !default;
-// NEUTRAL, like the resting one. An outlined chip that turns its edge to the
-// accent when chosen is wearing a focus ring, and `check-focus-collision` fails
-// the build for it. The selection is carried by the FILL, which is what the
-// plain chip does too — the outline is a context adjustment, not a second
-// design with its own state vocabulary.
-$chip-outline-border-color-selected: #{core.ref('border-interactive')} !default;
+$chip-outline-border-color: var(--app-border-color-strong) !default;
+$chip-outline-border-color-selected: var(--app-border-selected) !default;
 
-// --- Progress ----------------------------------------------------------
-//
-// Six of six libraries checked ship one — Bootstrap, Bulma, Pico, CoreUI,
-// NES.css and daisyUI — which makes it the most universal component that had
-// no entry here.
-//
-// The signal that it was missing came from the NES.css adapter, where the
-// track and the fill were bound to `bg-sunken` and `bg-action` by hand. An
-// adapter choosing a value with no contract entry behind it is the same
-// symptom as an adapter reaching for `color-mix`: a decision escaping into a
-// place no theme can reach and no hand-written component can match.
-$progress-track-bg: #{core.ref('bg-sunken')} !default;
-$progress-fill-bg: #{core.ref('bg-action')} !default;
-$progress-radius: #{core.ref('radius-pill')} !default;
+$progress-track-bg: var(--app-bg-inset) !default;
+$progress-fill-bg: var(--app-bg-accent) !default;
+$progress-radius: var(--app-radius-pill) !default;
 
-// --- Tooltip -----------------------------------------------------------
-//
-// Four of six ship one, and it is the only component in this contract that
-// is INVERTED by definition: dark on a light theme, light on a dark one, in
-// every library that has it.
-//
-// Layer 2 models inversion as a context (`data-surface="inverted"`), not as
-// a pair of tokens, so there is no "inverted surface" token to point at.
-// Pointing the background at `fg-default` and the text at `bg-surface` gets
-// the inversion for free in every theme, because those two already swap.
-//
-// This is NOT the `.is-dark` mistake. There, a library's absolutely-named
-// modifier was bound to a role, and the name promised something a theme must
-// not move. Here the component's MEANING is inverted, so following the theme
-// is what the component asks for.
-$tooltip-bg: #{core.ref('fg-default')} !default;
-$tooltip-fg: #{core.ref('bg-surface')} !default;
-$tooltip-radius: #{core.ref('radius-control')} !default;
+$tooltip-bg: var(--app-fg-default) !default;
+$tooltip-fg: var(--app-bg-canvas) !default;
+$tooltip-radius: var(--app-radius-control) !default;
 
-// --- Switch ------------------------------------------------------------
-//
-// Four of six. The track and the thumb are pure component anatomy with no
-// semantic equivalent anywhere — admission test 3, the clearest case of it
-// in this file.
-$switch-track-bg: #{core.ref('bg-sunken')} !default;
-// A switch that is ON is a control the user has MARKED, not an action they
-// are about to take — the same category as a checked checkbox, a chosen chip
-// or an active nav item, all of which this contract already routes to
-// `selected`. It read `bg-action` until `check-state-families` was written and
-// caught it on its first run against existing code, in the one adapter that
-// binds it directly enough to be visible.
-$switch-track-bg-checked: #{core.ref('bg-selected')} !default;
-$switch-thumb-bg: #{core.ref('bg-surface')} !default;
+$switch-track-bg: var(--app-bg-inset) !default;
+$switch-track-bg-checked: var(--app-bg-accent) !default;
+$switch-thumb-bg: var(--app-bg-canvas) !default;
 
-// Deliberately NOT reserved: `avatar`. Three of six ship one, and what they
-// ship is a size and a border radius with no colour role — a consumer
-// wanting a square avatar reaches for `radius-control` directly. It fails
-// admission tests 1 and 2 and only weakly passes 3, which is not enough.
+$alert-radius: var(--app-radius-control) !default;
+$alert-pad: var(--app-pad-surface) !default;
+$badge-radius: var(--app-radius-pill) !default;
+$badge-fg: var(--app-fg-on-accent) !default;
+$badge-bg: var(--app-bg-accent) !default;
 
-// --- Feedback: alert / badge ------------------------------------------
-$alert-radius: #{core.ref('radius-control')} !default;
-$alert-pad: #{core.ref('pad-surface')} !default;
-$badge-radius: #{core.ref('radius-pill')} !default;
-$badge-fg: #{core.ref('fg-on-action')} !default;
-$badge-bg: #{core.ref('bg-action')} !default;
+$tertiary-bg: var(--app-bg-neutral) !default;
+$tertiary-fg: var(--app-fg-on-neutral) !default;
+$tertiary-bg-hover: var(--app-bg-neutral-hover) !default;
+$tertiary-bg-subtle: var(--app-bg-inset) !default;
+$tertiary-fg-on-subtle: var(--app-fg-default) !default;
 
-// ---------------------------------------------------------------------
-// CAPABILITIES LAYER 2 COMPRESSES — a default is not a limit
-// ---------------------------------------------------------------------
-//
-// Layer 2 is deliberately smaller than most libraries. It models two brand
-// roles, one heading colour and no colour ramps, because a foundation that
-// grows a token every time some library has one stops being a foundation.
-//
-// Compressing is therefore the right DEFAULT. What is NOT acceptable is
-// compressing without an escape hatch, because that turns an editorial
-// decision into a technical limit: a team using daisyUI directly gets three
-// brand colours, and a team using daisyUI THROUGH this foundation would get
-// two. Choosing this base would cost them something. For a base meant to be
-// universal that is disqualifying — the whole proposition is that adopting it
-// takes nothing away.
-//
-// So every compression below gets a reserved name. The default resolves to
-// the nearest semantic role through the usual fallback chain, so nothing is
-// emitted and nothing costs bytes. Set the variable and the capability is
-// back, at whatever scope you set it on.
-//
-// The names are deliberately design-system vocabulary, not library
-// vocabulary: `accent` is a role Material, Radix and daisyUI all name, and
-// `heading-2-fg` describes a document, not a framework. That is the line —
-// the foundation may grow a NAME the ecosystem shares, never a name that only
-// makes sense inside one library.
+$heading-1-fg: var(--app-fg-heading) !default;
+$heading-2-fg: var(--app-fg-heading) !default;
+$heading-3-fg: var(--app-fg-heading) !default;
+$heading-4-fg: var(--app-fg-heading) !default;
+$heading-5-fg: var(--app-fg-heading) !default;
+$heading-6-fg: var(--app-fg-heading) !default;
 
-// A second brand FILL. Material calls it TERTIARY and so does this contract;
-// daisyUI calls its slot `accent`, and that name is the reason for the rename.
-//
-// In the accent-driven school "accent" means the opposite thing: the single live
-// colour that carries every interactive job. A product in that school setting
-// `$accent-bg` would have been reaching for its accent and getting a library's
-// third brand slot, which defaults to grey — a name that does something other
-// than what the reader is thinking of, in the one school most likely to type it.
-//
-// This is the one shape of secondary action layer 2 cannot express.
-// shape of secondary action layer 2 cannot express.
-//
-// A survey of how real systems render a secondary action produced seven
-// treatments, and SIX of them are already sayable with existing tokens:
-//
-//   outline in the action hue     border-action + fg-action
-//   outline in a second hue       the same two, pointed elsewhere  (Itaú)
-//   a lighter tone of the action  bg-action-subtle + fg-action
-//   a lighter second tone         the same two, pointed elsewhere
-//   neutral                       bg-neutral + fg-on-neutral       (Bootstrap)
-//   ghost                         transparent + fg-action
-//   a FILLED second brand colour  ← nothing. This.
-//
-// Which of the seven a product picks is a product decision, and the whole
-// point of this entry is that the foundation does not make it.
-//
-// DEFAULTS TO `neutral`, NOT `selected`, and that is a correction. Pointing a
-// button at the selection role means a control that DOES something wears the
-// colour that means something IS chosen — the reader learns the colour means
-// nothing. Neutral is the honest default: "no second brand colour was
-// declared, so this reads as having no opinion". Set two variables and the
-// capability is back.
-$tertiary-bg: #{core.ref('bg-neutral')} !default;
-$tertiary-fg: #{core.ref('fg-on-neutral')} !default;
-$tertiary-bg-hover: #{core.ref('bg-neutral-hover')} !default;
-// The tinted pair, for the "soft" variant every library ships.
-$tertiary-bg-subtle: #{core.ref('bg-sunken')} !default;
-$tertiary-fg-on-subtle: #{core.ref('fg-default')} !default;
+$nav-bg: var(--app-bg-inset) !default;
+$nav-border-color: var(--app-border-color) !default;
+$nav-radius: var(--app-radius-control) !default;
+$nav-fg-disabled: var(--app-fg-disabled) !default;
+$nav-tab-bg-active: var(--app-bg-canvas) !default;
+$nav-tab-fg-active: var(--app-fg-accent) !default;
+$nav-tab-border-color-active: var(--app-border-color) !default;
+$nav-tab-border-color-hover: var(--app-border-color-subtle) !default;
+$nav-underline-width: var(--app-border-width) !default;
 
-// Per-level heading colour. Layer 2 makes one decision — a heading is a
-// heading — but Pico steps six levels down a ramp and some brands do too.
-$heading-1-fg: #{core.ref('fg-heading')} !default;
-$heading-2-fg: #{core.ref('fg-heading')} !default;
-$heading-3-fg: #{core.ref('fg-heading')} !default;
-$heading-4-fg: #{core.ref('fg-heading')} !default;
-$heading-5-fg: #{core.ref('fg-heading')} !default;
-$heading-6-fg: #{core.ref('fg-heading')} !default;
+$breadcrumb-divider-fg: var(--app-fg-muted) !default;
+$breadcrumb-item-fg-selected: var(--app-fg-selected) !default;
 
-// A CATEGORICAL scale, for charts. Reserved because shadcn asks for
-// `--chart-1` … `--chart-5` and every dashboard library asks for something
-// like it, and because layer 2 correctly refuses to grow one: a chart series
-// is not a ROLE. "Series 3" carries no intent — it is whatever the third
-// thing in the legend happens to be — so it fails the layer 2 admission test
-// that every token must mean something.
-//
-// The defaults walk the roles a theme already decided, which produces a
-// usable and theme-following chart with nothing emitted. A product with a
-// real data-visualisation palette sets five variables and has it. Note that
-// these defaults are NOT chosen for categorical distinguishability — that is
-// a different design problem, and pretending otherwise would be the kind of
-// silent half-answer this layer exists to avoid.
-// --- nav ----------------------------------------------------------------
-//
-// CoreUI alone ships five nav variants — pills, tabs, underline,
-// underline-border and enclosed — and each has its own active state. They all
-// land on these, because "the chosen item in a navigation" is one decision
-// however the library dresses it.
-$nav-bg: #{core.ref('bg-sunken')} !default;
-$nav-border-color: #{core.ref('border-color')} !default;
-$nav-radius: #{core.ref('radius-control')} !default;
-$nav-fg-disabled: #{core.ref('fg-disabled')} !default;
-// `$nav-fg-on-active` was here, bound only by `.nav-pills`, and it is gone with
-// that binding. A pill takes the tab pair now, which is one decision rather than
-// two variables that can be pointed at different pairs — the way this one ended
-// up as the white measured against the accent, sitting on a neutral fill.
-//
-// Removed rather than kept as a reserved name: the contract's value is the names
-// it reserves, and a name no adapter binds cannot be reached by a product
-// either. It would be declared, documented, and do nothing when set.
-// A NEUTRAL SURFACE, NOT THE WASHED ACCENT — and this looks like a mistake
-// every time someone reads it, so here is why it is not.
-//
-// The rule everywhere else in this system is that a chosen thing takes the
-// washed accent: a filter chip, a nav item, a selected row. claude-4.md carves
-// out exactly one exception and gives the test for it:
-//
-//   "quando o conjunto é fechado e visualmente contíguo, use elevação neutra;
-//    quando os itens são independentes e espalhados, como chips de filtro, use
-//    accent lavado."
-//
-// A tab strip is the closed, contiguous case. Only one tab can be active, the
-// tabs are adjacent, and POSITION already carries the state — so the accent
-// would be spent saying something the layout has said. What the chosen tab does
-// instead is come FORWARD: a neutral surface lifted out of the track, which is
-// how iOS and macOS draw a segmented control. It is accent saved, deliberately,
-// for the one action per screen that needs it.
-//
-// The corollary is that this only holds for the ENCLOSED and SEGMENTED shapes,
-// where there is a track to come out of. An underline tab has no track, so its
-// active state is an accent INDICATOR instead, which is a different token
-// again — see `derivations.md` on the two lines a tab set carries.
-$nav-tab-bg-active: #{core.ref('bg-surface')} !default;
-// The tab LABEL, and it is a different decision from `nav-fg-active`.
-//
-// An enclosed tab does not take the selected FILL — it takes a surface, so the
-// label sitting on it cannot be `fg-on-selected`, which is the ink measured
-// against that fill. Pointing the two at each other put white on white and
-// measured 1.03:1 in a real build; the contrast gate never saw it, because it
-// measures layer 2 pairs and this is a layer 3 crossing.
-$nav-tab-fg-active: #{core.ref('fg-selected')} !default;
-// NEUTRAL, AND IT WAS THE ACCENT. An accent outline around a pale fill is the
-// visual vocabulary of a FOCUS RING, and a component that borrows it makes
-// 'this tab is selected' and 'this tab has keyboard focus' indistinguishable.
-// That is an accessibility failure, not a matter of taste, and it is why the
-// accent outline is now reserved: see `scripts/check-focus-collision.mjs`.
-//
-// The enclosed tab does not need it. It carries its state by coming FORWARD out
-// of the track — a surface and an edge, both neutral — which is the pattern for
-// a closed contiguous set and spends no accent at all.
-$nav-tab-border-color-active: #{core.ref('border-color')} !default;
-$nav-tab-border-color-hover: #{core.ref('border-color-subtle')} !default;
-$nav-underline-width: #{core.ref('border-width')} !default;
+$dropdown-bg: var(--app-bg-overlay) !default;
+$dropdown-border-color: var(--app-border-color) !default;
+$dropdown-bg-hover: var(--app-bg-panel) !default;
 
-// --- breadcrumb ---------------------------------------------------------
-$breadcrumb-divider-fg: #{core.ref('fg-muted')} !default;
-$breadcrumb-item-fg-selected: #{core.ref('fg-selected')} !default;
+$field-placeholder-fg: var(--app-fg-muted) !default;
+$field-pad-x: var(--app-pad-control-x) !default;
+$field-pad-y: var(--app-pad-control-y) !default;
 
-// --- dropdown -----------------------------------------------------------
-$dropdown-bg: #{core.ref('bg-raised')} !default;
-$dropdown-border-color: #{core.ref('border-color')} !default;
-$dropdown-bg-hover: #{core.ref('bg-surface-hover')} !default;
+$surface-pad-x: var(--app-pad-surface) !default;
+$surface-pad-y: var(--app-pad-surface) !default;
+$surface-section-bg: var(--app-bg-inset) !default;
 
-// --- field --------------------------------------------------------------
-$field-placeholder-fg: #{core.ref('fg-subtlest')} !default;
-$field-pad-x: #{core.ref('pad-control-x')} !default;
-$field-pad-y: #{core.ref('pad-control-y')} !default;
+$chip-bg-hover: var(--app-bg-panel) !default;
+$chip-fg-hover: var(--app-fg-default) !default;
 
-// --- surface ------------------------------------------------------------
-$surface-pad-x: #{core.ref('pad-surface')} !default;
-$surface-pad-y: #{core.ref('pad-surface')} !default;
-$surface-section-bg: #{core.ref('bg-sunken')} !default;
+$progress-fill-fg: var(--app-fg-on-accent) !default;
+$code-bg: var(--app-bg-inset) !default;
+$range-thumb-bg: var(--app-bg-accent) !default;
 
-// --- chip ---------------------------------------------------------------
-$chip-bg-hover: #{core.ref('bg-surface-hover')} !default;
-$chip-fg-hover: #{core.ref('fg-default')} !default;
+$accordion-bg: var(--app-bg-canvas) !default;
+$accordion-fg: var(--app-fg-default) !default;
+$accordion-border-color: var(--app-border-color) !default;
+$accordion-radius: var(--app-radius-surface) !default;
+$accordion-pad-x: var(--app-pad-surface) !default;
+$accordion-pad-y: var(--app-pad-surface) !default;
+$accordion-header-bg: var(--app-bg-canvas) !default;
+$accordion-header-fg: var(--app-fg-heading) !default;
+$accordion-header-bg-selected: var(--app-bg-selected) !default;
+$accordion-header-fg-selected: var(--app-fg-selected) !default;
 
-// --- progress, code, range ---------------------------------------------
-$progress-fill-fg: #{core.ref('fg-on-action')} !default;
-$code-bg: #{core.ref('bg-sunken')} !default;
-$range-thumb-bg: #{core.ref('bg-action')} !default;
+$popover-bg: var(--app-bg-overlay) !default;
+$popover-fg: var(--app-fg-default) !default;
+$popover-border-color: var(--app-border-color) !default;
+$popover-radius: var(--app-radius-surface) !default;
+$popover-shadow: var(--app-shadow-overlay) !default;
+$popover-pad-x: var(--app-pad-surface) !default;
+$popover-pad-y: var(--app-pad-surface) !default;
+$popover-header-bg: var(--app-bg-inset) !default;
+$popover-header-fg: var(--app-fg-heading) !default;
 
-// =============================================================================
-// THE REST OF WHAT THE LIBRARIES EXPOSE
-// =============================================================================
-//
-// Everything below was added by reading what the libraries actually ship, not
-// by imagining components. Each block lists the parts that appear as themable
-// variables across Bootstrap, CoreUI, Bulma, Pico, daisyUI, Flowbite and
-// Preline — a component's internal geometry (`popover-arrow-width`,
-// `accordion-btn-icon-width`) stays the library's business.
-//
-// This is the point at which the layer being Sass pays for itself. Ninety more
-// names cost nothing: a product that uses none of them ships nothing, and a
-// product that needs one has a name waiting rather than a fork.
+$offcanvas-bg: var(--app-bg-overlay) !default;
+$offcanvas-fg: var(--app-fg-default) !default;
+$offcanvas-border-color: var(--app-border-color) !default;
+$offcanvas-pad-x: var(--app-pad-surface) !default;
+$offcanvas-pad-y: var(--app-pad-surface) !default;
+$offcanvas-backdrop: var(--app-bg-backdrop) !default;
 
-// --- Accordion -----------------------------------------------------------
-$accordion-bg: #{core.ref('bg-surface')} !default;
-$accordion-fg: #{core.ref('fg-default')} !default;
-$accordion-border-color: #{core.ref('border-color')} !default;
-$accordion-radius: #{core.ref('radius-surface')} !default;
-$accordion-pad-x: #{core.ref('pad-surface')} !default;
-$accordion-pad-y: #{core.ref('pad-surface')} !default;
-$accordion-header-bg: #{core.ref('bg-surface')} !default;
-$accordion-header-fg: #{core.ref('fg-heading')} !default;
-// An open panel is a CHOSEN panel, so its states come from `selected` — the
-// same rule `check-state-families` enforces on tabs and nav items.
-$accordion-header-bg-selected: #{core.ref('bg-selected-subtle')} !default;
-$accordion-header-fg-selected: #{core.ref('fg-selected')} !default;
+$list-bg: var(--app-bg-canvas) !default;
+$list-fg: var(--app-fg-default) !default;
+$list-border-color: var(--app-border-color) !default;
+$list-radius: var(--app-radius-surface) !default;
+$list-item-bg: var(--app-bg-canvas) !default;
+$list-item-fg: var(--app-fg-default) !default;
+$list-item-bg-hover: var(--app-bg-panel) !default;
+$list-item-bg-active: var(--app-bg-inset) !default;
+$list-item-bg-selected: var(--app-bg-selected) !default;
+$list-item-fg-selected: var(--app-fg-selected) !default;
+$list-item-bg-disabled: var(--app-bg-disabled) !default;
+$list-item-fg-disabled: var(--app-fg-disabled) !default;
 
-// --- Popover -------------------------------------------------------------
-$popover-bg: #{core.ref('bg-raised')} !default;
-$popover-fg: #{core.ref('fg-default')} !default;
-$popover-border-color: #{core.ref('border-color')} !default;
-$popover-radius: #{core.ref('radius-surface')} !default;
-$popover-shadow: #{core.ref('shadow-overlay')} !default;
-$popover-pad-x: #{core.ref('pad-surface')} !default;
-$popover-pad-y: #{core.ref('pad-surface')} !default;
-$popover-header-bg: #{core.ref('bg-sunken')} !default;
-$popover-header-fg: #{core.ref('fg-heading')} !default;
+$pagination-bg: var(--app-bg-canvas) !default;
+$pagination-fg: var(--app-fg-accent) !default;
+$pagination-border-color: var(--app-border-color) !default;
+$pagination-radius: var(--app-radius-control) !default;
+$pagination-item-bg-hover: var(--app-bg-panel) !default;
+$pagination-item-bg-selected: var(--app-bg-selected) !default;
+$pagination-item-fg-selected: var(--app-fg-selected) !default;
+$pagination-item-fg-disabled: var(--app-fg-disabled) !default;
+$pagination-item-bg-disabled: var(--app-bg-disabled) !default;
 
-// --- Offcanvas / drawer --------------------------------------------------
-$offcanvas-bg: #{core.ref('bg-raised')} !default;
-$offcanvas-fg: #{core.ref('fg-default')} !default;
-$offcanvas-border-color: #{core.ref('border-color')} !default;
-$offcanvas-pad-x: #{core.ref('pad-surface')} !default;
-$offcanvas-pad-y: #{core.ref('pad-surface')} !default;
-$offcanvas-backdrop: #{core.ref('bg-overlay')} !default;
+$toast-bg: var(--app-bg-overlay) !default;
+$toast-fg: var(--app-fg-default) !default;
+$toast-border-color: var(--app-border-color) !default;
+$toast-radius: var(--app-radius-surface) !default;
+$toast-shadow: var(--app-shadow-overlay) !default;
+$toast-pad-x: var(--app-pad-surface) !default;
+$toast-pad-y: var(--app-pad-surface) !default;
+$toast-header-bg: var(--app-bg-inset) !default;
+$toast-header-fg: var(--app-fg-heading) !default;
 
-// --- List group ----------------------------------------------------------
-//
-// The widest state surface of any component here: Bootstrap's list group alone
-// exposes eighteen variables, because a row can be plain, actionable, hovered,
-// current or disabled, and each combination has a fill and a foreground.
-$list-bg: #{core.ref('bg-surface')} !default;
-$list-fg: #{core.ref('fg-default')} !default;
-$list-border-color: #{core.ref('border-color')} !default;
-$list-radius: #{core.ref('radius-surface')} !default;
-$list-item-bg: #{core.ref('bg-surface')} !default;
-$list-item-fg: #{core.ref('fg-default')} !default;
-$list-item-bg-hover: #{core.ref('bg-surface-hover')} !default;
-// The PRESSED state of a row, which was missing while its hover was here. A
-// list that lightens on hover and then does nothing under the finger reads as
-// broken on touch, where hover does not exist and press is the only feedback.
-$list-item-bg-active: #{core.ref('bg-surface-active')} !default;
-$list-item-bg-selected: #{core.ref('bg-selected')} !default;
-$list-item-fg-selected: #{core.ref('fg-on-selected')} !default;
-$list-item-bg-disabled: #{core.ref('bg-disabled')} !default;
-$list-item-fg-disabled: #{core.ref('fg-disabled')} !default;
+$dropdown-fg: var(--app-fg-default) !default;
+$dropdown-radius: var(--app-radius-surface) !default;
+$dropdown-shadow: var(--app-shadow-overlay) !default;
+$dropdown-pad-x: var(--app-pad-control-x) !default;
+$dropdown-pad-y: var(--app-pad-control-y) !default;
+$dropdown-divider-color: var(--app-border-color-subtle) !default;
 
-// --- Pagination ----------------------------------------------------------
-//
-// Page numbers are LINKS that lead somewhere, and the current page is a
-// selected item — the two roles the functional school keeps apart, in one
-// component.
-$pagination-bg: #{core.ref('bg-surface')} !default;
-$pagination-fg: #{core.ref('fg-link')} !default;
-$pagination-border-color: #{core.ref('border-color')} !default;
-$pagination-radius: #{core.ref('radius-control')} !default;
-$pagination-item-bg-hover: #{core.ref('bg-surface-hover')} !default;
-$pagination-item-bg-selected: #{core.ref('bg-selected')} !default;
-$pagination-item-fg-selected: #{core.ref('fg-on-selected')} !default;
-$pagination-item-fg-disabled: #{core.ref('fg-disabled')} !default;
-$pagination-item-bg-disabled: #{core.ref('bg-disabled')} !default;
+$rule-border-color: var(--app-border-color) !default;
+$dropdown-header-fg: var(--app-fg-muted) !default;
+$dropdown-item-bg-selected: var(--app-bg-selected) !default;
+$dropdown-item-fg-selected: var(--app-fg-selected) !default;
 
-// --- Toast / notification ------------------------------------------------
-$toast-bg: #{core.ref('bg-raised')} !default;
-$toast-fg: #{core.ref('fg-default')} !default;
-$toast-border-color: #{core.ref('border-color')} !default;
-$toast-radius: #{core.ref('radius-surface')} !default;
-$toast-shadow: #{core.ref('shadow-overlay')} !default;
-$toast-pad-x: #{core.ref('pad-surface')} !default;
-$toast-pad-y: #{core.ref('pad-surface')} !default;
-$toast-header-bg: #{core.ref('bg-sunken')} !default;
-$toast-header-fg: #{core.ref('fg-heading')} !default;
+$avatar-bg: var(--app-bg-overlay) !default;
+$avatar-border-color: var(--app-bg-overlay) !default;
+$avatar-border-width: var(--app-border-width) !default;
+$avatar-radius: var(--app-radius-pill) !default;
+$avatar-size: var(--app-size-control) !default;
+$avatar-font-size: var(--app-font-size-sm) !default;
 
-// --- Dropdown, completed -------------------------------------------------
-$dropdown-fg: #{core.ref('fg-default')} !default;
-$dropdown-radius: #{core.ref('radius-surface')} !default;
-$dropdown-shadow: #{core.ref('shadow-overlay')} !default;
-$dropdown-pad-x: #{core.ref('pad-control-x')} !default;
-$dropdown-pad-y: #{core.ref('pad-control-y')} !default;
-$dropdown-divider-color: #{core.ref('border-color-subtle')} !default;
+$spinner-size: var(--app-size-icon) !default;
+$spinner-border-width: var(--app-border-width) !default;
 
-// --- divider ------------------------------------------------------------
-// --- rule (the standalone `<hr>`) ---------------------------------------
-// The standalone rule between blocks of content. Decorative, rung 6, outside
-// WCAG 1.4.11 — the one line on a page that is allowed to be quiet, and the
-// one that goes wrong most often because libraries render it as an OPACITY on
-// inherited ink rather than as a colour. A token cannot reach an opacity.
-$rule-border-color: #{core.ref('border-divider')} !default;
-$dropdown-header-fg: #{core.ref('fg-muted')} !default;
-$dropdown-item-bg-selected: #{core.ref('bg-selected')} !default;
-$dropdown-item-fg-selected: #{core.ref('fg-on-selected')} !default;
+$skeleton-bg: var(--app-bg-inset) !default;
+$skeleton-radius: var(--app-radius-control-sm) !default;
 
-// --- Avatar --------------------------------------------------------------
-$avatar-bg: #{core.ref('bg-raised')} !default;
-$avatar-border-color: #{core.ref('bg-raised')} !default;
-$avatar-border-width: #{core.ref('border-width')} !default;
-$avatar-radius: #{core.ref('radius-pill')} !default;
-$avatar-size: #{core.ref('size-control')} !default;
-$avatar-font-size: #{core.ref('font-size-sm')} !default;
+$carousel-caption-fg: var(--app-fg-inverted-base) !default;
+$carousel-indicator-bg-selected: var(--app-bg-accent) !default;
 
-// --- Spinner -------------------------------------------------------------
-$spinner-size: #{core.ref('size-icon')} !default;
-$spinner-border-width: #{core.ref('border-width')} !default;
+$chart-1: var(--app-bg-accent) !default;
+$chart-2: var(--app-bg-accent) !default;
+$chart-3: var(--app-bg-accent) !default;
+$chart-4: var(--app-bg-warning) !default;
+$chart-5: var(--app-bg-success) !default;
 
-// --- Skeleton ------------------------------------------------------------
-$skeleton-bg: #{core.ref('bg-sunken')} !default;
-$skeleton-radius: #{core.ref('radius-control-sm')} !default;
+$action-50: var(--app-bg-accent-subtle) !default;
+$action-100: var(--app-bg-accent-subtle) !default;
+$action-200: var(--app-bg-accent-subtle) !default;
+$action-300: var(--app-border-accent) !default;
+$action-400: var(--app-bg-accent) !default;
+$action-500: var(--app-bg-accent) !default;
+$action-600: var(--app-bg-accent) !default;
+$action-700: var(--app-bg-accent-hover) !default;
+$action-800: var(--app-bg-accent-active) !default;
+$action-900: var(--app-bg-accent-active) !default;
+$action-950: var(--app-bg-accent-active) !default;
 
-// --- Carousel ------------------------------------------------------------
-//
-// A caption sits on a photograph, which is the one surface no theme controls.
-// `fg-inverted-base` is the light ink the inverted context uses, and it is the
-// only foreground in the system that is safe over an unknown image.
-$carousel-caption-fg: #{core.ref('fg-inverted-base')} !default;
-$carousel-indicator-bg-selected: #{core.ref('bg-selected')} !default;
-
-$chart-1: #{core.ref('bg-action')} !default;
-$chart-2: #{core.ref('bg-selected')} !default;
-$chart-3: #{core.ref('bg-info')} !default;
-$chart-4: #{core.ref('bg-warning')} !default;
-$chart-5: #{core.ref('bg-success')} !default;
-
-// A brand ramp. Layer 1 has one and keeps it private, on purpose: a ramp is a
-// primitive, and application code reaching for `--app-base-indigo-300` is the
-// exact failure the stylelint rules exist to prevent. But Preline asks for
-// `--primary-50` through `--primary-950`, and flattening those onto three
-// steps loses gradients the library can otherwise draw.
-//
-// These are the public, themeable version: nine names, each defaulting to the
-// nearest decision layer 2 actually made. Set them and the ramp is real.
-$action-50: #{core.ref('bg-action-subtle')} !default;
-$action-100: #{core.ref('bg-action-subtle')} !default;
-$action-200: #{core.ref('bg-action-subtle')} !default;
-$action-300: #{core.ref('border-action')} !default;
-$action-400: #{core.ref('bg-action')} !default;
-$action-500: #{core.ref('bg-action')} !default;
-$action-600: #{core.ref('bg-action')} !default;
-$action-700: #{core.ref('bg-action-hover')} !default;
-$action-800: #{core.ref('bg-action-active')} !default;
-$action-900: #{core.ref('bg-action-active')} !default;
-$action-950: #{core.ref('bg-action-active')} !default;
-
-// -----------------------------------------------------------------------------
-// WHAT WAS REMOVED
-// -----------------------------------------------------------------------------
-//
-// `ref-chain()`, `hook()` and `emit()`.
-//
-// The first two produced `var(--app-part, var(--app-semantic))` — the fallback
-// chain — at 143 call sites. The chain was how a component token stayed
-// optional while remaining overridable at runtime, and it worked, but it wrote
-// the same fallback text into every consumer: the library adapter, the product
-// component, and any application reading the same token all had to spell it
-// identically, by hand, and stay in agreement forever.
-//
-// `emit()` declared the whole contract as custom properties when
-// `$emit-component-vars` was on, which was the other half of the same problem:
-// either pay for every token whether used or not, or duplicate the fallback at
-// every use.
-//
-// A Sass variable holding a pointer removes the choice. There is nothing to
-// emit and nothing to duplicate.
-
-// ---------------------------------------------------------------------------
-// FROM A REAL PRODUCT
-// ---------------------------------------------------------------------------
-//
-// Everything above came from what LIBRARIES expose, which is why this layer
-// had `offcanvas`, `pagination` and `toast` long before it had `card`. These
-// came from the opposite direction: an inventory of what one real product's
-// components actually set.
-//
-// Only families a third party would recognise are here. A product's own
-// nouns stay with the product — the tool carrying them would be the stock
-// themes mistake in reverse.
-$carousel-gap: #{core.ref('gap-inline')} !default;
-$carousel-thumbs-gap: #{core.ref('gap-inline')} !default;
-$carousel-thumb-border-width: #{core.ref('border-width')} !default;
-$checkbox-height: #{core.ref('size-control')} !default;
-$checkbox-width: #{core.ref('size-control')} !default;
-// Ticked, the box FILLS. Declared as a pair so the tick is legible on it by
-// construction rather than by review — the same invariant every `bg-X` /
-// `fg-on-X` in layer 2 carries. Without these two names a product paints the
-// checked state by hand and the contrast gate never sees it.
-$checkbox-bg-checked: #{core.ref('bg-selected')} !default;
-$checkbox-fg-checked: #{core.ref('fg-on-selected')} !default;
-// A CHECKBOX IS A MARK, NOT A CONTROL — for the purposes of its corners.
-//
-// It took the control radius, which is right for a 40px button and wrong for a
-// 16px square: the same value is a much larger share of a small corner, and the
-// box ends up looking like a circle that changed its mind. `radius-sm` is the
-// rung the school reserves for exactly this — checkbox, badge, small indicator.
-$checkbox-radius: #{core.ref('radius-sm')} !default;
-$field-label-font-family: #{core.ref('font-family-heading')} !default;
-$field-input-font-family: #{core.ref('font-family-display')} !default;
-// The placeholder is an EXAMPLE of what to type, so it is written in the same
-// hand the answer will be. A different family makes the same font-size look
-// like a different one, and the example stops reading as an example.
+$carousel-gap: var(--app-gap-inline) !default;
+$carousel-thumbs-gap: var(--app-gap-inline) !default;
+$carousel-thumb-border-width: var(--app-border-width) !default;
+$checkbox-height: var(--app-size-control) !default;
+$checkbox-width: var(--app-size-control) !default;
+$checkbox-bg-checked: var(--app-bg-accent) !default;
+$checkbox-fg-checked: var(--app-fg-on-accent) !default;
+$checkbox-radius: var(--app-radius-sm) !default;
+$field-label-font-family: var(--app-font-family-heading) !default;
+$field-input-font-family: var(--app-font-family-display) !default;
 $field-placeholder-font-family: $field-input-font-family !default;
-$field-selection-bg: #{core.ref('bg-action-subtle')} !default;
-$field-hint-font-family: #{core.ref('font-family-body')} !default;
-// The label tab on focus. It was the SELECTED pair — a solid fill of the
-// selection colour — which in a one-pigment school is a filled chromatic patch
-// appearing because a cursor arrived. The quiet neutral rung says the same
-// thing without spending the accent, and the ring beside it is what actually
-// announces the focus.
-$field-label-fg-focus: #{core.ref('fg-heading')} !default;
-$field-label-bg-focus: #{core.ref('bg-neutral-subtle-active')} !default;
-$footer-bg: #{core.ref('bg-brand')} !default;
-$footer-fg: #{core.ref('fg-on-brand')} !default;
-$footer-height: #{core.ref('size-control')} !default;
-$footer-radius: #{core.ref('radius-surface')} !default;
-$footer-shadow: #{core.ref('shadow-raised')} !default;
-$footer-navigation-bg: #{core.ref('bg-brand')} !default;
-$footer-navigation-fg: #{core.ref('fg-on-brand')} !default;
-$footer-strip-bg: #{core.ref('fg-on-brand')} !default;
-$footer-bg-open: #{core.ref('bg-brand-deep')} !default;
-$radio-button-height: #{core.ref('size-control')} !default;
-$radio-button-width: #{core.ref('size-control')} !default;
-// The same pair as the checkbox above, and a pill rather than a control
-// radius: a radio is round in every system that has ever shipped one.
-$radio-button-bg-checked: #{core.ref('bg-selected')} !default;
-$radio-button-fg-checked: #{core.ref('fg-on-selected')} !default;
-$radio-button-radius: #{core.ref('radius-pill')} !default;
-// --- tabs: the SEGMENTED control ---------------------------------------
-//
-// The same closed-and-contiguous case `$nav-tab-bg-active` argues at length,
-// and it was decided the other way here by accident: the chosen segment took
-// the filled selection while the track took the PAGE colour. A track the
-// colour of the page is not a track, so the chosen segment had nothing to come
-// forward out of — and with nothing to come out of, the only way left to show
-// which one it was is a solid accent fill.
-//
-// So it is spelled out where the mechanism lives: the track is a RECESS and
-// the chosen segment is a surface lifted out of it. That is how iOS and macOS
-// draw this control, it is what `claude-4.md` prescribes for a set whose items
-// are adjacent and mutually exclusive, and it spends no accent on a state that
-// POSITION has already made obvious.
-// THIS FAMILY IS THE SEGMENTED CONTROL, AND IT IS NOT THE TAB STRIP.
-//
-// The two were sharing `$nav-tab-*` until a product asked why a pill set looked
-// like an enclosed tab set, and the answer is that they are built on different
-// mechanisms and only one of them has a track.
-//
-//   `$nav-tab-*`   an ENCLOSED tab: the strip sits on the page, the chosen tab
-//                  is a surface fused to the panel below it, and a BORDER closes
-//                  the shape. There is no recess.
-//   `$tabs-*`      a SEGMENTED control: a recessed track holds every segment,
-//                  the chosen one is lifted OUT of it, and no border is drawn at
-//                  all — the tone step is the boundary.
-//
-// Sharing one family across both is a conflict of interest rather than a saving.
-// The moment a product wants the pill's track deeper it also deepens something
-// on the tab strip that has no track, and the only way out is to stop sharing.
-$tabs-bg: #{core.ref('bg-sunken')} !default;
-$tabs-pad: #{core.ref('space-2xs')} !default;
-$tabs-radius: #{core.ref('radius-surface')} !default;
+$field-selection-bg: var(--app-bg-accent-subtle) !default;
+$field-hint-font-family: var(--app-font-family-body) !default;
+$field-label-fg-focus: var(--app-fg-heading) !default;
+$field-label-bg-focus: var(--app-bg-neutral-subtle-active) !default;
+$footer-bg: var(--app-bg-accent) !default;
+$footer-fg: var(--app-fg-on-accent) !default;
+$footer-height: var(--app-size-control) !default;
+$footer-radius: var(--app-radius-surface) !default;
+$footer-shadow: var(--app-shadow-raised) !default;
+$footer-navigation-bg: var(--app-bg-accent) !default;
+$footer-navigation-fg: var(--app-fg-on-accent) !default;
+$footer-strip-bg: var(--app-fg-on-accent) !default;
+$footer-bg-open: var(--app-bg-accent-hover) !default;
+$radio-button-height: var(--app-size-control) !default;
+$radio-button-width: var(--app-size-control) !default;
+$radio-button-bg-checked: var(--app-bg-accent) !default;
+$radio-button-fg-checked: var(--app-fg-on-accent) !default;
+$radio-button-radius: var(--app-radius-pill) !default;
+$tabs-bg: var(--app-bg-inset) !default;
+$tabs-pad: var(--app-space-2xs) !default;
+$tabs-radius: var(--app-radius-surface) !default;
 
-// The segment at rest is the track showing through — no fill of its own, so
-// that only the chosen one is a shape.
-$tabs-tab-fg: #{core.ref('fg-muted')} !default;
+$tabs-tab-fg: var(--app-fg-muted) !default;
 
-// DERIVED, and it is the one radius in this file that is arithmetic rather than
-// a step off the scale. The reason is that it is not an independent decision:
-// once the track's radius and its inset are chosen, the segment's radius is a
-// CONSEQUENCE, and picking it from the scale instead means picking a number that
-// disagrees with two decisions already made.
-//
-// The rule is outer = inner + inset, so inner = outer - inset, and it is worth
-// seeing what the alternatives actually do. Track 10px, inset 4px, and the gap
-// measured on the DIAGONAL through the corner against the 4px it is on the
-// straight edges:
-//
-//     segment 2px   corner gap 2.34px   41% tighter
-//     segment 4px   corner gap 3.17px   21% tighter     <- what this was
-//     segment 6px   corner gap 4.00px   constant        <- outer minus inset
-//     segment 8px   corner gap 4.83px   21% looser
-//
-// A segment SQUARER than concentric pushes its corner out toward the track's
-// corner and the two edges close in on each other — which is the "they almost
-// touch" that a product reported and that nobody could name. A segment rounder
-// than concentric does the opposite and leaves a puddle at each corner. Only one
-// value keeps the gap constant all the way round, and it is not on any scale.
-//
-// `max(0px, …)` because an inset larger than the track's radius would otherwise
-// compute negative, which is a product deciding its track is nearly square and
-// is a legitimate thing to decide.
-//
-// This reverses the note that stood here for one release, which said arithmetic
-// between scale steps lands between steps. True of a value somebody CHOOSES.
-// This one is measured off two that were already chosen.
 $tabs-tab-radius: max(0px, calc(#{$tabs-radius} - #{$tabs-pad})) !default;
 
-// HOVER, and it was missing entirely: a pill set changed its label colour and
-// nothing else, so the only feedback on a control built to be clicked was a
-// slightly darker word.
-//
-// `bg-surface-hover` and not a neutral fill, because hover is a PREVIEW of the
-// state that comes next, and the next state here is "lifted out of the track".
-// The neutral fill family moves the other way — deeper into the plane — which
-// on a recessed track previews the opposite of what clicking does. Measured on
-// the recepta ramp the three land in order: track #ebe5dd, hover #f2eee7,
-// selected #fdfbf8. The segment rises under the cursor and keeps rising.
-$tabs-tab-bg-hover: #{core.ref('bg-surface-hover')} !default;
-$tabs-tab-fg-hover: #{core.ref('fg-default')} !default;
+$tabs-tab-bg-hover: var(--app-bg-panel) !default;
+$tabs-tab-fg-hover: var(--app-fg-default) !default;
 
-$tabs-tab-bg-selected: #{core.ref('bg-surface')} !default;
-// NEUTRAL INK, and it was `fg-selected`.
-//
-// The chosen segment is a NEUTRAL SURFACE lifted out of a track — it is not a
-// selection fill — so its label is the ordinary ink, the same one a neutral
-// button carries (`$button-secondary-fg`). Accent ink on it spends pigment
-// saying what the lift has already said, and in a monochrome school, where the
-// accent is the only colour on the page, that is the whole budget going to a
-// state POSITION already made obvious.
-$tabs-tab-fg-selected: #{core.ref('fg-default')} !default;
-// A SHADOW, and this reverses the line that was here.
-//
-// It read "no shadow: the tone difference is the mechanism and a shadow is the
-// same boundary drawn twice". True of a panel. Wrong here, and the difference is
-// the track: a segment is not separating itself from the page, it is claiming to
-// be ABOVE a surface that is still visible on both sides of it. Tone alone gives
-// a lighter patch; tone plus a hairline shadow gives a lifted one, which is the
-// same pair every platform's segmented control uses.
-//
-// `shadow-raised` deliberately — the one-pixel kind. A drop shadow would make it
-// float, and it is lifted, not floating.
-$tabs-tab-shadow-selected: #{core.ref('shadow-raised')} !default;
-// The track draws NO line. Kept as a name because a product whose track has too
-// little tone to read on its own page needs somewhere to put one.
+$tabs-tab-bg-selected: var(--app-bg-canvas) !default;
+$tabs-tab-fg-selected: var(--app-fg-default) !default;
+$tabs-tab-shadow-selected: var(--app-shadow-raised) !default;
 $tabs-border-color: transparent !default;
-$tabs-layout-content-bg: #{core.ref('bg-surface')} !default;
-// The four slots a card needs that the contract had no name for: the ink on the
-// sheet, the gap between a title and what follows it, and the two quiet rungs
-// that carry the metadata line and the footer so neither competes with the name
-// of the dish. They were declared in the product's own token file, which made
-// them layer-2 reads with a layer-3 spelling — the adapter cannot reach that
-// file, so a card themed through the library could not see them at all.
-$card-fg: #{core.ref('fg-default')} !default;
-$card-gap: #{core.ref('space-xs')} !default;
-$card-meta-fg: #{core.ref('fg-subtlest')} !default;
-$card-footer-fg: #{core.ref('fg-subtlest')} !default;
-$card-meta-font-size: #{core.ref('font-size-sm')} !default;
-$card-footer-font-size: #{core.ref('font-size-xs')} !default;
-// The title is the loudest thing in the card and it gets there by being SET —
-// the heading face at a heading step with room above it, never a fill behind
-// it. `heading` and not `heading-sm`: a product that maps `heading-sm` onto the
-// body size gives a card title the same size as the paragraph under it, ranked
-// by the face alone.
-$card-title-font-size: #{core.ref('font-size-heading')} !default;
-$card-title-font-weight: #{core.ref('font-weight-heading')} !default;
-$card-title-line-height: #{core.ref('line-height-heading')} !default;
-// The rule under a card's header and above its footer. Separate from
-// `$card-border-width`, which is the card's own edge: a product can drop the
-// edge to zero and still want its footer divided from the body.
-$card-divider-width: #{core.ref('border-width')} !default;
-$card-content-radius: #{core.ref('radius-control-sm')} !default;
-$card-img-bg: #{core.ref('bg-raised')} !default;
-$card-content-bg: #{core.ref('bg-surface')} !default;
-$card-content-shadow: #{core.ref('shadow-raised')} !default;
-$card-content-border-color: #{core.ref('border')} !default;
-$card-header-bg: #{core.ref('bg-sunken')} !default;
-$card-title-pad: #{core.ref('space-xs')} !default;
-$card-title-font-family: #{core.ref('font-family-heading')} !default;
-$card-body-pad: #{core.ref('space-xs')} !default;
-$card-footer-bg: #{core.ref('bg-surface')} !default;
-$card-footer-border-color: #{core.ref('border')} !default;
-$card-footer-pad: #{core.ref('space-xs')} !default;
-$card-border-width: #{core.ref('border-width')} !default;
-$card-border-color: #{core.ref('border-color-strong')} !default;
-$heading-min-height: #{core.ref('size-control')} !default;
-$img-width: #{core.ref('size-icon')} !default;
-$img-height: #{core.ref('size-icon')} !default;
-$img-font-size: #{core.ref('size-icon')} !default;
-// A dialog is a sheet lifted clear of the page, so it is `raised` and not
-// `surface`. The pair was missing for as long as the family existed, which is
-// the hole this contract keeps falling into: layer 3 gets whatever names the
-// library that motivated it happened to expose, so `modal-dialog-shadow` was
-// here before `modal-bg`. The consequence was that the product painted its
-// dialog from the token layer with a rule keyed on `.modal`, because the
-// component had nothing to ask for.
-$modal-bg: #{core.ref('bg-raised')} !default;
-$modal-fg: #{core.ref('fg-default')} !default;
-// `shadow-overlay` and not `shadow-raised`: a modal floats above everything,
-// which is the whole reason the overlay step exists. There was briefly a second
-// entry, `modal-dialog-shadow`, so a product could lift the shadow on desktop
-// only — deleted, because the product that motivated it had never rendered the
-// mobile value: an unlayered rule in its token layer forced the desktop shadow
-// at every width. A knob whose two settings nobody has ever seen apart is not a
-// knob.
-$modal-shadow: #{core.ref('shadow-overlay')} !default;
-$modal-radius: #{core.ref('radius-surface')} !default;
-$modal-footer-min-height: #{core.ref('size-control')} !default;
-$modal-border-color: #{core.ref('border')} !default;
-$progressbar-border-width: #{core.ref('border-width')} !default;
-$table-container-bg: #{core.ref('bg-surface')} !default;
-$table-container-border-width: #{core.ref('border-width')} !default;
-$table-container-radius: #{core.ref('radius-control-sm')} !default;
-$table-container-font-family: #{core.ref('font-family-body')} !default;
-$table-container-caption-font-family: #{core.ref('font-family-heading')} !default;
-$table-container-td--section-font-family: #{core.ref('font-family-body')} !default;
-$button-font-family: #{core.ref('font-family-body')} !default;
-$button-ring-width: #{core.ref('ring-width')} !default;
-$button-ring: #{core.ref('ring-color')} !default;
-$table-caption-radius: #{core.ref('radius-control-sm')} !default;
-$table-caption-bg: #{core.ref('bg-brand')} !default;
-$table-caption-fg: #{core.ref('fg-on-brand')} !default;
-// --- the focused field ---------------------------------------------------
-//
-// FOCUS IS AN OUTLINE. It is not a border and it is not a fill: it answers
-// "where is the keyboard", it has to look identical on every control and
-// unlike anything else on the screen, and it must not replace the resting
-// border — which is what tells a reader the thing is a control in the first
-// place. `$field-ring` is what a component puts in `outline`, and it is the
-// same answer the adapter gives `.form-control:focus-visible`.
-//
-// These three carried the SELECTED role, so a focused field grew an accent
-// edge and, in products that fill the label tab, an accent patch with it.
-// Under a school with one pigment that is the focus ring's own vocabulary
-// appearing on something that is merely focused, which is the collision
-// `check-focus-collision` exists to prevent — reached from the other side.
-//
-// THE RESTING BORDER DOES NOT MOVE, and that is the rule rather than an
-// omission: the border is what says the thing is a control, so replacing it on
-// focus removes the affordance at the exact moment the user is relying on it.
-// These three keep their names so a product can still step them — a dense
-// product may want the edge to firm up — and default to the resting value, so
-// out of the box the ring is the only thing that changes.
-//
-// A step was tried here first and measured: `border-color-strong` and
-// `border-interactive` land on the same rung of a twelve-step ramp, so the
-// "firmer edge" was the same colour with a comment claiming otherwise.
-$field-ring: #{core.ref('ring')} !default;
-$field-ring-offset: #{core.ref('ring-offset')} !default;
-$field-box-border-color-focus: #{core.ref('border-interactive')} !default;
-// The ruled lines do NOT move. Decoration does not carry state, and a page of
-// rules changing colour because a cursor entered the box is the field telling
-// the reader something the cursor already told them.
-$field-divider-color-focus: #{core.ref('border-divider')} !default;
-// The label tab's own outline, separate from the box's. A tab and the box
-// under it can legitimately differ — a folder tab is often cut from heavier
-// stock — and in every product that FILLS the tab on focus, this is the border
-// that has to move with the fill while the box's does not.
-$field-border-width: #{core.ref('border-width')} !default;
-$field-label-border-color: #{core.ref('border-color')} !default;
-$field-label-border-color-focus: #{core.ref('border-color')} !default;
-$carousel-indicator-border-color-active: #{core.ref('border-selected')} !default;
-$button-border-width: #{core.ref('border-width')} !default;
-$button-fg-disabled: #{core.ref('fg-disabled')} !default;
-$button-size: #{core.ref('size-control')} !default;
-$button-font-size: #{core.ref('font-size-sm')} !default;
-$button-pad-y: #{core.ref('pad-control-y')} !default;
-$field-pad: #{core.ref('pad-control-y')} !default;
-$field-font-size: #{core.ref('font-size')} !default;
-$field-line-height: #{core.ref('line-height-body')} !default;
+$tabs-layout-content-bg: var(--app-bg-canvas) !default;
+$card-fg: var(--app-fg-default) !default;
+$card-gap: var(--app-space-xs) !default;
+$card-meta-fg: var(--app-fg-muted) !default;
+$card-footer-fg: var(--app-fg-muted) !default;
+$card-meta-font-size: var(--app-font-size-sm) !default;
+$card-footer-font-size: var(--app-font-size-xs) !default;
+$card-title-font-size: var(--app-font-size-heading) !default;
+$card-title-font-weight: var(--app-font-weight-heading) !default;
+$card-title-line-height: var(--app-line-height-heading) !default;
+$card-divider-width: var(--app-border-width) !default;
+$card-content-radius: var(--app-radius-control-sm) !default;
+$card-img-bg: var(--app-bg-overlay) !default;
+$card-content-bg: var(--app-bg-canvas) !default;
+$card-content-shadow: var(--app-shadow-raised) !default;
+$card-content-border-color: var(--app-border) !default;
+$card-header-bg: var(--app-bg-inset) !default;
+$card-title-pad: var(--app-space-xs) !default;
+$card-title-font-family: var(--app-font-family-heading) !default;
+$card-body-pad: var(--app-space-xs) !default;
+$card-footer-bg: var(--app-bg-canvas) !default;
+$card-footer-border-color: var(--app-border) !default;
+$card-footer-pad: var(--app-space-xs) !default;
+$card-border-width: var(--app-border-width) !default;
+$card-border-color: var(--app-border-color-strong) !default;
+$heading-min-height: var(--app-size-control) !default;
+$img-width: var(--app-size-icon) !default;
+$img-height: var(--app-size-icon) !default;
+$img-font-size: var(--app-size-icon) !default;
+$modal-bg: var(--app-bg-overlay) !default;
+$modal-fg: var(--app-fg-default) !default;
+$modal-shadow: var(--app-shadow-overlay) !default;
+$modal-radius: var(--app-radius-surface) !default;
+$modal-footer-min-height: var(--app-size-control) !default;
+$modal-border-color: var(--app-border) !default;
+$progressbar-border-width: var(--app-border-width) !default;
+$table-container-bg: var(--app-bg-canvas) !default;
+$table-container-border-width: var(--app-border-width) !default;
+$table-container-radius: var(--app-radius-control-sm) !default;
+$table-container-font-family: var(--app-font-family-body) !default;
+$table-container-caption-font-family: var(--app-font-family-heading) !default;
+$table-container-td--section-font-family: var(--app-font-family-body) !default;
+$button-font-family: var(--app-font-family-body) !default;
+$button-ring-width: var(--app-ring-width) !default;
+$button-ring: var(--app-ring-color) !default;
+$table-caption-radius: var(--app-radius-control-sm) !default;
+$table-caption-bg: var(--app-bg-accent) !default;
+$table-caption-fg: var(--app-fg-on-accent) !default;
+$field-ring: var(--app-ring) !default;
+$field-ring-offset: var(--app-ring-offset) !default;
+$field-box-border-color-focus: var(--app-border-color-strong) !default;
+$field-divider-color-focus: var(--app-border-color) !default;
+$field-border-width: var(--app-border-width) !default;
+$field-label-border-color: var(--app-border-color) !default;
+$field-label-border-color-focus: var(--app-border-color) !default;
+$carousel-indicator-border-color-active: var(--app-border-accent) !default;
+$button-border-width: var(--app-border-width) !default;
+$button-fg-disabled: var(--app-fg-disabled) !default;
+$button-size: var(--app-size-control) !default;
+$button-font-size: var(--app-font-size-sm) !default;
+$button-pad-y: var(--app-pad-control-y) !default;
+$field-pad: var(--app-pad-control-y) !default;
+$field-font-size: var(--app-font-size) !default;
+$field-line-height: var(--app-line-height-body) !default;
 $field-line-offset: 0px !default;
 $field-line-offset-x: 0px !default;
-$field-line-border-width: #{core.ref('border-width')} !default;
+$field-line-border-width: var(--app-border-width) !default;
 $field-line-dash-length: 0px !default;
 $field-line-dash-gap: 0px !default;
-// THE DIVIDER ROLE, because that is exactly what these are: the ruled lines a
-// textarea draws for the writing to sit on. They identify nothing and nothing
-// is clickable about them, so WCAG 1.4.11 does not reach them and the border
-// family is the wrong place to take them from — a line pushed to the strength
-// of a control's edge turns the field into a striped panel.
-$field-line-border-color: #{core.ref('border-divider')} !default;
-$field-box-pad-y: #{core.ref('pad-control-y')} !default;
-$field-border: #{core.ref('border-width')} solid #{core.ref('border-color')} !default;
-$field-label-pad: #{core.ref('pad-control-y')} #{core.ref('pad-control-x')} !default;
-$field-label-font-size: #{core.ref('font-size-sm')} !default;
-$card-radius: #{core.ref('radius-surface')} !default;
-$carousel-indicator-shadow-active: #{core.ref('shadow-raised')} !default;
+$field-line-border-color: var(--app-border-color) !default;
+$field-box-pad-y: var(--app-pad-control-y) !default;
+$field-border: var(--app-border-width) solid var(--app-border-color) !default;
+$field-label-pad: var(--app-pad-control-y) var(--app-pad-control-x) !default;
+$field-label-font-size: var(--app-font-size-sm) !default;
+$card-radius: var(--app-radius-surface) !default;
+$carousel-indicator-shadow-active: var(--app-shadow-raised) !default;

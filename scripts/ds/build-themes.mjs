@@ -56,7 +56,7 @@
 // miss: the surface contexts declare only eight tokens, and they declare them
 // as REFERENCES —
 //
-//     [data-surface="inverted"] { --app-bg-page: var(--app-bg-inverted-base); … }
+//     [data-surface="inverted"] { --app-bg-canvas: var(--app-bg-inverted-base); … }
 //
 // — to anchors each theme defines for itself. So the same two context blocks
 // are correct in every theme file, and no permutation is needed to combine
