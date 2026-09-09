@@ -59,7 +59,7 @@
     color: component.$section-card-title-fg;
     padding: 0 var(--app-pad-surface);
     margin: 0;
-    font-size: component.$section-card-title-font-size;
+    font: component.$section-card-title-font;
     display: block;
 
     > * {

@@ -45,31 +45,54 @@ $adapter-light: (
     --app-gap-inline: var(--app-space-xs);
     --app-gap-stack: var(--app-space-md);
     --app-gap-grid: var(--app-space-lg);
-    --app-font-family-body:
-      Plus Jakarta Sans Variable, Plus Jakarta Sans, system-ui, sans-serif;
-    --app-font-family-heading: Young Serif, Lora, Georgia, serif;
-    --app-font-family-display: Caveat Variable, Caveat, cursive;
-    --app-font-family-mono: DM Mono, ui-monospace, monospace;
-    --app-font-size-xs: 0.8rem;
-    --app-font-size-sm: 0.89rem;
-    --app-font-size: 1rem;
-    --app-font-size-lg: 1.25rem;
-    --app-font-size-heading-sm: 1rem;
-    --app-font-size-heading: 1.25rem;
-    --app-font-size-heading-lg: 1.56rem;
-    --app-font-size-heading-xl: 1.95rem;
-    --app-font-weight-body: 400;
-    --app-font-weight-heading: 600;
-    --app-line-height: 1.7;
-    --app-line-height-heading: 1.25;
-    --app-letter-spacing-heading: 0;
-    --app-line-height-display: 1.1;
-    --app-letter-spacing-display: -0.02em;
+    --app-font-family-heading: var(--font-serif);
+    --app-font-family-script: var(--font-script);
+    --app-font-size-xs: var(--size-1);
+    --app-font-size-sm: var(--size-2);
+    --app-font-size: var(--size-3);
+    --app-font-weight-body: var(--weight-regular);
+    --app-font-weight-strong: var(--weight-medium);
+    --app-line-height: var(--leading-prose);
+
+    // Cada papel e um valor unico, consumido pela propriedade `font`. Nenhum
+    // titulo leva peso: hierarquia aqui e tamanho, familia e espaco.
+    --app-text-display: var(--weight-regular) var(--size-8) /
+      var(--leading-tight) var(--font-serif);
+    --app-text-title-lg: var(--weight-regular) var(--size-7) /
+      var(--leading-tight) var(--font-serif);
+    --app-text-title-md: var(--weight-regular) var(--size-6) /
+      var(--leading-snug) var(--font-serif);
+    --app-text-title-sm: var(--weight-regular) var(--size-5) /
+      var(--leading-snug) var(--font-serif);
+    --app-text-subtitle: italic var(--weight-regular) var(--size-5) /
+      var(--leading-loose) var(--font-body);
+    --app-text-body-lg: var(--weight-regular) var(--size-5) /
+      var(--leading-prose) var(--font-body);
+    --app-text-body: var(--weight-regular) var(--size-4) / var(--leading-prose)
+      var(--font-body);
+    --app-text-body-sm: var(--weight-regular) var(--size-3) /
+      var(--leading-loose) var(--font-body);
+    --app-text-label: var(--weight-medium) var(--size-3) / var(--leading-normal)
+      var(--font-body);
+    --app-text-label-sm: var(--weight-medium) var(--size-2) /
+      var(--leading-normal) var(--font-body);
+    --app-text-quantity: var(--weight-medium) var(--size-4) /
+      var(--leading-normal) var(--font-body);
+    --app-text-caption: var(--weight-regular) var(--size-2) /
+      var(--leading-normal) var(--font-body);
+    --app-text-script: var(--weight-regular) var(--size-5) /
+      var(--leading-normal) var(--font-script);
+
+    // `font` reseta o tracking e o variant, entao estes vao depois dele.
+    --app-text-display-tracking: var(--tracking-tight);
+    --app-text-title-lg-tracking: var(--tracking-snug);
+    --app-numeric-tabular: tabular-nums;
     --app-size-control: 44px;
     --app-size-control-sm: calc(var(--app-space-unit) * 7);
     --app-size-control-lg: calc(var(--app-space-unit) * 11);
     --app-size-icon: 20px;
-    --app-size-measure: 68ch;
+    --app-measure-body: 68ch;
+    --app-measure-narrow: 45ch;
     --app-icon-stroke: 1.25px;
     --app-ring-width: 2px;
     --app-ring-offset: 2px;
@@ -196,9 +219,4 @@ $adapter-light: (
     --app-pad-surface: var(--app-space-md);
     --app-size-bar: 60px;
   }
-}
-
-:root {
-  background-color: var(--app-bg-canvas);
-  color: var(--app-fg-default);
 }

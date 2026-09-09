@@ -1,10 +1,12 @@
 @import 'the-new-css-reset/css/reset.css';
 
-body {
+:root {
+  background-color: var(--app-bg-canvas);
   color: var(--app-fg-default);
-  font-family: var(--app-font-family-body);
-  font-size: var(--app-font-size);
-  font-weight: 200;
+}
+
+body {
+  font: var(--app-text-body);
 }
 
 .d-none {

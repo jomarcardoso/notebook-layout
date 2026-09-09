@@ -37,7 +37,7 @@ export const SectionCard: FC<SectionCardProps> = ({
         // measure — the band stopped short of the card's own width. The band is
         // the outer element and the text keeps its measure inside it.
         <strong className="section-card__title" id={id}>
-          <div className="h3">{header || title}</div>
+          <div className="title-sm">{header || title}</div>
         </strong>
       )}
       <div className="section-card__body">{children}</div>

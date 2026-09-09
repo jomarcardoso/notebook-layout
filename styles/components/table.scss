@@ -22,9 +22,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   color: component.$table-fg;
-  font-family: component.$table-container-font-family;
-  font-size: 15px;
-  line-height: 1.35;
+  font: component.$table-font;
   min-width: 100%;
   overflow: hidden;
   table-layout: fixed;
@@ -36,8 +34,7 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     color: component.$table-header-fg;
-    font-family: component.$table-container-caption-font-family;
-    font-size: 19px;
+    font: component.$table-caption-font;
     padding: 11px 14px;
     text-align: center;
   }
@@ -74,8 +71,7 @@
   &__td--section {
     background: component.$table-header-bg;
     color: component.$table-header-fg;
-    font-family: component.$table-container-td--section-font-family;
-    font-weight: 600;
+    font: component.$table-section-font;
     padding: 8px;
   }
 

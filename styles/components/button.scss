@@ -40,9 +40,7 @@
 .btn {
   // Type and metrics. `--button-*` are the library's own geometry tokens, which
   // the adapter points at layer 2.
-  --cui-btn-font-family: #{component.$button-font-family};
-  --cui-btn-font-size: #{component.$button-font-size};
-  --cui-btn-font-weight: 700;
+  font: #{component.$button-font};
   --cui-btn-line-height: normal;
   --cui-btn-padding-y: #{component.$button-pad-y};
   --cui-btn-padding-x: #{component.$button-pad-x};
@@ -91,7 +89,7 @@
   // recedes, and a page where every control is shouting has nothing left to
   // make the primary action louder than the secondary one.
   //
-  // Caps survive in this product only as a KICKER — `.eyebrow`, the notebook's
+  // Caps survive in this product only as a KICKER — the notebook's
   // index tabs, a definition term — where the text is a label at caption size
   // with tracking to open the letterforms, and is not read as a phrase.
   white-space: nowrap;

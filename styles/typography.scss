@@ -1,108 +1,70 @@
 @use './ds/tokens' as component;
 
-// =============================================================================
-// TYPOGRAPHY
-// =============================================================================
+// Um papel por classe, cada um lendo o token composto da camada 2 pela
+// propriedade `font`. Nenhum titulo leva peso: hierarquia e tamanho, familia e
+// espaco. Peso 600+ fica para `<strong>` dentro do corpo.
 //
-// Headings take `fg-heading`, and a level that needs to differ overrides its own
-// layer 3 token — `--app-heading-3-fg` and friends, which the contract already
-// reserves for exactly this.
-//
-// -----------------------------------------------------------------------------
-// WHY NOT `fg-selected`
-// -----------------------------------------------------------------------------
-//
-// A HEADING IS NEVER TINTED. It takes `fg-heading` — the darkest rung, the ink
-// in its heading role — and nothing about a heading is selected, actionable or
-// branded. The size, the serif face and the space above it are what rank it,
-// which is two levers plus one and already the limit.
-//
-// Reaching for an interactive token here renders correctly in a monochrome
-// product, because one pigment carries every interactive job, and that is
-// exactly what makes the mistake invisible: the heading looks right and is
-// wearing the colour of something you can press.
-//
-// -----------------------------------------------------------------------------
-// WHY THE SIZES ARE TOKENS AND THE REST IS NOT
-// -----------------------------------------------------------------------------
-//
-// Every line here used to be a custom property: `--h1-text-align: start`,
-// `--h2-text-transform: none`, `--h3-line-height: 1.3`. Twenty-three of them,
-// read by this file and nothing else, none of which ever changed.
-//
-// The emission policy says a value becomes a custom property when it changes at
-// runtime or is a public extension point. A heading's text alignment is neither.
-// Sizes stay tokens because the scale is layer 2's and the compact density moves
-// it; alignment, weight and tracking are literals, here, where they are read.
-// =============================================================================
+// `font` reseta tracking e `font-variant-numeric`, entao os dois vem depois.
 
-.h1 {
-  color: component.$heading-1-fg;
-  font-family: var(--app-font-family-heading);
-  font-size: var(--app-font-size-heading-xl);
-  font-weight: var(--app-font-weight-heading);
-  letter-spacing: var(--app-letter-spacing-heading);
-  line-height: var(--app-line-height-heading);
+.display {
+  color: var(--app-fg-heading);
+  font: var(--app-text-display);
+  letter-spacing: var(--app-text-display-tracking);
+  margin: 0;
+  text-wrap: balance;
 }
 
-.h2 {
-  color: component.$heading-2-fg;
-  font-family: var(--app-font-family-heading);
-  font-size: var(--app-font-size-heading-lg);
-  font-weight: var(--app-font-weight-heading);
-  letter-spacing: var(--app-letter-spacing-heading);
-  line-height: var(--app-line-height-heading);
+.title-lg {
+  color: var(--app-fg-heading);
+  font: var(--app-text-title-lg);
+  letter-spacing: var(--app-text-title-lg-tracking);
 }
 
-.h3 {
-  color: component.$heading-3-fg;
-  font-family: var(--app-font-family-heading);
-  font-size: var(--app-font-size-heading);
-  font-weight: var(--app-font-weight-heading);
-  line-height: var(--app-line-height-heading);
+.title-md {
+  color: var(--app-fg-heading);
+  font: var(--app-text-title-md);
 }
 
-// h4 is the BODY size, in the body face, separated only by weight. Below the
-// third level a serif at small size stops reading as a title and starts
-// reading as decoration — and a label that is larger than the text it labels
-// inverts the job it is there to do.
-.h4 {
-  color: component.$heading-4-fg;
-  font-family: var(--app-font-family-body);
-  font-size: var(--app-font-size-heading-sm);
-  font-weight: 700;
-  line-height: var(--app-line-height-heading);
+.title-sm {
+  color: var(--app-fg-heading);
+  font: var(--app-text-title-sm);
 }
 
-// Semantic aliases, so a page never reaches for `h2` as a visual trick on an
-// element that is not a section heading.
-.recipe-title,
-.page-title {
-  @extend .h1;
-}
-
-// THE DISPLAY VOICE — the handwriting.
-//
-// One class, not three. This was `.handwritten-title` and `.section-heading`,
-// declared identically, used nowhere, and named closely enough to
-// `.section-title` — which is a different thing entirely — that reading the
-// file taught you the wrong model. Two dead names for one idea is worse than
-// no name.
-//
-// It is the product speaking rather than labelling: "Seu caderninho, do seu
-// jeito", a marginal note, a badge of a line.
-//
-// NOT the accent. A handwritten aside is decoration, and the one pigment is
-// spent on what is actionable or currently chosen — a blue phrase nobody can
-// press is the "grey test" failing, colour doing a job that belongs to the
-// face. The Caveat face and the size already say this is a margin note, which
-// is two levers and the limit.
-.display-title {
+// O headnote: a voz autoral entre o titulo e os ingredientes.
+.subtitle {
   color: var(--app-fg-muted);
-  font-family: var(--app-font-family-display);
-  font-size: var(--app-font-size-heading-lg);
-  font-weight: var(--app-font-weight-heading);
-  line-height: 1.4;
+  font: var(--app-text-subtitle);
+  max-width: var(--app-measure-narrow);
+}
+
+.body-lg {
+  font: var(--app-text-body-lg);
+}
+
+.body-sm {
+  font: var(--app-text-body-sm);
+}
+
+.label {
+  font: var(--app-text-label);
+}
+
+.quantity {
+  font: var(--app-text-quantity);
+  font-variant-numeric: var(--app-numeric-tabular);
+}
+
+// Meta, categoria, credito, rodape. Em caixa e baixa, sem tracking.
+.caption {
+  color: var(--app-fg-muted);
+  font: var(--app-text-caption);
+}
+
+// A manuscrita, que fora dos inputs aparece em um lugar so: a nota pessoal no
+// fim da receita.
+.handwritten {
+  color: var(--app-fg-muted);
+  font: var(--app-text-script);
   margin: 0;
   text-wrap: balance;
 
@@ -113,78 +75,31 @@
   }
 }
 
-// THE KICKER — the small line ABOVE a title that says where you are.
-//
-// Editorial layout's oldest device, and the one thing missing from a page of
-// headings that all look like headings: a title alone announces its own
-// subject and nothing else, so a reader arriving mid-scroll has size to tell
-// them what is important and nothing to tell them what section they are in.
-//
-// A NEUTRAL RUNG, and the reason is the same one that decides most questions
-// in this school: treatment replaces hue, because there is no second hue to
-// reach for. A kicker is not actionable, and in a product where blue means "you
-// can act on this" a blue kicker reads as a link that does nothing.
-//
-// The defence once offered for making it blue was that a kicker is a MARK
-// rather than a fill. That does not survive contact with the button vocabulary:
-// a ghost button is also nothing but coloured text, so "it is only text" cannot
-// be what separates a decorative colour from an interactive one. Caps, tracking
-// and the caption size are what mark it, and they cost no pigment.
-//
-// Uppercase in CSS rather than in the markup, so the accessible name stays the
-// sentence someone wrote.
-.eyebrow {
-  color: var(--app-fg-muted);
-  display: block;
-  font-family: var(--app-font-family-body);
-  font-size: var(--app-font-size-xs);
-  font-weight: var(--app-font-weight-heading);
-  letter-spacing: 0.12em;
-  line-height: 1.2;
-  margin: 0 0 var(--app-space-2xs);
-  text-transform: uppercase;
+.recipe-title {
+  @extend .display;
 }
 
-// A SECTION BAND, softly.
-//
-// Written nested, which is the point of Sass and was not being used: this was
-// six flat rulesets — `.section-title`, `.section-title.-sub`,
-// `.section-title.-center`, `.section-title.-plain` — repeating the selector
-// every time, so the relationship between a modifier and its base was
-// something you had to reconstruct by reading.
-//
-// NO FILL. It was a full-width well at `bg-sunken`, and there were two styles of
-// section title on the same page as a result: a serif line with a rule under it
-// for one level, and a serif line inside a tan band for another. The band is the
-// Enterprise vocabulary — Editorial carries hierarchy with SPACE and a rule, and
-// a filled strip behind a heading is the thing that makes a page of serifs read
-// as somebody else's component library with a nice font in it.
-//
-// A rule and the room above it now, which is also the mark a notebook makes.
+.page-title {
+  @extend .title-lg;
+}
+
+// Uma faixa de secao marcada por espaco e um fio, nunca por preenchimento. O
+// espaco acima e maior que o abaixo porque o titulo pertence ao que vem depois.
 .section-title {
-  @extend .h2;
+  @extend .title-md;
 
   background-color: transparent;
   border: 0;
   border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
   border-radius: 0;
-  color: var(--app-fg-heading);
   display: block;
+  margin-block: var(--app-space-xl) var(--app-space-sm);
   max-width: 100%;
   padding: 0 0 0.2em;
 
-  // SPACE IS DIRECTIONAL: a heading belongs to what comes after it, so the room
-  // above is larger than the room below. That ratio is most of what makes a
-  // page read as designed rather than as assembled, and it is the lever that
-  // replaced the fill.
-  margin-block: var(--app-space-xl) var(--app-space-sm);
-
-  // One level down: an organiser INSIDE a section, which must not read as
-  // another section. Smaller, and no rule — the two levels are told apart by
-  // size and by which one carries the line, so a reader arriving mid-scroll can
-  // see the difference without counting.
+  // Um nivel abaixo: organiza dentro da secao, e por isso nao carrega o fio.
   &.-sub {
-    @extend .h3;
+    @extend .title-sm;
 
     border-bottom: 0;
     margin-block: var(--app-space-lg) var(--app-space-2xs);
@@ -195,7 +110,6 @@
     text-align: center;
   }
 
-  // No rule at all: a title that opens a page rather than a section inside one.
   &.-plain {
     border-bottom: 0;
   }
@@ -213,19 +127,15 @@
   }
 }
 
+// A medida: 45–75 caracteres e onde o olho acha o inicio da proxima linha sem
+// procurar.
 .p {
   color: var(--app-fg-default);
-  line-height: var(--app-line-height);
-  // THE MEASURE. 45–75 characters is where the eye finds the start of the next
-  // line without hunting for it, and 68 sits in the middle of that band.
-  //
-  // This said `200ch`, which is not a cap — no column in this product is ever
-  // that wide, so the declaration read as a limit and enforced nothing. A
-  // paragraph on a desktop simply ran the full width of whatever held it.
-  max-width: 68ch;
+  font: var(--app-text-body);
+  max-width: var(--app-measure-body);
 
   &.-large {
-    font-size: var(--app-font-size-lg);
+    font: var(--app-text-body-lg);
   }
 }
 

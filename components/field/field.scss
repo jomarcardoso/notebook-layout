@@ -74,8 +74,7 @@
     border-bottom: 0;
     padding: component.$field-label-pad;
     align-self: flex-start;
-    font-size: component.$field-label-font-size;
-    font-family: component.$field-label-font-family;
+    font: component.$field-label-font;
     transition:
       background-color var(--app-duration-base) var(--app-ease),
       border-color var(--app-duration-base) var(--app-ease);
@@ -143,7 +142,6 @@
   &__input {
     background-color: transparent;
     font-family: component.$field-input-font-family;
-    font-weight: 200;
     line-height: component.$field-line-height;
     font-size: component.$field-font-size;
     color: component.$field-fg;
@@ -183,9 +181,8 @@
   }
 
   &__hint {
-    font-family: component.$field-hint-font-family;
+    font: component.$field-hint-font;
     margin-top: 2px;
-    font-size: 13px;
   }
 
   &__action {

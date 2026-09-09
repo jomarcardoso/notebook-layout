@@ -19,7 +19,7 @@ export const Section: FC<SectionProps> = ({
       {(header || title) && (
         <div>
           {onBgWhite ? (
-            <h3 className="h4" style={{ textAlign: 'center' }}>
+            <h3 className="label" style={{ textAlign: 'center' }}>
               {header || title}
             </h3>
           ) : (

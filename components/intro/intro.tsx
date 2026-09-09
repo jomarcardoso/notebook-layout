@@ -31,7 +31,7 @@ export const Intro: FC<IntroProps> = ({
       {(title || intro) && (
         <div className="grid">
           <div className="g-col-12">
-            {title && <TitleTag className="h1">{title}</TitleTag>}
+            {title && <TitleTag className="title-lg">{title}</TitleTag>}
             {intro && <p className="p">{intro}</p>}
           </div>
         </div>

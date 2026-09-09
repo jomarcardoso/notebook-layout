@@ -13,7 +13,7 @@ export const SectionTitle: FC<SectionTitleProps> = ({
 }) => {
   return (
     <h3
-      className={`h2 section-title ${opaque ? 'section-title--opaque' : ''}`}
+      className={`title-md section-title ${opaque ? 'section-title--opaque' : ''}`}
       {...props}
     >
       {children}

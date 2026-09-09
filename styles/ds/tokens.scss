@@ -22,7 +22,7 @@ $_field-pad: 4px;
   $field-radius: var(--app-radius-surface),
   $field-border: var(--app-border-width) solid var(--app-border-color),
   $field-font-size: 1.375rem,
-  $field-label-font-family: var(--app-font-family-body),
+  $field-label-font: var(--app-text-label-sm),
   $field-bg: var(--app-bg-inset),
   $field-label-pad: 5px 24px 3px,
   $carousel-indicator-shadow-active: inset 0 0 3px 0
@@ -95,7 +95,7 @@ $section-card-shadow: none !default;
 $section-card-border-color: none !default;
 $section-card-title-bg: var(--app-bg-neutral-subtle) !default;
 $section-card-title-fg: var(--app-fg-heading) !default;
-$section-card-title-font-size: var(--app-font-size-heading-sm) !default;
+$section-card-title-font: var(--app-text-title-sm) !default;
 $section-card-title-border-width: var(--app-border-width) !default;
 $section-card-title-divider-color: var(--app-border-color) !default;
 $section-card-body-bg: var(--app-bg-overlay) !default;

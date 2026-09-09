@@ -21,7 +21,7 @@ export const Heading: FC<HeadingProps> = ({
 }) => {
   return (
     <div {...props} className="heading">
-      <h2 className="h2" id="alert-dialog-title" {...titleProps}>
+      <h2 className="title-md" id="alert-dialog-title" {...titleProps}>
         {title || children}
       </h2>
 
