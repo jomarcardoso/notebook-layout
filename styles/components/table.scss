@@ -1,4 +1,4 @@
-@use '../ds/tokens' as component;
+@use '../component' as component;
 
 .table-container {
   background: component.$table-container-bg;

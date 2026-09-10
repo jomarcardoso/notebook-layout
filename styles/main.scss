@@ -5,9 +5,9 @@
 // Components only. No variables, no themes, no palette. Every token comes from
 // the foundation in `styles/ds/`:
 //
-//     layer 1  ds/src/_base.scss      what the colours ARE
-//     layer 2  ds/src/_semantic.scss  what they MEAN
-//     layer 3  ds/tokens.scss         the component contract
+//     layer 1  _base.scss       what the colours ARE
+//     layer 2  _semantic.scss   what they MEAN
+//     layer 3  _component.scss  the component contract
 // =============================================================================
 
 @forward 'resets';

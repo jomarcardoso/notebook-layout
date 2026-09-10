@@ -1,12 +1,12 @@
 @layer legacy, theme, base, ds.base, ds.semantic, ds.component, vendor,
   vendor-config, components, ds.overrides, utilities;
-@import './ds/ds';
+@import './foundation';
 @layer base {
   @import 'the-new-css-reset/css/reset';
 }
 
 @layer vendor {
-  @import './ds/coreui-entry';
+  @import './coreui-entry';
 
   // This library's own components.
   @import './main';

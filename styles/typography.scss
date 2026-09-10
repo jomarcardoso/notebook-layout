@@ -1,4 +1,4 @@
-@use './ds/tokens' as component;
+@use './component' as component;
 
 // Um papel por classe, cada um lendo o token composto da camada 2 pela
 // propriedade `font`. Nenhum titulo leva peso: hierarquia e tamanho, familia e

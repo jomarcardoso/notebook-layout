@@ -1,31 +1,10 @@
-@use '../../styles/ds/tokens' as component;
+@use '../../styles/component' as component;
 
 // =============================================================================
 // SECTION CARD
 // =============================================================================
 //
-// A titled panel: a brand band across the top, a paper body under it.
-//
-// -----------------------------------------------------------------------------
-// THE BUG THIS FILE CARRIED
-// -----------------------------------------------------------------------------
-//
-// Four of its six declarations were written like this:
-//
-//     background-color: var(--section-card-body-bg, --color-white);
-//                                                   ^^^^^^^^^^^^^ not a value
-//
-// A `var()` fallback has to be a VALUE. `--color-white` there is a bare custom
-// property NAME — it needed `var(--color-white)` — so the whole declaration was
-// invalid and the browser dropped it. The panel fell back to whatever the
-// element inherited, which is why the body looked white and the border was
-// missing entirely.
-//
-// It reads as a decision. It compiles. Nothing warns. And it survived a full
-// migration because a token that resolves to nothing and a token whose fallback
-// is malformed look identical from the outside — both simply have no effect.
-//
-// `scripts/check-fallback-values.mjs` now fails the build on the pattern.
+// A titled panel: a band across the top, paper under it.
 // =============================================================================
 
 @mixin section-compact {

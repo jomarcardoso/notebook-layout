@@ -1,0 +1,15 @@
+// notebook-layout/styles/foundation.scss
+
+@use './config';
+@use './base';
+@use './srgb';
+
+@use './semantic';
+@use './component';
+@use './coreui' as coreui-adapter;
+
+@include coreui-adapter.emit(
+  (
+    'light': srgb.$adapter-light,
+  )
+);

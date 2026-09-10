@@ -1,3 +1,10 @@
+// notebook-layout/styles/_component.scss
+
+// Camada 3: o contrato de componente. Cada knob e o ponto onde o nome de um
+// componente encontra um papel da camada 2.
+
+$_field-pad: 4px;
+
 $button-bg: var(--app-bg-accent-solid) !default;
 $button-fg: var(--app-fg-on-solid) !default;
 $button-bg-hover: var(--app-bg-accent-solid-hover) !default;
@@ -5,7 +12,7 @@ $button-bg-active: var(--app-bg-accent-solid-hover) !default;
 $button-border-color: var(--app-border-selected) !default;
 $button-radius: var(--app-radius-control) !default;
 $button-height: var(--app-size-control) !default;
-$button-pad-x: var(--app-pad-control-x) !default;
+$button-pad-x: 16px !default;
 
 $button-secondary-bg: var(--app-bg-muted) !default;
 $button-secondary-fg: var(--app-fg-default) !default;
@@ -17,10 +24,10 @@ $field-bg: var(--app-bg-subtle) !default;
 $field-fg: var(--app-fg-default) !default;
 $field-border-color: var(--app-border-strong) !default;
 $field-border-color-focus: var(--app-border-strong) !default;
-$field-radius: var(--app-radius-control) !default;
+$field-radius: var(--app-radius-overlay) !default;
 $field-height: var(--app-size-control) !default;
 $field-label-fg: var(--app-fg-default) !default;
-$field-label-bg: null !default;
+$field-label-bg: var(--app-bg-subtle) !default;
 
 $sidebar-narrow-width: var(--app-size-bar) !default;
 $sidebar-toggler-width: var(--app-size-icon) !default;
@@ -29,7 +36,7 @@ $sidebar-toggler-fg: var(--app-fg-muted) !default;
 $sidebar-toggler-fg-hover: var(--app-fg-emphasis) !default;
 $surface-bg: var(--app-bg-page) !default;
 $surface-fg: var(--app-fg-default) !default;
-$surface-border-color: var(--app-border-default) !default;
+$surface-border-color: transparent !default;
 $surface-radius: var(--app-radius-overlay) !default;
 $surface-pad: var(--app-pad-surface) !default;
 $surface-shadow: none !default;
@@ -42,15 +49,15 @@ $table-row-bg-hover: var(--app-bg-hover) !default;
 
 $overlay-bg: var(--app-bg-page) !default;
 $overlay-fg: var(--app-fg-default) !default;
-$overlay-border-color: var(--app-border-default) !default;
+$overlay-border-color: transparent !default;
 $overlay-radius: var(--app-radius-overlay) !default;
 $overlay-shadow: var(--app-shadow-overlay) !default;
 $overlay-backdrop: var(--app-bg-backdrop) !default;
 
 $nav-fg: var(--app-fg-muted) !default;
-$nav-fg-hover: var(--app-fg-accent) !default;
-$nav-fg-active: var(--app-fg-on-solid) !default;
-$nav-bg-active: var(--app-bg-accent-solid) !default;
+$nav-fg-hover: var(--app-fg-default) !default;
+$nav-fg-active: var(--app-fg-emphasis) !default;
+$nav-bg-active: var(--app-bg-active) !default;
 $nav-bg-hover: var(--app-bg-hover) !default;
 $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
@@ -60,10 +67,10 @@ $code-fg: var(--app-fg-default) !default;
 $chip-bg: var(--app-bg-muted) !default;
 $chip-fg: var(--app-fg-default) !default;
 $chip-border-color: transparent !default;
-$chip-radius: var(--app-radius-control) !default;
+$chip-radius: var(--app-radius-overlay) !default;
 $chip-height: var(--app-size-control-sm) !default;
 $chip-pad-x: var(--app-pad-control-x) !default;
-$chip-bg-selected: var(--app-bg-selected) !default;
+$chip-bg-selected: var(--app-bg-active) !default;
 $chip-fg-selected: var(--app-fg-emphasis) !default;
 $chip-border-color-selected: transparent !default;
 
@@ -85,7 +92,7 @@ $switch-thumb-bg: var(--app-bg-page) !default;
 $alert-radius: var(--app-radius-control) !default;
 $alert-pad: var(--app-pad-surface) !default;
 $badge-radius: var(--app-radius-control) !default;
-$badge-fg: var(--app-fg-on-solid) !default;
+$badge-fg: var(--app-fg-muted) !default;
 $badge-bg: var(--app-bg-subtle) !default;
 
 $tertiary-bg: var(--app-bg-neutral-solid) !default;
@@ -204,9 +211,9 @@ $dropdown-item-fg-selected: var(--app-fg-emphasis) !default;
 
 $avatar-bg: var(--app-bg-page) !default;
 $avatar-border-color: var(--app-bg-page) !default;
-$avatar-border-width: var(--app-border-width) !default;
-$avatar-radius: var(--app-radius-control) !default;
-$avatar-size: var(--app-size-control) !default;
+$avatar-border-width: 4px !default;
+$avatar-radius: var(--app-radius-overlay) !default;
+$avatar-size: 80px !default;
 
 $spinner-size: var(--app-size-icon) !default;
 $spinner-border-width: var(--app-border-width) !default;
@@ -273,13 +280,13 @@ $card-content-radius: var(--app-radius-control) !default;
 $card-img-bg: var(--app-bg-page) !default;
 $card-content-bg: var(--app-bg-page) !default;
 $card-content-shadow: none !default;
-$card-content-border-color: var(--app-rule) !default;
+$card-content-border-color: transparent !default;
 $card-title-pad: var(--app-space-xs) !default;
-$card-body-pad: var(--app-space-xs) !default;
-$card-footer-bg: var(--app-bg-page) !default;
+$card-body-pad: var(--app-space-md) !default;
+$card-footer-bg: transparent !default;
 $card-footer-border-color: var(--app-rule) !default;
 $card-footer-pad: var(--app-space-xs) !default;
-$card-border-width: var(--app-border-width) !default;
+$card-border-width: 0 !default;
 $card-border-color: var(--app-border-strong) !default;
 $heading-min-height: var(--app-size-control) !default;
 $img-width: var(--app-size-icon) !default;
@@ -314,18 +321,77 @@ $carousel-indicator-border-color-active: var(--app-border-selected) !default;
 $button-border-width: var(--app-border-width) !default;
 $button-fg-disabled: var(--app-fg-disabled) !default;
 $button-size: var(--app-size-control) !default;
-$button-pad-y: var(--app-pad-control-y) !default;
-$field-pad: var(--app-pad-control-y) !default;
-$field-font-size: var(--app-font-size) !default;
-$field-line-height: 1.4 !default;
-$field-line-offset: 0px !default;
-$field-line-offset-x: 0px !default;
+$button-pad-y: 2px !default;
+$field-pad: $_field-pad !default;
+$field-font-size: 1.375rem !default;
+$field-line-height: 31px !default;
+$field-line-offset: 27px !default;
+$field-line-offset-x: 3px !default;
 $field-line-border-width: var(--app-border-width) !default;
 $field-line-dash-length: 0px !default;
 $field-line-dash-gap: 0px !default;
 $field-line-border-color: var(--app-border-default) !default;
-$field-box-pad-y: var(--app-pad-control-y) !default;
+$field-box-pad-y: calc(#{$_field-pad} + 2px) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
-$field-label-pad: var(--app-pad-control-y) var(--app-pad-control-x) !default;
+$field-label-pad: 5px 24px 3px !default;
 $card-radius: var(--app-radius-overlay) !default;
-$carousel-indicator-shadow-active: none !default;
+$carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-strong) !default;
+
+// -----------------------------------------------------------------------------
+// Os componentes proprios desta biblioteca.
+// -----------------------------------------------------------------------------
+
+$button-gap: var(--app-space-xs) !default;
+$button-ring-offset-color: var(--app-bg-page) !default;
+$button-link-fg: var(--app-fg-accent) !default;
+$button-link-fg-hover: var(--app-fg-accent) !default;
+
+$modal-body-pad: var(--app-pad-surface) !default;
+
+$modal-footer-gap: var(--app-gap-inline) !default;
+$modal-divider-width: var(--app-border-width) !default;
+$modal-divider-color: var(--app-rule) !default;
+
+$choice-title-fg: var(--app-fg-default) !default;
+$choice-img-fg: currentColor !default;
+
+$table-td-mono-fg: var(--app-fg-muted) !default;
+$table-td-accent-fg: var(--app-fg-accent) !default;
+
+$field-selection-fg: var(--app-fg-emphasis) !default;
+
+$notebook-tabs-content-fg: var(--app-fg-default) !default;
+$section-card-item-pad-y: var(--app-pad-control-y) !default;
+$tabs-layout-content-fg: var(--app-fg-default) !default;
+$tabs-layout-content-border-width: var(--app-border-width) !default;
+$tabs-layout-content-border-color: var(--app-border-default) !default;
+$progress-indicator-fg: var(--app-fg-default) !default;
+$progressbar-border-color: var(--app-border-default) !default;
+
+$choice-radius: var(--app-radius-overlay) !default;
+$choice-gap: var(--app-gap-stack) !default;
+$choice-title-border-width: var(--app-border-width) !default;
+$choice-title-radius: var(--app-radius-control) !default;
+$choice-title-bg: var(--app-bg-page) !default;
+$choice-img-fg-hover: var(--app-fg-accent) !default;
+$choice-title-bg-hover: var(--app-bg-selected) !default;
+$intro-gap: var(--app-gap-stack) !default;
+$notebook-tabs-content-bg: var(--app-bg-page) !default;
+$notebook-tabs-bg: var(--app-bg-subtle) !default;
+$notebook-tabs-radius: var(--app-radius-overlay) !default;
+$notebook-tabs-shadow: none !default;
+$notebook-tabs-bg-active: var(--app-bg-page) !default;
+$notebook-tabs-fg-active: var(--app-fg-emphasis) !default;
+$section-card-shadow: none !default;
+$section-card-border-color: none !default;
+$section-card-title-bg: var(--app-bg-muted) !default;
+$section-card-title-fg: var(--app-fg-emphasis) !default;
+$section-card-title-font: var(--app-text-title-sm) !default;
+$section-card-title-border-width: var(--app-border-width) !default;
+$section-card-title-divider-color: var(--app-border-default) !default;
+$section-card-body-bg: var(--app-bg-page) !default;
+$choice-border-color-hover: var(--app-border-selected) !default;
+$category-width: 102px !default;
+$category-font-size: var(--app-font-size-sm) !default;
+$layout-aside-border: var(--app-border) !default;
+$layout-aside-shadow: inset 1px 0 3px -1px var(--app-border-strong) !default;

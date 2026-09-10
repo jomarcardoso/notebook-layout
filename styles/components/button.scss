@@ -1,40 +1,19 @@
-@use '../ds/tokens' as component;
+@use '../component' as component;
 
 // =============================================================================
 // BUTTON
 // =============================================================================
 //
-// This file used to carry 48 lines of `--cui-btn-*` colour declarations across
-// `.btn-primary`, `.btn-outline-secondary` and `.btn-link`. They are gone, and
-// what replaced them is nothing: the CoreUI adapter binds every button variant
-// already, on the PROPERTY rather than the variable, from `vendor-config`.
+// Geometry and this product's own anatomy: the icon sizing, the `small` second
+// line, and the invisible `::before` that extends the tap target to 44px
+// without changing the visual height. Colour belongs to the adapter, which
+// binds every variant on the property rather than on the variable — a property
+// in a later layer beats a variable read in an earlier one, so a `--cui-btn-*`
+// written here would never reach the page.
 //
-// Which means those 48 lines were not merely redundant — most were DEAD. A
-// property declaration in a later layer beats a variable read in an earlier
-// one, so `--cui-btn-bg` written here never reached the page. The file
-// described a button that was not rendering, and it described it wrongly:
-//
-//     --cui-btn-bg: var(--action-primary-bg, var(--color-primary-main));
-//                                            ^ cocoa — the SELECTION colour
-//
-// A primary button in the selection colour is the confusion the whole system
-// exists to prevent. It survived because it was invisible twice over: dead in
-// the cascade, and written in a vocabulary (`primary`) that has no word for the
-// distinction it was getting wrong.
-//
-// -----------------------------------------------------------------------------
-// WHAT STAYS
-// -----------------------------------------------------------------------------
-//
-// Geometry and this product's own anatomy: the uppercase label, the icon
-// sizing, the `small` second line, and the invisible `::before` that extends
-// the tap target to 44px without changing the visual height. None of that is a
-// colour and none of it is CoreUI's business.
-//
-// The three emphases come from the adapter and are one colour at three
-// strengths — `.btn-primary` filled, `.btn-outline-primary` bordered,
-// `.btn-ghost-secondary` label-only. Emphasis is carried by fill, border and
-// nothing; never by hue.
+// The three emphases are one colour at three strengths: `.btn-primary` filled,
+// `.btn-outline-primary` bordered, `.btn-ghost-secondary` label-only. Emphasis
+// is carried by fill, border and nothing; never by hue.
 // =============================================================================
 
 .btn {
@@ -46,9 +25,6 @@
   --cui-btn-padding-x: #{component.$button-pad-x};
   --cui-btn-border-radius: #{component.$button-radius};
 
-  // The focus ring. It was a `color-mix()` of the old secondary colour at 25%,
-  // which is the shape of an adapter inventing a value — the system has a ring
-  // and it is `--app-ring`, sized and offset by its own tokens.
   // Two rings, not one: a light gap against the control, then the ink.
   //
   // A single dark ring drawn straight onto a dark filled button is invisible —

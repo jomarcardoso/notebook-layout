@@ -57,7 +57,7 @@ module.exports = {
     },
     {
       /* Layer 1 — the only place literals are legal. A brand hands over hex. */
-      files: ['styles/ds/src/_base.scss', 'styles/ds/src/_srgb.scss'],
+      files: ['styles/_base.scss', 'styles/_srgb.scss'],
       rules: {
         'color-no-hex': null,
         'declaration-property-value-disallowed-list': null
@@ -66,7 +66,7 @@ module.exports = {
     {
       /* Layer 2 assigns meaning by reading layer 1 at build time, so it carries
        * interpolations everywhere and no literals of its own. */
-      files: ['styles/ds/theme.scss'],
+      files: ['styles/_semantic.scss'],
       rules: {
         'color-no-hex': null,
 
@@ -104,7 +104,11 @@ module.exports = {
         'components/**/*.{css,scss}',
         'styles/**/*.{css,scss}'
       ],
-      excludedFiles: ['styles/ds/**'],
+      excludedFiles: [
+        'styles/_*.scss',
+        'styles/foundation.scss',
+        'styles/coreui-entry.scss'
+      ],
       rules: {
         'declaration-property-value-disallowed-list': [
           {
@@ -118,7 +122,7 @@ module.exports = {
           {
             message:
               'Reach only as far as layer 2. Use var(--app-<semantic-token>); ' +
-              'if the token does not exist, add it to styles/ds/theme.scss. ' +
+              'if the token does not exist, add it to styles/_semantic.scss. ' +
               'Never read a library variable (--cui-*, --bs-*) from a component.'
           }
         ]
@@ -127,7 +131,7 @@ module.exports = {
     {
       /* Adapters are the one place a third-party namespace is legal — that is
        * their entire job. They may never read layer 1. */
-      files: ['styles/ds/src/adapters/*.scss'],
+      files: ['styles/_coreui.scss'],
       rules: {
         'color-no-hex': null,
         'declaration-property-value-disallowed-list': [

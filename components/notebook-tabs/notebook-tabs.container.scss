@@ -1,4 +1,4 @@
-@use '../../styles/ds/tokens' as component;
+@use '../../styles/component' as component;
 
 @mixin notebook-tabs-container {
   display: flex;

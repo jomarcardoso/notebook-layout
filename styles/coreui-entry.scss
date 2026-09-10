@@ -1,5 +1,5 @@
 @use './coreui-config' as cfg;
-@use './src/component';
+@use './component';
 @use '@coreui/coreui/scss/variables' with (
   $primary: cfg.$primary,
   $secondary: cfg.$secondary,

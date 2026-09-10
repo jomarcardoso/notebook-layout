@@ -1,7 +1,7 @@
-@use './tokens';
+@use './component';
 @use 'sass:color';
 @use 'sass:map';
-@use './src/srgb' as palette;
+@use './srgb' as palette;
 
 @function srgb($c) {
   @return color.to-space(

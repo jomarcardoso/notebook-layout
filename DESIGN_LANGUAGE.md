@@ -162,9 +162,9 @@ provavelmente e fio.
 
 | Camada | Onde | O que e |
 | --- | --- | --- |
-| 1 | `styles/ds/src/_base.scss` | as rampas, custom properties, sem papel |
-| 2 | `styles/ds/src/_semantic.scss` | os papeis, custom properties |
-| 3 | `styles/ds/src/_component.scss`, `tokens.scss` | os knobs, variaveis Sass |
+| 1 | `styles/_base.scss` | as rampas, custom properties, sem papel |
+| 2 | `styles/_semantic.scss` | os papeis, custom properties |
+| 3 | `styles/_component.scss` | os knobs, variaveis Sass |
 
 Nenhum passo da rampa e acessado direto por componente ou aplicacao. Todo valor
 entra por token semantico. A disciplina de acesso e o que faz "usar poucos

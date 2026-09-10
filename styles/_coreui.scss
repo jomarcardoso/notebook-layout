@@ -1,10 +1,12 @@
+// notebook-layout/styles/_coreui.scss
+
 @use 'sass:color';
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:math';
-@use '../core';
-@use '../config';
-@use '../component';
+@use 'core';
+@use 'config';
+@use 'component';
 
 @function rgb-triplet($c) {
   $srgb: color.to-space(
