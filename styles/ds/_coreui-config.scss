@@ -1,39 +1,8 @@
-// =============================================================================
-// COREUI SASS CONFIGURATION — the values, computed from the theme
-// =============================================================================
-//
-// This file exists because of an ordering rule in Sass that has no way around
-// it: `@use 'lib' with (…)` is the ONLY way to configure a module's `!default`
-// variables, `@use` must appear before anything else in a file, and a `with ()`
-// clause therefore cannot call a function defined in that same file.
-//
-// So the computation lives here, in a module of its own, and `coreui-entry.scss`
-// does `@use './coreui-config' as cfg;` first and then passes `cfg.$primary`
-// into CoreUI's configuration.
-//
-// The first attempt set the variables as plain globals before an `@import` of
-// CoreUI's variables file. That silently did nothing — CoreUI's `_variables.scss`
-// is a module, and a module's `!default` ignores globals from the importer. The
-// library kept compiling its stock indigo while the file looked correct.
-// =============================================================================
-
-// THE CONFIGURATION, FIRST. `tokens.scss` forwards `config`, `base` and
-// `component` with this product's values, and this file is the first `@use` of
-// `coreui-entry.scss` — so loading it here is what configures the whole CoreUI
-// compilation. Both outputs then read one set of decisions instead of two
-// copies that have to agree.
 @use './tokens';
-
 @use 'sass:color';
 @use 'sass:map';
+@use './src/srgb' as palette;
 
-// Aliased. This file also declares a `$light` of its own further down — that is
-// CoreUI's name for the pale end of the neutral ramp, a palette alias and not a
-// theme, and reading `light.$tokens` two lines above it invited the confusion.
-@use './src/semantic' as light-theme;
-
-// CoreUI inherits Bootstrap's `shade-color()` / `tint-color()`, which call the
-// legacy `mix()` and hard-error on an oklch value. Gamut-map first.
 @function srgb($c) {
   @return color.to-space(
     color.to-gamut($c, $space: rgb, $method: local-minde),
@@ -41,19 +10,12 @@
   );
 }
 
-$_choices: light-theme.$adapter-light;
+$_choices: palette.$adapter-light;
 
 @function _c($key) {
   @return srgb(map.get($_choices, $key));
 }
 
-// `primary` is CoreUI's name for its main button, and in this school that is
-// the ACCENT — the pen, and the only chromatic decision in the product.
-//
-// `secondary` is CoreUI's GREY button and maps to the neutral ramp. It is not
-// the accent at a lighter step: a supporting action carries no opinion, and a
-// cancel button the colour of an active menu item is the confusion this school
-// is most prone to.
 $primary: _c(action);
 $secondary: _c(neutral);
 $success: _c(success);
@@ -61,30 +23,12 @@ $info: _c(action);
 $warning: _c(warning);
 $danger: _c(danger);
 
-// Absolute palette aliases in Bootstrap's vocabulary, not theme roles. They keep
-// that nature and take the ends of the paper ramp so they are on-brand rather
-// than stock grey.
-$light: _c(canvas);
+$light: _c(page);
 $dark: _c(text);
 
-$body-bg: _c(canvas);
+$body-bg: _c(page);
 $body-color: _c(text);
 $body-secondary-color: _c('text-muted');
-// `$body-tertiary-bg` IS DELIBERATELY NOT SET, and the reason is a real limit in
-// the library rather than a preference. CoreUI runs it through its own
-// `color-translucent()`, which tries to express the colour as a 10% alpha over
-// white and errors when no such alpha exists:
-//
-//     Cannot reproduce rgb(92.3%, 89.9%, 86.5%) on #fff with alpha 0.1.
-//
-// Any recessed tone warm and light enough hits this, which is why the failure
-// only appears once a real paper ramp is used. It is not fixable from here — the
-// alpha is hard-coded in the function's default argument.
-//
-// Leaving it unset costs nothing that matters: `--cui-tertiary-bg` has a runtime
-// path and the adapter binds it, so every recessed surface in the product is
-// still the product's tone. What keeps the library default is only the
-// translucent variant, which nothing here uses.
 
 $link-color: _c(link);
 $link-hover-color: _c('link-hover');

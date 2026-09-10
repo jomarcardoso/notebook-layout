@@ -1,34 +1,14 @@
-/* stylelint-disable color-no-hex */
-$adapter-light: (
-  action: #2a3b8f,
-  neutral: #a58570,
-  success: #698f3f,
-  warning: #ffa630,
-  danger: #ff331f,
-  canvas: #fffcfa,
-  inset: #f6efe9,
-  'neutral-subtle': #f6efe9,
-  text: #2e1b0d,
-  'text-muted': #745d4e,
-  heading: #2e1b0d,
-  link: #1b277a,
-  'link-hover': #394da3,
-  border: #e7d6ca,
-  ring: #83a2ff,
-);
-/* stylelint-enable color-no-hex */
+// notebook-layout/styles/ds/src/_semantic.scss
 
 @layer ds.semantic {
   :root {
     --app-border-width: 1px;
     --app-border-style: solid;
     --app-border: var(--app-border-width) var(--app-border-style)
-      var(--app-border-color);
-    --app-radius-sm: 2px;
+      var(--app-border-default);
     --app-radius-control: 4px;
-    --app-radius-surface: 10px;
-    --app-radius-pill: 9999px;
-    --app-radius-image: 4px;
+    --app-radius-overlay: 10px;
+    --app-radius-full: 9999px;
     --app-ratio-media: 1;
     --app-ratio-thumb: 1;
     --app-space-unit: 4px;
@@ -96,9 +76,7 @@ $adapter-light: (
     --app-icon-stroke: 1.25px;
     --app-ring-width: 2px;
     --app-ring-offset: 2px;
-    --app-ring: var(--app-ring-width) solid var(--app-ring-color);
-    --app-radius-control-sm: 4px;
-    --app-radius-surface-lg: 16px;
+    --app-ring: var(--app-ring-width) solid var(--app-focus-ring);
     --app-duration-fast: 120ms;
     --app-duration-base: 200ms;
     --app-duration-slow: 320ms;
@@ -122,77 +100,57 @@ $adapter-light: (
   :root,
   [data-theme='light'] {
     color-scheme: light;
-    accent-color: var(--app-bg-accent);
+    accent-color: var(--app-bg-accent-solid);
 
-    --app-bg-canvas: var(--neutral-a1);
-    --app-bg-panel: var(--neutral-a2);
-    --app-bg-inset: var(--neutral-a3);
-
-    --app-bg-overlay: var(--neutral-1);
-
+    // PAPEL. Nada e mais claro que a pagina. O que parece estar acima esta
+    // apenas com mais tinta.
+    --app-bg-page: var(--neutral-1);
+    --app-bg-subtle: var(--neutral-a2);
+    --app-bg-muted: var(--neutral-a3);
     --app-bg-backdrop: var(--neutral-a11);
-    --app-bg-disabled: var(--neutral-a2);
 
+    // TINTA. A familia mais rica do sistema, porque isto e um livro.
+    --app-fg-emphasis: var(--neutral-12);
     --app-fg-default: var(--neutral-a12);
-    --app-fg-heading: var(--neutral-a12);
     --app-fg-muted: var(--neutral-a11);
+    --app-fg-subtle: var(--neutral-a10);
     --app-fg-disabled: var(--neutral-a9);
-
-    --app-border-color-subtle: var(--neutral-a6);
-    --app-border-color: var(--neutral-a7);
-    --app-border-color-strong: var(--neutral-a8);
-
-    --app-bg-neutral: var(--neutral-9);
-    --app-fg-on-neutral: var(--neutral-contrast);
-    --app-bg-neutral-hover: var(--neutral-10);
-    --app-bg-neutral-active: var(--neutral-10);
-    --app-bg-neutral-subtle: var(--neutral-a3);
-    --app-bg-neutral-subtle-hover: var(--neutral-a4);
-    --app-bg-neutral-subtle-active: var(--neutral-a5);
-
-    --app-bg-accent: var(--accent-9);
-    --app-fg-on-accent: var(--accent-contrast);
-    --app-bg-accent-hover: var(--accent-10);
-    --app-bg-accent-active: var(--accent-10);
-    --app-bg-accent-subtle: var(--accent-a3);
-    --app-bg-accent-subtle-hover: var(--accent-a4);
-    --app-bg-accent-subtle-active: var(--accent-a5);
     --app-fg-accent: var(--accent-a11);
-    --app-fg-accent-hover: var(--accent-a12);
-    --app-fg-link-visited: var(--accent-a12);
-    --app-border-accent: var(--accent-a8);
-    --app-ring-color: var(--accent-a8);
+    --app-fg-on-solid: var(--neutral-contrast);
 
-    --app-bg-selected: var(--accent-a3);
-    --app-bg-selected-hover: var(--accent-a4);
-    --app-fg-selected: var(--accent-a11);
+    // FIO E BORDA. O fio divide o espaco, a borda contorna um objeto.
+    --app-rule: var(--neutral-a6);
+    --app-border-default: var(--neutral-a7);
+    --app-border-strong: var(--neutral-a8);
+
+    // SOLIDO. Preenchimento raro, reservado ao compromisso. A rampa tem dois
+    // degraus solidos, 9 em repouso e 10 no hover; o pressionado repete o 10 e
+    // se diferencia por outra propriedade.
+    --app-bg-accent-solid: var(--accent-9);
+    --app-bg-accent-solid-hover: var(--accent-10);
+    --app-bg-neutral-solid: var(--neutral-9);
+    --app-bg-neutral-solid-hover: var(--neutral-10);
+
+    // ESTADO. Alfa sobre o que estiver embaixo, nunca valor fixo. Selecionado e
+    // neutro: a segunda tinta pertence ao documento, nao ao dedo do leitor.
+    --app-bg-hover: var(--neutral-a3);
+    --app-bg-active: var(--neutral-a4);
+    --app-bg-selected: var(--neutral-a5);
     --app-border-selected: var(--accent-a8);
+    --app-focus-ring: var(--accent-a8);
 
-    --app-bg-success: var(--success-9);
-    --app-fg-on-success: var(--success-contrast);
-    --app-bg-success-hover: var(--success-10);
-    --app-bg-success-active: var(--success-10);
-    --app-bg-success-subtle: var(--success-a3);
-    --app-fg-success: var(--success-a11);
-    --app-border-success: var(--success-a6);
-
-    --app-bg-warning: var(--warning-9);
-    --app-fg-on-warning: var(--warning-contrast);
-    --app-bg-warning-hover: var(--warning-10);
-    --app-bg-warning-active: var(--warning-10);
-    --app-bg-warning-subtle: var(--warning-a3);
-    --app-fg-warning: var(--warning-a11);
-    --app-border-warning: var(--warning-a6);
-
-    --app-bg-danger: var(--danger-9);
-    --app-fg-on-danger: var(--danger-contrast);
-    --app-bg-danger-hover: var(--danger-10);
-    --app-bg-danger-active: var(--danger-10);
-    --app-bg-danger-subtle: var(--danger-a3);
+    // STATUS. Danger e o unico com solido, para a confirmacao destrutiva.
     --app-fg-danger: var(--danger-a11);
+    --app-bg-danger-subtle: var(--danger-a3);
+    --app-bg-danger-solid: var(--danger-9);
+    --app-bg-danger-solid-hover: var(--danger-10);
     --app-border-danger: var(--danger-a6);
+    --app-fg-success: var(--success-a11);
+    --app-bg-success-subtle: var(--success-a3);
+    --app-fg-warning: var(--warning-a11);
+    --app-bg-warning-subtle: var(--warning-a3);
 
-    --app-shadow-raised: 0 1px 0 0 rgba(0, 0, 0, 0.05);
+    // A unica sombra do sistema, exclusiva da folha sobreposta.
     --app-shadow-overlay:
       0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }

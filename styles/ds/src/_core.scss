@@ -1,7 +1,7 @@
-@use 'sass:map';
+// notebook-layout/styles/ds/src/_core.scss
+
 @use 'sass:string';
 @use 'config';
-@use 'roles';
 
 $_forbidden: ('{', '}', '.');
 
@@ -21,7 +21,7 @@ $_forbidden: ('{', '}', '.');
     }
   }
 
-  @return --#{config.$prefix}-#{roles.resolve($name)};
+  @return --#{config.$prefix}-#{$n};
 }
 
 @function ref($name, $fallback: null) {
@@ -29,19 +29,4 @@ $_forbidden: ('{', '}', '.');
     @return var(#{var-name($name)});
   }
   @return var(#{var-name($name)}, #{$fallback});
-}
-
-@function require-themes($adapter, $themes) {
-  @if $themes == null or map.keys($themes) == () {
-    @error '#{$adapter} adapter: emit() needs the theme maps, not just their '
-         + 'names. A colour CHANNEL cannot be read out of a var().';
-  }
-
-  @return $themes;
-}
-
-@mixin in-layer($name) {
-  @layer #{$name} {
-    @content;
-  }
 }

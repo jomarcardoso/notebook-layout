@@ -25,19 +25,75 @@ $_map: (
   danger: 'danger',
 );
 
-$_derived: (
-  'neutral': (
-    subtle: 'bg-inset',
-    border: 'border-color-strong',
-    text: 'fg-muted',
-  ),
+// A lib fala solido, hover, active e subtle por papel de marca. A camada 2 tem
+// menos: um solido por familia, um hover, e o estado em alfa. Esta e a unica
+// traducao entre os dois vocabularios.
+$_token: (
+  'bg-action': 'bg-accent-solid',
+  'bg-action-hover': 'bg-accent-solid-hover',
+  'bg-action-active': 'bg-accent-solid-hover',
+  'bg-action-subtle': 'bg-muted',
+  'bg-action-subtle-hover': 'bg-hover',
+  'bg-action-subtle-active': 'bg-active',
+  'fg-on-action': 'fg-on-solid',
+  'fg-action': 'fg-accent',
+  'border-action': 'border-selected',
+
+  'bg-neutral': 'bg-neutral-solid',
+  'bg-neutral-hover': 'bg-neutral-solid-hover',
+  'bg-neutral-active': 'bg-neutral-solid-hover',
+  'bg-neutral-subtle': 'bg-subtle',
+  'bg-neutral-subtle-hover': 'bg-hover',
+  'bg-neutral-subtle-active': 'bg-active',
+  'fg-on-neutral': 'fg-on-solid',
+  'fg-neutral': 'fg-muted',
+  'border-neutral': 'border-strong',
+
+  'bg-success': 'bg-success-subtle',
+  'bg-success-hover': 'bg-success-subtle',
+  'bg-success-active': 'bg-success-subtle',
+  'bg-success-subtle-hover': 'bg-hover',
+  'bg-success-subtle-active': 'bg-active',
+  'fg-on-success': 'fg-emphasis',
+  'border-success': 'rule',
+
+  'bg-warning': 'bg-warning-subtle',
+  'bg-warning-hover': 'bg-warning-subtle',
+  'bg-warning-active': 'bg-warning-subtle',
+  'bg-warning-subtle-hover': 'bg-hover',
+  'bg-warning-subtle-active': 'bg-active',
+  'fg-on-warning': 'fg-emphasis',
+  'border-warning': 'rule',
+
+  'bg-danger': 'bg-danger-solid',
+  'bg-danger-hover': 'bg-danger-solid-hover',
+  'bg-danger-active': 'bg-danger-solid-hover',
+  'bg-danger-subtle-hover': 'bg-hover',
+  'bg-danger-subtle-active': 'bg-active',
+  'fg-on-danger': 'fg-on-solid',
+
+  'fg-link': 'fg-accent',
+  'fg-link-hover': 'fg-accent',
 );
 
-@function _slot($role, $slot) {
-  $o: map.get($_derived, $role);
-  @if $o != null and map.get($o, $slot) != null {
-    @return map.get($o, $slot);
+@function _t($name) {
+  @return map.get($_token, '#{$name}') or $name;
+}
+
+@function _ref($name, $fallback: null) {
+  @return core.ref(_t($name), $fallback);
+}
+
+@function require-themes($themes) {
+  @if $themes == null or map.keys($themes) == () {
+    @error 'coreui adapter: emit() needs the theme maps, not just their names. '
+         + 'A colour CHANNEL cannot be read out of a var().';
   }
+
+  @return $themes;
+}
+
+@function _slot($role, $slot) {
   @if $slot == subtle {
     @return 'bg-#{$role}-subtle';
   }
@@ -52,38 +108,37 @@ $_derived: (
   }
   @return 'fg-#{$role}';
 }
-
 @function _step($role, $slot) {
-  @return core.ref(_slot($role, $slot), core.ref(_slot($role, subtle)));
+  @return _ref(_slot($role, $slot), _ref(_slot($role, subtle)));
 }
 
 @mixin _refs() {
-  --cui-body-bg: #{core.ref('bg-canvas')};
-  --cui-body-color: #{core.ref('fg-default')};
-  --cui-emphasis-color: #{core.ref('fg-heading')};
-  --cui-heading-color: #{core.ref('fg-heading')};
-  --cui-secondary-color: #{core.ref('fg-muted')};
-  --cui-secondary-bg: #{core.ref('bg-inset')};
-  --cui-tertiary-color: #{core.ref('fg-muted')};
-  --cui-tertiary-bg: #{core.ref('bg-inset')};
+  --cui-body-bg: #{_ref('bg-page')};
+  --cui-body-color: #{_ref('fg-default')};
+  --cui-emphasis-color: #{_ref('fg-emphasis')};
+  --cui-heading-color: #{_ref('fg-emphasis')};
+  --cui-secondary-color: #{_ref('fg-muted')};
+  --cui-secondary-bg: #{_ref('bg-subtle')};
+  --cui-tertiary-color: #{_ref('fg-muted')};
+  --cui-tertiary-bg: #{_ref('bg-muted')};
 
-  --cui-link-color: #{core.ref('fg-link')};
-  --cui-link-hover-color: #{core.ref('fg-link-hover')};
+  --cui-link-color: #{_ref('fg-link')};
+  --cui-link-hover-color: #{_ref('fg-link-hover')};
 
-  --cui-border-color: #{core.ref('border-color')};
-  --cui-focus-ring-color: #{core.ref('ring-color')};
+  --cui-border-color: #{_ref('border-default')};
+  --cui-focus-ring-color: #{_ref('focus-ring')};
 
   --cui-input-border-color: #{component.$field-border-color};
   --cui-form-check-input-border-color: #{component.$field-border-color};
   --cui-form-select-border-color: #{component.$field-border-color};
 
   @each $cui, $role in $_map {
-    --cui-#{$cui}: #{core.ref('bg-#{$role}')};
-    --cui-#{$cui}-bg-subtle: #{core.ref(_slot($role, subtle))};
-    --cui-#{$cui}-border-subtle: #{core.ref(_slot($role, border))};
-    --cui-#{$cui}-text-emphasis: #{core.ref(_slot($role, text))};
+    --cui-#{$cui}: #{_ref('bg-#{$role}')};
+    --cui-#{$cui}-bg-subtle: #{_ref(_slot($role, subtle))};
+    --cui-#{$cui}-border-subtle: #{_ref(_slot($role, border))};
+    --cui-#{$cui}-text-emphasis: #{_ref(_slot($role, text))};
 
-    --cui-#{$cui}-contrast: #{core.ref('fg-on-#{$role}')};
+    --cui-#{$cui}-contrast: #{_ref('fg-on-#{$role}')};
   }
 }
 
@@ -92,18 +147,14 @@ $_derived: (
     --cui-#{$cui}-rgb: #{rgb-triplet(map.get($choices, $role))};
   }
 
-  --cui-body-bg-rgb: #{rgb-triplet(map.get($choices, canvas))};
+  --cui-body-bg-rgb: #{rgb-triplet(map.get($choices, page))};
   --cui-body-color-rgb: #{rgb-triplet(map.get($choices, text))};
   --cui-emphasis-color-rgb: #{rgb-triplet(map.get($choices, heading))};
   --cui-link-color-rgb: #{rgb-triplet(map.get($choices, link))};
   --cui-link-hover-color-rgb: #{rgb-triplet(map.get($choices, 'link-hover'))};
 
-  $secondary-bg: map.get($choices, 'neutral-subtle');
-  @if $secondary-bg == null {
-    $secondary-bg: map.get($choices, inset);
-  }
-  --cui-secondary-bg-rgb: #{rgb-triplet($secondary-bg)};
-  --cui-tertiary-bg-rgb: #{rgb-triplet(map.get($choices, inset))};
+  --cui-secondary-bg-rgb: #{rgb-triplet(map.get($choices, subtle))};
+  --cui-tertiary-bg-rgb: #{rgb-triplet(map.get($choices, muted))};
 
   --cui-focus-ring-color-rgb: #{rgb-triplet(map.get($choices, ring))};
 }
@@ -112,43 +163,43 @@ $_derived: (
   @each $cui, $role in $_map {
     @if $cui != 'primary' and $cui != 'secondary' {
       .btn-#{$cui} {
-        --cui-btn-bg: #{core.ref('bg-#{$role}')};
-        --cui-btn-border-color: #{core.ref('bg-#{$role}')};
-        --cui-btn-color: #{core.ref('fg-on-#{$role}')};
-        --cui-btn-hover-bg: #{core.ref('bg-#{$role}-hover')};
-        --cui-btn-hover-border-color: #{core.ref('bg-#{$role}-hover')};
-        --cui-btn-hover-color: #{core.ref('fg-on-#{$role}')};
-        --cui-btn-active-bg: #{core.ref('bg-#{$role}-active')};
-        --cui-btn-active-border-color: #{core.ref('bg-#{$role}-active')};
-        --cui-btn-active-color: #{core.ref('fg-on-#{$role}')};
-        --cui-btn-disabled-bg: #{core.ref('bg-#{$role}')};
-        --cui-btn-disabled-border-color: #{core.ref('bg-#{$role}')};
-        --cui-btn-disabled-color: #{core.ref('fg-on-#{$role}')};
+        --cui-btn-bg: #{_ref('bg-#{$role}')};
+        --cui-btn-border-color: #{_ref('bg-#{$role}')};
+        --cui-btn-color: #{_ref('fg-on-#{$role}')};
+        --cui-btn-hover-bg: #{_ref('bg-#{$role}-hover')};
+        --cui-btn-hover-border-color: #{_ref('bg-#{$role}-hover')};
+        --cui-btn-hover-color: #{_ref('fg-on-#{$role}')};
+        --cui-btn-active-bg: #{_ref('bg-#{$role}-active')};
+        --cui-btn-active-border-color: #{_ref('bg-#{$role}-active')};
+        --cui-btn-active-color: #{_ref('fg-on-#{$role}')};
+        --cui-btn-disabled-bg: #{_ref('bg-#{$role}')};
+        --cui-btn-disabled-border-color: #{_ref('bg-#{$role}')};
+        --cui-btn-disabled-color: #{_ref('fg-on-#{$role}')};
       }
     }
 
     .btn-outline-#{$cui} {
       --cui-btn-bg: transparent;
-      --cui-btn-color: #{core.ref(_slot($role, text))};
-      --cui-btn-border-color: #{core.ref(_slot($role, text))};
-      --cui-btn-hover-bg: #{core.ref(_slot($role, subtle))};
-      --cui-btn-hover-border-color: #{core.ref(_slot($role, text))};
-      --cui-btn-hover-color: #{core.ref(_slot($role, text))};
+      --cui-btn-color: #{_ref(_slot($role, text))};
+      --cui-btn-border-color: #{_ref(_slot($role, text))};
+      --cui-btn-hover-bg: #{_ref(_slot($role, subtle))};
+      --cui-btn-hover-border-color: #{_ref(_slot($role, text))};
+      --cui-btn-hover-color: #{_ref(_slot($role, text))};
       --cui-btn-active-bg: #{_step($role, 'subtle-hover')};
-      --cui-btn-active-border-color: #{core.ref(_slot($role, text))};
-      --cui-btn-active-color: #{core.ref(_slot($role, text))};
+      --cui-btn-active-border-color: #{_ref(_slot($role, text))};
+      --cui-btn-active-color: #{_ref(_slot($role, text))};
     }
 
     .btn-ghost-#{$cui} {
       --cui-btn-bg: transparent;
       --cui-btn-border-color: transparent;
-      --cui-btn-color: #{core.ref(_slot($role, text))};
-      --cui-btn-hover-bg: #{core.ref(_slot($role, subtle))};
+      --cui-btn-color: #{_ref(_slot($role, text))};
+      --cui-btn-hover-bg: #{_ref(_slot($role, subtle))};
       --cui-btn-hover-border-color: transparent;
-      --cui-btn-hover-color: #{core.ref(_slot($role, text))};
+      --cui-btn-hover-color: #{_ref(_slot($role, text))};
       --cui-btn-active-bg: #{_step($role, 'subtle-hover')};
       --cui-btn-active-border-color: transparent;
-      --cui-btn-active-color: #{core.ref(_slot($role, text))};
+      --cui-btn-active-color: #{_ref(_slot($role, text))};
       --cui-btn-disabled-bg: transparent;
       --cui-btn-disabled-border-color: transparent;
       --cui-btn-disabled-color: #{component.$button-fg-disabled};
@@ -198,9 +249,9 @@ $_derived: (
   .form-select:focus-visible,
   .form-check-input:focus-visible {
     box-shadow:
-      0 0 0 #{core.ref('ring-offset')} #{core.ref('bg-canvas')},
-      0 0 0 calc(#{core.ref('ring-offset')} + #{core.ref('ring-width')})
-        #{core.ref('ring-color')};
+      0 0 0 #{_ref('ring-offset')} #{_ref('bg-page')},
+      0 0 0 calc(#{_ref('ring-offset')} + #{_ref('ring-width')})
+        #{_ref('focus-ring')};
   }
 
   .chip {
@@ -263,7 +314,6 @@ $_derived: (
   .table {
     --cui-table-color: #{component.$table-fg};
     --cui-table-border-color: #{component.$table-border-color};
-    --cui-table-striped-bg: #{component.$table-row-bg-striped};
     --cui-table-hover-bg: #{component.$table-row-bg-hover};
   }
 
@@ -466,15 +516,15 @@ $_derived: (
 @mixin _important-overrides() {
   @each $cui, $role in $_map {
     .text-bg-#{$cui} {
-      color: #{core.ref('fg-on-#{$role}')} !important;
+      color: #{_ref('fg-on-#{$role}')} !important;
     }
   }
 }
 
 @mixin emit($themes: null) {
-  $set: core.require-themes('coreui', $themes);
+  $set: require-themes($themes);
 
-  @include core.in-layer(config.$layer-adapter) {
+  @layer #{config.$layer-adapter} {
     :root,
     [data-theme],
     [data-coreui-theme] {
@@ -504,7 +554,7 @@ $_derived: (
     @include _components();
   }
 
-  @include core.in-layer(config.$layer-component) {
+  @layer #{config.$layer-component} {
     @include _important-overrides();
   }
 }

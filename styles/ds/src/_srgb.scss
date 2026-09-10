@@ -1,0 +1,23 @@
+// notebook-layout/styles/ds/src/_srgb.scss
+
+// O espelho sRGB da camada 1, em valor Sass. O CoreUI resolve triplets rgb e
+// configura a propria compilacao em tempo de build, e nenhum dos dois enxerga
+// `var()`. Camada 1 e o unico lugar onde literal de cor e legal, e este arquivo
+// e camada 1.
+$adapter-light: (
+  action: #2a3b8f,
+  neutral: #a58570,
+  success: #698f3f,
+  warning: #ffa630,
+  danger: #ff331f,
+  page: #fffcfa,
+  subtle: #fdf8f5,
+  muted: #f6efe9,
+  text: #2e1b0d,
+  'text-muted': #745d4e,
+  heading: #2e1b0d,
+  link: #1b277a,
+  'link-hover': #394da3,
+  border: #e7d6ca,
+  ring: #83a2ff,
+);

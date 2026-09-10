@@ -1,5 +1,6 @@
 @use './tokens';
 @use './src/base';
+@use './src/srgb';
 
 @use './src/semantic';
 @use './src/component';
@@ -7,6 +8,6 @@
 
 @include coreui-adapter.emit(
   (
-    'light': semantic.$adapter-light,
+    'light': srgb.$adapter-light,
   )
 );

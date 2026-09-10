@@ -5,7 +5,6 @@
   "date": "2026-09-06",
   "layout": {
     "styles": "styles/ds/src",
-    "scripts": "scripts/ds",
     "skills": ".claude/skills"
   },
   "files": {
@@ -40,8 +39,6 @@
     "styles/ds/src/_wash.scss": "253342316248cc96",
     "styles/ds/src/templates/entry-coreui.scss": "f53a4d734f0ebe7e",
     "styles/ds/src/templates/START.md": "21670e1d0ff115a0",
-    "scripts/ds/build-themes.mjs": "393d3421390cdb8d",
-    "scripts/ds/export-tokens.mjs": "6fd5980c3117b9b4",
     "START.md": "21670e1d0ff115a0"
   }
 }

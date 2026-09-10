@@ -63,12 +63,9 @@
     width: calc(100vw - var(--app-pad-surface));
   }
 
-  // One shadow at every width. It used to be `shadow-raised` on mobile and
-  // `shadow-overlay` on desktop — except the token layer carried an unlayered
-  // `.modal` rule that forced the overlay shadow everywhere, so the mobile
-  // value had never actually rendered. Removing that rule exposed a difference
-  // nobody had ever seen, which is not a difference worth keeping.
+  // A folha sobreposta e o unico elemento com sombra, e ela e a mesma em
+  // qualquer largura.
   @include utils.isDesktop {
-    border: component.$modal-border-color;
+    border: component.$modal-border;
   }
 }

@@ -57,7 +57,7 @@ module.exports = {
     },
     {
       /* Layer 1 — the only place literals are legal. A brand hands over hex. */
-      files: ['styles/ds/palette.scss', 'styles/ds/src/_base.scss'],
+      files: ['styles/ds/src/_base.scss', 'styles/ds/src/_srgb.scss'],
       rules: {
         'color-no-hex': null,
         'declaration-property-value-disallowed-list': null

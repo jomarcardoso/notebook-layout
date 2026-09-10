@@ -11,9 +11,7 @@
     "start": "npm run storybook",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build:tokens": "npm run build:coreui && sass --no-source-map --load-path=styles/ds styles/ds/tokens.scss /dev/null && sass --no-source-map --style=compressed --load-path=styles/ds styles/ds/ds.scss styles/ds/dist/ds.css",
-    "lint:layers": "npx stylelint \"components/**/*.scss\" \"styles/**/*.scss\" --config stylelint.config.cjs",
-    "build:coreui": "sass --no-source-map --style=compressed --quiet-deps --silence-deprecation=import --load-path=../www/node_modules styles/ds/coreui-entry.scss styles/ds/dist/coreui.css"
+    "lint:layers": "npx stylelint \"components/**/*.scss\" \"styles/**/*.scss\" --config stylelint.config.cjs"
   },
   "repository": {
     "type": "git",

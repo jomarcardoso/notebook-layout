@@ -7,7 +7,7 @@
 // `font` reseta tracking e `font-variant-numeric`, entao os dois vem depois.
 
 .display {
-  color: var(--app-fg-heading);
+  color: var(--app-fg-emphasis);
   font: var(--app-text-display);
   letter-spacing: var(--app-text-display-tracking);
   margin: 0;
@@ -15,18 +15,18 @@
 }
 
 .title-lg {
-  color: var(--app-fg-heading);
+  color: var(--app-fg-emphasis);
   font: var(--app-text-title-lg);
   letter-spacing: var(--app-text-title-lg-tracking);
 }
 
 .title-md {
-  color: var(--app-fg-heading);
+  color: var(--app-fg-emphasis);
   font: var(--app-text-title-md);
 }
 
 .title-sm {
-  color: var(--app-fg-heading);
+  color: var(--app-fg-emphasis);
   font: var(--app-text-title-sm);
 }
 
@@ -90,7 +90,7 @@
 
   background-color: transparent;
   border: 0;
-  border-bottom: var(--app-border-width) solid var(--app-border-color-subtle);
+  border-bottom: var(--app-border-width) solid var(--app-rule);
   border-radius: 0;
   display: block;
   margin-block: var(--app-space-xl) var(--app-space-sm);
@@ -123,7 +123,7 @@
 
   &:active,
   &:hover {
-    color: var(--app-fg-accent-hover);
+    color: var(--app-fg-accent);
   }
 }
 
