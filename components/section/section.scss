@@ -1,0 +1,19 @@
+// notebook-layout/components/section/section.scss
+
+.section {
+  // Uma secao dentro de outra para um degrau antes da escada: desce na escala e
+  // nao repete o fio. E do NIVEL, nao do contexto — a mesma secao aninhada tem
+  // a mesma aparencia em qualquer lugar onde esteja aninhada.
+  .section {
+    > .section-title {
+      border-block-end: 0;
+      font: var(--app-text-title-sm);
+      margin-block: var(--app-rhythm-half) var(--app-space-2xs);
+      padding-block-end: 0;
+    }
+
+    .section > .section-title {
+      font: var(--app-text-title-sm);
+    }
+  }
+}

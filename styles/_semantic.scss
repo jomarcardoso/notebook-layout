@@ -11,6 +11,19 @@
     --app-radius-full: 9999px;
     --app-ratio-media: 1;
     --app-ratio-thumb: 1;
+    // ESTA E A UNICA MEDIDA DO SISTEMA EM `rem`, e e em `rem` porque a unidade
+    // E uma linha de texto: quem aumenta a fonte ganha linha maior, e um ritmo
+    // parado em px desfaria o alinhamento que justifica a unidade justamente
+    // para quem mais precisa dele. `2rem` da 32px no default.
+    --app-rhythm-unit: 2rem;
+    --app-rhythm-half: calc(var(--app-rhythm-unit) / 2);
+    --app-rhythm-1: var(--app-rhythm-unit);
+    --app-rhythm-2: calc(var(--app-rhythm-unit) * 2);
+    --app-rhythm-3: calc(var(--app-rhythm-unit) * 3);
+    --app-rhythm-4: calc(var(--app-rhythm-unit) * 4);
+
+    --app-gutter: 32px;
+
     --app-space-unit: 4px;
     --app-space-2xs: calc(var(--app-space-unit) * 1);
     --app-space-xs: calc(var(--app-space-unit) * 2);
@@ -47,7 +60,7 @@
     --app-text-subtitle: italic var(--weight-regular) var(--size-5) /
       var(--leading-loose) var(--font-body);
     --app-text-body-lg: var(--weight-regular) var(--size-5) /
-      var(--leading-prose) var(--font-body);
+      var(--leading-loose) var(--font-body);
     --app-text-body: var(--weight-regular) var(--size-4) / var(--leading-prose)
       var(--font-body);
     --app-text-body-sm: var(--weight-regular) var(--size-3) /
@@ -71,8 +84,14 @@
     --app-size-control-sm: calc(var(--app-space-unit) * 7);
     --app-size-control-lg: calc(var(--app-space-unit) * 11);
     --app-size-icon: 20px;
+    // MEDIDA. E do texto, nunca da regiao. O aparato tem a sua propria, e e o
+    // que impede que ele leia como um segundo conteudo.
     --app-measure-body: 68ch;
     --app-measure-narrow: 45ch;
+    --app-measure-apparatus: 34ch;
+
+    --app-region-margin: 240px;
+    --app-region-apparatus: 352px;
     --app-icon-stroke: 1.25px;
     --app-ring-width: 2px;
     --app-ring-offset: 2px;
@@ -92,7 +111,8 @@
     --app-z-toast: 1080;
     --app-z-tooltip: 1090;
     --app-opacity-disabled: 0.55;
-    --app-gap-section: 24px;
+    // Entre secoes de uma pagina: espaco de FLUXO, entao le a unidade de ritmo.
+    --app-gap-section: var(--app-rhythm-1);
   }
 }
 
@@ -168,7 +188,7 @@
 
 @media screen and (min-width: 768px) {
   :root {
-    --app-gap-section: var(--app-space-2xl);
+    --app-gap-section: var(--app-rhythm-2);
   }
 }
 

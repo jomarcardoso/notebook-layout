@@ -83,8 +83,6 @@
   @extend .title-lg;
 }
 
-// Uma faixa de secao marcada por espaco e um fio, nunca por preenchimento. O
-// espaco acima e maior que o abaixo porque o titulo pertence ao que vem depois.
 .section-title {
   @extend .title-md;
 
@@ -93,7 +91,7 @@
   border-bottom: var(--app-border-width) solid var(--app-rule);
   border-radius: 0;
   display: block;
-  margin-block: var(--app-space-xl) var(--app-space-sm);
+  margin-block: var(--app-rhythm-1) var(--app-rhythm-half);
   max-width: 100%;
   padding: 0 0 0.2em;
 
@@ -102,7 +100,7 @@
     @extend .title-sm;
 
     border-bottom: 0;
-    margin-block: var(--app-space-lg) var(--app-space-2xs);
+    margin-block: var(--app-rhythm-half) var(--app-space-2xs);
   }
 
   &.-center {
@@ -112,6 +110,11 @@
 
   &.-plain {
     border-bottom: 0;
+  }
+
+  &.-offset {
+    border-bottom: 0;
+    margin-inline-start: calc(-1 * var(--app-gutter));
   }
 }
 

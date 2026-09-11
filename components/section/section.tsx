@@ -1,33 +1,27 @@
+// notebook-layout/components/section/section.tsx
+import './section.scss';
+import { FC, HTMLProps, ReactNode } from 'react';
 import { SectionTitle } from '../section-title';
-import { FC, HTMLProps } from 'react';
 
 export interface SectionProps extends HTMLProps<HTMLDivElement> {
   title?: string;
-  header?: string;
-  onBgWhite?: boolean;
+  header?: ReactNode;
 }
 
 export const Section: FC<SectionProps> = ({
-  onBgWhite = false,
-  header,
-  title,
+  className = '',
+  header = '',
+  title = '',
   children,
   ...props
 }) => {
+  const heading: ReactNode = header || title;
+
   return (
-    <div className="grid columns-1 g-3" {...props}>
-      {(header || title) && (
-        <div>
-          {onBgWhite ? (
-            <h3 className="label" style={{ textAlign: 'center' }}>
-              {header || title}
-            </h3>
-          ) : (
-            <SectionTitle>{header || title}</SectionTitle>
-          )}
-        </div>
-      )}
-      {children}
-    </div>
+    <section className={`section ${className}`.trim()} {...props}>
+      {heading && <SectionTitle>{heading}</SectionTitle>}
+
+      <div className="section__body l-stack">{children}</div>
+    </section>
   );
 };

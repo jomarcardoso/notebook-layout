@@ -11,6 +11,7 @@
 // =============================================================================
 
 @forward 'resets';
+@forward 'layout';
 @forward 'typography';
 
 @forward 'helpers/media';
@@ -32,7 +33,10 @@
 @forward 'components/progress-indicator';
 
 hr {
-  border-bottom: var(--app-border);
+  border: 0;
+  border-block-start: var(--app-border-width) var(--app-border-style)
+    var(--app-rule);
+  opacity: 1;
 }
 
 *:disabled {

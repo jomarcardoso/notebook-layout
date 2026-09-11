@@ -122,3 +122,35 @@ wanted, and it stays findable by searching for its own name.
 
 The media queries go last for the same reason: `@media` adds no weight, so a
 narrow-screen override only lands if nothing written after it says otherwise.
+
+### Layout primitives
+
+`styles/layout.scss` carries the `l-*` primitives. They are native CSS reading
+layer-2 custom properties, so they survive a change of CSS library untouched —
+never rewrite one in a third-party utility grammar.
+
+| primitive | what it resolves | knob |
+| --- | --- | --- |
+| `l-stack` | vertical flow in rhythm units, space on the joint | `--l-stack-gap` |
+| `l-measure` | the text measure — body, narrow or apparatus | `--l-measure` |
+| `l-rule` | the rule as a separator between blocks | — |
+| `l-cluster` | horizontal grouping on the inner space axis | `--l-cluster-gap` |
+| `l-regions` | margin, content and apparatus, unequal widths | `--l-regions-*` |
+| `l-target` | 44px touch area without growing the painted size | `--l-target-size` |
+
+Modifiers use the repository's `.-modifier` form: `.l-stack.-tight`,
+`.l-measure.-apparatus`.
+
+Two rules that decide most questions:
+
+- **Flow space comes from `--app-rhythm-*`, inner space from `--app-space-*`.**
+  Stacking with `mb-3` mixes the two and the vertical rhythm never closes.
+  Anything the eye reads as descending the page belongs to `l-stack`.
+- **Mechanics come from the library, values come from us.** `d-flex`,
+  `order-*`, `position-*`, `overflow-*`, `d-md-none` and the 12-column grid are
+  used directly. Colour, radius, shadow and typography utilities are not used at
+  all — either they resolve to a token by configuration, or they leak.
+
+The library's own configuration lives in `styles/coreui-entry.scss`. Spacing
+utilities are pinned to the inner scale and rounding is off there, so a guardrail
+that used to need watching is now a setting.

@@ -20,10 +20,34 @@
   $border-color: cfg.$border-color,
   $border-width: 1px,
 
-  $border-radius: 4px,
-  $border-radius-sm: 2px,
-  $border-radius-lg: 10px,
-  $border-radius-pill: 9999px,
+  $hr-color: var(--app-rule),
+  $hr-border-color: var(--app-rule),
+  $hr-border-width: var(--app-border-width),
+  $enable-rounded: false,
+  $border-radius: var(--app-radius-control),
+  $border-radius-sm: var(--app-radius-control),
+  $border-radius-lg: var(--app-radius-overlay),
+  $border-radius-pill: var(--app-radius-full),
+  $focus-ring-width: var(--app-ring-width),
+  $focus-ring-color: var(--app-focus-ring),
+  $focus-ring-blur: 0,
+  $focus-ring-opacity: 1,
+
+  // Os valores repetem `--app-space-*` porque Sass nao le custom property. Se
+  // um dos dois mudar, o outro muda junto.
+  $spacers: (
+      0: 0,
+      1: 4px,
+      // 2xs
+      2: 8px,
+      // xs
+      3: 16px,
+      // md
+      4: 24px,
+      // lg
+      5: 48px,
+      // 2xl
+    ),
 
   $headings-margin-bottom: var(--app-space-sm),
   $headings-font-family: var(--app-font-family-heading),

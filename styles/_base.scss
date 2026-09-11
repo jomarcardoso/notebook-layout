@@ -318,7 +318,9 @@
     --leading-snug: 1.25;
     --leading-normal: 1.4;
     --leading-loose: 1.6;
-    --leading-prose: 1.7;
+    // 1.778 e o que faz uma linha de `body` (1.125rem) medir os 32px da unidade
+    // de ritmo. O numero e derivado da unidade, nao escolhido por gosto.
+    --leading-prose: 1.778;
 
     --tracking-tight: -0.02em;
     --tracking-snug: -0.01em;

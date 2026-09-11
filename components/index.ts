@@ -6,7 +6,6 @@ export * from './choice';
 export * from './carousel';
 export * from './field';
 export * from './section';
-export * from './section-card';
 export * from './section-title';
 export * from './footer';
 export * from './heading';
