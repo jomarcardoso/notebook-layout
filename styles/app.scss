@@ -1,5 +1,5 @@
 @layer legacy, theme, base, ds.base, ds.semantic, ds.component, vendor,
-  vendor-config, components, ds.overrides, utilities;
+  vendor-config, components, ds-overrides, utilities;
 @import './foundation';
 @layer base {
   @import 'the-new-css-reset/css/reset';
@@ -11,3 +11,6 @@
   // This library's own components.
   @import './main';
 }
+
+@import './atoms';
+@import './molecules';

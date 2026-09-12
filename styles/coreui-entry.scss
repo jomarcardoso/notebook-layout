@@ -27,11 +27,9 @@
   $border-radius: var(--app-radius-control),
   $border-radius-sm: var(--app-radius-control),
   $border-radius-lg: var(--app-radius-overlay),
-  $border-radius-pill: var(--app-radius-full),
-  $focus-ring-width: var(--app-ring-width),
-  $focus-ring-color: var(--app-focus-ring),
+  $focus-ring-width: 0,
   $focus-ring-blur: 0,
-  $focus-ring-opacity: 1,
+  $focus-ring-opacity: 0,
 
   // Os valores repetem `--app-space-*` porque Sass nao le custom property. Se
   // um dos dois mudar, o outro muda junto.
@@ -56,9 +54,81 @@
   $hr-opacity: 1,
 
   $badge-font-weight: var(--app-font-weight-body),
-  $btn-font-weight: var(--app-font-weight-body),
   $enable-gradients: false,
   $enable-shadows: false,
+
+  $btn-font-weight: var(--app-font-weight-body),
+  $btn-padding-y: 0,
+  $btn-padding-x: 24px,
+  $btn-border-width: var(--app-border-width),
+  $btn-white-space: nowrap,
+  $btn-disabled-opacity: 1,
+  $btn-box-shadow: none,
+  $btn-active-box-shadow: none,
+  $input-bg: transparent,
+  $input-disabled-bg: transparent,
+  $input-box-shadow: none,
+  $input-focus-bg: transparent,
+  $input-border-radius: 0,
+  $input-border-radius-sm: 0,
+  $input-border-radius-lg: 0,
+  $input-padding-x: 0,
+  $input-font-size: var(--app-font-size),
+  $input-color: var(--app-fg-default),
+  $input-disabled-color: var(--app-fg-disabled),
+  $input-placeholder-color: var(--app-fg-subtle),
+  $input-border-color: var(--app-border-default),
+  $input-focus-border-color: var(--app-border-strong),
+  $input-plaintext-color: var(--app-fg-default),
+  $form-select-bg: transparent,
+  $form-select-disabled-bg: transparent,
+  $form-select-box-shadow: none,
+  $form-select-border-radius: 0,
+  $form-select-color: var(--app-fg-default),
+  $form-select-disabled-color: var(--app-fg-disabled),
+  $form-select-border-color: var(--app-border-default),
+  $form-select-focus-border-color: var(--app-border-strong),
+  $form-select-indicator: none,
+  $form-check-input-checked-bg-image: none,
+  $form-check-input-indeterminate-bg-image: none,
+  $form-switch-bg-image: none,
+  $form-switch-focus-bg-image: none,
+  $form-switch-checked-bg-image: none,
+  $form-label-color: var(--app-fg-muted),
+  $form-label-margin-bottom: var(--app-space-2xs),
+  $form-text-color: var(--app-fg-muted),
+  $form-text-margin-top: var(--app-space-2xs),
+  $enable-validation-icons: false,
+  $form-feedback-invalid-color: var(--app-fg-danger),
+  $form-feedback-valid-color: var(--app-fg-success),
+  $form-feedback-font-size: null,
+  $nav-link-color: var(--app-fg-muted),
+  $nav-link-hover-color: var(--app-fg-default),
+  $nav-link-disabled-color: var(--app-fg-disabled),
+  $nav-link-padding-y: 0.5rem,
+  $nav-link-padding-x: 0.75rem,
+
+  $accordion-color: var(--app-fg-default),
+  $accordion-bg: transparent,
+  $accordion-padding-x: 0,
+  $accordion-padding-y: var(--app-pad-control-y),
+  $accordion-border-color: var(--app-rule),
+  $accordion-border-radius: 0,
+  $accordion-button-color: var(--app-fg-default),
+  $accordion-button-active-color: var(--app-fg-emphasis),
+  $accordion-button-active-bg: transparent,
+  $accordion-button-focus-box-shadow: none,
+  $accordion-button-icon: none,
+  $accordion-button-active-icon: none,
+
+  $spinner-border-width: var(--app-icon-stroke),
+  $spinner-width: var(--app-size-icon),
+  $spinner-height: var(--app-size-icon),
+  $progress-height: 4px,
+  $progress-bg: var(--app-rule),
+  $progress-bar-bg: var(--app-bg-neutral-solid),
+  $progress-border-radius: 0,
+  $progress-box-shadow: none,
 
   $enable-cssgrid: true,
 
@@ -114,3 +184,12 @@
 
 @import '@coreui/coreui/scss/badge.import';
 @import '@coreui/coreui/scss/card.import';
+
+@import '@coreui/coreui/scss/forms/labels.import';
+@import '@coreui/coreui/scss/forms/form-text.import';
+@import '@coreui/coreui/scss/forms/form-control.import';
+@import '@coreui/coreui/scss/forms/form-select.import';
+@import '@coreui/coreui/scss/forms/form-check.import';
+@import '@coreui/coreui/scss/forms/validation.import';
+@import '@coreui/coreui/scss/spinners.import';
+@import '@coreui/coreui/scss/progress.import';

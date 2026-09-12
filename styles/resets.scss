@@ -39,9 +39,3 @@ details {
     all: revert;
   }
 }
-
-@media (orientation: landscape) {
-  *:focus-visible {
-    outline: revert;
-  }
-}

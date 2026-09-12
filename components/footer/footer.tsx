@@ -1,3 +1,4 @@
+'use client';
 import { useMemo, type FC, type HTMLProps, type ReactNode } from 'react';
 import './footer.scss';
 import { generateClasses } from '../../utils/utils';
@@ -37,7 +38,7 @@ export const Footer: FC<FooterProps> = ({
           key={String(icon)}
           {...(rest as any)}
         >
-          <span className="svg-icon">{icon}</span>
+          <span className="app-icon">{icon}</span>
         </button>
       );
     }

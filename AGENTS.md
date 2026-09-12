@@ -136,7 +136,14 @@ never rewrite one in a third-party utility grammar.
 | `l-rule` | the rule as a separator between blocks | — |
 | `l-cluster` | horizontal grouping on the inner space axis | `--l-cluster-gap` |
 | `l-regions` | margin, content and apparatus, unequal widths | `--l-regions-*` |
-| `l-target` | 44px touch area without growing the painted size | `--l-target-size` |
+| `l-target` | 44px touch area on the element's own box | `--l-target-size` |
+
+`l-target` grows the element's OWN box, transparent around what is painted. It
+does not draw a bigger overlay: the browser's focus ring outlines the element's
+box and not a pseudo-element, so an overlaid target puts the ring around the
+drawing instead of around the area that answers to touch. `.-flush` pairs with
+`--l-target-painted` to hand the layout back only the painted height, so the
+target grows outwards without shoving its neighbours.
 
 Modifiers use the repository's `.-modifier` form: `.l-stack.-tight`,
 `.l-measure.-apparatus`.
@@ -154,3 +161,41 @@ Two rules that decide most questions:
 The library's own configuration lives in `styles/coreui-entry.scss`. Spacing
 utilities are pinned to the inner scale and rounding is off there, so a guardrail
 that used to need watching is now a setting.
+
+### The atoms
+
+`styles/atoms/` holds them, `styles/molecules/` holds what assembles them, and
+each entry file declares the layer they enter: `ds-overrides`, after the library,
+after the adapter, after every component, because most of them undo a decision
+the library made.
+
+**The hyphen in `ds-overrides` is load-bearing.** `ds.overrides` would be a
+SUBLAYER of `ds`, and a sublayer sorts inside its parent — `ds` is created where
+`ds.base` first appears, before `vendor`, so the atoms would sort there too, no
+matter where the name sits in the `@layer` statement. The failure is silent and
+total: every atom loses to CoreUI and the field ships with the library's
+four-sided box instead of the bottom rule, with the whole sheet loaded and doing
+nothing. Never give a layer that has to win a dotted name whose parent already
+exists earlier.
+
+Three rules decide where a line of atom CSS belongs:
+
+- **A value the library accepts as a variable goes in `coreui-entry.scss`.** Not
+  generating CSS and then undoing it beats undoing it. `$input-bg: transparent`
+  is a setting; the bottom rule's geometry is not, so it is an atom.
+- **A translation between two vocabularies goes in `_coreui.scss`.** The adapter
+  exists to say `--cui-modal-bg` is our `overlay-bg`, and nothing else — and only
+  for components that have no atom. Where an atom exists it IS the definition and
+  reads layer 2 directly, so a layer-3 knob in between would be an indirection
+  with one reader. Write a knob the day a consumer needs it, never before: a map
+  of knobs for a component the product does not even import looks like work done.
+- **A rule of the system goes in `styles/atoms/`.** Native focus, the pressed 1px,
+  the ruled sheet, the reader's marks.
+
+An atom component imports no CSS of its own. Where it lands in the cascade is
+part of what it is, and `import './x.scss'` enters outside every layer, which
+would put it above everything.
+
+The icons are Phosphor, through `react-icons/pi` — `Pi<Name>` is the regular
+weight, `Pi<Name>Fill` the marked one. No second icon package: one silhouette in
+two weights is what the filled-means-marked rule needs.

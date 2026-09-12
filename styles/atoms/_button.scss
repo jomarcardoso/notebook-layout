@@ -1,0 +1,239 @@
+// notebook-layout/styles/atoms/_button.scss
+
+@mixin btn-hover($color, $bg, $border, $rest-color, $rest-bg, $rest-border) {
+  --cui-btn-hover-color: #{$rest-color};
+  --cui-btn-hover-bg: #{$rest-bg};
+  --cui-btn-hover-border-color: #{$rest-border};
+
+  @media (hover: hover) {
+    --cui-btn-hover-color: #{$color};
+    --cui-btn-hover-bg: #{$bg};
+    --cui-btn-hover-border-color: #{$border};
+  }
+}
+
+.btn {
+  --btn-pad-x: 24px;
+  --cui-btn-padding-x: var(--btn-pad-x);
+  border-radius: var(--app-radius-control);
+
+  align-items: center;
+  display: inline-flex;
+  gap: var(--app-space-xs);
+  justify-content: center;
+  max-inline-size: 320px;
+  min-block-size: var(--app-size-control);
+  transition-duration: var(--app-duration-fast);
+  transition-property: color, background-color, border-color;
+  transition-timing-function: var(--app-ease);
+
+  &:active {
+    translate: 0 1px;
+  }
+
+  &:has(> .btn-label > .app-icon:first-child) {
+    padding-inline-start: calc(var(--btn-pad-x) - 4px);
+  }
+
+  svg:not(.app-icon) {
+    block-size: var(--app-size-icon);
+    flex-shrink: 0;
+    inline-size: var(--app-size-icon);
+  }
+
+  &:has(small) {
+    flex-direction: column;
+    gap: 0;
+    line-height: 1;
+  }
+
+  small {
+    display: block;
+    font-size: max(0.75em, 0.75rem);
+    font-weight: var(--app-font-weight-body);
+    inline-size: 100%;
+  }
+}
+
+.btn-link {
+  --cui-btn-active-color: var(--app-fg-accent);
+  --cui-btn-color: var(--app-fg-accent);
+  --cui-btn-disabled-color: var(--app-fg-disabled);
+  --cui-btn-hover-color: var(--app-fg-accent);
+  --btn-pad-x: 8px;
+
+  text-decoration: underline;
+}
+
+.btn-label {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--app-space-xs);
+}
+
+.btn-primary {
+  --cui-btn-bg: var(--app-bg-accent-solid);
+  --cui-btn-border-color: var(--app-bg-accent-solid);
+  --cui-btn-color: var(--app-fg-on-solid);
+
+  @include btn-hover(
+    var(--app-fg-on-solid),
+    var(--app-bg-accent-solid-hover),
+    var(--app-bg-accent-solid-hover),
+    var(--app-fg-on-solid),
+    var(--app-bg-accent-solid),
+    var(--app-bg-accent-solid)
+  );
+
+  --cui-btn-active-bg: var(--app-bg-accent-solid-hover);
+  --cui-btn-active-border-color: var(--app-bg-accent-solid-hover);
+  --cui-btn-active-color: var(--app-fg-on-solid);
+  --cui-btn-disabled-bg: var(--app-bg-accent-solid);
+  --cui-btn-disabled-border-color: var(--app-bg-accent-solid);
+  --cui-btn-disabled-color: var(--app-fg-on-solid);
+  --cui-btn-disabled-opacity: var(--app-opacity-disabled);
+}
+
+.btn-secondary,
+.btn-outline-secondary {
+  --cui-btn-bg: transparent;
+  --cui-btn-border-color: var(--app-border-default);
+  --cui-btn-color: var(--app-fg-default);
+
+  @include btn-hover(
+    var(--app-fg-emphasis),
+    var(--app-bg-hover),
+    var(--app-border-strong),
+    var(--app-fg-default),
+    transparent,
+    var(--app-border-default)
+  );
+
+  --cui-btn-active-bg: var(--app-bg-active);
+  --cui-btn-active-border-color: var(--app-border-strong);
+  --cui-btn-active-color: var(--app-fg-emphasis);
+  --cui-btn-disabled-bg: transparent;
+  --cui-btn-disabled-border-color: var(--app-rule);
+  --cui-btn-disabled-color: var(--app-fg-disabled);
+}
+
+// ------------------------------------------- texto, destrutiva e so de icone
+
+.btn-ghost-primary,
+.btn-ghost-danger,
+.btn-ghost-secondary {
+  --cui-btn-active-bg: var(--app-bg-active);
+  --cui-btn-active-border-color: transparent;
+  --cui-btn-bg: transparent;
+  --cui-btn-border-color: transparent;
+  --cui-btn-disabled-bg: transparent;
+  --cui-btn-disabled-border-color: transparent;
+  --cui-btn-disabled-color: var(--app-fg-disabled);
+  --btn-pad-x: 8px;
+}
+
+.btn-ghost-primary {
+  --cui-btn-active-color: var(--app-fg-accent);
+  --cui-btn-color: var(--app-fg-accent);
+
+  @include btn-hover(
+    var(--app-fg-accent),
+    var(--app-bg-hover),
+    transparent,
+    var(--app-fg-accent),
+    transparent,
+    transparent
+  );
+}
+
+// O HOVER DA ACAO DESTRUTIVA E VERMELHO LAVADO, e nao o lavado neutro.
+//
+// O §9 diz que hover e alfa sobre o que estiver embaixo, e o neutro e a regra
+// geral. A acao destrutiva e a excecao, por um motivo que nao e decorativo: ela
+// e a unica acao cujo custo de desfazer e infinito, e a unica em que o ponteiro
+// parado ja devia estar avisando. O lavado sai de um token que ja existe — o
+// mesmo da tag de status — entao isto nao cria hover por componente.
+.btn-ghost-danger {
+  --cui-btn-active-bg: var(--app-bg-danger-subtle);
+  --cui-btn-active-color: var(--app-fg-danger);
+  --cui-btn-color: var(--app-fg-danger);
+
+  @include btn-hover(
+    var(--app-fg-danger),
+    var(--app-bg-danger-subtle),
+    transparent,
+    var(--app-fg-danger),
+    transparent,
+    transparent
+  );
+}
+
+.btn-ghost-secondary {
+  --cui-btn-active-color: var(--app-fg-emphasis);
+  --cui-btn-color: var(--app-fg-default);
+
+  @include btn-hover(
+    var(--app-fg-emphasis),
+    var(--app-bg-hover),
+    transparent,
+    var(--app-fg-default),
+    transparent,
+    transparent
+  );
+}
+
+.btn-danger {
+  --cui-btn-bg: var(--app-bg-danger-solid);
+  --cui-btn-border-color: var(--app-bg-danger-solid);
+  --cui-btn-color: var(--app-fg-on-solid);
+
+  @include btn-hover(
+    var(--app-fg-on-solid),
+    var(--app-bg-danger-solid-hover),
+    var(--app-bg-danger-solid-hover),
+    var(--app-fg-on-solid),
+    var(--app-bg-danger-solid),
+    var(--app-bg-danger-solid)
+  );
+
+  --cui-btn-active-bg: var(--app-bg-danger-solid-hover);
+  --cui-btn-active-border-color: var(--app-bg-danger-solid-hover);
+  --cui-btn-active-color: var(--app-fg-on-solid);
+  --cui-btn-disabled-bg: var(--app-bg-danger-solid);
+  --cui-btn-disabled-border-color: var(--app-bg-danger-solid);
+  --cui-btn-disabled-color: var(--app-fg-on-solid);
+  --cui-btn-disabled-opacity: var(--app-opacity-disabled);
+}
+
+.btn-icon {
+  --btn-pad-x: 0px;
+
+  inline-size: var(--app-size-control);
+
+  &[aria-pressed='true'] {
+    --cui-btn-color: var(--app-fg-emphasis);
+  }
+}
+
+.btn-flush {
+  margin-inline: calc(-1 * var(--btn-pad-x));
+}
+
+.btn[aria-busy='true'] {
+  cursor: progress;
+  position: relative;
+
+  &:active {
+    translate: none;
+  }
+
+  > .btn-label {
+    opacity: 0;
+  }
+
+  > .spinner-border {
+    inset: 0;
+    margin: auto;
+    position: absolute;
+  }
+}

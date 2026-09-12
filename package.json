@@ -22,9 +22,11 @@
   "homepage": "https://github.com/jomarcardoso/notebook-layout#readme",
   "peerDependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "@coreui/coreui": "^5.9.0"
   },
   "devDependencies": {
+    "@coreui/coreui": "^5.9.0",
     "@storybook/addon-docs": "^9.1.10",
     "@storybook/addon-onboarding": "^9.1.10",
     "@storybook/react-vite": "^9.1.10",

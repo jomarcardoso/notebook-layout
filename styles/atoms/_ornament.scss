@@ -1,0 +1,73 @@
+// notebook-layout/styles/atoms/_ornament.scss
+
+@mixin lozenge($size) {
+  background-color: currentcolor;
+  block-size: $size;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  content: '';
+  inline-size: $size;
+}
+
+.list-marked {
+  list-style: none;
+  padding-inline-start: 0;
+
+  > li {
+    padding-inline-start: var(--app-marker-column);
+    position: relative;
+
+    &::before {
+      @include lozenge(0.4em);
+
+      color: var(--app-fg-muted);
+      inset-block-start: calc(0.5lh - 0.2em);
+      inset-inline-start: calc(var(--app-marker-column) / 2 - 0.2em);
+      position: absolute;
+    }
+  }
+
+  .list-marked > li::before {
+    block-size: var(--app-border-width);
+    clip-path: none;
+    color: var(--app-fg-subtle);
+    inline-size: 0.5em;
+    inset-inline-start: calc(var(--app-marker-column) / 2 - 0.25em);
+  }
+}
+
+.list-numbered {
+  list-style: none;
+  counter-reset: list-numbered;
+  padding-inline-start: 0;
+
+  > li {
+    counter-increment: list-numbered;
+    padding-inline-start: var(--app-marker-column);
+    position: relative;
+
+    &::before {
+      color: var(--app-fg-muted);
+      content: counter(list-numbered);
+      font: var(--app-text-numeric);
+      font-variant-numeric: lining-nums var(--app-numeric-tabular);
+      inset-block-start: 0;
+      inset-inline-start: 0;
+      position: absolute;
+      text-align: center;
+      inline-size: var(--app-marker-column);
+    }
+  }
+}
+
+.section-mark {
+  color: var(--app-fg-accent);
+  display: inline-block;
+  inline-size: var(--app-marker-column);
+
+  &::before {
+    @include lozenge(0.5em);
+
+    display: inline-block;
+    vertical-align: 0.08em;
+  }
+}

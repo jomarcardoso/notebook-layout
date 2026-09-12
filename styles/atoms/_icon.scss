@@ -1,0 +1,17 @@
+// notebook-layout/styles/atoms/_icon.scss
+
+.app-icon {
+  block-size: var(--app-size-icon);
+  color: currentcolor;
+  display: inline-block;
+  fill: currentcolor;
+  flex-shrink: 0;
+  inline-size: var(--app-size-icon);
+  user-select: none;
+
+  > svg {
+    block-size: 100%;
+    display: block;
+    inline-size: 100%;
+  }
+}

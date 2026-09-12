@@ -1,0 +1,55 @@
+// notebook-layout/styles/molecules/_field.scss
+
+.field {
+  display: block;
+
+  + .field {
+    margin-block-start: calc(var(--app-rhythm-1) * 1.5);
+  }
+}
+
+.field--marked {
+  .form-control {
+    --field-sheet-inset: var(--app-marker-column);
+
+    padding-inline-start: var(--app-marker-column);
+  }
+}
+
+.field-markers {
+  display: block;
+  inline-size: var(--app-marker-column);
+  inset-block-start: 14px;
+  inset-inline-start: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.field-markers__item {
+  align-items: center;
+  block-size: var(--app-rhythm-1);
+  display: flex;
+  justify-content: center;
+}
+
+.field-markers__glyph {
+  color: var(--app-fg-muted);
+  font: var(--app-text-caption);
+}
+
+.field--large {
+  .form-control {
+    --field-line: calc(var(--app-rhythm-1) * 1.5);
+    --field-rule-offset: 9px;
+
+    font: var(--app-text-body-lg);
+    line-height: var(--field-line);
+  }
+
+  .field-markers__item {
+    block-size: calc(var(--app-rhythm-1) * 1.5);
+  }
+}

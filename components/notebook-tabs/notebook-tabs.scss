@@ -4,31 +4,47 @@
 @use '../../styles/utils.scss' as *;
 
 .notebook-tabs {
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  text-orientation: upright;
-  z-index: 1;
-  letter-spacing: -1px;
+  font: component.$notebook-tabs-font;
+  letter-spacing: component.$notebook-tabs-tracking;
   line-height: 1;
+  text-orientation: upright;
+  text-transform: uppercase;
+  z-index: 1;
 
   ul {
-    list-style: none;
     display: grid;
-    gap: 8px;
+    gap: component.$notebook-tabs-gap;
+    list-style: none;
   }
 
-  a {
-    writing-mode: vertical-lr;
+  &__link,
+  ul a {
     background-color: component.$notebook-tabs-bg;
+    border: component.$notebook-tabs-border-width solid
+      component.$notebook-tabs-border-color;
+    border-left-width: 0;
     border-bottom-right-radius: component.$notebook-tabs-radius;
     border-top-right-radius: component.$notebook-tabs-radius;
-    box-shadow: component.$notebook-tabs-shadow;
+    color: component.$notebook-tabs-fg;
+    display: block;
     padding: 8px 5px 12px 3px;
+    transition:
+      background-color var(--app-duration-fast) var(--app-ease),
+      border-color var(--app-duration-fast) var(--app-ease),
+      color var(--app-duration-fast) var(--app-ease);
+    writing-mode: vertical-lr;
 
     &.ovo-active {
       background-color: component.$notebook-tabs-bg-active;
+      border-color: component.$notebook-tabs-border-color-active;
       color: component.$notebook-tabs-fg-active;
-      font-weight: bold;
     }
+  }
+}
+
+@media (hover: hover) {
+  .notebook-tabs__link:not(.ovo-active):hover {
+    background-color: component.$notebook-tabs-bg-hover;
+    color: component.$notebook-tabs-fg-hover;
   }
 }

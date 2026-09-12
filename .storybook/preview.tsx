@@ -1,41 +1,35 @@
 import type { Preview } from '@storybook/react-vite';
 import { useEffect } from 'react';
-import '../styles/main.scss';
+import '../styles/app.scss';
 
-// Toolbar para trocar temas globais
 export const globalTypes = {
   theme: {
-    name: 'Theme',
-    description: 'Global theme for components',
-    defaultValue: 'theme-base',
+    name: 'Tema',
+    description: 'O papel em que o componente esta impresso',
+    defaultValue: 'light',
     toolbar: {
       icon: 'mirror',
-      items: [
-        { value: 'theme-base', title: 'Base' },
-        { value: 'theme-light', title: 'Light' },
-      ],
+      items: [{ value: 'light', title: 'Claro' }],
       showName: true,
     },
   },
 };
 
-// Decorator global que aplica a classe de tema
-const withTheme = (StoryFn: any, context: any) => {
+const withTheme = (StoryFn: () => React.ReactElement, context: any) => {
   const { theme } = context.globals;
 
   useEffect(() => {
-    const body = document.body;
-    body.classList.add(theme);
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
   return <StoryFn />;
 };
 
-// Configuração global do Storybook
 const preview: Preview = {
   decorators: [withTheme],
 
   parameters: {
+    backgrounds: { disable: true },
     controls: {
       matchers: {
         color: /(background|color)$/i,

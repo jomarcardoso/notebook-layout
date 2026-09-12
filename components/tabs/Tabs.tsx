@@ -19,7 +19,6 @@ export interface TabsProps extends Omit<
   name?: string;
   value?: string;
   defaultValue?: string;
-  full?: boolean;
   onChange?: (value: string) => void;
 }
 
@@ -28,7 +27,6 @@ export const Tabs: FC<TabsProps> = ({
   name = '',
   value,
   defaultValue,
-  full,
   className = '',
   onChange,
   ...props
@@ -44,7 +42,7 @@ export const Tabs: FC<TabsProps> = ({
 
   return (
     <nav className={classes}>
-      <ul className="nav nav-tabs" {...props}>
+      <ul className="nav" {...props}>
         {tabs.map((tab, index) => {
           const tabValue = tab.value ?? `${index}`;
           const inputId = tab.id || `${groupName}-${index}`;
@@ -59,7 +57,7 @@ export const Tabs: FC<TabsProps> = ({
 
           return (
             <li
-              className={`nav-link${checked ? ' active' : ''}`}
+              className={`nav-item${checked ? ' active' : ''}`}
               key={tabValue}
             >
               <input
@@ -75,7 +73,9 @@ export const Tabs: FC<TabsProps> = ({
                 onChange={() => onChange?.(tabValue)}
               />
 
-              <label htmlFor={inputId}>{tab.label}</label>
+              <label className="tabs__tab" htmlFor={inputId}>
+                {tab.label}
+              </label>
             </li>
           );
         })}

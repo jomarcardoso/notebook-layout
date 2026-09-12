@@ -1,0 +1,17 @@
+// notebook-layout/styles/atoms/_image.scss
+
+.app-image {
+  aspect-ratio: var(--app-ratio-media);
+  background-color: var(--app-bg-subtle);
+  block-size: auto;
+  border-radius: 0;
+  display: block;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+figure > figcaption {
+  color: var(--app-fg-muted);
+  font: var(--app-text-caption);
+  margin-block-start: var(--app-space-2xs);
+}

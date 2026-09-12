@@ -3,8 +3,6 @@
 @mixin notebook-tabs-container {
   display: flex;
 
-  // Direct child only. A container nested around another tabbed layout must
-  // not decide anything about that layout's own strip.
   > .notebook-tabs {
     position: sticky;
     top: 0;
@@ -31,9 +29,10 @@
 
   @media (orientation: landscape) {
     flex-direction: row-reverse;
+    border-inline-end: var(--app-border-width) var(--app-border-style)
+      var(--app-border-default);
 
     > .notebook-tabs {
-      transform: translateX(1px);
       width: 0;
     }
 

@@ -18,11 +18,6 @@
 @forward 'helpers/scroll';
 
 @forward 'form';
-// `components/button` reached the page through `button.tsx`'s own
-// `import './button.scss'` while the React wrapper existed. The wrapper is
-// gone — call sites write CoreUI's classes directly — so the geometry it
-// carries enters here, beside every other component's styles.
-@forward 'components/button';
 @forward 'components/img';
 @forward 'components/category';
 @forward 'components/heading';

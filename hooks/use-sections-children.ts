@@ -1,3 +1,4 @@
+'use client';
 import { HTMLProps, ReactElement, ReactNode, useMemo } from 'react';
 import { filterElementsByTagName, sanitizeId } from '../utils/utils';
 

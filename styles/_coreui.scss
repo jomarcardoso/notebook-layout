@@ -128,11 +128,6 @@ $_token: (
   --cui-link-hover-color: #{_ref('fg-link-hover')};
 
   --cui-border-color: #{_ref('border-default')};
-  --cui-focus-ring-color: #{_ref('focus-ring')};
-
-  --cui-input-border-color: #{component.$field-border-color};
-  --cui-form-check-input-border-color: #{component.$field-border-color};
-  --cui-form-select-border-color: #{component.$field-border-color};
 
   @each $cui, $role in $_map {
     --cui-#{$cui}: #{_ref('bg-#{$role}')};
@@ -162,151 +157,6 @@ $_token: (
 }
 
 @mixin _components() {
-  @each $cui, $role in $_map {
-    @if $cui != 'primary' and $cui != 'secondary' {
-      .btn-#{$cui} {
-        --cui-btn-bg: #{_ref('bg-#{$role}')};
-        --cui-btn-border-color: #{_ref('bg-#{$role}')};
-        --cui-btn-color: #{_ref('fg-on-#{$role}')};
-        --cui-btn-hover-bg: #{_ref('bg-#{$role}-hover')};
-        --cui-btn-hover-border-color: #{_ref('bg-#{$role}-hover')};
-        --cui-btn-hover-color: #{_ref('fg-on-#{$role}')};
-        --cui-btn-active-bg: #{_ref('bg-#{$role}-active')};
-        --cui-btn-active-border-color: #{_ref('bg-#{$role}-active')};
-        --cui-btn-active-color: #{_ref('fg-on-#{$role}')};
-        --cui-btn-disabled-bg: #{_ref('bg-#{$role}')};
-        --cui-btn-disabled-border-color: #{_ref('bg-#{$role}')};
-        --cui-btn-disabled-color: #{_ref('fg-on-#{$role}')};
-      }
-    }
-
-    .btn-outline-#{$cui} {
-      --cui-btn-bg: transparent;
-      --cui-btn-color: #{_ref(_slot($role, text))};
-      --cui-btn-border-color: #{_ref(_slot($role, text))};
-      --cui-btn-hover-bg: #{_ref(_slot($role, subtle))};
-      --cui-btn-hover-border-color: #{_ref(_slot($role, text))};
-      --cui-btn-hover-color: #{_ref(_slot($role, text))};
-      --cui-btn-active-bg: #{_step($role, 'subtle-hover')};
-      --cui-btn-active-border-color: #{_ref(_slot($role, text))};
-      --cui-btn-active-color: #{_ref(_slot($role, text))};
-    }
-
-    .btn-ghost-#{$cui} {
-      --cui-btn-bg: transparent;
-      --cui-btn-border-color: transparent;
-      --cui-btn-color: #{_ref(_slot($role, text))};
-      --cui-btn-hover-bg: #{_ref(_slot($role, subtle))};
-      --cui-btn-hover-border-color: transparent;
-      --cui-btn-hover-color: #{_ref(_slot($role, text))};
-      --cui-btn-active-bg: #{_step($role, 'subtle-hover')};
-      --cui-btn-active-border-color: transparent;
-      --cui-btn-active-color: #{_ref(_slot($role, text))};
-      --cui-btn-disabled-bg: transparent;
-      --cui-btn-disabled-border-color: transparent;
-      --cui-btn-disabled-color: #{component.$button-fg-disabled};
-    }
-  }
-
-  .btn-link {
-    --cui-btn-disabled-color: #{component.$button-fg-disabled};
-  }
-
-  .btn {
-    --cui-btn-border-radius: #{component.$button-radius};
-  }
-
-  .btn-primary {
-    --cui-btn-bg: #{component.$button-bg};
-    --cui-btn-border-color: #{component.$button-border-color};
-    --cui-btn-color: #{component.$button-fg};
-    --cui-btn-hover-bg: #{component.$button-bg-hover};
-    --cui-btn-hover-border-color: #{component.$button-bg-hover};
-    --cui-btn-hover-color: #{component.$button-fg};
-    --cui-btn-active-bg: #{component.$button-bg-active};
-    --cui-btn-active-border-color: #{component.$button-bg-active};
-    --cui-btn-active-color: #{component.$button-fg};
-    --cui-btn-disabled-bg: #{component.$button-bg};
-    --cui-btn-disabled-border-color: #{component.$button-bg};
-    --cui-btn-disabled-color: #{component.$button-fg};
-  }
-
-  .btn-secondary {
-    --cui-btn-bg: #{component.$button-secondary-bg};
-    --cui-btn-border-color: #{component.$button-secondary-border-color};
-    --cui-btn-color: #{component.$button-secondary-fg};
-    --cui-btn-hover-bg: #{component.$button-secondary-bg-hover};
-    --cui-btn-hover-border-color: #{component.$button-secondary-border-color};
-    --cui-btn-hover-color: #{component.$button-secondary-fg};
-    --cui-btn-active-bg: #{component.$button-secondary-bg-active};
-    --cui-btn-active-border-color: #{component.$button-secondary-border-color};
-    --cui-btn-active-color: #{component.$button-secondary-fg};
-    --cui-btn-disabled-bg: #{component.$button-secondary-bg};
-    --cui-btn-disabled-border-color: #{component.$button-secondary-border-color};
-    --cui-btn-disabled-color: #{component.$button-fg-disabled};
-  }
-
-  .btn:focus-visible,
-  .form-control:focus-visible,
-  .form-select:focus-visible,
-  .form-check-input:focus-visible {
-    box-shadow:
-      0 0 0 #{_ref('ring-offset')} #{_ref('bg-page')},
-      0 0 0 calc(#{_ref('ring-offset')} + #{_ref('ring-width')})
-        #{_ref('focus-ring')};
-  }
-
-  .chip {
-    --cui-chip-border-radius: #{component.$chip-radius};
-    --cui-chip-min-height: #{component.$chip-height};
-    --cui-chip-padding-x: #{component.$chip-pad-x};
-    --cui-chip-border-color: #{component.$chip-border-color};
-
-    --cui-chip-bg: #{component.$chip-bg};
-    --cui-chip-color: #{component.$chip-fg};
-    --cui-chip-active-bg: #{component.$chip-bg-selected};
-    --cui-chip-active-border-color: #{component.$chip-border-color-selected};
-    --cui-chip-active-color: #{component.$chip-fg-selected};
-
-    --cui-chip-hover-bg: #{component.$chip-bg-hover};
-    --cui-chip-hover-color: #{component.$chip-fg-hover};
-  }
-
-  .chip-outline {
-    --cui-chip-bg: transparent;
-    --cui-chip-color: #{component.$chip-fg};
-    --cui-chip-border-color: #{component.$chip-outline-border-color};
-    --cui-chip-hover-bg: #{component.$chip-bg-hover};
-    --cui-chip-hover-color: #{component.$chip-fg-hover};
-    --cui-chip-hover-border-color: #{component.$chip-outline-border-color};
-    --cui-chip-active-bg: #{component.$chip-bg-selected};
-    --cui-chip-active-color: #{component.$chip-fg-selected};
-    --cui-chip-active-border-color: #{component.$chip-outline-border-color-selected};
-  }
-
-  .tooltip {
-    --cui-tooltip-bg: #{component.$tooltip-bg};
-    --cui-tooltip-color: #{component.$tooltip-fg};
-    --cui-tooltip-border-radius: #{component.$tooltip-radius};
-  }
-
-  .progress,
-  .progress-stacked {
-    --cui-progress-bg: #{component.$progress-track-bg};
-    --cui-progress-bar-bg: #{component.$progress-fill-bg};
-    --cui-progress-bar-color: #{component.$progress-fill-fg};
-    --cui-progress-border-radius: #{component.$progress-radius};
-  }
-
-  .form-switch .form-check-input {
-    background-color: #{component.$switch-track-bg};
-  }
-
-  .form-switch .form-check-input:checked {
-    background-color: #{component.$switch-track-bg-checked};
-    border-color: #{component.$switch-track-bg-checked};
-  }
-
   .modal {
     --cui-modal-bg: #{component.$overlay-bg};
     --cui-modal-color: #{component.$overlay-fg};
@@ -328,20 +178,6 @@ $_token: (
 
   hr {
     border-color: #{component.$rule-border-color};
-  }
-
-  .form-check-input {
-    --cui-form-check-bg: #{component.$field-bg};
-
-    --cui-border-color: #{component.$field-border-color};
-  }
-
-  .form-control,
-  .form-select {
-    border-radius: #{component.$field-radius};
-    background-color: #{component.$field-bg};
-    color: #{component.$field-fg};
-    border-color: #{component.$field-border-color};
   }
 
   .list-group {
@@ -368,6 +204,30 @@ $_token: (
   .badge {
     --cui-badge-color: #{component.$badge-fg};
     --cui-badge-border-radius: #{component.$badge-radius};
+  }
+
+  .accordion-item {
+    border-block-end: component.$accordion-rule-width solid
+      component.$accordion-rule-color;
+    border-block-start: 0;
+    border-inline: 0;
+  }
+
+  .accordion-button {
+    font: component.$accordion-header-font;
+  }
+
+  .accordion-button::after {
+    content: none;
+  }
+
+  .accordion-indicator {
+    margin-inline-start: auto;
+    transition: transform var(--app-duration-base) var(--app-ease);
+  }
+
+  .accordion-button:not(.collapsed) .accordion-indicator {
+    transform: rotate(-180deg);
   }
 
   .card {
@@ -407,12 +267,6 @@ $_token: (
   //   border-block-end: #{component.$card-divider-width} solid
   //     #{component.$card-footer-border-color};
   // }
-
-  .nav {
-    --cui-nav-link-color: #{component.$nav-fg};
-    --cui-nav-link-hover-color: #{component.$nav-fg-hover};
-    --cui-nav-link-disabled-color: #{component.$nav-fg-disabled};
-  }
 
   .sidebar {
     --cui-sidebar-bg: #{component.$surface-bg};
@@ -456,57 +310,6 @@ $_token: (
     --cui-sidebar-toggler-color: #{component.$sidebar-toggler-fg};
     --cui-sidebar-toggler-hover-color: #{component.$sidebar-toggler-fg-hover};
     --cui-sidebar-toggler-focus-color: #{component.$sidebar-toggler-fg-hover};
-  }
-
-  .nav-pills {
-    --cui-nav-pills-link-active-bg: #{component.$tabs-tab-bg-selected};
-    --cui-nav-pills-link-active-color: #{component.$tabs-tab-fg-selected};
-    --cui-nav-pills-border-radius: #{component.$tabs-tab-radius};
-
-    background-color: #{component.$tabs-bg};
-    padding: #{component.$tabs-pad};
-    border-radius: #{component.$tabs-radius};
-    color: #{component.$tabs-tab-fg};
-  }
-
-  .nav-pills .nav-link:hover:not(.active):not(.disabled) {
-    background-color: #{component.$tabs-tab-bg-hover};
-    color: #{component.$tabs-tab-fg-hover};
-  }
-
-  .nav-pills .nav-link.active {
-    box-shadow: #{component.$tabs-tab-shadow-selected};
-  }
-
-  .nav-tabs {
-    --cui-nav-tabs-border-color: #{component.$nav-border-color};
-    --cui-nav-tabs-link-active-color: #{component.$nav-tab-fg-active};
-    --cui-nav-tabs-link-active-bg: #{component.$nav-tab-bg-active};
-    --cui-nav-tabs-link-active-border-color: #{component.$nav-tab-border-color-active};
-    --cui-nav-tabs-link-hover-border-color: #{component.$nav-tab-border-color-hover};
-  }
-
-  .nav-underline {
-    --cui-nav-underline-link-active-color: #{component.$nav-tab-fg-active};
-    --cui-nav-underline-border-width: #{component.$nav-underline-width};
-  }
-
-  .nav-underline-border {
-    --cui-nav-underline-border-link-active-color: #{component.$nav-tab-fg-active};
-    --cui-nav-underline-border-link-color: #{component.$nav-fg};
-    --cui-nav-underline-border-link-disabled-color: #{component.$nav-fg-disabled};
-    --cui-nav-underline-border-border-color: #{component.$nav-border-color};
-  }
-
-  .nav-enclosed {
-    --cui-nav-enclosed-bg: #{component.$nav-bg};
-    --cui-nav-enclosed-border-radius: #{component.$nav-radius};
-    --cui-nav-enclosed-link-color: #{component.$nav-fg};
-    --cui-nav-enclosed-link-disabled-color: #{component.$nav-fg-disabled};
-
-    --cui-nav-enclosed-link-active-color: #{component.$nav-tab-fg-active};
-    --cui-nav-enclosed-link-active-bg: #{component.$nav-tab-bg-active};
-    --cui-nav-enclosed-link-active-border-color: #{component.$nav-tab-border-color-active};
   }
 
   .breadcrumb {

@@ -1,0 +1,221 @@
+// notebook-layout/styles/atoms/_field.scss
+
+.form-control,
+.form-select {
+  --field-rule-color: var(--app-border-default);
+  --field-rule-width: var(--app-border-width);
+
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--app-fg-default);
+  font: var(--app-text-body);
+  inline-size: 100%;
+  padding-inline: 0;
+  transition: border-color var(--app-duration-fast) var(--app-ease);
+
+  &::placeholder {
+    color: var(--app-fg-subtle);
+    opacity: 1;
+  }
+}
+
+input.form-control:is([type='text'], [type='search'], :not([type])),
+textarea.form-control {
+  font: var(--app-text-script);
+}
+
+input.form-control[type='number'] {
+  font: var(--app-text-numeric);
+  font-variant-numeric: lining-nums var(--app-numeric-tabular);
+}
+
+input.form-control,
+.form-select {
+  block-size: var(--app-size-control);
+  border-block-end: var(--field-rule-width) solid var(--field-rule-color);
+  line-height: 1.3;
+  padding-block: calc(var(--app-size-control) - 1lh - 2px)
+    calc(2px - var(--field-rule-width));
+}
+
+input.form-control:is(:autofill, :-webkit-autofill) {
+  -webkit-text-fill-color: var(--app-fg-default);
+  transition: background-color 0s 600000s;
+}
+
+input.form-control[type='search'] {
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    appearance: none;
+  }
+}
+
+.form-select {
+  background-image: none;
+  padding-inline-end: calc(var(--app-size-icon) + 8px);
+}
+
+@mixin field-sheet {
+  background-image:
+    linear-gradient(var(--field-rule-color), var(--field-rule-color)),
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 calc(var(--field-line) - var(--field-rule-offset) - 1px),
+      var(--app-rule) 0 calc(var(--field-line) - var(--field-rule-offset)),
+      transparent 0 var(--field-line)
+    );
+  background-origin: content-box;
+  background-position:
+    left calc(-1 * var(--field-sheet-inset, 0px)) bottom
+      var(--field-rule-offset),
+    left calc(-1 * var(--field-sheet-inset, 0px)) top 0;
+  background-repeat: no-repeat;
+  background-size:
+    calc(100% + var(--field-sheet-inset, 0px)) var(--field-rule-width),
+    calc(100% + var(--field-sheet-inset, 0px)) calc(100% - var(--field-line));
+}
+
+.field-sheet {
+  --field-line: var(--app-rhythm-1);
+  --field-rule-color: var(--app-border-default);
+  --field-rule-offset: 2px;
+  --field-rule-width: var(--app-border-width);
+
+  padding-block: 14px 0;
+
+  @include field-sheet;
+}
+
+textarea.form-control {
+  --field-line: var(--app-rhythm-1);
+  --field-rule-offset: 2px;
+
+  min-block-size: calc(var(--field-line) * var(--field-min-rows, 3) + 14px);
+  line-height: var(--field-line);
+  padding-block: 14px 0;
+  resize: vertical;
+
+  @supports (field-sizing: content) {
+    field-sizing: content;
+    resize: none;
+  }
+
+  @include field-sheet;
+}
+
+@media (forced-colors: active) {
+  textarea.form-control {
+    border-block-end: 1px solid canvastext;
+  }
+}
+
+@media (hover: hover) {
+  .form-control:hover:not(
+      :focus,
+      :disabled,
+      [readonly],
+      .is-invalid,
+      [aria-invalid='true']
+    ),
+  .form-select:hover:not(
+      :focus,
+      :disabled,
+      .is-invalid,
+      [aria-invalid='true']
+    ) {
+    --field-rule-color: var(--app-border-strong);
+  }
+}
+
+.form-control:focus,
+.form-select:focus {
+  --field-rule-color: var(--app-border-strong);
+  --field-rule-width: 2px;
+
+  background-color: transparent;
+  border-block-end-color: var(--field-rule-color);
+  color: var(--app-fg-default);
+}
+
+.form-control:is(.is-invalid, [aria-invalid='true']),
+.form-select:is(.is-invalid, [aria-invalid='true']) {
+  --field-rule-color: var(--app-border-danger);
+
+  border-block-end-color: var(--field-rule-color);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  --field-rule-color: var(--app-rule);
+
+  background-color: transparent;
+  border-block-end-color: var(--field-rule-color);
+  color: var(--app-fg-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+  // O Safari clareia o texto desabilitado por conta propria.
+  -webkit-text-fill-color: var(--app-fg-disabled);
+}
+
+.form-control[readonly] {
+  --field-rule-color: transparent;
+}
+
+textarea.form-control[readonly] {
+  background-image: none;
+}
+
+.select-field,
+.field-adorned {
+  display: block;
+  position: relative;
+}
+
+.select-field-caret {
+  color: var(--app-fg-default);
+  // Centra a seta na linha do texto: calibrar.
+  inset-block-end: 4px;
+  inset-inline-end: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.select-field:has(.form-select:disabled) .select-field-caret {
+  color: var(--app-fg-disabled);
+}
+
+.field-adorned {
+  &:has(> .field-adorned-lead) {
+    --field-inset-start: calc(var(--app-size-icon) + 8px);
+  }
+
+  &:has(> .field-adorned-trail) {
+    --field-inset-end: var(--app-size-control);
+  }
+
+  > .form-control {
+    padding-inline: var(--field-inset-start, 0) var(--field-inset-end, 0);
+  }
+}
+
+.field-adorned-lead {
+  color: var(--app-fg-muted);
+  // Centra o icone na altura das letras: calibrar.
+  inset-block-end: 4px;
+  inset-inline-start: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.field-adorned-trail {
+  display: flex;
+  inset-block: 0;
+  inset-inline-end: 0;
+  position: absolute;
+
+  .btn-icon {
+    align-items: end;
+    padding-block-end: 4px;
+  }
+}

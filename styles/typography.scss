@@ -49,9 +49,13 @@
   font: var(--app-text-label);
 }
 
-.quantity {
-  font: var(--app-text-quantity);
-  font-variant-numeric: var(--app-numeric-tabular);
+.label-sm {
+  font: var(--app-text-label-sm);
+}
+
+.numeric {
+  font: var(--app-text-numeric);
+  font-variant-numeric: lining-nums var(--app-numeric-tabular);
 }
 
 // Meta, categoria, credito, rodape. Em caixa e baixa, sem tracking.
@@ -118,20 +122,6 @@
   }
 }
 
-.link {
-  color: var(--app-fg-accent);
-  text-decoration: underline;
-  text-decoration-color: currentcolor;
-  text-underline-offset: 0.14em;
-
-  &:active,
-  &:hover {
-    color: var(--app-fg-accent);
-  }
-}
-
-// A medida: 45–75 caracteres e onde o olho acha o inicio da proxima linha sem
-// procurar.
 .p {
   color: var(--app-fg-default);
   font: var(--app-text-body);

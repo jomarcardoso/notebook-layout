@@ -6,9 +6,8 @@
     --app-border-style: solid;
     --app-border: var(--app-border-width) var(--app-border-style)
       var(--app-border-default);
-    --app-radius-control: 4px;
-    --app-radius-overlay: 10px;
-    --app-radius-full: 9999px;
+    --app-radius-control: 2px;
+    --app-radius-overlay: 4px;
     --app-ratio-media: 1;
     --app-ratio-thumb: 1;
     // ESTA E A UNICA MEDIDA DO SISTEMA EM `rem`, e e em `rem` porque a unidade
@@ -69,11 +68,11 @@
       var(--font-body);
     --app-text-label-sm: var(--weight-medium) var(--size-2) /
       var(--leading-normal) var(--font-body);
-    --app-text-quantity: var(--weight-medium) var(--size-4) /
+    --app-text-numeric: var(--weight-medium) var(--size-4) /
       var(--leading-normal) var(--font-body);
     --app-text-caption: var(--weight-regular) var(--size-2) /
       var(--leading-normal) var(--font-body);
-    --app-text-script: var(--weight-regular) var(--size-5) /
+    --app-text-script: var(--weight-regular) var(--size-6) /
       var(--leading-normal) var(--font-script);
 
     // `font` reseta o tracking e o variant, entao estes vao depois dele.
@@ -89,20 +88,17 @@
     --app-measure-body: 68ch;
     --app-measure-narrow: 45ch;
     --app-measure-apparatus: 34ch;
+    --app-marker-column: 40px;
 
     --app-region-margin: 240px;
     --app-region-apparatus: 352px;
     --app-icon-stroke: 1.25px;
-    --app-ring-width: 2px;
-    --app-ring-offset: 2px;
-    --app-ring: var(--app-ring-width) solid var(--app-focus-ring);
+    --app-ring-offset: 3px;
+    --app-marker-width: 2px;
     --app-duration-fast: 120ms;
     --app-duration-base: 200ms;
     --app-duration-slow: 320ms;
     --app-ease: cubic-bezier(0, 0, 0.2, 1);
-    --app-ease-out: cubic-bezier(0, 0, 0.2, 1);
-    --app-ease-in: cubic-bezier(0.4, 0, 1, 1);
-    --app-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
     --app-z-base: 0;
     --app-z-dropdown: 1000;
     --app-z-sticky: 1020;
@@ -110,7 +106,7 @@
     --app-z-modal: 1050;
     --app-z-toast: 1080;
     --app-z-tooltip: 1090;
-    --app-opacity-disabled: 0.55;
+    --app-opacity-disabled: 0.45;
     // Entre secoes de uma pagina: espaco de FLUXO, entao le a unidade de ritmo.
     --app-gap-section: var(--app-rhythm-1);
   }
@@ -120,7 +116,7 @@
   :root,
   [data-theme='light'] {
     color-scheme: light;
-    accent-color: var(--app-bg-accent-solid);
+    accent-color: var(--app-bg-neutral-solid);
 
     // PAPEL. Nada e mais claro que a pagina. O que parece estar acima esta
     // apenas com mais tinta.
@@ -136,12 +132,11 @@
     --app-fg-subtle: var(--neutral-a10);
     --app-fg-disabled: var(--neutral-a9);
     --app-fg-accent: var(--accent-a11);
-    --app-fg-on-solid: var(--neutral-contrast);
+    --app-fg-on-solid: var(--neutral-1);
 
-    // FIO E BORDA. O fio divide o espaco, a borda contorna um objeto.
     --app-rule: var(--neutral-a6);
-    --app-border-default: var(--neutral-a7);
-    --app-border-strong: var(--neutral-a8);
+    --app-border-default: var(--neutral-a9);
+    --app-border-strong: var(--neutral-a10);
 
     // SOLIDO. Preenchimento raro, reservado ao compromisso. A rampa tem dois
     // degraus solidos, 9 em repouso e 10 no hover; o pressionado repete o 10 e
@@ -157,14 +152,17 @@
     --app-bg-active: var(--neutral-a4);
     --app-bg-selected: var(--neutral-a5);
     --app-border-selected: var(--accent-a8);
-    --app-focus-ring: var(--accent-a8);
 
     // STATUS. Danger e o unico com solido, para a confirmacao destrutiva.
     --app-fg-danger: var(--danger-a11);
     --app-bg-danger-subtle: var(--danger-a3);
     --app-bg-danger-solid: var(--danger-9);
     --app-bg-danger-solid-hover: var(--danger-10);
-    --app-border-danger: var(--danger-a6);
+    // A borda de erro identifica o controle tanto quanto a de repouso, entao
+    // ela responde ao mesmo 3:1. Em a6 media 1.64:1 contra a pagina: o campo
+    // em erro ficava MENOS visivel que o campo em repouso, que e o contrario do
+    // que o estado quer dizer. a9 da 3.58:1, o mesmo degrau de `border-default`.
+    --app-border-danger: var(--danger-a9);
     --app-fg-success: var(--success-a11);
     --app-bg-success-subtle: var(--success-a3);
     --app-fg-warning: var(--warning-a11);

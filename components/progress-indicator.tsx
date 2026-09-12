@@ -1,3 +1,4 @@
+'use client';
 import { type FC, useMemo } from 'react';
 import { Progressbar } from './progressbar';
 import '../styles/components/progress-indicator.scss';

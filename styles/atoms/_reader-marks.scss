@@ -1,0 +1,213 @@
+// notebook-layout/styles/atoms/_reader-marks.scss
+
+.form-check {
+  --check-box-inset: 0px;
+  --check-column: calc(var(--app-size-icon) + 12px);
+
+  display: block;
+  margin: 0;
+  min-block-size: var(--app-size-control);
+  padding: 0;
+  position: relative;
+}
+
+.form-switch {
+  --check-column: calc(36px + 12px);
+}
+
+.form-check.-bare {
+  --check-box-inset: calc((var(--app-size-control) - var(--app-size-icon)) / 2);
+  --check-column: 0px;
+
+  display: inline-block;
+  inline-size: var(--app-size-control);
+  vertical-align: middle;
+}
+
+.form-check.-bare .form-check-label {
+  block-size: var(--app-size-control);
+  padding-block: 0;
+}
+
+.form-switch.-bare {
+  --check-box-inset: calc((var(--app-size-control) - 36px) / 2);
+
+  inline-size: calc(36px + 16px);
+}
+
+.form-check > .form-check-input,
+.form-check
+  > .form-check-input:is(:checked, :indeterminate, :focus, :active, :disabled) {
+  appearance: none;
+  background: none;
+  block-size: auto;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  float: none;
+  inline-size: auto;
+  inset: 0;
+  margin: 0;
+  opacity: 1;
+  position: absolute;
+  z-index: 1;
+}
+
+.form-check > .form-check-input:disabled {
+  cursor: not-allowed;
+}
+
+.form-check-label {
+  color: var(--app-fg-default);
+  cursor: pointer;
+  display: block;
+  font: var(--app-text-body-sm);
+  padding-block: calc((var(--app-size-control) - 1lh) / 2);
+  padding-inline-start: var(--check-column);
+  position: relative;
+}
+
+.form-check-input:is(:disabled, [disabled]) ~ .form-check-label {
+  color: var(--app-fg-disabled);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+// A biblioteca pinta o rotulo de vermelho no erro. Isso e desfeito: o erro
+// aparece no contorno e na mensagem abaixo do grupo, e o rotulo continua legivel.
+.form-check-input.is-invalid ~ .form-check-label {
+  color: var(--app-fg-default);
+}
+
+// ============================================================ a caixa
+
+.check-box {
+  block-size: var(--app-size-icon);
+  border: var(--app-border-width) solid var(--app-border-strong);
+  border-radius: var(--app-radius-control);
+  color: var(--app-fg-on-solid);
+  display: grid;
+  inline-size: var(--app-size-icon);
+  inset-block-start: calc((var(--app-size-control) - var(--app-size-icon)) / 2);
+  inset-inline-start: var(--check-box-inset);
+  place-items: center;
+  position: absolute;
+  transition-duration: var(--app-duration-fast);
+  transition-property: background-color, border-color;
+  transition-timing-function: var(--app-ease);
+}
+
+.check-glyph {
+  block-size: 14px;
+  grid-area: 1 / 1;
+  inline-size: 14px;
+  visibility: hidden;
+}
+
+$_marked: ':checked, :indeterminate:not([type="radio"])';
+
+.form-check-input:is(#{$_marked}) + .form-check-label .check-box {
+  background-color: var(--app-bg-neutral-solid);
+  border-color: var(--app-bg-neutral-solid);
+}
+
+.form-check-input:checked:not(:indeterminate)
+  + .form-check-label
+  .check-glyph-on,
+.form-check-input:indeterminate:not([type='radio'])
+  + .form-check-label
+  .check-glyph-mixed {
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  .form-check-input:hover:not(:disabled, #{$_marked})
+    + .form-check-label
+    .check-box {
+    background-color: var(--app-bg-hover);
+  }
+
+  .form-check-input:is(#{$_marked}):hover:not(:disabled)
+    + .form-check-label
+    .check-box {
+    background-color: var(--app-bg-neutral-solid-hover);
+    border-color: var(--app-bg-neutral-solid-hover);
+  }
+}
+
+.form-check-input:active:not(:disabled, #{$_marked})
+  + .form-check-label
+  .check-box {
+  background-color: var(--app-bg-active);
+}
+
+.form-check-input:is(.is-invalid, [aria-invalid='true'])
+  + .form-check-label
+  .check-box {
+  border-color: var(--app-border-danger);
+}
+
+.form-check-input:disabled + .form-check-label .check-box {
+  border-color: var(--app-rule);
+}
+
+.form-check-input:is(#{$_marked}):disabled + .form-check-label .check-box {
+  opacity: 0.45;
+}
+
+.form-check-input[type='radio'] + .form-check-label .check-box {
+  border-radius: 50%;
+
+  &::after {
+    background-color: currentcolor;
+    block-size: 8px;
+    border-radius: 50%;
+    content: '';
+    grid-area: 1 / 1;
+    inline-size: 8px;
+    visibility: hidden;
+  }
+}
+
+.form-check-input[type='radio']:checked + .form-check-label .check-box::after {
+  visibility: visible;
+}
+
+.form-switch .check-box {
+  display: block;
+  inline-size: 36px;
+
+  &::after {
+    background-color: var(--app-bg-neutral-solid);
+    block-size: 12px;
+    border-radius: calc(var(--app-radius-control) / 2);
+    content: '';
+    inline-size: 12px;
+    inset-block-start: 3px;
+    inset-inline-start: 3px;
+    position: absolute;
+    transition-duration: var(--app-duration-fast);
+    transition-property: inset-inline-start, background-color;
+    transition-timing-function: var(--app-ease);
+  }
+}
+
+.form-switch .form-check-input:checked + .form-check-label .check-box::after {
+  background-color: var(--app-fg-on-solid);
+  inset-inline-start: calc(100% - 12px - 3px);
+}
+
+.check-list .form-check {
+  --check-box-inset: calc(
+    (var(--app-marker-column) - var(--app-size-icon)) / 2
+  );
+  --check-column: var(--app-marker-column);
+}
+
+.check-list .form-check-label {
+  font: var(--app-text-body);
+}
+
+.check-list .form-check-input:checked + .form-check-label {
+  color: var(--app-fg-muted);
+}

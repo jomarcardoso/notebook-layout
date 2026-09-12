@@ -49,7 +49,7 @@ const ControlledField: FC<FieldProps> = ({
 };
 
 const meta = {
-  title: 'Form/Field',
+  title: 'Moleculas/Campo completo',
   component: Field,
   tags: ['autodocs'],
   parameters: {
@@ -57,7 +57,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Campo de formulario inspirado em paginas de caderno. Suporta entrada unica ou multiline, exibicao de rotulo independente e acao de apagar com icone contextual.',
+          'A primeira molecula: rotulo, controle, ajuda e erro, com a ligacao de aria-describedby feita num lugar so. Ela nao inventa pintura nenhuma — cada peca e um atomo, e o que esta escrito e o arranjo. Para a matriz de estados completa, veja Atomos/Campos.',
       },
     },
   },
@@ -77,7 +77,17 @@ const meta = {
     className: { control: false },
     hint: {
       control: 'text',
-      description: 'Mensagem auxiliar exibida abaixo do campo.',
+      description: 'Texto de ajuda abaixo do campo. Diz o que preencher.',
+    },
+    error: {
+      control: 'text',
+      description:
+        'A mensagem de erro. Ela diz o que FAZER, nao o que deu errado: "Escreva um titulo" e melhor que "Campo obrigatorio". Renderizada, ela poe o controle em aria-invalid e troca o fio de base para danger.',
+    },
+    optional: {
+      control: 'boolean',
+      description:
+        'O sistema marca o campo OPCIONAL, nunca o obrigatorio: asterisco vermelho e marca de formulario, nao de livro.',
     },
     label: {
       control: 'text',
@@ -134,7 +144,6 @@ export const MultilineNote: Story = {
   args: {
     multiline: true,
     minRows: 3,
-    maxRows: 6,
     placeholder: 'Liste ingredientes ou descreva o modo de preparo...',
   },
   render: (args) => <ControlledField {...args} />,

@@ -1,3 +1,4 @@
+'use client';
 import { type FC, type ProgressHTMLAttributes, useMemo } from 'react';
 import '../styles/components/progressbar.scss';
 import { generateClasses } from '../utils/utils';

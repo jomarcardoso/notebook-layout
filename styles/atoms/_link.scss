@@ -1,0 +1,27 @@
+// notebook-layout/styles/atoms/_link.scss
+
+a:not([class]):not(nav *) {
+  color: var(--app-fg-accent);
+  text-decoration-line: none;
+  // Fino e deslocado, respeitando o descendente.
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+
+  &:hover {
+    color: var(--app-fg-accent);
+    text-decoration-line: underline;
+  }
+}
+
+.prose a,
+.p a {
+  color: inherit;
+  text-decoration-color: var(--app-fg-accent);
+  text-decoration-line: underline;
+
+  &:hover {
+    color: inherit;
+    text-decoration-thickness: 2px;
+  }
+}

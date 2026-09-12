@@ -1,0 +1,21 @@
+// notebook-layout/styles/atoms/_field-message.scss
+
+.form-text,
+.invalid-feedback {
+  font: var(--app-text-caption);
+  margin-block-start: var(--app-space-2xs);
+}
+
+.form-text {
+  color: var(--app-fg-muted);
+}
+
+.invalid-feedback {
+  color: var(--app-fg-danger);
+  display: block;
+}
+
+.valid-feedback,
+.valid-tooltip {
+  display: none;
+}

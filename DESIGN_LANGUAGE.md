@@ -40,10 +40,44 @@ elevationCarrier: rule
 surfaceSeparation: space-then-rule
 surfaces: 3
 
+# O preenchido e um ESTADO, nao um estilo: `iconStyle` continua outline.
+iconSet: phosphor
 iconStyle: outline
 iconStroke: 1.25px
 iconSize: 20px
-iconPolicy: icon-leads
+iconPolicy: words-first
+iconFill: marked-state
+iconColour: current
+iconTrailing: action-only
+
+# Ornamento e figura de conteudo sao familias proprias, e nao icone. As tres
+# moram numa coluna so, no inicio da linha.
+ornament: lozenge
+listMarker: lozenge
+markerColumn: 40px
+contentFigure: printed-colour
+contentFigureSize: 2rem
+
+focus: native
+radiusControl: 2px
+radiusOverlay: 4px
+buttonPressed: translate-1px
+buttonDisabledSolid: opacity-0.45
+linkVisited: none
+linkInProse: ink-text-accent-underline
+fieldLine: border-single-line
+fieldSheet: background-multiline
+textareaGrowth: content
+checkMark: phosphor-check-bold-14
+radioShape: circle
+switchShape: square
+chipPainted: 2rem
+script: readers-prose-fields
+tabsPainted: junta
+loadingDelay: 300ms
+skeleton: typographic-pulse
+progress: rule-filled-with-ink
+motionException: waiting
 
 posture: quiet
 frame: app-frame
@@ -62,7 +96,7 @@ apparatusTreatment: margin-note
 disclosurePlacement: in-place
 overlayPolicy: irreversible-or-context-break
 sectionSeparation: space-then-offset-heading
-tabsModel: index
+tabsModel: folder-tab
 tabsPolicy: exclusive-sets-only
 collapseModel: reflow-not-restyle
 
@@ -99,10 +133,7 @@ secondaryAction: outline
 voice: action-oriented
 ctaMood: imperative
 
-deviations:
-  - decision: anel de foco desenhado, nao o outline nativo
-    because: acessibilidade de teclado num campo sem fundo e sem borda
-    target: outline nativo quando o adapter parar de sobrescrever o foco
+deviations: []
 
 overrides:
   - decision: size-control em 44px
@@ -114,6 +145,10 @@ guardrails:
   - rule: Nunca usar preenchimento em gradiente
     enforcement: stylelint
     signature: linear-gradient|radial-gradient
+    # A pauta e a unica excecao, e ela mora num mixin so, `field-sheet`. Ali o
+    # gradiente desenha FIO, nao preenchimento: e a diferenca entre uma guia de
+    # escrita e uma superficie pintada.
+    except: styles/atoms/_field.scss
   - rule: Nunca compor rotulo em caixa alta
     enforcement: stylelint
     signature: text-transform:\s*uppercase
@@ -124,8 +159,31 @@ guardrails:
   - rule: Nenhum literal de cor fora da camada 1
     enforcement: stylelint
     signature: color-no-hex
-  - rule: Apagar uma receita salva exige modal de confirmacao
+  - rule: Apagar conteudo do usuario exige modal de confirmacao
     enforcement: ledger
+  - rule: Nunca remover o outline de foco sem devolver um indicador
+    enforcement: stylelint
+    signature: outline:\s*(0|none)
+  - rule: Tinta cheia e da acao; nenhuma decoracao usa fg-default ou fg-emphasis
+    enforcement: document
+  - rule: Icone preenchido so no estado marcado pelo leitor
+    enforcement: document
+  - rule: Titulo leva no maximo uma marca, e nunca icone de sistema
+    enforcement: document
+  - rule: Onde ha figura de conteudo, as acoes daquela area sao palavra
+    enforcement: document
+  - rule: Hover so em media (hover - hover)
+    enforcement: document
+  - rule: Placeholder nunca substitui o rotulo
+    enforcement: document
+  - rule: Chip de filtro so para escolha multipla; escolha unica e radio ou abas
+    enforcement: document
+  - rule: Nenhum retorno de espera aparece antes de 300ms, exceto o botao carregando
+    enforcement: document
+  - rule: Controle nunca vira esqueleto; so o conteudo espera
+    enforcement: document
+  - rule: Barra de progresso sempre com o valor escrito
+    enforcement: document
   - rule: Nenhuma regiao de tela com fundo proprio
     enforcement: document
   - rule: Aparato nunca com a largura do conteudo
@@ -154,9 +212,24 @@ apenas mais escuro, ou seja, tem mais tinta.
 
 **Livro e caderno sao modos distintos.** Leitura e composicao, escrita e pauta.
 A distincao e de MONTAGEM: quais componentes entram na tela e como se arranjam,
-nunca o mesmo componente vestido diferente por atributo de pagina. A pauta e a
-manuscrita pertencem ao campo de escrita da receita, que e um componente
-proprio; qualquer outro campo usa a familia de corpo.
+nunca o mesmo componente vestido diferente por atributo de pagina. Nao ha um
+"modo caderno" que se liga: ha telas em que os componentes escolhidos — campo,
+caixa de marcar, pauta — compoem uma coisa com cara de caderno.
+
+A pauta pertence a TODO campo multilinha: e ela que mostra onde se escreve num
+campo sem fundo e sem contorno.
+
+**Manuscrita e o que o LEITOR escreve; impressa e o que o PRODUTO escreve.** A
+Caveat e a letra de quem usa o caderno, entao ela e de todo campo de frase —
+`text`, `search` e a textarea — e e ela que faz o caderno ser o caderno de
+alguem. Tudo o que o produto escreve fica na familia de corpo: rotulo, ajuda,
+opcao de select, valor calculado.
+
+A borda da regra e o que o campo GUARDA. Uma frase e do leitor: o titulo da
+receita, o modo de preparo, uma nota. Um dado nao e: e-mail, senha, data e
+quantidade tem forma definida por fora, e a manuscrita ali atrapalha em vez de
+dar voz — numa quantidade ela quebra o papel `numeric`, que e tabular justamente
+para os algarismos alinharem numa coluna.
 
 **A segunda tinta e do autor, o realce e do leitor.** O accent marca o que
 pertence ao documento: acao, link, marca de margem. Estado efemero — hover,
@@ -247,7 +320,7 @@ custa zero e o dia do tema escuro chega.
 | `--app-fg-subtle` | a10 | terciario, placeholder, folio |
 | `--app-fg-disabled` | a9 | tinta apagada |
 | `--app-fg-accent` | accent a11 | a segunda tinta em texto |
-| `--app-fg-on-solid` | contrast | tinta invertida sobre qualquer solido |
+| `--app-fg-on-solid` | 1 | tinta invertida sobre qualquer solido: o papel, nunca branco puro |
 
 **Papel**, deliberadamente pequena. Superficie entintada significa *material de
 outra natureza*, nunca altura:
@@ -263,8 +336,14 @@ Papel e tinta usam o mesmo eixo de proeminencia: `muted` e mais entintado que
 `subtle` nas duas familias. A folha sobreposta nao tem token proprio — e o
 mesmo papel da pagina, distinguida por sombra e fio.
 
-**Fio e borda:** `--app-rule` (a6), `--app-border-default` (a7),
-`--app-border-strong` (a8).
+**Fio e borda:** `--app-rule` (a6), `--app-border-default` (a9),
+`--app-border-strong` (a10).
+
+A distancia entre o fio e as bordas nao e estetica. A borda identifica um
+controle, entao ela responde ao criterio 1.4.11 e precisa de 3:1 contra a
+pagina; medidos no navegador, a9 da 3.35:1 e a10 da 3.86:1. O fio divide espaco
+e nao identifica nada — pauta, separador de lista, trilho de progresso — entao
+ele fica em a6, e subi-lo transformaria a folha pautada numa grade.
 
 **Solido**, preenchimento raro: `--app-bg-accent-solid` (accent 9),
 `--app-bg-neutral-solid` (neutral 9), `--app-bg-danger-solid` (danger 9), cada
@@ -273,7 +352,7 @@ pressionado repete o hover e se diferencia por outra propriedade.
 
 **Estado**, o territorio nativo de tela: `--app-bg-hover` (a3),
 `--app-bg-active` (a4), `--app-bg-selected` (a5), `--app-border-selected`
-(accent a8, a marca de margem), `--app-focus-ring` (accent a8).
+(accent a8, a marca de margem). O foco nao tem token: ele e o anel do navegador.
 
 **Status:** `--app-fg-danger`, `--app-bg-danger-subtle`, `--app-border-danger`,
 `--app-fg-success`, `--app-bg-success-subtle`, `--app-fg-warning`,
@@ -294,21 +373,27 @@ hierarquia e tamanho, familia e espaco. O sistema usa dois pesos, 400 e 500, o
 
 Escala: `0.79 · 0.889 · 1 · 1.125 · 1.25 · 1.563 · 1.953 · 2.441` rem.
 
-| papel | rem | familia | entrelinha | onde |
-| --- | --- | --- | --- | --- |
-| `display` | 2.441 | serif | 1.1 | titulo da receita |
-| `title-lg` | 1.953 | serif | 1.1 | titulo de pagina |
-| `title-md` | 1.563 | serif | 1.25 | "Ingredientes", "Modo de preparo" |
-| `title-sm` | 1.25 | serif | 1.25 | titulo de item |
-| `subtitle` | 1.25 | serif italico | 1.6 | o headnote |
-| `body-lg` | 1.25 | serif | 1.6 | prosa destacada |
-| `body` | 1.125 | serif | 1.778 | modo de preparo, prosa |
-| `body-sm` | 1 | serif | 1.6 | texto secundario longo |
-| `label` | 1 | serif | 1.4 | botao, rotulo de campo, nav |
-| `label-sm` | 0.889 | serif | 1.4 | rotulo curto |
-| `quantity` | 1.125 | serif tabular | 1.4 | coluna de quantidades |
-| `caption` | 0.889 | serif | 1.4 | meta, categoria, credito, rodape |
-| `script` | 1.25 | Caveat | 1.4 | so no campo de escrita do caderno |
+O peso faz parte do papel: o 500 e dos papeis de INTERFACE, e so deles.
+
+| papel | rem | peso | familia | entrelinha | onde |
+| --- | --- | --- | --- | --- | --- |
+| `display` | 2.441 | 400 | serif | 1.1 | titulo do documento |
+| `title-lg` | 1.953 | 400 | serif | 1.1 | titulo de pagina |
+| `title-md` | 1.563 | 400 | serif | 1.25 | titulo de secao |
+| `title-sm` | 1.25 | 400 | serif | 1.25 | titulo de item |
+| `subtitle` | 1.25 | 400 | serif italico | 1.6 | o headnote |
+| `body-lg` | 1.25 | 400 | serif | 1.6 | prosa destacada |
+| `body` | 1.125 | 400 | serif | 1.778 | prosa, e o que se digita num campo |
+| `body-sm` | 1 | 400 | serif | 1.6 | texto secundario longo, frase de escolha |
+| `label` | 1 | **500** | serif | 1.4 | botao, rotulo de campo, aba, nav, chip |
+| `label-sm` | 0.889 | **500** | serif | 1.4 | rotulo curto, titulo de aparato |
+| `numeric` | 1.125 | 400 | serif tabular | 1.4 | qualquer coluna de numero |
+| `caption` | 0.889 | 400 | serif | 1.4 | meta, legenda, tag, credito, rodape |
+| `script` | 1.25 | 400 | Caveat | 1.4 | o que o leitor escreve: campo de frase |
+
+`numeric` nao fala do dominio de proposito: ele serve a quantidade de um
+ingrediente, a um valor nutricional e a uma celula de tabela, e o design system e
+um pacote em que a receita nao mora.
 
 As entrelinhas de prosa nao sao gosto: elas sao o que faz uma linha medir uma
 unidade de ritmo. `body` e 1.125rem × 1.778 = 2rem; `body-lg` e 1.25rem × 1.6 =
@@ -501,10 +586,33 @@ inteiro para alcancar o proximo assunto e hostil.
 esse caso: nutricional e relacionadas acompanham o preparo, nao competem com
 ele.
 
-Aba aqui e indice, nao pasta. Rotulos em `label` numa linha, fio inferior
-continuo atravessando a linha inteira, ativo com fio accent sob o rotulo mais
-`fg-emphasis`. Sem fundo, sem raio, sem borda contornando o rotulo. E a marca de
-margem da barra lateral, girada.
+Aba aqui e a LINGUETA DE UM FICHARIO: puxa e cai na pagina. O que a faz lingueta
+nao e a caixa — uma caixa que nao toca a pagina e um chip —, e a JUNTA. Um fio
+corre sob a fila inteira e separa o cabecalho da pagina; a aba escolhida APAGA
+esse fio no pedaco dela, e o contorno dela passa a ser o contorno da pagina. As
+outras ficam fechadas embaixo, folhas atras.
+
+Nao ha preenchimento em lugar nenhum, e nem precisa: a pagina e papel e nada e
+mais claro que ela. O que separa a escolhida das outras e mais tinta — contorno
+`border-strong`, rotulo em `fg-emphasis` — mais a junta. E o §11 sem inventar
+superficie.
+
+Tres degraus de tinta dizem a profundidade, do fundo para a frente: a folha atras
+tem o contorno da hairline, o fio da pagina e um degrau acima, e a lingueta
+escolhida e o mais escuro dos tres.
+
+A fila e de uma linha so. Uma lingueta que desce para a linha de baixo nao e
+lingueta de coisa nenhuma, porque so a ultima fila encosta na pagina — quando nao
+couber, a fila rola, e nao quebra.
+
+O custo e de linha, e vale saber qual e: o indice gastava dois fios fixos, e aqui
+se gasta um fio sob a fila mais um contorno por aba. Com poucas abas empata, com
+muitas piora — e ai a saida e apagar o contorno de REPOUSO, porque a escolhida
+continua marcada pela tinta e pela junta.
+
+O painel nao leva borda. Um contorno em volta do conteudo seria uma SEGUNDA
+junta, desenhando outra vez o limite que a lingueta ja desenha, e duas linhas
+dizendo a mesma coisa e o sinal de que uma sobra.
 
 ### Colapso
 
@@ -521,41 +629,103 @@ O peso do botao comunica **o custo de desfazer**, nao a importancia da acao.
 
 1. **Compromisso** — preenchido com accent. Um por tela, no maximo. So o ato que
    produz ou destroi algo: salvar, publicar, excluir.
-2. **Estruturante** — contorno com fio, sem preenchimento. Adicionar
-   ingrediente, cancelar, duplicar. E o botao do dia a dia.
+2. **Estruturante** — contorno com BORDA (`border-default`), sem preenchimento.
+   Adicionar, cancelar, duplicar. E o botao do dia a dia. Borda e nao fio porque,
+   pela definicao do §2, o que contorna um objeto e borda.
 3. **Navegacao e edicao leve** — texto com accent, sem borda e sem fundo.
    Editar, ver mais, trocar unidade, filtrar.
 4. **Destrutiva secundaria** — texto em danger. Preenchido em danger apenas na
    confirmacao final dentro do modal.
 
+Icone no botao so no estruturante, e so com desenho universal; o compromisso e
+sempre um verbo, e ele ja e o unico preenchido da tela.
+
+**PALAVRA PRIMEIRO.** O icone e a lingua da sinalizacao e existe para ser
+entendido sem leitura; o livro supoe um leitor e fala com palavras. O icone de
+sistema entra em tres casos: quando nao ha espaco para a palavra, quando a acao e
+universal (+, lupa, X, tres pontos) ou quando o icone E o proprio controle (a
+seta do select, o tique da caixa). Fora deles, a palavra basta.
+
+Quatro regras impedem que os icones se somem a tela que ja tem figuras: onde ha
+figura de conteudo, as acoes daquela area sao palavra; acao repetida em cada
+linha vira modo ou menu; num grupo, todos tem icone ou nenhum tem; e nenhum
+controle leva dois icones decorativos.
+
+**A tinta cheia e da acao.** Nenhuma decoracao usa `fg-default` ou `fg-emphasis`.
+E o que faz o olho separar sem esforco o que se toca do que se olha, junto com o
+lugar (a linha de acao, nao a coluna de margem) e a resposta ao ponteiro.
+
 **Sublinhado significa exatamente uma coisa: leva a outro lugar.** Sempre
-presente em link dentro de texto corrido, porque em prosa ninguem distingue cor
-de enfase de cor de link. Fora de prosa, so no hover. Sublinhado fino e
-deslocado para baixo, respeitando o descendente. Enfase e italico ou peso,
-jamais sublinhado.
+presente em link dentro de texto corrido: ali o texto fica na tinta do corpo e so
+o sublinhado leva accent, porque em prosa ninguem distingue cor de enfase de cor
+de link, e com o sublinhado presente pintar tambem o texto e redundante. Fora de
+prosa, o texto e accent e o sublinhado so aparece no hover — todo link tem accent
+em algum lugar, ou no texto ou na linha. No hover o sublinhado engrossa, o mesmo
+gesto do fio do campo no foco. Sublinhado fino e deslocado para baixo,
+respeitando o descendente. Enfase e italico ou peso, jamais sublinhado. Link
+visitado nao tem aparencia propria, e link nunca leva icone.
 
 ## 9. Estado
 
 Selecionado e neutro: `bg-selected` mais tinta em `fg-emphasis`. Se precisar de
 mais forca, um fio accent na borda inicial — a marca de margem — e so.
 
-Desabilitado e tinta palida, nunca caixa cinza.
+Desabilitado e tinta palida, nunca caixa cinza. Nos pesos preenchidos, o
+controle inteiro vai a 0.45, para o accent continuar reconhecivel mas apagado.
 
-Foco engrossa e escurece o fio existente, e o anel de `--app-focus-ring` vem
-junto — um mecanismo so para o sistema inteiro. O anel e desvio declarado no
-front matter: num campo sem fundo e sem borda, so o fio nao sustenta navegacao
-por teclado.
+Carregando NAO e desabilitado. O botao mantem forma, cor e largura; o rotulo
+some por opacidade e o spinner aparece na tinta do proprio botao. Ele nao esta
+indisponivel, esta trabalhando.
+
+Foco e o do navegador: outline nativo em `:focus-visible`, nunca sobrescrito por
+sombra, e o navegador decide quando ele aparece. A caixa focavel e o alvo
+inteiro, para que o anel contorne a area de interacao e nao so o desenho. O
+campo, alem disso, engrossa e escurece o fio de base.
+
+Pressionado desce 1px, em todos os pesos e em todo controle que se aperta.
+
+Hover so em `@media (hover: hover)`. No telefone o navegador mantem o hover
+depois do toque, e o lavado ficaria preso no controle; ali o retorno e o
+pressionado.
 
 Hover e alfa sobre o que estiver embaixo, nunca valor fixo.
 
 ## 10. Componentes
 
-**Campo de texto.** Fio inferior apenas. Sem fundo, sem contorno, sem raio.
-Rotulo acima em `fg-muted`. Foco engrossa o fio. Erro troca o fio para danger e
-a mensagem vai abaixo em `fg-danger`. Altura de uma linha do ritmo.
+**Campo de texto.** Fio de base apenas, e ele e BORDA, porque identifica o
+controle e precisa de 3:1. Sem fundo, sem contorno, sem raio. Rotulo acima em
+`fg-muted`. O texto pousa perto do fio, e a sobra da caixa de 44px fica acima
+dele. Placeholder so mostra exemplo, nunca substitui o rotulo. Foco engrossa e
+escurece o fio. Erro troca o fio para danger e a mensagem vai abaixo em
+`fg-danger`. Somente leitura nao tem fio: e texto impresso.
 
-**Textarea.** Mesma logica, e aqui vale a pauta: fios horizontais repetidos na
-altura da linha. E o momento mais caderno do produto.
+**Textarea.** O campo de texto com pauta. A ULTIMA linha da pauta e o fio de
+base: e ela que identifica o campo e recebe o foco; as outras sao guia, em
+`rule`. Ela cresce com o texto e nunca rola por dentro. Uma textarea de uma
+linha fica identica a um input.
+
+**Campo manuscrito.** Textarea com tinta `script`. E o unico lugar do sistema
+onde a manuscrita aparece.
+
+**Select.** A caixa fechada e a do campo de texto, com a seta no fim. A lista de
+opcoes e a do sistema.
+
+**Caixa de marcar, radio e interruptor.** Desenham em 20px, marcados em
+`neutral-solid`, e a linha inteira e o alvo. O radio e redondo porque ali a forma
+E o significado; o interruptor e quadrado.
+
+**Chip.** Contornado e clicavel: 32px pintados dentro de um alvo de 44px, raio de
+controle, tique quando selecionado, X quando removivel. O chip de filtro serve so
+para escolha multipla.
+
+**Esqueleto.** A forma tipografica do que vem: barras finas centradas na linha,
+em `bg-subtle`, raio zero, pulso lento de opacidade.
+
+**Progresso.** Um fio que se enche de tinta: trilho em `rule`, avanco em
+`neutral-solid`, sempre com o valor escrito ao lado.
+
+**Imagem.** Quadrada, recortada, sem raio, sem borda. A foto aparece como e; o
+tratamento impresso e so das figuras de conteudo.
 
 **Item de receita.** Sem fundo, sem borda, sem sombra, sem raio. Separado por
 espaco; fio entre itens so em lista densa. O item inteiro e a area de clique,
@@ -572,12 +742,32 @@ marcado por fio accent na borda inicial mais `fg-emphasis`.
 abaixo do titulo, conteudo, acoes no rodape a direita.
 
 **Tag e marcador.** `bg-subtle`, tinta em `fg-muted`, raio zero, padding minimo.
+Estatica: se o lavado fosse clicavel, o componente seria um chip — e por isso o
+chip e contornado, para os dois se distinguirem pela aparencia.
 
-**Lista de ingredientes.** Sem marcador de lista, quantidade e ingrediente
-separados por espaco ou fio pontilhado de conducao, cada item numa linha do
-ritmo. No modo caderno ganha caixa de marcar.
+**Icone.** Contorno, na tinta do elemento que o contem, num tamanho so.
+Preenchido so no estado marcado pelo leitor. Nunca ao lado de titulo, de rotulo
+de campo, em tag, em legenda ou como marcador de lista.
 
-**Passos de preparo.** Numeracao em `fg-muted` deslocada para a margem, texto em
+**Ornamento.** O losango e a unica forma de ornamento. Antes do titulo de secao,
+em accent, na coluna de margem: ou todas as secoes do documento tem, ou nenhuma.
+Titulo de pagina e titulo de item nao levam marca.
+
+**Figura de conteudo.** Vinheta de secao e figura de item: uma linha do ritmo,
+decorativas, na coluna de margem, em cor impressa. A cor do conteudo nunca
+aparece na interface.
+
+**A coluna de margem.** Losango, numero de passo, vinheta, figura de item e caixa
+de marcar moram todos na mesma coluna, no inicio da linha, com uma largura so.
+Uma marca por linha: nunca marcador junto com figura, nunca losango junto com
+vinheta.
+
+**Lista com quantidade.** Sem marcador de lista; quando ha figura, ela ocupa a
+coluna de margem no lugar dele. Quantidade em `numeric`, cada item numa linha do
+ritmo. Numa lista de marcar, a caixa ocupa a coluna, e o item marcado recua para
+`fg-muted` — sem risco sobre o texto, que atrapalha quem ainda confere a lista.
+
+**Lista de passos.** Numeracao em `fg-muted` na coluna de margem, texto em
 `fg-default` respeitando a medida.
 
 **Tabela.** Fios horizontais apenas. Cabecalho em `fg-muted` com fio mais forte
@@ -587,8 +777,16 @@ abaixo.
 revelado respeitando a medida. Sem caixa, sem raio, sem fundo. Dois itens
 vizinhos nao produzem fios paralelos: o fio pertence ao item, nao ao grupo.
 
-**Abas.** Fio inferior continuo, ativo com fio accent sob o rotulo. O painel nao
-tem superficie nem borda — e a pagina continuando abaixo do fio.
+**Abas.** A junta: um fio sob a fila, contorno de tres lados em cada lingueta, e
+a escolhida apagando o fio no pedaco dela. Sem preenchimento; a escolhida se
+marca com contorno forte e `fg-emphasis`. O painel nao tem superficie nem borda —
+e a pagina continuando abaixo da fila.
+
+**Lingueta de caderno.** A tira vertical presa na borda da folha, que e outro
+componente e nao uma aba: ela tem forma propria, sai do limite do conteudo e abre
+pelo lado que continua nele. Aqui a junta nao cabe — nao ha fio sob a fila para
+apagar, porque o que ela encosta e a borda da folha —, entao a escolha se marca
+como no chip: lavado de selecionado, contorno mais forte e a tinta de enfase.
 
 **Aparato.** Coluna de nota de margem: `body-sm` e `caption` em `fg-muted`,
 medida propria, sem fundo. Titulos internos em `label-sm`. Separado do conteudo
@@ -612,17 +810,36 @@ Repouso, hover, active e selected sao monotonicamente mais entintados, nessa
 ordem. Estado mais claro que o anterior esta errado, e knob de estado com valor
 igual ao repouso e bug, nao decisao.
 
+A regra governa o FUNDO de um componente ao longo dos estados dele. Ela nao
+governa contorno contra preenchimento, que sao quantidades de tinta diferentes
+na mesma cor — e sao a mesma cor por construcao da rampa, onde o passo alfa N
+sobre o passo 1 da o passo solido N. A caixa de marcar desmarcada e um contorno
+em `border-strong`; marcada, e uma area em `neutral-solid`, um degrau mais
+clara. Nao e violacao: o que separa marcado de desmarcado e forma —
+preenchimento mais tique —, como no resto do sistema.
+
 O orcamento de accent se conta por tela, nao por componente. Barra de navegacao,
 rodape, cabecalho de tabela, progresso e indicador nao sao preenchidos em
 accent. Controle marcado — caixa, radio, interruptor — usa `neutral-solid`,
 porque marcacao e do leitor.
 
+Nenhum retorno de espera usa accent: esperar e tinta neutra. E nada aparece antes
+de 300ms, porque um esqueleto que pisca por 100ms e pior que nenhum — so o botao
+carregando responde na hora, porque o leitor acabou de aperta-lo.
+
 `radius-overlay` pertence ao que pousa sobre a pagina: modal, popover,
-dropdown, toast, offcanvas. Item, lista, acordeao e abas usam zero.
+dropdown, toast, offcanvas, tooltip. Item, lista, acordeao, abas, campo e tag
+usam zero.
 
 `--app-size-control` e area de toque, nunca tamanho pintado. Caixa de marcar,
 radio e interruptor desenham no tamanho do icone e recebem o alvo pela area
 clicavel.
+
+**A caixa focavel E o alvo.** O que e pintado fica dentro dela, transparente em
+volta, porque o anel nativo contorna a caixa do elemento e nao um pseudo-elemento
+sobreposto: um alvo desenhado por fora poe o anel em volta do desenho, e nao em
+volta da area que responde ao toque. Dois alvos vizinhos nao podem se cruzar, e
+nenhum sobrevive dentro de um pai com `overflow: hidden`.
 
 ## 12. Proibicoes
 
@@ -657,12 +874,16 @@ pagina. Branco puro em qualquer lugar que nao seja a pagina. Icone colorido para
 transmitir estado. Mais de um preenchido por tela. Sombra em elemento que nao e
 folha sobreposta. Eyebrow — rotulo curto acima do titulo. Caixa alta em rotulo.
 Sublinhado como enfase. Rampa numerada dentro da camada 3. Hover resolvido com
-token de superficie. Raio de folha em elemento que nao e folha. Manuscrita fora
-do campo de escrita. Knob de estado identico ao repouso. Regiao de tela com
+token de superficie. Raio de folha em elemento que nao e folha. Manuscrita em
+campo de dado — e-mail, senha, data, quantidade. Knob de estado identico ao repouso. Regiao de tela com
 fundo proprio. Aparato com a largura do conteudo. Folha sobreposta para revelar
-o que cabe no lugar. Aba com fundo, raio ou borda. Colecao em multiplas colunas
+o que cabe no lugar. Colecao em multiplas colunas
 quando o item tem prosa. Hierarquia de vitrine resolvida por embalagem em vez de
-tamanho. Componente chamado card.
+tamanho. Componente chamado card. Anel de foco desenhado com sombra. Asterisco
+vermelho marcando o campo obrigatorio — o sistema marca o OPCIONAL. Campo verde
+a cada acerto. Ponto de notificacao sobreposto ao canto de um icone. Icone so,
+sem palavra, para uma acao especifica do produto. Dois tamanhos de icone na mesma
+tela. Icone preenchido como decoracao.
 
 ## 13. Como este arquivo e usado
 

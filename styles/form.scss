@@ -1,10 +1,10 @@
-@use './component' as component;
+// notebook-layout/styles/form.scss
 
 .label {
-  display: flex;
   align-items: center;
-  gap: 8px;
+  display: flex;
   flex-wrap: wrap;
+  gap: var(--app-space-xs);
 
   small {
     display: block;
@@ -13,30 +13,33 @@
 }
 
 .fieldset {
-  // Bound through the contract, not spelled as `var(--app-field-*)`. Layer 3
-  // reserves these names but does not emit them, so both declarations resolved
-  // to nothing and every fieldset in the product shipped with no border and no
-  // radius — the failure is silent, which is why it survived. `border-radius`
-  // was also the wrong name: the contract calls it `$field-radius`.
-  border: component.$field-border;
-  border-radius: component.$field-radius;
-  padding: 0 var(--app-pad-surface) 16px;
+  border: 0;
+  margin: 0;
+  padding: 0;
 
   > legend {
-    font-weight: bold;
-    padding: 8px;
-    font-size: var(--app-font-size);
+    color: var(--app-fg-muted);
+    float: none;
+    font: var(--app-text-label);
+    margin-block-end: var(--app-space-2xs);
+    padding: 0;
+    width: auto;
   }
 
   > label {
-    display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: var(--app-font-size);
+    display: flex;
+    gap: var(--app-space-xs);
     min-height: var(--app-size-control);
   }
 
   > p {
-    margin-bottom: 8px;
+    color: var(--app-fg-muted);
+    font: var(--app-text-caption);
+    margin-block-end: var(--app-space-xs);
+  }
+
+  + .fieldset {
+    margin-block-start: var(--app-rhythm-1);
   }
 }

@@ -126,17 +126,21 @@
 }
 
 .l-target {
-  position: relative;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: var(--l-target-size, var(--app-size-control));
+  min-inline-size: var(--l-target-size, var(--app-size-control));
 
-  &::after {
-    block-size: 100%;
-    content: '';
-    inline-size: 100%;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    min-block-size: var(--l-target-size, var(--app-size-control));
-    min-inline-size: var(--l-target-size, var(--app-size-control));
-    position: absolute;
-    transform: translate(-50%, -50%);
+  &.-flush {
+    margin-block: calc(
+      (
+          var(--l-target-painted, 1lh) - var(
+              --l-target-size,
+              var(--app-size-control)
+            )
+        ) /
+        2
+    );
   }
 }

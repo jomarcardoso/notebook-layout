@@ -1,0 +1,153 @@
+// notebook-layout/styles/atoms/_chip.scss
+
+.chip {
+  --chip-painted: var(--app-rhythm-1);
+
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--app-fg-default);
+  display: inline-flex;
+  font: var(--app-text-label);
+  gap: 6px;
+  // O alvo e a caixa; o que e pintado fica centrado dentro dela.
+  isolation: isolate;
+  min-block-size: var(--app-size-control);
+  min-inline-size: var(--app-size-control);
+  padding-inline: 12px;
+  position: relative;
+  white-space: nowrap;
+
+  &::before,
+  &::after {
+    border-radius: var(--app-radius-control);
+    content: '';
+    inset-block: calc((var(--app-size-control) - var(--chip-painted)) / 2);
+    inset-inline: 0;
+    position: absolute;
+    z-index: -1;
+  }
+
+  &::before {
+    border: var(--app-border-width) solid var(--app-border-default);
+    transition-duration: var(--app-duration-fast);
+    transition-property: background-color, border-color;
+    transition-timing-function: var(--app-ease);
+  }
+
+  &::after {
+    background-color: var(--app-bg-hover);
+    opacity: 0;
+    transition: opacity var(--app-duration-fast) var(--app-ease);
+  }
+}
+
+.chip > input {
+  appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  margin: 0;
+  position: absolute;
+}
+
+.chip > input:disabled {
+  cursor: not-allowed;
+}
+
+.chip-check {
+  display: none;
+}
+
+.chip:has(> input:checked) > .chip-check {
+  display: block;
+}
+
+.chip:has(> input:disabled) {
+  color: var(--app-fg-disabled);
+
+  &::before {
+    border-color: var(--app-rule);
+  }
+}
+
+.chip:has(> input:checked),
+.chip[aria-pressed='true'] {
+  color: var(--app-fg-emphasis);
+  padding-inline-start: 8px;
+
+  &::before {
+    background-color: var(--app-bg-selected);
+    border-color: var(--app-border-strong);
+  }
+}
+
+button.chip {
+  cursor: pointer;
+
+  &:active:not(:disabled) {
+    translate: 0 1px;
+
+    &::before {
+      background-color: var(--app-bg-active);
+    }
+  }
+
+  &:disabled {
+    color: var(--app-fg-disabled);
+    cursor: not-allowed;
+
+    &::before {
+      border-color: var(--app-rule);
+    }
+  }
+}
+
+@media (hover: hover) {
+  button.chip:hover:not(:disabled)::after,
+  .chip:has(> input:hover:not(:disabled))::after {
+    opacity: 1;
+  }
+}
+
+.chip-removable {
+  padding-inline-end: 0;
+}
+
+.chip-remove {
+  align-items: center;
+  background: none;
+  border: 0;
+  color: var(--app-fg-default);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  // Aproxima o X do texto e da borda pintada.
+  margin-inline: -8px -6px;
+  min-block-size: var(--app-size-control);
+  min-inline-size: var(--app-size-control);
+  padding: 0;
+}
+
+@media (hover: hover) {
+  .chip-removable:has(.chip-remove:hover)::after {
+    opacity: 1;
+  }
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  list-style: none;
+  padding-inline-start: 0;
+
+  &:has(.chip-removable) {
+    column-gap: 12px;
+  }
+
+  &.-full > * {
+    flex-grow: 1;
+  }
+}

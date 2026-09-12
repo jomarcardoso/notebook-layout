@@ -1,0 +1,35 @@
+// notebook-layout/styles/atoms/_tag.scss
+
+.badge {
+  background-color: var(--app-bg-subtle);
+  border-radius: 0;
+  color: var(--app-fg-muted);
+  font: var(--app-text-caption);
+  padding: 2px 6px;
+  white-space: nowrap;
+
+  &[data-status='success'] {
+    background-color: var(--app-bg-success-subtle);
+    color: var(--app-fg-success);
+  }
+
+  &[data-status='warning'] {
+    background-color: var(--app-bg-warning-subtle);
+    color: var(--app-fg-warning);
+  }
+
+  &[data-status='danger'] {
+    background-color: var(--app-bg-danger-subtle);
+    color: var(--app-fg-danger);
+  }
+
+  &[data-count] {
+    font-variant-numeric: lining-nums var(--app-numeric-tabular);
+  }
+}
+
+.count {
+  color: var(--app-fg-muted);
+  font-variant-numeric: lining-nums var(--app-numeric-tabular);
+  font-weight: var(--app-font-weight-body);
+}

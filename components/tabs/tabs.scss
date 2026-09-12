@@ -1,43 +1,77 @@
+// notebook-layout/components/tabs/tabs.scss
+
 @use '../../styles/component' as component;
 
 .tabs {
+  border-block-end: component.$tabs-rule-width solid component.$tabs-rule-color;
+
   .tabs__input {
     appearance: none;
-    position: absolute;
+    block-size: 100%;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inline-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    position: absolute;
+  }
+
+  .tabs__tab {
+    align-items: center;
+    border: component.$tabs-border-width solid component.$tabs-border-color;
+    border-block-end-color: component.$tabs-rule-color;
+    border-start-end-radius: component.$tabs-radius;
+    border-start-start-radius: component.$tabs-radius;
+    color: component.$tabs-tab-fg;
+    cursor: pointer;
+    display: flex;
+    font: component.$tabs-tab-font;
+    justify-content: center;
+    min-block-size: var(--app-size-control);
+    padding-inline: component.$tabs-pad-x;
+    position: relative;
+    transition-duration: var(--app-duration-fast);
+    transition-property: background-color, border-color, color;
+    transition-timing-function: var(--app-ease);
+    white-space: nowrap;
   }
 
   .tabs__input:checked + .tabs__tab {
-    background-color: component.$tabs-tab-bg-selected;
+    border-color: component.$tabs-border-color-selected;
+    border-block-end-color: component.$tabs-junta-color;
     color: component.$tabs-tab-fg-selected;
-    box-shadow: component.$tabs-tab-shadow-selected;
-  }
-
-  .tabs__input:focus-visible + .tabs__tab {
-    outline: component.$field-border;
-    outline-offset: -2px;
   }
 
   .tabs__input:disabled + .tabs__tab {
+    border-color: component.$tabs-border-color-disabled;
+    border-block-end-color: component.$tabs-rule-color;
+    color: component.$tabs-tab-fg-disabled;
     cursor: not-allowed;
-    opacity: 0.5;
   }
 
-  // THE TRACK BELONGS TO THE ADAPTER NOW. 0.9.4 gave `.nav-pills` its recess,
-  // its inset and its concentric corner as PROPERTIES, because CoreUI ships the
-  // class as bare links and has no variable for any of the three. This block was
-  // painting the same four things a second time, and one of them — the inset —
-  // as a literal `4px` where `$tabs-pad` now exists.
-  //
-  // What stays below is the half the adapter cannot reach: this component marks
-  // its chosen segment with `:checked +` on a sibling label rather than with
-  // `.active`, so the library's own active rule never fires on it.
-
-  .nav-link {
+  .nav-item {
+    display: flex;
+    flex: none;
     position: relative;
+  }
+
+  .nav {
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: component.$tabs-gap;
+    margin-block-end: calc(-1 * component.$tabs-rule-width);
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-inline-start: component.$tabs-lead;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+@media (hover: hover) {
+  .tabs .tabs__input:hover:not(:checked, :disabled) + .tabs__tab {
+    background-color: component.$tabs-bg-hover;
+    color: component.$tabs-tab-fg-hover;
   }
 }

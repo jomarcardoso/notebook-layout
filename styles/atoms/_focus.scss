@@ -1,0 +1,20 @@
+// notebook-layout/styles/atoms/_focus.scss
+
+$_focusable: '.btn, .btn-close, .form-control, .form-select, .form-check-input, .form-range, .nav-link, .page-link, .dropdown-item, .accordion-button, .list-group-item-action, .chip';
+
+// 1. Nenhuma sombra de foco, nem no clique.
+:is(#{$_focusable}):focus {
+  box-shadow: none;
+}
+
+// 2. O ANEL, EM TUDO QUE RECEBE FOCO.
+*:focus-visible {
+  outline: revert;
+  outline-offset: var(--app-ring-offset);
+}
+
+// 3. Onde a biblioteca insiste na sombra, ela para.
+:is(#{$_focusable}):focus-visible,
+.btn-check:focus-visible + .btn {
+  box-shadow: none;
+}
