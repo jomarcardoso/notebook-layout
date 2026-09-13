@@ -616,23 +616,26 @@ corre sob a fila inteira e separa o cabecalho da pagina; a aba escolhida APAGA
 esse fio no pedaco dela, e o contorno dela passa a ser o contorno da pagina. As
 outras ficam fechadas embaixo, folhas atras.
 
-Nao ha preenchimento em lugar nenhum, e nem precisa: a pagina e papel e nada e
-mais claro que ela. O que separa a escolhida das outras e mais tinta — contorno
-`border-strong`, rotulo em `fg-emphasis` — mais a junta. E o §11 sem inventar
-superficie.
+A fila e entintada, `bg-subtle`, e as folhas de tras sao transparentes sobre ela,
+sem contorno e com rotulo em `fg-muted`; no hover ganham `bg-hover`, sem borda. A escolhida e a propria pagina: fundo `bg-page`, rotulo em
+`fg-emphasis` e o contorno de tres lados. Por ser a pagina ela e a mais clara da
+fila; nao e um estado pintado por cima, e a folha que veio para a frente.
 
-Tres degraus de tinta dizem a profundidade, do fundo para a frente: a folha atras
-tem o contorno da hairline, o fio da pagina e um degrau acima, e a lingueta
-escolhida e o mais escuro dos tres.
+O contorno da escolhida e o fio da fila sao a MESMA linha, em `rule`. E a borda de uma folha so, e duas cores ali viram linhas
+desencontradas nas quinas.
+
+A mecanica e a das abas do CoreUI (`.nav-tabs`), configurada por variavel e nao
+redesenhada: toda aba tem a mesma caixa, com borda transparente em repouso; a aba
+desce a espessura do fio sobre ele, e a escolhida pinta a propria borda de baixo
+com a cor da pagina, apagando o fio no pedaco dela. O que e nosso e so o fundo das
+folhas de tras, o raio de controle e a fila que rola em vez de quebrar.
 
 A fila e de uma linha so. Uma lingueta que desce para a linha de baixo nao e
 lingueta de coisa nenhuma, porque so a ultima fila encosta na pagina — quando nao
 couber, a fila rola, e nao quebra.
 
-O custo e de linha, e vale saber qual e: o indice gastava dois fios fixos, e aqui
-se gasta um fio sob a fila mais um contorno por aba. Com poucas abas empata, com
-muitas piora — e ai a saida e apagar o contorno de REPOUSO, porque a escolhida
-continua marcada pela tinta e pela junta.
+O custo e de linha: um fio sob a fila e um contorno so, o da escolhida. As de tras
+se distinguem pelo fundo, e nao gastam linha nenhuma.
 
 O painel nao leva borda. Um contorno em volta do conteudo seria uma SEGUNDA
 junta, desenhando outra vez o limite que a lingueta ja desenha, e duas linhas
@@ -816,10 +819,11 @@ abaixo.
 revelado respeitando a medida. Sem caixa, sem raio, sem fundo. Dois itens
 vizinhos nao produzem fios paralelos: o fio pertence ao item, nao ao grupo.
 
-**Abas.** A junta: um fio sob a fila, contorno de tres lados em cada lingueta, e
-a escolhida apagando o fio no pedaco dela. Sem preenchimento; a escolhida se
-marca com contorno forte e `fg-emphasis`. O painel nao tem superficie nem borda —
-e a pagina continuando abaixo da fila.
+**Abas.** As abas do CoreUI (`.nav-tabs`) configuradas: um fio sob a fila, a
+escolhida em `bg-page` e `fg-emphasis`, com contorno de tres lados na mesma cor do
+fio, apagando o fio no pedaco dela. A fila em `bg-subtle`; as de tras sem
+contorno, com rotulo em `fg-muted`, e no hover so o fundo muda. O painel nao tem superficie nem borda — e a pagina continuando
+abaixo da fila.
 
 **Lingueta de caderno.** A tira vertical presa na borda da folha, que e outro
 componente e nao uma aba: ela tem forma propria, sai do limite do conteudo e abre
@@ -847,7 +851,9 @@ valor nao e parentesco.
 
 Repouso, hover, active e selected sao monotonicamente mais entintados, nessa
 ordem. Estado mais claro que o anterior esta errado, e knob de estado com valor
-igual ao repouso e bug, nao decisao.
+igual ao repouso e bug, nao decisao. A aba escolhida nao e excecao a regra, e sim
+fora dela: ela nao pinta um estado sobre a aba, ela e a pagina, e as outras e que
+sao folhas entintadas atras.
 
 A regra governa o FUNDO de um componente ao longo dos estados dele. Ela nao
 governa contorno contra preenchimento, que sao quantidades de tinta diferentes

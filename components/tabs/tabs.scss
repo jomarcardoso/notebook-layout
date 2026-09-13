@@ -3,75 +3,37 @@
 @use '../../styles/component' as component;
 
 .tabs {
-  border-block-end: component.$tabs-rule-width solid component.$tabs-rule-color;
+  overflow-x: auto;
+  scrollbar-width: none;
 
-  .tabs__input {
-    appearance: none;
-    block-size: 100%;
-    cursor: pointer;
-    inline-size: 100%;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    position: absolute;
+  .nav-tabs {
+    background-color: component.$tabs-bg;
+    flex-wrap: nowrap;
+    min-inline-size: max-content;
   }
 
-  .tabs__tab {
-    align-items: center;
-    border: component.$tabs-border-width solid component.$tabs-border-color;
-    border-block-end-color: component.$tabs-rule-color;
+  .nav-link {
     border-start-end-radius: component.$tabs-radius;
     border-start-start-radius: component.$tabs-radius;
-    color: component.$tabs-tab-fg;
-    cursor: pointer;
-    display: flex;
-    font: component.$tabs-tab-font;
-    justify-content: center;
-    min-block-size: var(--app-size-control);
-    padding-inline: component.$tabs-pad-x;
     position: relative;
-    transition-duration: var(--app-duration-fast);
-    transition-property: background-color, border-color, color;
-    transition-timing-function: var(--app-ease);
     white-space: nowrap;
   }
 
-  .tabs__input:checked + .tabs__tab {
-    border-color: component.$tabs-border-color-selected;
-    border-block-end-color: component.$tabs-junta-color;
-    color: component.$tabs-tab-fg-selected;
+  &__input {
+    appearance: none;
+    cursor: pointer;
+    inset: 0;
+    margin: 0;
+    position: absolute;
   }
 
-  .tabs__input:disabled + .tabs__tab {
-    border-color: component.$tabs-border-color-disabled;
-    border-block-end-color: component.$tabs-rule-color;
-    color: component.$tabs-tab-fg-disabled;
-    cursor: not-allowed;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
-  .nav-item {
-    display: flex;
-    flex: none;
-    position: relative;
-  }
-
-  .nav {
-    align-items: stretch;
-    flex-wrap: nowrap;
-    gap: component.$tabs-gap;
-    margin-block-end: calc(-1 * component.$tabs-rule-width);
-    overflow-x: auto;
-    scrollbar-width: none;
-    padding-inline-start: component.$tabs-lead;
-
-    &::-webkit-scrollbar {
-      display: none;
+  @media (hover: hover) {
+    .nav-link:not(.active, .disabled):hover {
+      background-color: component.$tabs-bg-hover;
     }
-  }
-}
-
-@media (hover: hover) {
-  .tabs .tabs__input:hover:not(:checked, :disabled) + .tabs__tab {
-    background-color: component.$tabs-bg-hover;
-    color: component.$tabs-tab-fg-hover;
   }
 }

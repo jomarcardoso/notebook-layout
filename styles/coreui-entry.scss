@@ -107,6 +107,13 @@
   $nav-link-disabled-color: var(--app-fg-disabled),
   $nav-link-padding-y: 0.5rem,
   $nav-link-padding-x: 0.75rem,
+  $nav-tabs-border-color: var(--app-rule),
+  $nav-tabs-border-width: var(--app-border-width),
+  $nav-tabs-link-hover-border-color: transparent,
+  $nav-tabs-link-active-color: var(--app-fg-emphasis),
+  $nav-tabs-link-active-bg: var(--app-bg-page),
+  $nav-tabs-link-active-border-color: var(--app-rule) var(--app-rule)
+    var(--app-bg-page),
 
   $accordion-color: var(--app-fg-default),
   $accordion-bg: transparent,
