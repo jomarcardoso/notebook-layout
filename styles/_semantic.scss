@@ -46,8 +46,6 @@
     --app-font-weight-strong: var(--weight-medium);
     --app-line-height: var(--leading-prose);
 
-    // Cada papel e um valor unico, consumido pela propriedade `font`. Nenhum
-    // titulo leva peso: hierarquia aqui e tamanho, familia e espaco.
     --app-text-display: var(--weight-regular) var(--size-8) /
       var(--leading-tight) var(--font-serif);
     --app-text-title-lg: var(--weight-regular) var(--size-7) /
@@ -68,7 +66,7 @@
       var(--font-body);
     --app-text-label-sm: var(--weight-medium) var(--size-2) /
       var(--leading-normal) var(--font-body);
-    --app-text-numeric: var(--weight-medium) var(--size-4) /
+    --app-text-numeric: var(--weight-regular) var(--size-4) /
       var(--leading-normal) var(--font-body);
     --app-text-caption: var(--weight-regular) var(--size-2) /
       var(--leading-normal) var(--font-body);
@@ -118,14 +116,11 @@
     color-scheme: light;
     accent-color: var(--app-bg-neutral-solid);
 
-    // PAPEL. Nada e mais claro que a pagina. O que parece estar acima esta
-    // apenas com mais tinta.
     --app-bg-page: var(--neutral-1);
     --app-bg-subtle: var(--neutral-a2);
     --app-bg-muted: var(--neutral-a3);
     --app-bg-backdrop: var(--neutral-a11);
 
-    // TINTA. A familia mais rica do sistema, porque isto e um livro.
     --app-fg-emphasis: var(--neutral-12);
     --app-fg-default: var(--neutral-a12);
     --app-fg-muted: var(--neutral-a11);
@@ -138,30 +133,20 @@
     --app-border-default: var(--neutral-a9);
     --app-border-strong: var(--neutral-a10);
 
-    // SOLIDO. Preenchimento raro, reservado ao compromisso. A rampa tem dois
-    // degraus solidos, 9 em repouso e 10 no hover; o pressionado repete o 10 e
-    // se diferencia por outra propriedade.
     --app-bg-accent-solid: var(--accent-9);
-    --app-bg-accent-solid-hover: var(--accent-10);
+    --app-bg-accent-solid-hover: var(--accent-12);
     --app-bg-neutral-solid: var(--neutral-9);
     --app-bg-neutral-solid-hover: var(--neutral-10);
 
-    // ESTADO. Alfa sobre o que estiver embaixo, nunca valor fixo. Selecionado e
-    // neutro: a segunda tinta pertence ao documento, nao ao dedo do leitor.
     --app-bg-hover: var(--neutral-a3);
     --app-bg-active: var(--neutral-a4);
     --app-bg-selected: var(--neutral-a5);
     --app-border-selected: var(--accent-a8);
 
-    // STATUS. Danger e o unico com solido, para a confirmacao destrutiva.
     --app-fg-danger: var(--danger-a11);
     --app-bg-danger-subtle: var(--danger-a3);
     --app-bg-danger-solid: var(--danger-9);
     --app-bg-danger-solid-hover: var(--danger-10);
-    // A borda de erro identifica o controle tanto quanto a de repouso, entao
-    // ela responde ao mesmo 3:1. Em a6 media 1.64:1 contra a pagina: o campo
-    // em erro ficava MENOS visivel que o campo em repouso, que e o contrario do
-    // que o estado quer dizer. a9 da 3.58:1, o mesmo degrau de `border-default`.
     --app-border-danger: var(--danger-a9);
     --app-fg-success: var(--success-a11);
     --app-bg-success-subtle: var(--success-a3);

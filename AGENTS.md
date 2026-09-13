@@ -196,6 +196,14 @@ An atom component imports no CSS of its own. Where it lands in the cascade is
 part of what it is, and `import './x.scss'` enters outside every layer, which
 would put it above everything.
 
+### The lists
+
+Every reading list is `line-list` (`styles/molecules/_line-list.scss`): the margin column, the text on the measure, one rhythm line per item. The list is the grid and each item a subgrid of it, which is what aligns the quantity column. The family only decides what the whole list puts in the margin column: nothing (the default), `--prose` (lozenge), `--steps` (numeral), or no margin column at all, `--data`. Everything else is content in slots: the text is `children`, `figure` fills the margin column, `description` goes under the text, `trailing` opens the numeric column at the end. Collection items follow the same names, plus `image` and `excerpt` for a short prose summary. Slot names are the standard vocabulary of list components (Primer, Material), never names from the product: this package does not know what it lists. An item with `href` or `onClick` renders as `a` or `button`, and `:where(a, button).line-list__item` gives it the target and states, with `aria-current` as the selected state. A check box is recognised by `li:has(> .form-check)`. Add a slot before adding a family: two items that only differ in content are the same item.
+
+Collections are `index-list` and `thumb-grid` (`_collections.scss`), two lists and not one item at two widths: an item with an `excerpt` goes to the index, an item without prose may go to the grid. In both the link is the only child of the `li`.
+
+CoreUI's `list-group` is not imported, so it has no adapter entry and no layer-3 knob.
+
 The icons are Phosphor, through `react-icons/pi` — `Pi<Name>` is the regular
 weight, `Pi<Name>Fill` the marked one. No second icon package: one silhouette in
 two weights is what the filled-means-marked rule needs.

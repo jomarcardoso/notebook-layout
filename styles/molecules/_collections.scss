@@ -1,0 +1,119 @@
+// notebook-layout/styles/molecules/_collections.scss
+
+@mixin linked-item {
+  color: var(--app-fg-default);
+  display: grid;
+  padding: var(--app-space-xs);
+  text-decoration: none;
+  transition: background-color var(--app-duration-fast) var(--app-ease);
+
+  &:active {
+    background-color: var(--app-bg-active);
+  }
+
+  @media (hover: hover) {
+    &:hover:not(:active) {
+      background-color: var(--app-bg-hover);
+    }
+  }
+}
+
+.index-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  &:has(.index-item__excerpt) .index-item {
+    --index-item-image: calc(var(--app-rhythm-1) * 3);
+  }
+
+  &__item + &__item {
+    border-block-start: var(--app-border-width) var(--app-border-style)
+      var(--app-rule);
+  }
+}
+
+.thumb-grid {
+  column-gap: var(--app-gap-grid);
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(var(--thumb-grid-track, 160px), 100%), 1fr)
+  );
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  row-gap: var(--app-rhythm-1);
+}
+
+.index-item {
+  --index-item-image: calc(var(--app-rhythm-1) * 2);
+
+  @include linked-item;
+
+  column-gap: var(--app-space-md);
+  grid-template-areas:
+    'image .'
+    'image text'
+    'image excerpt'
+    'image description'
+    'image .';
+  grid-template-columns: var(--index-item-image) minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto auto 1fr;
+  min-block-size: calc(var(--index-item-image) + var(--app-rhythm-1));
+  padding-block: 0;
+
+  &__description {
+    color: var(--app-fg-muted);
+    font: var(--app-text-caption);
+    grid-area: description;
+    margin: var(--app-space-2xs) 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__text {
+    color: var(--app-fg-emphasis);
+    font: var(--app-text-body-lg);
+    grid-area: text;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__excerpt {
+    color: var(--app-fg-muted);
+    font: var(--app-text-subtitle);
+    grid-area: excerpt;
+    margin: 0;
+    max-inline-size: var(--app-measure-body);
+  }
+
+  &__image {
+    align-self: center;
+    grid-area: image;
+    inline-size: var(--index-item-image);
+  }
+
+}
+
+.thumb-item {
+  @include linked-item;
+
+  align-content: start;
+  row-gap: var(--app-space-xs);
+
+  &__description {
+    color: var(--app-fg-muted);
+    font: var(--app-text-caption);
+    margin: 0;
+  }
+
+  &__text {
+    color: var(--app-fg-emphasis);
+    font: var(--app-text-body-lg);
+    margin: 0;
+  }
+}

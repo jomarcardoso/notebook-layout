@@ -180,13 +180,6 @@ $_token: (
     border-color: #{component.$rule-border-color};
   }
 
-  .list-group {
-    --cui-list-group-action-hover-bg: #{component.$list-item-bg-hover};
-    --cui-list-group-action-active-bg: #{component.$list-item-bg-active};
-    --cui-list-group-disabled-bg: #{component.$list-item-bg-disabled};
-    --cui-list-group-disabled-color: #{component.$list-item-fg-disabled};
-  }
-
   .dropdown-menu {
     --cui-dropdown-link-hover-bg: #{component.$dropdown-bg-hover};
   }

@@ -196,18 +196,3 @@ $_marked: ':checked, :indeterminate:not([type="radio"])';
   background-color: var(--app-fg-on-solid);
   inset-inline-start: calc(100% - 12px - 3px);
 }
-
-.check-list .form-check {
-  --check-box-inset: calc(
-    (var(--app-marker-column) - var(--app-size-icon)) / 2
-  );
-  --check-column: var(--app-marker-column);
-}
-
-.check-list .form-check-label {
-  font: var(--app-text-body);
-}
-
-.check-list .form-check-input:checked + .form-check-label {
-  color: var(--app-fg-muted);
-}

@@ -1,0 +1,189 @@
+// notebook-layout/styles/molecules/_line-list.scss
+
+@use '../atoms/lozenge' as *;
+
+.line-list {
+  --line-list-target: max(
+    var(--app-size-control),
+    calc(var(--app-rhythm-1) * 1.5)
+  );
+
+  color: var(--app-fg-default);
+  counter-reset: line-list;
+  display: grid;
+  font: var(--app-text-body);
+  grid-auto-columns: max-content;
+  grid-template-columns:
+    var(--app-marker-column)
+    minmax(0, var(--app-measure-body));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    counter-increment: line-list;
+    display: grid;
+    grid-column: span 3;
+    grid-template-columns: subgrid;
+    min-block-size: var(--app-rhythm-1);
+    position: relative;
+  }
+
+  .content-figure {
+    display: block;
+  }
+
+  .form-check {
+    --check-box-inset: calc(
+      (var(--app-marker-column) - var(--app-size-icon)) / 2
+    );
+    --check-column: 0px;
+
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    min-block-size: var(--line-list-target);
+  }
+
+  .check-box {
+    inset-block-start: calc(
+      (var(--line-list-target) - var(--app-size-icon)) / 2
+    );
+  }
+
+  .form-check-label {
+    display: grid;
+    font: var(--app-text-body);
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    padding-block: calc((var(--line-list-target) - 1lh) / 2);
+  }
+
+  .form-check-input:checked + .form-check-label {
+    color: var(--app-fg-muted);
+  }
+
+  &__mark {
+    align-self: start;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  &__description {
+    color: var(--app-fg-muted);
+    font: var(--app-text-caption);
+    grid-column: 2;
+    grid-row: 2;
+    line-height: var(--app-rhythm-half);
+  }
+
+  &__trailing {
+    font: var(--app-text-numeric);
+    font-variant-numeric: lining-nums var(--app-numeric-tabular);
+    grid-column: 3;
+    grid-row: 1;
+    line-height: var(--app-rhythm-1);
+    padding-inline-start: var(--app-space-md);
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  &__text {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  &__item {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+
+    &:where(a, button) {
+      align-content: center;
+      color: inherit;
+      cursor: pointer;
+      min-block-size: var(--line-list-target);
+      text-align: start;
+      text-decoration: none;
+      transition: background-color var(--app-duration-fast) var(--app-ease);
+    }
+
+    &:where(a, button)[aria-current] {
+      background-color: var(--app-bg-selected);
+      color: var(--app-fg-emphasis);
+    }
+
+    &:where(a, button):active:not(:disabled, [aria-current]) {
+      background-color: var(--app-bg-active);
+      transform: translateY(1px);
+    }
+
+    &:where(button):disabled {
+      color: var(--app-fg-disabled);
+      cursor: not-allowed;
+    }
+
+    @media (hover: hover) {
+      &:where(a, button):hover:not(:active, :disabled, [aria-current]) {
+        background-color: var(--app-bg-hover);
+      }
+    }
+  }
+
+  &--prose {
+    .line-list__item::before {
+      @include lozenge(0.4em);
+
+      align-self: start;
+      color: var(--app-fg-subtle);
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: center;
+      margin-block-start: calc(0.5lh - 0.2em);
+    }
+  }
+
+  &--steps {
+    row-gap: var(--app-rhythm-half);
+
+    .line-list__item::before {
+      color: var(--app-fg-muted);
+      content: counter(line-list);
+      font: var(--app-text-numeric);
+      font-variant-numeric: lining-nums var(--app-numeric-tabular);
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: center;
+      line-height: var(--app-rhythm-1);
+    }
+  }
+
+  &--data {
+    grid-template-columns: minmax(0, 1fr) max-content;
+
+    .line-list__description {
+      grid-column: 1;
+    }
+
+    .line-list__trailing {
+      grid-column: 2;
+    }
+
+    .line-list__text {
+      grid-column: 1;
+    }
+  }
+
+  &--ruled {
+    > li + li::after {
+      border-block-start: var(--app-border-width) var(--app-border-style)
+        var(--app-rule);
+      content: '';
+      inset-block-start: 0;
+      inset-inline: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+  }
+}

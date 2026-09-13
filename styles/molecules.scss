@@ -2,4 +2,6 @@
 
 @layer ds-overrides {
   @import './molecules/field';
+  @import './molecules/line-list';
+  @import './molecules/collections';
 }

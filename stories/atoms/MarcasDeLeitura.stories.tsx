@@ -8,6 +8,7 @@ import {
   PiPlus,
 } from 'react-icons/pi';
 import { Icon, Tag } from '@components/atoms';
+import { LineList, LineListItem } from '@components/molecules';
 import { Group, Row, Sheet } from './specimen';
 
 const meta = {
@@ -181,30 +182,19 @@ export const Ornamento: Story = {
     <Sheet>
       <Group
         title="O losango"
-        note="Uma forma de ornamento so, em dois papeis. Marcador de lista: pequeno, em tinta de apoio, na coluna de margem. Marca de secao: maior, em accent, porque e rubricacao e pertence ao documento."
+        note="Uma forma de ornamento so, em dois papeis. Marca de secao: maior, em accent, porque e rubricacao e pertence ao documento. Marcador da lista de prosa: pequeno, em tinta terciaria, na mesma coluna de margem. As listas estao em Moleculas/Listas."
       >
         <div>
           <h3 className="title-md">
             <span className="section-mark" aria-hidden="true" />
-            Ingredientes
+            Dicas
           </h3>
-          <ul className="list-marked" role="list">
-            <li>Farinha de trigo peneirada</li>
-            <li>Acucar refinado</li>
-            <li>Queijo ralado na hora</li>
-          </ul>
+          <LineList family="prose">
+            <LineListItem>Peneire a farinha com o fermento</LineListItem>
+            <LineListItem>Use ovos em temperatura ambiente</LineListItem>
+            <LineListItem>Rale o queijo na hora</LineListItem>
+          </LineList>
         </div>
-      </Group>
-
-      <Group
-        title="Lista numerada"
-        note="O numero fica na mesma coluna de margem, em numeric e tinta de apoio — e por isso o texto de uma lista numerada comeca no mesmo ponto que o de uma lista com losango."
-      >
-        <ol className="list-numbered">
-          <li>Bata as claras em neve e reserve.</li>
-          <li>Misture a farinha com o fermento.</li>
-          <li>Leve ao forno por 40 minutos.</li>
-        </ol>
       </Group>
 
       <p className="caption">

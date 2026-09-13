@@ -140,6 +140,10 @@ overrides:
     because: multiplataforma; 40px erra o alvo num telefone apoiado na bancada
   - decision: corpo de leitura em 1.125rem e interface em 1rem
     because: se le de longe, com as maos ocupadas
+  - decision: linha de acao e linha de marcar em uma unidade e meia (48px), e nao em multiplo inteiro da unidade
+    because: o alvo de 44px nao cabe numa linha de 32px; em 48px a linha fica na meia pauta e nenhum alvo vizinho se cruza
+  - decision: figura de conteudo e imagem de indice medidas em unidades de ritmo (rem), e nao em px
+    because: elas existem para pousar na pauta; em px sairiam dela quando o leitor aumenta a fonte
 
 guardrails:
   - rule: Nunca usar preenchimento em gradiente
@@ -380,9 +384,9 @@ O peso faz parte do papel: o 500 e dos papeis de INTERFACE, e so deles.
 | `display` | 2.441 | 400 | serif | 1.1 | titulo do documento |
 | `title-lg` | 1.953 | 400 | serif | 1.1 | titulo de pagina |
 | `title-md` | 1.563 | 400 | serif | 1.25 | titulo de secao |
-| `title-sm` | 1.25 | 400 | serif | 1.25 | titulo de item |
+| `title-sm` | 1.25 | 400 | serif | 1.25 | titulo de subsecao |
 | `subtitle` | 1.25 | 400 | serif italico | 1.6 | o headnote |
-| `body-lg` | 1.25 | 400 | serif | 1.6 | prosa destacada |
+| `body-lg` | 1.25 | 400 | serif | 1.6 | prosa destacada, texto de item numa colecao |
 | `body` | 1.125 | 400 | serif | 1.778 | prosa, e o que se digita num campo |
 | `body-sm` | 1 | 400 | serif | 1.6 | texto secundario longo, frase de escolha |
 | `label` | 1 | **500** | serif | 1.4 | botao, rotulo de campo, aba, nav, chip |
@@ -391,9 +395,23 @@ O peso faz parte do papel: o 500 e dos papeis de INTERFACE, e so deles.
 | `caption` | 0.889 | 400 | serif | 1.4 | meta, legenda, tag, credito, rodape |
 | `script` | 1.25 | 400 | Caveat | 1.4 | o que o leitor escreve: campo de frase |
 
-`numeric` nao fala do dominio de proposito: ele serve a quantidade de um
-ingrediente, a um valor nutricional e a uma celula de tabela, e o design system e
-um pacote em que a receita nao mora.
+**Titulo separa conteudo; ele nao rotula um item.** Os papeis `title-*` marcam
+onde uma parte da pagina comeca. Numa colecao — indice, grade, relacionadas — os
+itens nao sao partes da pagina, sao coisas dentro de uma parte: o texto de cada um
+e `body-lg` em `fg-emphasis`, texto dentro do link e nao heading. Dezesseis
+receitas numa lista nao sao dezesseis secoes, nem para o olho nem para o leitor
+de tela.
+
+`numeric` nao fala do dominio de proposito: ele serve a uma coluna de dados — um
+valor nutricional, uma celula de tabela — e ao campo onde se digita uma
+quantidade, e o design system e um pacote em que a receita nao mora. Ele e para o
+numero que E o dado da linha. Quando a frase ja traz a quantidade, a medida
+calculada repete o que o texto diz e vai como descricao, em `caption`, abaixo do
+texto — ver lista com quantidade no §10.
+
+O contraste entre o texto de um item e a descricao dele nao e de peso: os dois
+sao 400. E tamanho e tinta — `body-lg` em `fg-emphasis` contra `caption` em
+`fg-muted`.
 
 As entrelinhas de prosa nao sao gosto: elas sao o que faz uma linha medir uma
 unidade de ritmo. `body` e 1.125rem × 1.778 = 2rem; `body-lg` e 1.25rem × 1.6 =
@@ -445,6 +463,12 @@ do dedo, e o dedo nao muda de tamanho com a preferencia de fonte.
 
 A regra de decisao: **se o valor responde a pergunta "qual o tamanho deste
 texto?", e `rem`; se responde "quanto espaco esta coisa ocupa na tela", e px.**
+
+O que e medido em unidades de ritmo segue a unidade e tambem e `rem`: a figura de
+conteudo mede uma linha, a imagem de um item de indice mede duas ou tres, a linha
+de acao e a de marcar medem uma e meia. Elas existem para pousar na pauta, e em px
+sairiam dela quando o leitor aumenta a fonte. O alvo de toque nao entra nessa
+conta: ele continua em px, e a linha de acao usa o maior dos dois.
 
 Largura de regiao tambem nao e `ch`. `ch` resolve na fonte do elemento onde esta
 escrito, e numa faixa de grade quem calcula e o container — a coluna sai com a
@@ -725,12 +749,14 @@ em `bg-subtle`, raio zero, pulso lento de opacidade.
 `neutral-solid`, sempre com o valor escrito ao lado.
 
 **Imagem.** Quadrada, recortada, sem raio, sem borda. A foto aparece como e; o
-tratamento impresso e so das figuras de conteudo.
+tratamento impresso e so das figuras de conteudo. Sem foto, o lugar da imagem
+continua ocupado, pelo lavado `bg-subtle`: numa colecao em que so parte dos itens
+tem foto, e isso que faz o texto de todos comecar no mesmo ponto.
 
 **Item de receita.** Sem fundo, sem borda, sem sombra, sem raio. Separado por
 espaco; fio entre itens so em lista densa. O item inteiro e a area de clique,
-hover em `bg-hover`. O componente nao se chama card: o nome carrega a caixa
-junto.
+hover em `bg-hover`. O nome da receita e `body-lg`, nao titulo. O componente nao
+se chama card: o nome carrega a caixa junto.
 
 **Barra superior.** Tom da pagina, fio inferior, altura em multiplo de linha.
 Sombra so quando ha conteudo rolado por baixo.
@@ -751,7 +777,10 @@ de campo, em tag, em legenda ou como marcador de lista.
 
 **Ornamento.** O losango e a unica forma de ornamento. Antes do titulo de secao,
 em accent, na coluna de margem: ou todas as secoes do documento tem, ou nenhuma.
-Titulo de pagina e titulo de item nao levam marca.
+Titulo de pagina e texto de item nao levam marca. Como marcador da lista de
+prosa o losango e menor e em `fg-subtle`: ele mora na mesma coluna da marca de
+secao e costuma vir uma linha abaixo dela, e dois losangos iguais a uma linha de
+distancia seriam o mesmo erro de dois fios paralelos.
 
 **Figura de conteudo.** Vinheta de secao e figura de item: uma linha do ritmo,
 decorativas, na coluna de margem, em cor impressa. A cor do conteudo nunca
@@ -760,15 +789,25 @@ aparece na interface.
 **A coluna de margem.** Losango, numero de passo, vinheta, figura de item e caixa
 de marcar moram todos na mesma coluna, no inicio da linha, com uma largura so.
 Uma marca por linha: nunca marcador junto com figura, nunca losango junto com
-vinheta.
+vinheta. A coluna e recuada: fica dentro da largura do conteudo e nao pendurada
+na calha, porque no telefone nao ha calha onde pendurar, e o texto de toda lista
+comeca na mesma borda em qualquer largura.
 
 **Lista com quantidade.** Sem marcador de lista; quando ha figura, ela ocupa a
-coluna de margem no lugar dele. Quantidade em `numeric`, cada item numa linha do
-ritmo. Numa lista de marcar, a caixa ocupa a coluna, e o item marcado recua para
-`fg-muted` — sem risco sobre o texto, que atrapalha quem ainda confere a lista.
+coluna de margem no lugar dele. A medida tem dois lugares, e o texto decide qual.
+Quando o texto ja diz a quantidade — "duas xicaras de farinha" —, a medida
+calculada repete o que esta escrito: ela vai como descricao, em `caption` abaixo
+do texto, o texto fica com a linha inteira e o item mede uma unidade e meia. Uma
+terceira coluna ali disputaria largura com a frase justamente no item que mais
+precisa dela. Quando o valor e o proprio dado da linha — um nutriente e a sua
+quantidade —, ele e coluna, em `numeric`, alinhada entre os itens. Numa lista de
+marcar, a caixa ocupa a coluna, e o item marcado recua para `fg-muted` — sem risco
+sobre o texto, que atrapalha quem ainda confere a lista.
 
-**Lista de passos.** Numeracao em `fg-muted` na coluna de margem, texto em
-`fg-default` respeitando a medida.
+**Lista de passos.** Numeral arabico em `numeric` e `fg-muted`, centrado na coluna
+de margem, com a entrelinha da unidade para dividir a linha de base com a
+primeira linha do passo. Com dois algarismos ele continua cabendo na coluna. Meia
+unidade entre passos. Texto em `fg-default` respeitando a medida.
 
 **Tabela.** Fios horizontais apenas. Cabecalho em `fg-muted` com fio mais forte
 abaixo.

@@ -23,20 +23,22 @@ const meta = {
   args: {
     footerMenu: false,
     open: false,
-    theme: 'theme-primary',
     items: [
-      { icon: <IoAddCircleOutline />, header: 'Adicionar', onClick: () => {} },
-      { icon: <IoCreateOutline />, header: 'Editar', onClick: () => {} },
-      { icon: <IoShareOutline />, header: 'Compartilhar', onClick: () => {} },
-      { icon: <IoTrashOutline />, header: 'Remover', onClick: () => {} },
+      {
+        icon: <IoAddCircleOutline />,
+        'aria-label': 'Adicionar',
+        onClick: () => {},
+      },
+      { icon: <IoCreateOutline />, 'aria-label': 'Editar', onClick: () => {} },
+      {
+        icon: <IoShareOutline />,
+        'aria-label': 'Compartilhar',
+        onClick: () => {},
+      },
+      { icon: <IoTrashOutline />, 'aria-label': 'Remover', onClick: () => {} },
     ],
   },
   argTypes: {
-    theme: {
-      control: 'radio',
-      options: ['theme-base', 'theme-light', 'theme-primary'],
-      description: 'Selects which global theme class is applied to preview.',
-    },
     footerMenu: {
       control: 'boolean',
       description: 'Renders the expanded menu style.',
@@ -49,24 +51,18 @@ const meta = {
     className: { control: false },
   },
   decorators: [
-    (StoryFn, context) => {
-      const { theme } = context.args as any;
-      const body = document.body;
-      body.classList.remove('theme-base', 'theme-light', 'theme-primary');
-      body.classList.add(theme);
-      return (
-        <div
-          style={{
-            minHeight: '60vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <StoryFn />
-        </div>
-      );
-    },
+    (StoryFn) => (
+      <div
+        style={{
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <StoryFn />
+      </div>
+    ),
   ],
 } satisfies Meta<typeof Footer>;
 

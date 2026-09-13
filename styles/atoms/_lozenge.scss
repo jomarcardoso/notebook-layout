@@ -1,0 +1,9 @@
+// notebook-layout/styles/atoms/_lozenge.scss
+
+@mixin lozenge($size) {
+  background-color: currentcolor;
+  block-size: $size;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  content: '';
+  inline-size: $size;
+}

@@ -1,6 +1,6 @@
 // notebook-layout/styles/atoms/_focus.scss
 
-$_focusable: '.btn, .btn-close, .form-control, .form-select, .form-check-input, .form-range, .nav-link, .page-link, .dropdown-item, .accordion-button, .list-group-item-action, .chip';
+$_focusable: '.btn, .btn-close, .form-control, .form-select, .form-check-input, .form-range, .nav-link, .page-link, .dropdown-item, .accordion-button, .chip';
 
 // 1. Nenhuma sombra de foco, nem no clique.
 :is(#{$_focusable}):focus {

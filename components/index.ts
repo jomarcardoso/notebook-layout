@@ -1,5 +1,6 @@
 export * from './atoms';
 export * from './reader-marks';
+export * from './molecules';
 
 export * from './avatar';
 export * from './breadcrumbs';

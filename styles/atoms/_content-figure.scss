@@ -9,24 +9,6 @@
   object-fit: contain;
 }
 
-.list-figured {
-  list-style: none;
-  padding-inline-start: 0;
-
-  > li {
-    padding-inline-start: var(--app-marker-column);
-    position: relative;
-  }
-
-  .content-figure {
-    inset-block-start: calc(0.5lh - var(--app-rhythm-half));
-    inset-inline-start: calc(
-      (var(--app-marker-column) - var(--app-rhythm-1)) / 2
-    );
-    position: absolute;
-  }
-}
-
 .state-illustration {
   block-size: var(--app-rhythm-2);
   filter: saturate(0.75);

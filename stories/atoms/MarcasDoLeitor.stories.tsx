@@ -99,25 +99,6 @@ export const CaixaRadioInterruptor: Story = {
   ),
 };
 
-export const ListaDeMarcar: Story = {
-  name: 'Lista de marcar',
-  render: () => (
-    <Sheet>
-      <Group
-        title="Lista de marcar"
-        note="A caixa ocupa a coluna de margem, e por isso o texto comeca no mesmo ponto que o de qualquer outra lista do sistema. Marcado, o item recua para a tinta de apoio: o que ja foi feito sai da frente do que falta. Nao ha risco sobre o texto, porque risco atrapalha quem ainda confere a lista."
-      >
-        <div className="check-list">
-          <Checkbox label="2 xicaras de farinha de trigo" defaultChecked />
-          <Checkbox label="1 xicara de acucar" defaultChecked />
-          <Checkbox label="200 g de queijo ralado" />
-          <Checkbox label="3 ovos" />
-        </div>
-      </Group>
-    </Sheet>
-  ),
-};
-
 const ChipDemo = () => {
   const [sem, setSem] = useState(true);
   const [rapido, setRapido] = useState(false);
