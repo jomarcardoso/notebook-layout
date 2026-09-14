@@ -45,6 +45,7 @@ Uma variavel Sass que entra em conta dentro do proprio CoreUI (`$alert-padding-x
 | `alert` | entry (`$alert-*`), cores pelo adapter | — | CoreUI/Avisos |
 | `offcanvas` | entry (`$offcanvas-*`) | — | CoreUI/Folha lateral |
 | `tables` | entry (`$table-*`), atom `_table.scss`, `resets.scss` | `www` `AminoAcidsTable` e a revisao de alimento do admin | CoreUI/Tabela |
+| `tooltip` | entry (`$tooltip-*`), atom `_tooltip.scss` | — | CoreUI/Dica |
 
 ### Como cada um e usado
 
@@ -68,6 +69,8 @@ Uma variavel Sass que entra em conta dentro do proprio CoreUI (`$alert-padding-x
 
 **Folha lateral.** `.offcanvas` so para o que `overlayPolicy: irreversible-or-context-break` permite: ato irreversivel ou contexto que precisa ser esquecido. Escolher, filtrar e editar um campo continuam no lugar. O veu e `--app-bg-backdrop` com opacidade 1, porque o token ja e alfa.
 
+**Dica.** `.tooltip` e folha: `bg-page`, fio `rule`, `--app-radius-overlay`, `--app-shadow-overlay` e texto em `caption`, alinhado ao inicio. Raio, sombra, fio e fonte estao no atom, porque `.tooltip-inner` nao tem variavel de borda e os mixins de raio e sombra estao desligados. A largura maxima e `--app-measure-apparatus`. A seta fica escondida: na cor da pagina ela nao se distingue do fundo. A dica aparece com o ponteiro do mouse e com o foco, some com Escape e complementa o nome acessivel do controle, nunca o substitui. O lugar dela e o botao so de icone com desenho universal.
+
 **Tabela.** `.table` e a pagina de dados: fios horizontais em `rule`, nenhuma superficie, celula em `body-sm`. O cabecalho e `label-sm` em `fg-muted`, com o fio de baixo em `border-default`: um degrau mais escuro, na mesma espessura. Coluna de numero leva `.numeric` na celula e no cabecalho — papel `numeric`, algarismos tabulares, alinhada ao fim. O nome da linha e `<th scope="row">`. Grupo de linhas e um `<tbody>` por grupo, aberto por `<th scope="rowgroup">` em `label`, separado por espaco acima e nunca por faixa. `table-hover` pinta o lavado so em aparelho com hover, e so quando a linha leva a algum lugar; `table-active` marca a linha escolhida com `bg-selected`. `table-sm` e a densidade do aparato, e `table-responsive` rola a tabela larga sem mexer na pagina. O zebrado nao pinta nada (`$table-striped-bg: transparent`), `$table-variants` esta vazio, e `table-bordered`, `table-borderless`, `table-dark` e `table-group-divider` nao sao usados. O reset zera a borda de cada celula; `resets.scss` devolve so o estilo e a cor herdada que o reboot do CoreUI daria, com `:where` para a largura da biblioteca vencer.
 
 **Grade.** Usada direto, e mecanica: `row`, `col-md-4`, `col-md-8`, `position-sticky`. A calha continua a da biblioteca (24px); ver pendencias.
@@ -87,7 +90,6 @@ Uma variavel Sass que entra em conta dentro do proprio CoreUI (`$alert-padding-x
 | `header` | o bloco `.header` e o cabecalho do `www` |
 | `list-group` | toda lista de leitura e `line-list`, e colecao e `index-list` ou `thumb-grid` |
 | `placeholders` | o esqueleto e o atom `.skeleton`, que espera 300ms antes de aparecer; nenhuma variavel do CoreUI expressa esse atraso |
-| `tooltip` | o balao da biblioteca e tinta cheia sobre fundo `emphasis`, e `.tooltip-inner` nao tem variavel de borda para virar folha |
 | `close` | `.btn-close` e um SVG em data-URI com cor literal; o X e `IconButton` com `PiX` |
 | `navbar` | a barra do telefone e `.app-navbar` no `www` |
 | `reboot`, `type` | o reset e `the-new-css-reset`, e a tipografia sao os papeis de `typography.scss` |
@@ -105,17 +107,16 @@ Os z-index do CoreUI continuam os da biblioteca e nao leem `--app-z-*`. Os dois 
 
 Decisoes que dependem de aprovacao. Nenhuma delas esta aplicada.
 
-1. **Raio e sombra da folha sobreposta.** Dropdown e offcanvas tem as variaveis, mas nada e emitido. Proposta: um atom que aplique `--app-radius-overlay` e `--app-shadow-overlay` em `.dropdown-menu` e `.offcanvas`, sem ligar `$enable-shadows` para o sistema inteiro.
+1. **Raio e sombra da folha sobreposta.** Dropdown e offcanvas tem as variaveis, mas nada e emitido; a dica ja aplica os dois pelo atom. Proposta: um atom que aplique `--app-radius-overlay` e `--app-shadow-overlay` em `.dropdown-menu` e `.offcanvas`, sem ligar `$enable-shadows` para o sistema inteiro.
 2. **Calha da grade.** `$grid-gutter-width` e 24px; `--app-gutter` e 32px. Trocar para `32px` muda as telas que ja usam `row` e o padding de `container`.
 3. **Z-index.** Decidir se `$zindex-*` segue os tokens, inclusive a troca de tooltip e toast.
-4. **Tooltip.** Decidir a forma antes de importar: folha (`bg-page`, fio `rule`, sombra) exige atom; tinta cheia usa fundo `emphasis`, que e papel de texto.
-5. **Colisoes.** Para usar `CModal` ou `CChip` o bloco proprio precisa de outro nome. Sem isso, os proprios continuam e os do CoreUI ficam fora.
-6. **Repeticao entre atom e entry.** `_progress.scss` repete em `--cui-spinner-*` e `--cui-progress-*` os mesmos valores que `$spinner-*` e `$progress-*` ja definem. `_tag.scss` fixa `border-radius: 0` enquanto `$badge-radius` e o adapter apontam para `--app-radius-control`.
-7. **Adapter sem componente importado.** Os blocos `.modal` (que alcanca o `.modal` proprio) e `.navbar-toggler-icon`, e o bloco `.card` comentado.
-8. **Estilos existentes que divergem do `DESIGN_LANGUAGE.md`.**
+4. **Colisoes.** Para usar `CModal` ou `CChip` o bloco proprio precisa de outro nome. Sem isso, os proprios continuam e os do CoreUI ficam fora.
+5. **Repeticao entre atom e entry.** `_progress.scss` repete em `--cui-spinner-*` e `--cui-progress-*` os mesmos valores que `$spinner-*` e `$progress-*` ja definem. `_tag.scss` fixa `border-radius: 0` enquanto `$badge-radius` e o adapter apontam para `--app-radius-control`.
+6. **Adapter sem componente importado.** Os blocos `.modal` (que alcanca o `.modal` proprio) e `.navbar-toggler-icon`, e o bloco `.card` comentado.
+7. **Estilos existentes que divergem do `DESIGN_LANGUAGE.md`.**
    - A barra lateral pinta hover e ativo com fundo e raio (`$nav-bg-hover`, `$nav-bg-active`, `$nav-radius`); o §10 pede itens sem fundo e ativo com fio accent na borda inicial.
    - `.progressbar` enche com `$progress-fill-bg`, que e `bg-accent-solid`; o §10 pede `neutral-solid`. Existem tres barras de progresso: `Progress`, `Progressbar` e `ProgressIndicator`.
    - `dialog.scss` pinta o veu com `rgba(0, 0, 0, 0.75)` em vez de `--app-bg-backdrop`.
    - `$footer-bg` e `bg-accent-solid`; o §11 diz que rodape nao e preenchido em accent.
-9. **Lint.** O bloco de `overrides` para `components/**` e `styles/**` redefine `declaration-property-value-disallowed-list` e substitui a lista que proibe `#`, `rgb`, `hsl` e `oklch` em propriedades de cor. E por isso que o literal do `dialog.scss` passa.
-10. **Storybook.** `stories/Configure.mdx` e `stories/assets/` sao o onboarding padrao do Storybook. Os titulos misturam ingles (`Navigation/Footer`, `Feedback/*`, `Media/Avatar`, `Layout/*`) e portugues (`Atomos/*`, `Moleculas/*`, `Navegacao/Abas`, `CoreUI/*`).
+8. **Lint.** O bloco de `overrides` para `components/**` e `styles/**` redefine `declaration-property-value-disallowed-list` e substitui a lista que proibe `#`, `rgb`, `hsl` e `oklch` em propriedades de cor. E por isso que o literal do `dialog.scss` passa.
+9. **Storybook.** `stories/Configure.mdx` e `stories/assets/` sao o onboarding padrao do Storybook. Os titulos misturam ingles (`Navigation/Footer`, `Feedback/*`, `Media/Avatar`, `Layout/*`) e portugues (`Atomos/*`, `Moleculas/*`, `Navegacao/Abas`, `CoreUI/*`).

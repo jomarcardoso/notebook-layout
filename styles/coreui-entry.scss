@@ -226,6 +226,14 @@
   $table-caption-color: var(--app-fg-muted),
   $table-variants: (),
 
+  $tooltip-max-width: var(--app-measure-apparatus),
+  $tooltip-color: var(--app-fg-default),
+  $tooltip-bg: var(--app-bg-page),
+  $tooltip-border-radius: var(--app-radius-overlay),
+  $tooltip-opacity: 1,
+  $tooltip-padding-y: var(--app-space-2xs),
+  $tooltip-padding-x: var(--app-space-xs),
+
   $enable-cssgrid: true,
 
   $mobile-breakpoint: sm,
@@ -297,3 +305,4 @@
 @import '@coreui/coreui/scss/alert.import';
 @import '@coreui/coreui/scss/offcanvas.import';
 @import '@coreui/coreui/scss/tables.import';
+@import '@coreui/coreui/scss/tooltip.import';

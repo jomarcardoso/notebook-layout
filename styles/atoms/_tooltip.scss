@@ -1,0 +1,13 @@
+// notebook-layout/styles/atoms/_tooltip.scss
+
+.tooltip-arrow {
+  display: none;
+}
+
+.tooltip-inner {
+  border: var(--app-border-width) solid var(--app-rule);
+  border-radius: var(--app-radius-overlay);
+  box-shadow: var(--app-shadow-overlay);
+  font: var(--app-text-caption);
+  text-align: start;
+}
