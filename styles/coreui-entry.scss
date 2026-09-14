@@ -1,3 +1,4 @@
+// notebook-layout/styles/coreui-entry.scss
 @use './coreui-config' as cfg;
 @use './component';
 @use '@coreui/coreui/scss/variables' with (
@@ -137,6 +138,94 @@
   $progress-border-radius: 0,
   $progress-box-shadow: none,
 
+  $transition-fade: opacity var(--app-duration-fast) linear,
+  $transition-collapse: height var(--app-duration-base) var(--app-ease),
+  $transition-collapse-width: width var(--app-duration-base) var(--app-ease),
+
+  $dropdown-color: var(--app-fg-default),
+  $dropdown-bg: var(--app-bg-page),
+  $dropdown-border-color: var(--app-rule),
+  $dropdown-border-radius: var(--app-radius-overlay),
+  $dropdown-box-shadow: var(--app-shadow-overlay),
+  $dropdown-padding-y: var(--app-space-xs),
+  $dropdown-divider-bg: var(--app-rule),
+  $dropdown-item-padding-x: var(--app-pad-control-x),
+  $dropdown-item-padding-y: var(--app-pad-control-y),
+  $dropdown-link-color: var(--app-fg-default),
+  $dropdown-link-hover-color: var(--app-fg-emphasis),
+  $dropdown-link-hover-bg: var(--app-bg-hover),
+  $dropdown-link-active-color: var(--app-fg-emphasis),
+  $dropdown-link-active-bg: var(--app-bg-selected),
+  $dropdown-link-disabled-color: var(--app-fg-disabled),
+  $dropdown-header-color: var(--app-fg-muted),
+
+  $pagination-padding-y: var(--app-pad-control-y),
+  $pagination-padding-x: var(--app-pad-control-x),
+  $pagination-color: var(--app-fg-muted),
+  $pagination-bg: transparent,
+  $pagination-border-width: 0,
+  $pagination-border-color: transparent,
+  $pagination-border-radius: var(--app-radius-control),
+  $pagination-hover-color: var(--app-fg-emphasis),
+  $pagination-hover-bg: var(--app-bg-hover),
+  $pagination-hover-border-color: transparent,
+  $pagination-focus-color: var(--app-fg-emphasis),
+  $pagination-focus-bg: var(--app-bg-hover),
+  $pagination-focus-box-shadow: none,
+  $pagination-active-color: var(--app-fg-emphasis),
+  $pagination-active-bg: var(--app-bg-selected),
+  $pagination-active-border-color: var(--app-bg-selected),
+  $pagination-disabled-color: var(--app-fg-disabled),
+  $pagination-disabled-bg: transparent,
+  $pagination-disabled-border-color: transparent,
+
+  $callout-padding-y: var(--app-space-sm),
+  $callout-padding-x: var(--app-space-md),
+  $callout-margin-y: 0,
+  $callout-border-radius: 0,
+  $callout-border-width: 0,
+  $callout-border-color: transparent,
+  $callout-border-left-width: var(--app-marker-width),
+  $callout-variants: (),
+
+  $alert-padding-y: 12px,
+  $alert-padding-x: 16px,
+  $alert-margin-bottom: 0,
+  $alert-border-radius: 0,
+  $alert-border-width: 0,
+  $alert-link-font-weight: var(--app-font-weight-strong),
+
+  $offcanvas-padding-y: var(--app-pad-surface),
+  $offcanvas-padding-x: var(--app-pad-surface),
+  $offcanvas-color: var(--app-fg-default),
+  $offcanvas-bg-color: var(--app-bg-page),
+  $offcanvas-border-color: var(--app-rule),
+  $offcanvas-border-width: var(--app-border-width),
+  $offcanvas-box-shadow: var(--app-shadow-overlay),
+  $offcanvas-transition-duration: var(--app-duration-slow),
+  $offcanvas-backdrop-bg: var(--app-bg-backdrop),
+  $offcanvas-backdrop-opacity: 1,
+
+  $table-cell-padding-y: var(--app-space-xs),
+  $table-cell-padding-x: var(--app-space-sm),
+  $table-cell-padding-y-sm: var(--app-space-2xs),
+  $table-cell-padding-x-sm: var(--app-space-xs),
+  $table-cell-vertical-align: baseline,
+  $table-color: component.$table-fg,
+  $table-bg: transparent,
+  $table-accent-bg: transparent,
+  $table-striped-color: component.$table-fg,
+  $table-striped-bg: transparent,
+  $table-active-color: var(--app-fg-emphasis),
+  $table-active-bg: var(--app-bg-selected),
+  $table-hover-color: component.$table-fg,
+  $table-hover-bg: component.$table-row-bg-hover,
+  $table-border-width: var(--app-border-width),
+  $table-border-color: component.$table-border-color,
+  $table-group-separator-color: var(--app-border-default),
+  $table-caption-color: var(--app-fg-muted),
+  $table-variants: (),
+
   $enable-cssgrid: true,
 
   $mobile-breakpoint: sm,
@@ -200,3 +289,11 @@
 @import '@coreui/coreui/scss/forms/validation.import';
 @import '@coreui/coreui/scss/spinners.import';
 @import '@coreui/coreui/scss/progress.import';
+
+@import '@coreui/coreui/scss/transitions.import';
+@import '@coreui/coreui/scss/dropdown.import';
+@import '@coreui/coreui/scss/pagination.import';
+@import '@coreui/coreui/scss/callout.import';
+@import '@coreui/coreui/scss/alert.import';
+@import '@coreui/coreui/scss/offcanvas.import';
+@import '@coreui/coreui/scss/tables.import';

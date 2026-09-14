@@ -13,8 +13,6 @@ $surface-pad: var(--app-pad-surface) !default;
 
 $table-fg: var(--app-fg-default) !default;
 $table-border-color: var(--app-rule) !default;
-$table-header-bg: var(--app-bg-subtle) !default;
-$table-header-fg: var(--app-fg-emphasis) !default;
 $table-row-bg-hover: var(--app-bg-hover) !default;
 
 $overlay-bg: var(--app-bg-page) !default;
@@ -100,14 +98,6 @@ $modal-radius: var(--app-radius-overlay) !default;
 $modal-footer-min-height: var(--app-size-control) !default;
 $modal-border: var(--app-border) !default;
 $progressbar-border-width: var(--app-border-width) !default;
-$table-container-bg: var(--app-bg-page) !default;
-$table-container-border-width: var(--app-border-width) !default;
-$table-container-radius: var(--app-radius-control) !default;
-$table-font: var(--app-text-body-sm) !default;
-$table-caption-font: var(--app-text-title-sm) !default;
-$table-section-font: var(--app-text-label) !default;
-$table-caption-radius: var(--app-radius-control) !default;
-$table-caption-fg: var(--app-fg-muted) !default;
 $carousel-indicator-border-color-active: var(--app-border-selected) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
 $card-radius: var(--app-radius-overlay) !default;
@@ -125,9 +115,6 @@ $modal-divider-color: var(--app-rule) !default;
 
 $choice-title-fg: var(--app-fg-default) !default;
 $choice-img-fg: currentColor !default;
-
-$table-td-mono-fg: var(--app-fg-muted) !default;
-$table-td-accent-fg: var(--app-fg-accent) !default;
 
 $tabs-layout-content-fg: var(--app-fg-default) !default;
 $progress-indicator-fg: var(--app-fg-default) !default;

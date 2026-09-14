@@ -129,6 +129,8 @@ $_token: (
 
   --cui-border-color: #{_ref('border-default')};
 
+  --cui-callout-border-left-color: #{_ref('border-selected')};
+
   @each $cui, $role in $_map {
     --cui-#{$cui}: #{_ref('bg-#{$role}')};
     --cui-#{$cui}-bg-subtle: #{_ref(_slot($role, subtle))};
@@ -161,12 +163,6 @@ $_token: (
     --cui-modal-bg: #{component.$overlay-bg};
     --cui-modal-color: #{component.$overlay-fg};
     --cui-modal-border-color: #{component.$overlay-border-color};
-  }
-
-  .table {
-    --cui-table-color: #{component.$table-fg};
-    --cui-table-border-color: #{component.$table-border-color};
-    --cui-table-hover-bg: #{component.$table-row-bg-hover};
   }
 
   .navbar-toggler-icon {

@@ -1,0 +1,36 @@
+// notebook-layout/styles/atoms/_table.scss
+
+.table {
+  font: var(--app-text-body-sm);
+  margin-block-end: 0;
+
+  > caption {
+    color: var(--app-fg-muted);
+    font: var(--app-text-caption);
+    padding-block: var(--app-space-xs);
+    text-align: start;
+  }
+
+  > thead > tr > * {
+    border-block-end-color: var(--app-border-default);
+    color: var(--app-fg-muted);
+    font: var(--app-text-label-sm);
+  }
+
+  > tbody > tr > th[scope='rowgroup'] {
+    color: var(--app-fg-emphasis);
+    font: var(--app-text-label);
+    padding-block-start: var(--app-space-md);
+  }
+
+  :is(th, td).numeric {
+    font-variant-numeric: lining-nums var(--app-numeric-tabular);
+    text-align: end;
+  }
+}
+
+@media not all and (hover: hover) {
+  .table-hover {
+    --cui-table-hover-bg: transparent;
+  }
+}

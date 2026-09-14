@@ -162,6 +162,11 @@ The library's own configuration lives in `styles/coreui-entry.scss`. Spacing
 utilities are pinned to the inner scale and rounding is off there, so a guardrail
 that used to need watching is now a setting.
 
+`docs/coreui.md` is the inventory of the library: which partials are imported
+and where each one is configured, which are left out because a block of this
+package already owns the class name, and the decisions still open. Read it
+before importing a partial, and update it in the same change.
+
 ### The atoms
 
 `styles/atoms/` holds them, `styles/molecules/` holds what assembles them, and
