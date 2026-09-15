@@ -1,17 +1,5 @@
-@use '../component' as component;
+// notebook-layout/styles/components/progress-indicator.scss
 
 .progress-indicator {
   display: inline-grid;
-  gap: 8px;
-
-  &__header {
-    display: flex;
-    align-items: center;
-    color: component.$progress-indicator-fg;
-    justify-content: space-between;
-    font-weight: bold;
-    text-transform: uppercase;
-    // gap: 8px;
-    word-spacing: 4px;
-  }
 }

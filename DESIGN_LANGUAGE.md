@@ -862,6 +862,11 @@ igual ao repouso e bug, nao decisao. A aba escolhida nao e excecao a regra, e si
 fora dela: ela nao pinta um estado sobre a aba, ela e a pagina, e as outras e que
 sao folhas entintadas atras.
 
+Os solidos seguem a rampa, e nao esta regra: cada degrau tem uma funcao, o solido
+e o degrau 9 e o hover do solido e o degrau 10, em toda familia. No accent o
+degrau 10 e mais claro que o 9, entao o hover do compromisso clareia em vez de
+escurecer; a cor de caneta continua no 9.
+
 A regra governa o FUNDO de um componente ao longo dos estados dele. Ela nao
 governa contorno contra preenchimento, que sao quantidades de tinta diferentes
 na mesma cor — e sao a mesma cor por construcao da rampa, onde o passo alfa N

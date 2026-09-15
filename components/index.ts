@@ -19,5 +19,4 @@ export * from './chips/chips';
 export * from './notebook-tabs';
 export * from './tabs';
 export * from './tabs-layout';
-export * from './progressbar';
 export * from './progress-indicator';

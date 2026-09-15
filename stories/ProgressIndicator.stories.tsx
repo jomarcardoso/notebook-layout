@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Indicador de etapa que combina texto “etapa X / Y” com a linha de caderno e a barra de progresso nativa estilizada.',
+          'Indicador de etapa com a mesma forma do atomo Progress: “Etapa” e “X de Y” em caption e fg-muted, o numero em algarismos tabulares no fim da linha, e abaixo a barra do CoreUI (.progress) com trilho em rule e avanco em neutral-solid.',
       },
     },
   },

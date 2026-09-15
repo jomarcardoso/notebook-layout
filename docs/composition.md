@@ -20,7 +20,7 @@ A unica superficie de conteudo: `bg-muted`, sem raio, sem borda, sem sombra. Gua
 
 O boxe nao e clicavel. O que leva a algum lugar e item de colecao, sem superficie; um boxe clicavel e um card com outro nome. Link dentro do boxe e permitido e usa o hover de alfa, que compoe sobre o lavado.
 
-Pela escada de separacao a marca de margem (`.callout`) vem antes: um aparte de uma frase e marca de margem, e o boxe entra quando a marca nao basta.
+Pela escada de separacao a marca de margem (`.callout`) vem antes: um aparte de uma frase e marca de margem, e o boxe entra quando a marca nao basta. O boxe e de uso raro, e o CoreUI nao tem equivalente: `.card` nao e usado neste sistema, e os utilitarios de fundo nao sao compilados.
 
 ### Ficha e dado
 
@@ -80,5 +80,3 @@ A proposta poe o indice ancorado na margem porque no aparato ele dividiria a col
 ## Decisoes a confirmar
 
 1. **Onde mora o indice ancorado.** O §7 diz que a margem guarda "navegacao, indice do caderno", e que tres regioes e o teto. Com o trilho do app na tela, a proposta soma trilho, indice, conteudo e aparato: quatro, se o trilho contar como regiao. As saidas sao tres. O trilho e moldura e nao conta, e a proposta fica como esta. Ou o indice entra no trilho quando a pagina e de leitura, e a margem e uma so. Ou o indice vai para o aparato, acima de nutricional e relacionadas, e o aparato passa a ter tres assuntos.
-2. **Boxe.** Existe como `.box` e pode ser desfeito sem tocar em nenhuma tela: nenhum consumidor usa a classe.
-3. **Ficha no papel como padrao.** A ficha no boxe fica como segunda forma. Se o padrao for o boxe, a abertura muda de forma.

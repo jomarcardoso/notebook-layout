@@ -27,9 +27,6 @@ $nav-bg-hover: var(--app-bg-hover) !default;
 $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
 
-$progress-track-bg: var(--app-bg-subtle) !default;
-$progress-fill-bg: var(--app-bg-neutral-solid) !default;
-$progress-radius: var(--app-radius-control) !default;
 
 $badge-radius: var(--app-radius-control) !default;
 $badge-fg: var(--app-fg-muted) !default;
@@ -97,7 +94,6 @@ $modal-shadow: var(--app-shadow-overlay) !default;
 $modal-radius: var(--app-radius-overlay) !default;
 $modal-footer-min-height: var(--app-size-control) !default;
 $modal-border: var(--app-border) !default;
-$progressbar-border-width: var(--app-border-width) !default;
 $carousel-indicator-border-color-active: var(--app-border-selected) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
 $card-radius: 0 !default;
@@ -117,8 +113,6 @@ $choice-title-fg: var(--app-fg-default) !default;
 $choice-img-fg: currentColor !default;
 
 $tabs-layout-content-fg: var(--app-fg-default) !default;
-$progress-indicator-fg: var(--app-fg-default) !default;
-$progressbar-border-color: var(--app-border-default) !default;
 
 $choice-radius: var(--app-radius-control) !default;
 $choice-gap: var(--app-gap-stack) !default;
