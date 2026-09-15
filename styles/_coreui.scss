@@ -176,20 +176,6 @@ $_token: (
     border-color: #{component.$rule-border-color};
   }
 
-  .dropdown-menu {
-    --cui-dropdown-link-hover-bg: #{component.$dropdown-bg-hover};
-  }
-
-  .pagination {
-    --cui-pagination-hover-bg: #{component.$pagination-item-bg-hover};
-    --cui-pagination-focus-bg: #{component.$pagination-item-bg-hover};
-    --cui-pagination-active-bg: #{component.$pagination-item-bg-selected};
-    --cui-pagination-active-color: #{component.$pagination-item-fg-selected};
-    --cui-pagination-active-border-color: #{component.$pagination-item-bg-selected};
-    --cui-pagination-disabled-bg: #{component.$pagination-item-bg-disabled};
-    --cui-pagination-disabled-color: #{component.$pagination-item-fg-disabled};
-  }
-
   .badge {
     --cui-badge-color: #{component.$badge-fg};
     --cui-badge-border-radius: #{component.$badge-radius};

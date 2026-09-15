@@ -5,24 +5,16 @@
   width: 100%;
   height: 8px;
   overflow: hidden;
-
-  // Layer 3 first, layer 2 as the fallback. The component tokens are not
-  // emitted, so the chain is what makes these resolve — written out by hand
-  // because this is plain CSS with no access to `component.ref-chain()`.
   border-radius: component.$progress-radius;
   background-color: component.$progress-track-bg;
-  border: component.$progressbar-border-width solid component.$progressbar-border-color;
+  border: component.$progressbar-border-width solid
+    component.$progressbar-border-color;
 
   &::-webkit-progress-bar {
     background-color: inherit;
     border-radius: inherit;
   }
 
-  // The filled part reports how far along something is — it is an INDICATOR,
-  // not a control, so it takes neither `selected` (nothing here was chosen) nor
-  // a status colour (nothing has succeeded or failed yet). `progress-fill-bg`
-  // resolves to the action colour, which is the product's "the system is
-  // working" hue.
   &::-webkit-progress-value {
     background-color: component.$progress-fill-bg;
     border-radius: inherit;

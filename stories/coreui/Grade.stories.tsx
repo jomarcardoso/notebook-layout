@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A grade de 12 colunas do CoreUI usada direto, porque e mecanica. A calha e a da biblioteca, 24px, e nao --app-gutter; a troca esta nas pendencias do inventario.',
+          'A grade de 12 colunas do CoreUI usada direto, porque e mecanica. A calha e --app-gutter, 32px, a mesma de l-regions: o token e $grid-gutter-width leem o mesmo valor de _metrics.scss.',
       },
     },
   },

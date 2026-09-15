@@ -1,0 +1,30 @@
+// notebook-layout/styles/atoms/_overlay.scss
+
+.dropdown-menu {
+  border-radius: var(--app-radius-overlay);
+  box-shadow: var(--app-shadow-overlay);
+}
+
+.offcanvas {
+  box-shadow: var(--app-shadow-overlay);
+}
+
+.offcanvas-start {
+  border-end-end-radius: var(--app-radius-overlay);
+  border-start-end-radius: var(--app-radius-overlay);
+}
+
+.offcanvas-end {
+  border-end-start-radius: var(--app-radius-overlay);
+  border-start-start-radius: var(--app-radius-overlay);
+}
+
+.offcanvas-top {
+  border-end-end-radius: var(--app-radius-overlay);
+  border-end-start-radius: var(--app-radius-overlay);
+}
+
+.offcanvas-bottom {
+  border-start-end-radius: var(--app-radius-overlay);
+  border-start-start-radius: var(--app-radius-overlay);
+}

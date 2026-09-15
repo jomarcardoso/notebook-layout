@@ -1,0 +1,31 @@
+// notebook-layout/styles/_metrics.scss
+
+// `coreui-entry.scss` demands SASS values to calculate the same tokens for CoreUI.
+@use 'sass:map';
+
+$border-width: 1px;
+$gutter: 32px;
+$leading-tight: 1.1;
+$leading-snug: 1.25;
+$leading-normal: 1.4;
+$leading-loose: 1.6;
+$leading-prose: 1.778;
+
+$space-unit: 4px;
+$space-steps: (
+  '2xs': 1,
+  'xs': 2,
+  'sm': 3,
+  'md': 4,
+  'lg': 6,
+  'xl': 8,
+  '2xl': 12,
+);
+
+@function space-step($name) {
+  @return map.get($space-steps, $name);
+}
+
+@function space($name) {
+  @return $space-unit * space-step($name);
+}

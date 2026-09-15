@@ -156,7 +156,7 @@ export const EmUso: Story = {
     <Sheet>
       <Group
         title="Em uso"
-        note="Aparece com o ponteiro do mouse ou com o foco do teclado, e some com Escape. No toque ela nao aparece: o nome acessivel do botao ja diz a mesma coisa."
+        note="Aparece com o ponteiro do mouse ou com o foco do teclado, e some com Escape. No toque ela nao aparece: o nome acessivel do botao ja diz a mesma coisa. A barra so tem desenho universal (+, tres pontos, X), a unica condicao em que botao so de icone e permitido; acao especifica do produto e palavra, e palavra nao precisa de dica."
       >
         <Row label="barra de acoes">
           <div style={{ display: 'flex', gap: 'var(--app-space-xs)', paddingBlockStart: 'var(--app-rhythm-2)' }}>

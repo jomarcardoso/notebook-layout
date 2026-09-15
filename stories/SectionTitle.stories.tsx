@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SectionTitle } from '@components/section-title';
 
 const meta = {
-  title: 'Layout/SectionTitle',
+  title: 'Componentes/Titulo de secao',
   component: SectionTitle,
   tags: ['autodocs'],
   args: {

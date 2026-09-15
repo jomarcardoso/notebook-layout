@@ -8,7 +8,7 @@ import {
 import { Footer } from '@components/footer';
 
 const meta = {
-  title: 'Navigation/Footer',
+  title: 'Componentes/Rodape',
   component: Footer,
   tags: ['autodocs'],
   parameters: {

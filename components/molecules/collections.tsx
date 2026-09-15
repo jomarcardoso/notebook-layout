@@ -29,21 +29,25 @@ export const IndexList = collection('index-list');
 
 export const ThumbGrid = collection('thumb-grid');
 
+export type ThumbItemVariant = 'default' | 'featured' | 'brief';
+
 export interface ThumbItemProps {
   href: string;
   children: ReactNode;
   image?: ImgHTMLAttributes<HTMLImageElement>;
   description?: string[];
   linkComponent?: ElementType;
+  variant?: ThumbItemVariant;
 }
 
-export interface IndexItemProps extends ThumbItemProps {
+export interface IndexItemProps extends Omit<ThumbItemProps, 'variant'> {
   excerpt?: ReactNode;
 }
 
 interface LinkedItemProps extends IndexItemProps {
   block: 'index-item' | 'thumb-item';
   listClassName: string;
+  variant?: ThumbItemVariant;
 }
 
 const LinkedItem: FC<LinkedItemProps> = ({
@@ -55,14 +59,19 @@ const LinkedItem: FC<LinkedItemProps> = ({
   excerpt = '',
   description = [],
   linkComponent = 'a',
+  variant = 'default',
 }) => {
   const textId = useId();
   const Link = linkComponent;
+  const className = generateClasses({
+    [block]: true,
+    [`${block}--${variant}`]: variant !== 'default',
+  });
 
   return (
     <li className={listClassName}>
-      <Link className={block} href={href} aria-labelledby={textId}>
-        {image.src ? (
+      <Link className={className} href={href} aria-labelledby={textId}>
+        {variant === 'brief' ? null : image.src ? (
           <img
             loading="lazy"
             {...image}

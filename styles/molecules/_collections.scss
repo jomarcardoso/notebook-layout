@@ -116,4 +116,18 @@
     font: var(--app-text-body-lg);
     margin: 0;
   }
+
+  &--featured {
+    .thumb-item__text {
+      font: var(--app-text-title-md);
+    }
+  }
+
+  &--brief {
+    row-gap: 0;
+
+    .thumb-item__text {
+      font: var(--app-text-label);
+    }
+  }
 }

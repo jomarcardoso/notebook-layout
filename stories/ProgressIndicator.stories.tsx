@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ProgressIndicator } from '@components/progress-indicator';
 
 const meta = {
-  title: 'Feedback/Progress Indicator',
+  title: 'Componentes/Indicador de progresso',
   component: ProgressIndicator,
   tags: ['autodocs'],
   parameters: {

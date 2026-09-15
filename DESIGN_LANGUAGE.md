@@ -279,6 +279,8 @@ provavelmente e fio.
 | 2 | `styles/_semantic.scss` | os papeis, custom properties |
 | 3 | `styles/_component.scss` | os knobs, variaveis Sass |
 
+`styles/_metrics.scss` e `styles/_srgb.scss` sao a camada 1 em valor Sass: as medidas e o espelho sRGB das cores, para quem precisa deles em tempo de compilacao. `_base.scss` e `_semantic.scss` emitem os tokens a partir deles, e `coreui-entry.scss` le os mesmos valores onde o CoreUI faz conta em Sass. Medida nova entra em `_metrics.scss`, e dali vira token.
+
 Nenhum passo da rampa e acessado direto por componente ou aplicacao. Todo valor
 entra por token semantico. A disciplina de acesso e o que faz "usar poucos
 passos" ser consequencia, e nao regra a lembrar.
@@ -340,8 +342,9 @@ Papel e tinta usam o mesmo eixo de proeminencia: `muted` e mais entintado que
 `subtle` nas duas familias. A folha sobreposta nao tem token proprio — e o
 mesmo papel da pagina, distinguida por sombra e fio.
 
-**Fio e borda:** `--app-rule` (a6), `--app-border-default` (a9),
-`--app-border-strong` (a10).
+**Fio e borda:** `--app-rule` (a6), `--app-rule-strong` (a9),
+`--app-border-default` (a9), `--app-border-strong` (a10). `--app-rule-strong` e o
+fio que fecha um cabecalho de tabela: o mesmo passo da borda, com papel de fio.
 
 A distancia entre o fio e as bordas nao e estetica. A borda identifica um
 controle, entao ela responde ao criterio 1.4.11 e precisa de 3:1 contra a
@@ -393,7 +396,7 @@ O peso faz parte do papel: o 500 e dos papeis de INTERFACE, e so deles.
 | `label-sm` | 0.889 | **500** | serif | 1.4 | rotulo curto, titulo de aparato |
 | `numeric` | 1.125 | 400 | serif tabular | 1.4 | qualquer coluna de numero |
 | `caption` | 0.889 | 400 | serif | 1.4 | meta, legenda, tag, credito, rodape |
-| `script` | 1.25 | 400 | Caveat | 1.4 | o que o leitor escreve: campo de frase |
+| `script` | 1.563 | 400 | Caveat | 1.4 | o que o leitor escreve: campo de frase |
 
 **Titulo separa conteudo; ele nao rotula um item.** Os papeis `title-*` marcam
 onde uma parte da pagina comeca. Numa colecao — indice, grade, relacionadas — os
@@ -401,6 +404,10 @@ itens nao sao partes da pagina, sao coisas dentro de uma parte: o texto de cada 
 e `body-lg` em `fg-emphasis`, texto dentro do link e nao heading. Dezesseis
 receitas numa lista nao sao dezesseis secoes, nem para o olho nem para o leitor
 de tela.
+
+A secao de vitrine (§7) e a unica colecao que muda a escala dos itens: o item
+principal sobe para `title-md` e os secundarios descem para `label`. Continuam
+sendo texto dentro do link, e nao heading.
 
 `numeric` nao fala do dominio de proposito: ele serve a uma coluna de dados — um
 valor nutricional, uma celula de tabela — e ao campo onde se digita uma

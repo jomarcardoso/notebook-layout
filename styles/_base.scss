@@ -1,5 +1,7 @@
 // notebook-layout/styles/_base.scss
 
+@use 'metrics';
+
 @layer ds.base {
   :root {
     --accent-1: #fbfdff;
@@ -314,13 +316,13 @@
     --size-7: 1.953rem;
     --size-8: 2.441rem;
 
-    --leading-tight: 1.1;
-    --leading-snug: 1.25;
-    --leading-normal: 1.4;
-    --leading-loose: 1.6;
+    --leading-tight: #{metrics.$leading-tight};
+    --leading-snug: #{metrics.$leading-snug};
+    --leading-normal: #{metrics.$leading-normal};
+    --leading-loose: #{metrics.$leading-loose};
     // 1.778 e o que faz uma linha de `body` (1.125rem) medir os 32px da unidade
     // de ritmo. O numero e derivado da unidade, nao escolhido por gosto.
-    --leading-prose: 1.778;
+    --leading-prose: #{metrics.$leading-prose};
 
     --tracking-tight: -0.02em;
     --tracking-snug: -0.01em;
@@ -328,5 +330,8 @@
 
     --weight-regular: 400;
     --weight-medium: 500;
+
+    --shadow-overlay:
+      0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
   }
 }

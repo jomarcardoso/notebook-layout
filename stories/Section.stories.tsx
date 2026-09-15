@@ -16,7 +16,7 @@ const textBlock = (
 );
 
 const meta = {
-  title: 'Layout/Section',
+  title: 'Componentes/Secao',
   component: Section,
   tags: ['autodocs'],
   parameters: {

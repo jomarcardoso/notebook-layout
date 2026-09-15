@@ -1,8 +1,10 @@
 // notebook-layout/styles/_semantic.scss
 
+@use 'metrics';
+
 @layer ds.semantic {
   :root {
-    --app-border-width: 1px;
+    --app-border-width: #{metrics.$border-width};
     --app-border-style: solid;
     --app-border: var(--app-border-width) var(--app-border-style)
       var(--app-border-default);
@@ -21,16 +23,16 @@
     --app-rhythm-3: calc(var(--app-rhythm-unit) * 3);
     --app-rhythm-4: calc(var(--app-rhythm-unit) * 4);
 
-    --app-gutter: 32px;
+    --app-gutter: #{metrics.$gutter};
 
-    --app-space-unit: 4px;
-    --app-space-2xs: calc(var(--app-space-unit) * 1);
-    --app-space-xs: calc(var(--app-space-unit) * 2);
-    --app-space-sm: calc(var(--app-space-unit) * 3);
-    --app-space-md: calc(var(--app-space-unit) * 4);
-    --app-space-lg: calc(var(--app-space-unit) * 6);
-    --app-space-xl: calc(var(--app-space-unit) * 8);
-    --app-space-2xl: calc(var(--app-space-unit) * 12);
+    --app-space-unit: #{metrics.$space-unit};
+    --app-space-2xs: calc(var(--app-space-unit) * #{metrics.space-step('2xs')});
+    --app-space-xs: calc(var(--app-space-unit) * #{metrics.space-step('xs')});
+    --app-space-sm: calc(var(--app-space-unit) * #{metrics.space-step('sm')});
+    --app-space-md: calc(var(--app-space-unit) * #{metrics.space-step('md')});
+    --app-space-lg: calc(var(--app-space-unit) * #{metrics.space-step('lg')});
+    --app-space-xl: calc(var(--app-space-unit) * #{metrics.space-step('xl')});
+    --app-space-2xl: calc(var(--app-space-unit) * #{metrics.space-step('2xl')});
     --app-pad-control-x: var(--app-space-sm);
     --app-pad-control-y: var(--app-space-xs);
     --app-pad-surface: 8px;
@@ -130,6 +132,7 @@
     --app-fg-on-solid: var(--neutral-1);
 
     --app-rule: var(--neutral-a6);
+    --app-rule-strong: var(--neutral-a9);
     --app-border-default: var(--neutral-a9);
     --app-border-strong: var(--neutral-a10);
 
@@ -154,8 +157,7 @@
     --app-bg-warning-subtle: var(--warning-a3);
 
     // A unica sombra do sistema, exclusiva da folha sobreposta.
-    --app-shadow-overlay:
-      0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --app-shadow-overlay: var(--shadow-overlay);
   }
 }
 
@@ -178,6 +180,6 @@
 @media (orientation: landscape) {
   :root {
     --app-pad-surface: var(--app-space-md);
-    --app-size-bar: 60px;
+    --app-size-bar: 64px;
   }
 }

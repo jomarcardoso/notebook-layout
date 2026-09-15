@@ -167,6 +167,10 @@ and where each one is configured, which are left out because a block of this
 package already owns the class name, and the decisions still open. Read it
 before importing a partial, and update it in the same change.
 
+`docs/composition.md` records how the page is assembled from what already
+exists — the panel, the facts sheet, the folio and the page compositions — and
+the decisions each one depends on.
+
 ### The atoms
 
 `styles/atoms/` holds them, `styles/molecules/` holds what assembles them, and

@@ -28,7 +28,7 @@ $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
 
 $progress-track-bg: var(--app-bg-subtle) !default;
-$progress-fill-bg: var(--app-bg-accent-solid) !default;
+$progress-fill-bg: var(--app-bg-neutral-solid) !default;
 $progress-radius: var(--app-radius-control) !default;
 
 $badge-radius: var(--app-radius-control) !default;
@@ -57,7 +57,7 @@ $rule-border-color: var(--app-rule) !default;
 $avatar-bg: var(--app-bg-page) !default;
 $avatar-border-color: var(--app-bg-page) !default;
 $avatar-border-width: 4px !default;
-$avatar-radius: var(--app-radius-overlay) !default;
+$avatar-radius: 0 !default;
 $avatar-size: 80px !default;
 
 $carousel-gap: var(--app-gap-inline) !default;
@@ -66,7 +66,7 @@ $carousel-thumb-border-width: var(--app-border-width) !default;
 $footer-bg: var(--app-bg-accent-solid) !default;
 $footer-fg: var(--app-fg-on-solid) !default;
 $footer-height: var(--app-size-control) !default;
-$footer-radius: var(--app-radius-overlay) !default;
+$footer-radius: 0 !default;
 $footer-shadow: none !default;
 $footer-navigation-bg: var(--app-bg-accent-solid) !default;
 $footer-navigation-fg: var(--app-fg-on-solid) !default;
@@ -100,7 +100,7 @@ $modal-border: var(--app-border) !default;
 $progressbar-border-width: var(--app-border-width) !default;
 $carousel-indicator-border-color-active: var(--app-border-selected) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
-$card-radius: var(--app-radius-overlay) !default;
+$card-radius: 0 !default;
 $carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-strong) !default;
 
 // -----------------------------------------------------------------------------
@@ -120,14 +120,14 @@ $tabs-layout-content-fg: var(--app-fg-default) !default;
 $progress-indicator-fg: var(--app-fg-default) !default;
 $progressbar-border-color: var(--app-border-default) !default;
 
-$choice-radius: var(--app-radius-overlay) !default;
+$choice-radius: var(--app-radius-control) !default;
 $choice-gap: var(--app-gap-stack) !default;
 $choice-title-border-width: var(--app-border-width) !default;
 $choice-title-radius: var(--app-radius-control) !default;
 $choice-title-bg: var(--app-bg-page) !default;
 $choice-img-fg-hover: var(--app-fg-accent) !default;
 $choice-title-bg-hover: var(--app-bg-selected) !default;
-$intro-gap: var(--app-gap-stack) !default;
+$intro-gap: var(--app-rhythm-half) !default;
 $notebook-tabs-font: var(--app-text-label-sm) !default;
 $notebook-tabs-tracking: -1px !default;
 $notebook-tabs-gap: var(--app-space-xs) !default;

@@ -1,0 +1,27 @@
+// notebook-layout/styles/molecules/_facts.scss
+
+.facts {
+  column-gap: var(--app-gutter);
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  row-gap: var(--app-space-sm);
+  justify-content: space-around;
+
+  &__label {
+    color: var(--app-fg-muted);
+    font: var(--app-text-label-sm);
+  }
+
+  &__value {
+    color: var(--app-fg-default);
+    font: var(--app-text-numeric);
+    font-variant-numeric: lining-nums var(--app-numeric-tabular);
+    margin: 0;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+  }
+}
