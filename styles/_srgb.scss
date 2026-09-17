@@ -1,23 +1,99 @@
 // notebook-layout/styles/_srgb.scss
 
-// O espelho sRGB da camada 1, em valor Sass. O CoreUI resolve triplets rgb e
-// configura a propria compilacao em tempo de build, e nenhum dos dois enxerga
-// `var()`. Camada 1 e o unico lugar onde literal de cor e legal, e este arquivo
-// e camada 1.
+@use 'sass:list';
+@use 'sass:map';
+
+$ramps: (
+  accent: (
+    #fbfdff,
+    #f5f9ff,
+    #eaf1ff,
+    #dde9ff,
+    #cfdfff,
+    #bcd0ff,
+    #a3bdff,
+    #83a2ff,
+    #2a3b8f,
+    #394da3,
+    #4d67d7,
+    #1b277a,
+  ),
+  neutral: (
+    #fffcfa,
+    #fdf8f5,
+    #f6efe9,
+    #f2e6de,
+    #ecded6,
+    #e7d6ca,
+    #dfcabc,
+    #d0b5a3,
+    #a58570,
+    #987b67,
+    #745d4e,
+    #2e1b0d,
+  ),
+  success: (
+    #fcfefb,
+    #f7faf5,
+    #eef5e8,
+    #e2eed9,
+    #d5e5c7,
+    #c3d9b0,
+    #acc893,
+    #8db168,
+    #698f3f,
+    #5f8139,
+    #55772f,
+    #2d3921,
+  ),
+  danger: (
+    #fffcfb,
+    #fff8f6,
+    #ffeae5,
+    #ffd9d0,
+    #ffc9be,
+    #ffb8aa,
+    #ffa292,
+    #f98573,
+    #ff331f,
+    #f11902,
+    #e00000,
+    #641e15,
+  ),
+  warning: (
+    #fefdfb,
+    #fff8ed,
+    #ffeed0,
+    #ffe1b2,
+    #ffd498,
+    #ffc887,
+    #f1b676,
+    #e39f50,
+    #ffa630,
+    #f29c28,
+    #b16500,
+    #4d351b,
+  ),
+);
+
+@function step($family, $step) {
+  @return list.nth(map.get($ramps, $family), $step);
+}
+
 $adapter-light: (
-  action: #2a3b8f,
-  neutral: #a58570,
-  success: #698f3f,
-  warning: #ffa630,
-  danger: #ff331f,
-  page: #fffcfa,
-  subtle: #fdf8f5,
-  muted: #f6efe9,
-  text: #2e1b0d,
-  'text-muted': #745d4e,
-  heading: #2e1b0d,
-  link: #1b277a,
-  'link-hover': #394da3,
-  border: #e7d6ca,
-  ring: #83a2ff,
+  action: step(accent, 9),
+  neutral: step(neutral, 9),
+  success: step(success, 9),
+  warning: step(warning, 9),
+  danger: step(danger, 9),
+  page: step(neutral, 1),
+  subtle: step(neutral, 2),
+  muted: step(neutral, 3),
+  text: step(neutral, 12),
+  'text-muted': step(neutral, 11),
+  heading: step(neutral, 12),
+  link: step(accent, 12),
+  'link-hover': step(accent, 10),
+  border: step(neutral, 6),
+  ring: step(accent, 8),
 );

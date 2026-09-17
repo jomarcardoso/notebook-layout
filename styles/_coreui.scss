@@ -39,7 +39,7 @@ $_token: (
   'bg-action-subtle-active': 'bg-active',
   'fg-on-action': 'fg-on-solid',
   'fg-action': 'fg-accent',
-  'border-action': 'border-selected',
+  'border-action': 'border-strong',
 
   'bg-neutral': 'bg-neutral-solid',
   'bg-neutral-hover': 'bg-neutral-solid-hover',
@@ -129,7 +129,7 @@ $_token: (
 
   --cui-border-color: #{_ref('border-default')};
 
-  --cui-callout-border-left-color: #{_ref('border-selected')};
+  --cui-callout-border-left-color: #{_ref('rule-strong')};
 
   @each $cui, $role in $_map {
     --cui-#{$cui}: #{_ref('bg-#{$role}')};

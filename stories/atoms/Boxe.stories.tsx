@@ -49,14 +49,14 @@ export const Aparte: Story = {
 };
 
 export const BoxeOuMarcaDeMargem: Story = {
-  name: 'Boxe ou marca de margem',
+  name: 'Boxe ou callout',
   render: () => (
     <Sheet>
       <Group
-        title="Boxe ou marca de margem"
-        note="Os dois separam um aparte, com forcas diferentes. A marca de margem e a segunda tinta do autor e nao tem superficie; o boxe e material de outra natureza. Pela escada de separacao, a marca vem antes: use o boxe quando o aparte tem mais de um bloco ou precisa ser lido como um conjunto."
+        title="Boxe ou callout"
+        note="Os dois separam um aparte, com forcas diferentes. O callout e um fio na borda e nao tem superficie; o boxe e material de outra natureza. Pela escada de separacao, o callout vem antes: use o boxe quando o aparte tem mais de um bloco ou precisa ser lido como um conjunto."
       >
-        <Row label="marca de margem">
+        <Row label="callout">
           <div className="callout l-measure">
             <p className="p">
               Nao abra o forno nos primeiros vinte minutos.

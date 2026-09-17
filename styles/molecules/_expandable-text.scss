@@ -1,0 +1,18 @@
+// notebook-layout/styles/molecules/_expandable-text.scss
+
+.expandable-text {
+  &__text {
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  &--collapsed {
+    .expandable-text__text {
+      -webkit-box-orient: vertical;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      line-clamp: 4;
+      overflow: hidden;
+    }
+  }
+}

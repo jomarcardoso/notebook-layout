@@ -236,8 +236,9 @@ dar voz — numa quantidade ela quebra o papel `numeric`, que e tabular justamen
 para os algarismos alinharem numa coluna.
 
 **A segunda tinta e do autor, o realce e do leitor.** O accent marca o que
-pertence ao documento: acao, link, marca de margem. Estado efemero — hover,
-selecionado, foco — usa neutro.
+pertence ao documento: acao e link. Estado efemero — hover,
+selecionado, foco — usa neutro, e nunca accent: uma selecao pintada na cor da
+acao disputa atencao com o que se clica.
 
 **A receita e a protagonista.** Entre dois layouts, ganha o que da mais tela a
 receita, mesmo quando o outro esta melhor organizado.
@@ -279,7 +280,7 @@ provavelmente e fio.
 | 2 | `styles/_semantic.scss` | os papeis, custom properties |
 | 3 | `styles/_component.scss` | os knobs, variaveis Sass |
 
-`styles/_metrics.scss` e `styles/_srgb.scss` sao a camada 1 em valor Sass: as medidas e o espelho sRGB das cores, para quem precisa deles em tempo de compilacao. `_base.scss` e `_semantic.scss` emitem os tokens a partir deles, e `coreui-entry.scss` le os mesmos valores onde o CoreUI faz conta em Sass. Medida nova entra em `_metrics.scss`, e dali vira token.
+`styles/_metrics.scss` e `styles/_srgb.scss` sao a camada 1 em valor Sass: as medidas e as rampas solidas de cor, cada valor escrito uma vez so. `_base.scss` e `_semantic.scss` emitem os tokens a partir deles; `coreui-entry.scss` le as medidas onde o CoreUI faz conta em Sass, e o adapter le as rampas para os triplets rgb. Medida nova entra em `_metrics.scss`, cor nova de rampa em `_srgb.scss`, e dali vira token.
 
 Nenhum passo da rampa e acessado direto por componente ou aplicacao. Todo valor
 entra por token semantico. A disciplina de acesso e o que faz "usar poucos
@@ -344,7 +345,8 @@ mesmo papel da pagina, distinguida por sombra e fio.
 
 **Fio e borda:** `--app-rule` (a6), `--app-rule-strong` (a9),
 `--app-border-default` (a9), `--app-border-strong` (a10). `--app-rule-strong` e o
-fio que fecha um cabecalho de tabela: o mesmo passo da borda, com papel de fio.
+fio que fecha um cabecalho de tabela e o fio do aparte (`.callout`): o mesmo passo
+da borda, com papel de fio.
 
 A distancia entre o fio e as bordas nao e estetica. A borda identifica um
 controle, entao ela responde ao criterio 1.4.11 e precisa de 3:1 contra a
@@ -358,8 +360,8 @@ um com seu `-hover` no degrau 10. A rampa tem dois degraus solidos: o
 pressionado repete o hover e se diferencia por outra propriedade.
 
 **Estado**, o territorio nativo de tela: `--app-bg-hover` (a3),
-`--app-bg-active` (a4), `--app-bg-selected` (a5), `--app-border-selected`
-(accent a8, a marca de margem). O foco nao tem token: ele e o anel do navegador.
+`--app-bg-active` (a4), `--app-bg-selected` (a5). O foco nao tem token: ele e o
+anel do navegador.
 
 **Status:** `--app-fg-danger`, `--app-bg-danger-subtle`, `--app-border-danger`,
 `--app-fg-success`, `--app-bg-success-subtle`, `--app-fg-warning`,
@@ -653,6 +655,12 @@ dizendo a mesma coisa e o sinal de que uma sobra.
 O estreitamento da tela e remontagem, nunca restyle. As regioes viram sequencia
 na ordem margem, conteudo, aparato — o aparato depois daquilo que ele acompanha.
 
+Quem decide entre regioes lado a lado e sequencia e a orientacao da tela, e nao
+uma largura em px: deitada, as regioes ficam lado a lado; em pe, viram sequencia.
+Dentro da regiao de conteudo, uma peca que se remonta sozinha — a abertura — le a
+largura do proprio conteudo, porque e ela que ocupa. Sao duas perguntas
+diferentes, e cada uma tem um criterio so.
+
 Nenhum componente muda de aparencia por largura de tela. O que muda e quais
 componentes entram na tela e como se arranjam. E a mesma regra que separa livro
 de caderno.
@@ -701,8 +709,9 @@ visitado nao tem aparencia propria, e link nunca leva icone.
 
 ## 9. Estado
 
-Selecionado e neutro: `bg-selected` mais tinta em `fg-emphasis`. Se precisar de
-mais forca, um fio accent na borda inicial — a marca de margem — e so.
+Selecionado e neutro: `bg-selected` mais tinta em `fg-emphasis`, e so. Onde a
+tinta nao tem onde pousar — uma miniatura de foto —, o lavado de selecionado fica
+no respiro em volta dela.
 
 Desabilitado e tinta palida, nunca caixa cinza. Nos pesos preenchidos, o
 controle inteiro vai a 0.45, para o accent continuar reconhecivel mas apagado.
@@ -759,9 +768,11 @@ em `bg-subtle`, raio zero, pulso lento de opacidade.
 `neutral-solid`, sempre com o valor escrito ao lado.
 
 **Imagem.** Quadrada, recortada, sem raio, sem borda. A foto aparece como e; o
-tratamento impresso e so das figuras de conteudo. Sem foto, o lugar da imagem
-continua ocupado, pelo lavado `bg-subtle`: numa colecao em que so parte dos itens
-tem foto, e isso que faz o texto de todos comecar no mesmo ponto.
+tratamento impresso e so das figuras de conteudo. Numa colecao, sem foto o lugar
+da imagem continua ocupado pelo lavado `bg-subtle`: quando so parte dos itens tem
+foto, e isso que faz o texto de todos comecar no mesmo ponto. Fora de colecao —
+na abertura de uma pagina — nao ha vizinho com quem alinhar, e sem foto nada
+ocupa o lugar dela.
 
 **Item de receita.** Sem fundo, sem borda, sem sombra, sem raio. Separado por
 espaco; fio entre itens so em lista densa. O item inteiro e a area de clique,
@@ -771,8 +782,8 @@ se chama card: o nome carrega a caixa junto.
 **Barra superior.** Tom da pagina, fio inferior, altura em multiplo de linha.
 Sombra so quando ha conteudo rolado por baixo.
 
-**Barra lateral.** Margem, nao painel: fio vertical, itens sem fundo, ativo
-marcado por fio accent na borda inicial mais `fg-emphasis`.
+**Barra lateral.** Margem, nao painel: fio vertical, itens sem fundo, ativo em
+`fg-emphasis` contra os outros em `fg-muted`.
 
 **Modal.** `bg-page`, a unica sombra do sistema, raio da folha. Titulo, fio
 abaixo do titulo, conteudo, acoes no rodape a direita.

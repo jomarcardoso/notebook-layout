@@ -32,22 +32,15 @@
   }
 
   &__thumb {
-    // Transparent until chosen, so selecting a thumbnail changes its colour
-    // rather than its size — a border that appears on selection shifts the
-    // whole strip by two pixels.
-    border: component.$carousel-thumb-border-width solid transparent;
-    padding: 0;
+    background-color: transparent;
+    border: 0;
     cursor: pointer;
-    opacity: 1;
-    scroll-snap-align: start;
-    font: inherit;
-    transition:
-      opacity 160ms ease,
-      border-color 160ms ease,
-      transform 160ms ease,
-      box-shadow 160ms ease;
-    width: 80px;
     flex-shrink: 0;
+    font: inherit;
+    padding: component.$carousel-thumb-pad;
+    scroll-snap-align: start;
+    transition: background-color var(--app-duration-fast) var(--app-ease);
+    width: 80px;
 
     > * {
       width: 100%;
@@ -61,15 +54,19 @@
       display: block;
     }
 
-    &:hover {
-      opacity: 1;
-      transform: translateY(-1px);
+    @media (hover: hover) {
+      &:hover {
+        background-color: component.$carousel-thumb-bg-hover;
+      }
+    }
+
+    &:active:not(.carousel__thumb--active) {
+      background-color: component.$carousel-thumb-bg-active;
+      translate: 0 1px;
     }
 
     &--active {
-      opacity: 1;
-      border-color: component.$carousel-indicator-border-color-active;
-      box-shadow: component.$carousel-indicator-shadow-active;
+      background-color: component.$carousel-thumb-bg-selected;
     }
   }
 }

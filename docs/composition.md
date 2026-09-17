@@ -4,15 +4,17 @@
 
 Como uma pagina se monta com o que ja existe. `DESIGN_LANGUAGE.md` diz a regra; este documento diz com que classe e componente ela se escreve, e registra as decisoes que a regra deixa em aberto. O inventario do CoreUI e o que dele se usa direto estao em `docs/coreui.md`.
 
-Quase tudo aqui e composicao: primitivos `l-*`, grade do CoreUI, tipografia e componentes da biblioteca arranjados, sem CSS proprio. So tres pecas tem CSS: o boxe, a ficha e o folio.
+Quase tudo aqui e composicao: primitivos `l-*`, grade do CoreUI, tipografia e componentes da biblioteca arranjados, sem CSS proprio. Poucas pecas tem CSS proprio: o boxe, a ficha, o folio, o aparato e o modal.
 
 ## As pecas
 
 | peca | classe | camada | Storybook |
 | --- | --- | --- | --- |
 | boxe | `.box` | atom `styles/atoms/_box.scss` | Atomos/Boxe |
-| ficha e dado | `.facts`, `.facts__item`, `.facts__label`, `.facts__value` | molecula `styles/molecules/_facts.scss` | Moleculas/Ficha |
+| ficha e dado | `.description-list`, `.description-list__item`, `.description-list__term`, `.description-list__details` | molecula `styles/molecules/_description-list.scss` | Moleculas/Ficha |
 | folio | `.folio` | atom `styles/atoms/_folio.scss` | Composicoes/Folio |
+| aparato | `.apparatus` | molecula `styles/molecules/_apparatus.scss` | — |
+| modal | `.modal`, `.modal__body`, `.modal__footer` | componente `styles/components/modal.scss` | — |
 
 ### Boxe
 
@@ -20,11 +22,11 @@ A unica superficie de conteudo: `bg-muted`, sem raio, sem borda, sem sombra. Gua
 
 O boxe nao e clicavel. O que leva a algum lugar e item de colecao, sem superficie; um boxe clicavel e um card com outro nome. Link dentro do boxe e permitido e usa o hover de alfa, que compoe sobre o lavado.
 
-Pela escada de separacao a marca de margem (`.callout`) vem antes: um aparte de uma frase e marca de margem, e o boxe entra quando a marca nao basta. O boxe e de uso raro, e o CoreUI nao tem equivalente: `.card` nao e usado neste sistema, e os utilitarios de fundo nao sao compilados.
+Pela escada de separacao o aparte com fio (`.callout`) vem antes: um aparte de uma frase e callout, e o boxe entra quando o fio nao basta. O boxe e de uso raro, e o CoreUI nao tem equivalente: `.card` nao e usado neste sistema, e os utilitarios de fundo nao sao compilados.
 
 ### Ficha e dado
 
-A ficha sao os dados-chave lado a lado. A marcacao e `dl`, e cada `.facts__item` agrupa `dt.facts__label` e `dd.facts__value` — esse par e o dado. Rotulo em `label-sm` e `fg-muted`, valor em `numeric` com algarismos tabulares. Os pares se separam pela calha (`--app-gutter`) e quebram para a linha de baixo com `--app-space-sm` entre linhas; nunca por fio vertical.
+A ficha sao os dados-chave lado a lado. A marcacao e `dl`, e cada `.description-list__item` agrupa `dt.description-list__term` e `dd.description-list__details` — esse par e o dado. Rotulo em `label-sm` e `fg-muted`, valor em `numeric` com algarismos tabulares. Os pares se distribuem na largura da ficha (`space-around`), com a calha (`--app-gutter`) como distancia minima, e quebram para a linha de baixo com `--app-space-sm` entre linhas; nunca por fio vertical.
 
 A ficha nao tem superficie propria. No papel ela se separa por espaco, e e o padrao, como na abertura. Quando precisa ser lida como bloco a parte, a mesma `dl` recebe `.box`. A faixa entre dois fios nao e forma de ficha, porque desenha dois fios paralelos.
 
@@ -34,11 +36,25 @@ Dois pares rotulo e valor em lista vertical nao sao ficha: sao `LineList family=
 
 O texto de pe e cabeca que orienta sem pedir leitura: titulo corrido, posicao numa sequencia, numero de pagina. `fg-subtle`, que o §4 reserva para o folio, em `caption`, com algarismos tabulares. Separa-se do conteudo por espaco, sem fio.
 
+### Aparato
+
+A coluna de nota de margem, na classe `.apparatus`: `body-sm` em `fg-muted`, medida propria (`--app-measure-apparatus`), sem fundo e sem fio. Os titulos internos (`.apparatus__title`) sao `label-sm` em `fg-muted`, e nao titulo de secao: eles nomeiam um aparte, nao abrem uma parte da pagina.
+
+A classe existe porque o aparato nao e um lugar, e uma natureza. Numa tela larga ele fica ao lado do conteudo; numa estreita nao ha lado, e a montagem o traz para dentro do conteudo. A peca e a mesma nos dois casos, e sao `l-only-wide` e `l-only-narrow` que decidem qual copia entra na tela.
+
+### Modal
+
+A folha sobreposta: `bg-page`, a unica sombra do sistema, raio de folha, cabecalho com fio abaixo, conteudo e rodape com as acoes a direita.
+
+**A calha e `--modal-gutter`, e ela vale `p-3` do CoreUI.** Cabecalho e rodape ja a aplicam. O corpo (`.modal__body`) nao pada nada por conta propria, porque ha conteudo que precisa encostar nos cantos — uma foto, uma tabela, uma lista que sangra —, e o que precisa da calha pede `p-3` no proprio conteudo. Como as duas medidas saem do mesmo passo da escala interna, o texto do corpo nasce alinhado com o titulo acima e com os botoes abaixo, e `p-3` tambem resolve o espaco vertical.
+
+O que o corpo reserva no fim nao e calha: e o teclado do telefone e a faixa de gestos, que ficariam por cima da ultima linha.
+
 ## Composicoes
 
 | composicao | com o que | Storybook |
 | --- | --- | --- |
-| abertura | `row` 4/8, `.app-image`, `display`, `subtitle`, `.facts` | Composicoes/Abertura |
+| abertura | `.opening`, `display`, `.description-list`, `.app-image`, `ExpandableText`, `Button` | Composicoes/Abertura |
 | destaque de vitrine | `row` 7/5, `.section-title`, `ThumbItem` com `variant` `featured` e `brief` | Composicoes/Destaque de vitrine |
 | secao com acao | `l-cluster -between -baseline`, `.section-title.-plain`, link, `IndexList` | Composicoes/Secao com acao |
 | vazio | `l-measure -narrow`, `l-stack -tight`, `.state-illustration`, `title-sm`, `Button` | Composicoes/Vazio |
@@ -47,7 +63,13 @@ O texto de pe e cabeca que orienta sem pedir leitura: titulo corrido, posicao nu
 
 ### Abertura
 
-O cabecalho da pagina de leitura: figura 1:1 em quatro colunas, texto em oito — titulo em `display`, headnote em `subtitle` e a ficha no papel. Sem foto, o lugar da figura continua ocupado pelo lavado de `.app-image`, e a abertura tem a mesma forma. Estreitando a tela, figura e texto viram sequencia na mesma ordem.
+O cabecalho da pagina de leitura, na molecula `.opening` (`styles/molecules/_opening.scss`). A ordem do DOM e a de leitura: titulo em `display` (`.opening__title`), a ficha, a figura 1:1 (`.opening__figure`), o headnote e a linha de acao (`.opening__actions`), tudo dentro de `.opening__grid`. Estreita, e essa sequencia. Quando ha figura o bloco leva `opening--with-figure`, e quando o conteudo passa de 600px — container query, porque a abertura mora na regiao de conteudo e nao na janela — esse modificador manda a figura para uma coluna a direita em 5:3, presa ao topo do titulo.
+
+Sem foto nada ocupa o lugar da figura e o texto usa a largura inteira, preso as medidas dos proprios papeis. O lavado de `.app-image` e regra de colecao, onde alinha o texto de itens vizinhos; na abertura nao ha vizinho.
+
+O headnote e o componente `ExpandableText` com `textClassName="subtitle"`: um elemento so com `pre-line`, cortado em quatro linhas com reticencias. O componente nao sabe que texto recebe; o papel tipografico vem de quem usa. "Continuar lendo" so aparece quando o corte e real, medido de novo quando a largura ou o tamanho da fonte mudam, e revela no lugar.
+
+A linha de acao mede uma unidade e meia, com acoes em palavra e nenhuma preenchida. O texto da primeira encosta na borda do texto de cima, e a destrutiva (`.btn-ghost-danger`) vai para o fim da linha.
 
 ### Destaque de vitrine
 

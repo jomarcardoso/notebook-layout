@@ -20,108 +20,7 @@ When changing this package, verify that `www` still builds with the local import
 
 ## CSS
 
-Use the BEM naming convention: a block, its elements, and modifiers on either.
-
-BEM has two levels, however many the markup has. Do not nest an element inside
-another element just because the HTML nests them — the resulting class is an
-element of an element, which BEM has no shape for.
-
-```scss
-// bad
-.app-layout {
-  &__aside {
-    &-stack {
-    }
-  }
-}
-
-// good when the parent's name is part of what this thing IS
-.app-layout {
-  &__aside {
-  }
-
-  &__aside-stack {
-  }
-}
-
-// better when it can stand on its own name, even though the markup nests it
-.app-layout {
-  &__aside {
-  }
-
-  &__stack {
-  }
-}
-```
-
-Both good forms declare the same class the bad one compiles to. What the bad
-form loses is in the source: `app-layout__aside-stack` no longer exists as text
-anywhere, so nobody can find it by searching; the nesting says "only inside the
-aside" when it says no such thing; and moving the element elsewhere in the
-markup leaves its styles filed under a parent it no longer has.
-
-Two things this does NOT forbid:
-
-- a modifier on an element — `&__aside { &--open { } }` is
-  `.app-layout__aside--open`, a shape BEM has;
-- a block nested inside another block's element — `&__aside { .modal { &__body
-  { } } }` declares `.modal__body`, an element of `.modal`.
-
-`recepta/no-nested-bem-element` in `tools/stylelint/` enforces this. It reads
-the direct parent only, which is what makes the two exceptions above pass.
-
-### The order rules are written in
-
-CSS breaks ties by source order, so the order inside a block IS the override
-order. Write a block in this order:
-
-```scss
-.bloco {
-  .outro-bloco {}
-
-  &__elemento-menor {}
-
-  &__elemento-maior {}
-
-  &--modificador {
-    .outro-bloco {}
-
-    .bloco__elemento-menor {}
-
-    .bloco__elemento-maior {}
-  }
-
-  @media () {
-    &--modificador {
-      .outro-bloco {}
-
-      .bloco__elemento-menor {}
-
-      .bloco__elemento-maior {}
-    }
-  }
-}
-```
-
-Reading down: the other blocks that appear inside this one, then this block's
-own elements from the smallest to the largest, then the modifiers repeating the
-same order inside, then the media queries with the modifiers inside them.
-
-The point is the modifiers. A modifier exists to change something, and most of
-what it changes are the block's own elements, so it has to be able to win
-against them. Written after them it wins on source order even at equal weight;
-written before them it silently loses to the rule it was meant to override, and
-the usual repair is `!important` or a third class, which is the same bug with
-more code.
-
-Inside a modifier, write the element's full class rather than `&__elemento`.
-`&` there is `.bloco--modificador`, so `&__elemento` compiles to
-`.bloco--modificador__elemento` — a class no markup carries. `.bloco__elemento`
-compiles to `.bloco--modificador .bloco__elemento`, which is the rule you
-wanted, and it stays findable by searching for its own name.
-
-The media queries go last for the same reason: `@media` adds no weight, so a
-narrow-screen override only lands if nothing written after it says otherwise.
+Write CSS in BEM as described in [`BEM.md`](../BEM.md): blocks are global and declared before they are modified, elements belong to their block and are declared before they are modified, modifiers go on the block unless the element itself differs from its siblings, and rules follow the order set there.
 
 ### Layout primitives
 
@@ -137,6 +36,7 @@ never rewrite one in a third-party utility grammar.
 | `l-cluster` | horizontal grouping on the inner space axis | `--l-cluster-gap` |
 | `l-regions` | margin, content and apparatus, unequal widths | `--l-regions-*` |
 | `l-target` | 44px touch area on the element's own box | `--l-target-size` |
+| `l-only-wide`, `l-only-narrow` | which copy of a piece enters the screen, by orientation | — |
 
 `l-target` grows the element's OWN box, transparent around what is painted. It
 does not draw a bigger overlay: the browser's focus ring outlines the element's
@@ -144,6 +44,13 @@ box and not a pseudo-element, so an overlaid target puts the ring around the
 drawing instead of around the area that answers to touch. `.-flush` pairs with
 `--l-target-painted` to hand the layout back only the painted height, so the
 target grows outwards without shoving its neighbours.
+
+`l-only-wide` and `l-only-narrow` are presence, never appearance, one class each
+like `d-none`: `l-only-wide` is dropped in portrait and `l-only-narrow` in
+landscape, so a piece the assembly keeps in two places —
+the apparatus beside the content and the apparatus inside it — shows up in one of
+them at a time. It reads orientation because that is what `l-regions` reads; a
+width-based `d-md-*` would show both copies on a tablet held upright.
 
 Modifiers use the repository's `.-modifier` form: `.l-stack.-tight`,
 `.l-measure.-apparatus`.
@@ -168,7 +75,7 @@ package already owns the class name, and the decisions still open. Read it
 before importing a partial, and update it in the same change.
 
 `docs/composition.md` records how the page is assembled from what already
-exists — the panel, the facts sheet, the folio and the page compositions — and
+exists — the box, the description list, the folio and the page compositions — and
 the decisions each one depends on.
 
 ### The atoms

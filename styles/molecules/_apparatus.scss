@@ -1,0 +1,14 @@
+// notebook-layout/styles/molecules/_apparatus.scss
+
+.apparatus {
+  color: var(--app-fg-muted);
+  font: var(--app-text-body-sm);
+  max-inline-size: var(--app-measure-apparatus);
+
+  &__title {
+    border-block-end: 0;
+    color: var(--app-fg-muted);
+    font: var(--app-text-label-sm);
+    margin-block: 0 var(--app-rhythm-half);
+  }
+}

@@ -1,21 +1,20 @@
 // notebook-layout/styles/_base.scss
 
+@use 'sass:list';
 @use 'metrics';
+@use 'srgb';
 
 @layer ds.base {
   :root {
-    --accent-1: #fbfdff;
-    --accent-2: #f5f9ff;
-    --accent-3: #eaf1ff;
-    --accent-4: #dde9ff;
-    --accent-5: #cfdfff;
-    --accent-6: #bcd0ff;
-    --accent-7: #a3bdff;
-    --accent-8: #83a2ff;
-    --accent-9: #2a3b8f;
-    --accent-10: #394da3;
-    --accent-11: #4d67d7;
-    --accent-12: #1b277a;
+    @each $family, $steps in srgb.$ramps {
+      @for $i from 1 through 12 {
+        --#{$family}-#{$i}: #{list.nth($steps, $i)};
+      }
+
+      --#{$family}-indicator: #{list.nth($steps, 9)};
+      --#{$family}-track: #{list.nth($steps, 9)};
+    }
+
     --accent-a1: #0080ff04;
     --accent-a2: #0066ff0a;
     --accent-a3: #0055ff15;
@@ -30,21 +29,7 @@
     --accent-a12: #000d6ae4;
     --accent-contrast: #fff;
     --accent-surface: #f3f8ffcc;
-    --accent-indicator: #2a3b8f;
-    --accent-track: #2a3b8f;
 
-    --neutral-1: #fffcfa;
-    --neutral-2: #fdf8f5;
-    --neutral-3: #f6efe9;
-    --neutral-4: #f2e6de;
-    --neutral-5: #ecded6;
-    --neutral-6: #e7d6ca;
-    --neutral-7: #dfcabc;
-    --neutral-8: #d0b5a3;
-    --neutral-9: #a58570;
-    --neutral-10: #987b67;
-    --neutral-11: #745d4e;
-    --neutral-12: #2e1b0d;
     --neutral-a1: #ff660005;
     --neutral-a2: #cc4d000a;
     --neutral-a3: #97460016;
@@ -59,21 +44,7 @@
     --neutral-a12: #230f00f2;
     --neutral-contrast: #ffffff;
     --neutral-surface: #ffffffcc;
-    --neutral-indicator: #a58570;
-    --neutral-track: #a58570;
 
-    --success-1: #fcfefb;
-    --success-2: #f7faf5;
-    --success-3: #eef5e8;
-    --success-4: #e2eed9;
-    --success-5: #d5e5c7;
-    --success-6: #c3d9b0;
-    --success-7: #acc893;
-    --success-8: #8db168;
-    --success-9: #698f3f;
-    --success-10: #5f8139;
-    --success-11: #55772f;
-    --success-12: #2d3921;
     --success-a1: #40c00004;
     --success-a2: #3380000a;
     --success-a3: #43910017;
@@ -88,21 +59,7 @@
     --success-a12: #0e1c00de;
     --success-contrast: #fff;
     --success-surface: #f5f9f3cc;
-    --success-indicator: #698f3f;
-    --success-track: #698f3f;
 
-    --danger-1: #fffcfb;
-    --danger-2: #fff8f6;
-    --danger-3: #ffeae5;
-    --danger-4: #ffd9d0;
-    --danger-5: #ffc9be;
-    --danger-6: #ffb8aa;
-    --danger-7: #ffa292;
-    --danger-8: #f98573;
-    --danger-9: #ff331f;
-    --danger-10: #f11902;
-    --danger-11: #e00000;
-    --danger-12: #641e15;
     --danger-a1: #ff400004;
     --danger-a2: #ff390009;
     --danger-a3: #ff32001a;
@@ -117,21 +74,7 @@
     --danger-a12: #560a00ea;
     --danger-contrast: #fff;
     --danger-surface: #fff6f4cc;
-    --danger-indicator: #ff331f;
-    --danger-track: #ff331f;
 
-    --warning-1: #fefdfb;
-    --warning-2: #fff8ed;
-    --warning-3: #ffeed0;
-    --warning-4: #ffe1b2;
-    --warning-5: #ffd498;
-    --warning-6: #ffc887;
-    --warning-7: #f1b676;
-    --warning-8: #e39f50;
-    --warning-9: #ffa630;
-    --warning-10: #f29c28;
-    --warning-11: #b16500;
-    --warning-12: #4d351b;
     --warning-a1: #c0800004;
     --warning-a2: #ff9c0012;
     --warning-a3: #ffa3002f;
@@ -146,8 +89,6 @@
     --warning-a12: #381d00e4;
     --warning-contrast: #2e1e0b;
     --warning-surface: #fff6e9cc;
-    --warning-indicator: #ffa630;
-    --warning-track: #ffa630;
   }
 
   @supports (color: color(display-p3 1 1 1)) {

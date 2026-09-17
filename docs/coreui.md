@@ -11,10 +11,11 @@ A versao instalada e `@coreui/coreui` 5.9. O pacote declara so o CSS como depend
 | arquivo | o que guarda | exemplo |
 | --- | --- | --- |
 | `styles/coreui-entry.scss` | variaveis Sass que a biblioteca aceita e os parciais importados | `$input-bg: transparent` |
-| `styles/_coreui.scss` | a traducao entre os nomes `--cui-*` e os papeis da camada 2 | `--cui-callout-border-left-color` e `border-selected` |
+| `styles/_coreui.scss` | a traducao entre os nomes `--cui-*` e os papeis da camada 2 | `--cui-callout-border-left-color` e `rule-strong` |
 | `styles/_component.scss` | knobs de camada 3 que o adapter e os componentes proprios leem | `$accordion-rule-color` |
 | `styles/atoms/*` | regra do sistema que nenhuma variavel expressa | o fio de base do campo, o pressionado de 1px |
 | `styles/_metrics.scss` | camada 1 em valor Sass: as medidas que os tokens e o entry leem em tempo de compilacao | `$gutter`, `space('md')` |
+| `styles/_srgb.scss` | camada 1 de cor em valor Sass: as rampas solidas, que `_base.scss` emite e o adapter le para os triplets `--cui-*-rgb` | `step(accent, 9)` |
 
 Tres consequencias praticas:
 
@@ -61,13 +62,13 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 
 **Acordeao.** Um fio por item, desenhado pelo adapter em `.accordion-item`. O indicador e um `Icon` Phosphor com a classe `accordion-indicator`; a seta SVG da biblioteca esta desligada. A variante `accordion-flush` nao muda nada aqui: o adapter ja tira as bordas laterais, e a regra dele vence o `last-child` sem borda da variante.
 
-**Dobra.** `.collapse` com `.show`, controlada por um botao de peso `texto` com `aria-expanded`. A altura anima com `--app-duration-base` quando o `CCollapse` usa `.collapsing`, e o movimento some com `prefers-reduced-motion`.
+**Dobra.** `.collapse` com `.show`, controlada por um botao de peso `texto` com `aria-expanded`. A altura anima com `--app-duration-base` quando o `CCollapse` usa `.collapsing`, e o movimento some com `prefers-reduced-motion`. A dobra esconde o bloco inteiro; quando o que se protege sao as linhas que sobram de um texto, o componente e `ExpandableText`, que corta em quatro linhas com reticencias — `.collapse` nao corta nada e `text-truncate` so vale para uma linha.
 
 **Menu suspenso.** `.dropdown-menu` em `bg-page` com fio `rule`, raio e sombra de folha pelo atom `_overlay.scss`; item no hover em `bg-hover`, escolhido em `bg-selected` com `fg-emphasis`. O gatilho e um `IconButton` com `aria-haspopup`; a classe `dropdown-toggle` nao e usada, porque o triangulo dela e desenhado por borda.
 
 **Paginacao.** Itens sem borda, em `fg-muted`; hover em `bg-hover`, pagina atual em `bg-selected` com `fg-emphasis`.
 
-**Marca de margem.** `.callout` sem modificador: um fio de `--app-marker-width` na borda inicial, em `border-selected`, sem fundo e sem margem propria — o espaco de fluxo vem de `l-stack`. `$callout-variants` esta vazio, entao `callout-primary`, `callout-info` e as demais nao existem.
+**Callout.** `.callout` sem modificador: o fio de sempre (`--app-border-width`) na borda inicial, em `rule-strong`, sem fundo e sem margem propria — o espaco de fluxo vem de `l-stack`. `$callout-variants` esta vazio, entao `callout-primary`, `callout-info` e as demais nao existem.
 
 **Alerta.** So `alert-success`, `alert-warning` e `alert-danger`: lavado de status com a tinta de status, sem borda, sem raio. O CSS de `alert-primary`, `alert-info`, `alert-light` e `alert-dark` e gerado pelo mapa de cores do tema, mas elas nao fazem parte do sistema. O botao de fechar e um `IconButton` com `PiX`.
 
@@ -96,7 +97,7 @@ O CoreUI entrega mecanica pronta, e ela se usa direto. Ela nao se embrulha num p
 | `container`, `container-{bp}` | largura maxima da moldura | padding lateral de metade da calha |
 | `d-*`, `d-{bp}-*`, `order-*`, `order-{bp}-*` | display e ordem por largura | e remontagem, nunca restyle |
 | `flex-*`, `justify-content-*`, `align-items-*`, `align-self-*` | mecanica de flex | |
-| `gap-*`, `row-gap-*`, `column-gap-*`, `m*-*`, `p*-*` | espaco interno na escala interna (4, 8, 16, 24, 48) | espaco de fluxo e `l-stack`; `mt-3` entre blocos que o olho desce mistura os dois eixos |
+| `gap-*`, `row-gap-*`, `column-gap-*`, `m*-*`, `p*-*` | espaco interno na escala interna (4, 8, 16, 24, 48) | espaco de fluxo e `l-stack`; `mt-3` entre blocos que o olho desce mistura os dois eixos; `p-3` e a calha do modal, e o conteudo do corpo dele pede esse mesmo helper |
 | `position-*`, `top-*`, `bottom-*`, `start-*`, `end-*`, `translate-middle` | posicionamento | |
 | `sticky-top` | indice ancorado, cabecalho que acompanha a rolagem | z-index 1020, o mesmo de `--app-z-sticky` |
 | `visually-hidden`, `visually-hidden-focusable` | texto so para leitor de tela, link de pular para o conteudo | |
@@ -148,7 +149,7 @@ E os helpers que ficam fora do entry:
 
 | parcial | motivo |
 | --- | --- |
-| `modal` | o bloco `.modal` e o `Modal` desta biblioteca, dentro de `.dialog`. O `.modal` do CoreUI e `position: fixed` com `display: none` e quebraria o dialog |
+| `modal` | o bloco `.modal` e o `Modal` desta biblioteca, dentro de `.dialog`. O `.modal` do CoreUI e `position: fixed` com `display: none` e quebraria o dialog. A calha dele e `--modal-gutter`, do mesmo passo que `p-3` |
 | `chip`, `chip-set`, `forms/chip-input` | o bloco `.chip` e o atom `_chip.scss` |
 | `avatar` | o bloco `.avatar` e o `Avatar` desta biblioteca e aparece no `user-box` do `www` |
 | `footer`, `carousel` | os blocos `.footer` e `.carousel` sao componentes desta biblioteca |
@@ -177,7 +178,7 @@ Decisoes que dependem de aprovacao. Nenhuma delas esta aplicada.
 3. **Repeticao entre atom e entry.** `_progress.scss` repete em `--cui-spinner-*` e `--cui-progress-*` os mesmos valores que `$spinner-*` e `$progress-*` ja definem. `_tag.scss` fixa `border-radius: 0` enquanto `$badge-radius` e o adapter apontam para `--app-radius-control`.
 4. **Adapter sem componente importado.** Os blocos `.modal` (que alcanca o `.modal` proprio) e `.navbar-toggler-icon`, o bloco `.card` comentado, e `_important-overrides`, que pinta `.text-bg-*` enquanto o helper `color-bg` nao e mais compilado.
 5. **Estilos existentes que divergem do `DESIGN_LANGUAGE.md`.**
-   - A barra lateral pinta hover e ativo com fundo e raio (`$nav-bg-hover`, `$nav-bg-active`, `$nav-radius`); o §10 pede itens sem fundo e ativo com fio accent na borda inicial.
+   - A barra lateral pinta hover e ativo com fundo e raio (`$nav-bg-hover`, `$nav-bg-active`, `$nav-radius`); o §10 pede itens sem fundo e ativo em `fg-emphasis`.
    - `dialog.scss` pinta o veu com `rgba(0, 0, 0, 0.75)` em vez de `--app-bg-backdrop`.
    - `$footer-bg` e `bg-accent-solid`; o §11 diz que rodape nao e preenchido em accent.
 6. **Lint.** O bloco de `overrides` para `components/**` e `styles/**` redefine `declaration-property-value-disallowed-list` e substitui a lista que proibe `#`, `rgb`, `hsl` e `oklch` em propriedades de cor. E por isso que o literal do `dialog.scss` passa.

@@ -1,0 +1,67 @@
+// notebook-layout/styles/molecules/_opening.scss
+
+.opening {
+  container-type: inline-size;
+
+  &__title {
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+
+  &__figure {
+    margin-block-start: var(--app-rhythm-1);
+  }
+
+  &__figure + * {
+    margin-block-start: var(--app-rhythm-1);
+  }
+
+  &__actions {
+    align-items: center;
+    column-gap: var(--app-space-xs);
+    display: flex;
+    flex-wrap: wrap;
+    min-block-size: calc(1.5 * var(--app-rhythm-unit));
+
+    > .btn:first-child {
+      margin-inline-start: calc(-1 * var(--btn-pad-x));
+    }
+
+    > .btn-ghost-danger {
+      margin-inline: auto calc(-1 * var(--btn-pad-x));
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :where(.opening__grid > * + *) {
+    margin-block-start: var(--app-rhythm-half);
+  }
+
+  @container (min-width: 600px) {
+    &--with-figure {
+      .opening__figure {
+        grid-column: 2;
+        grid-row: 1 / -1;
+        margin-block-start: 0;
+      }
+
+      .opening__figure + * {
+        margin-block-start: var(--app-rhythm-half);
+      }
+
+      .opening__grid {
+        column-gap: var(--app-gutter);
+        grid-template-columns: minmax(0, 5fr) minmax(0, 3fr);
+        grid-template-rows: repeat(4, auto) 1fr;
+      }
+
+      :where(.opening__grid > *) {
+        grid-column: 1;
+      }
+    }
+  }
+}

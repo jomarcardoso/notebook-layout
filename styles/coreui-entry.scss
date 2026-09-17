@@ -33,14 +33,7 @@
   $focus-ring-blur: 0,
   $focus-ring-opacity: 0,
 
-  $spacers: (
-    0: 0,
-    1: metrics.space('2xs'),
-    2: metrics.space('xs'),
-    3: metrics.space('md'),
-    4: metrics.space('lg'),
-    5: metrics.space('2xl'),
-  ),
+  $spacers: metrics.$spacers,
 
   $grid-gutter-width: metrics.$gutter,
 
@@ -179,7 +172,7 @@
   $callout-border-radius: 0,
   $callout-border-width: 0,
   $callout-border-color: transparent,
-  $callout-border-left-width: var(--app-marker-width),
+  $callout-border-left-width: var(--app-border-width),
   $callout-variants: (),
   $alert-padding-y: metrics.space('sm'),
   $alert-padding-x: metrics.space('md'),

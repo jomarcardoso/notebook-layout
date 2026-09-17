@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A ficha (.facts) sao os dados-chave lado a lado. Cada par e um dado: rotulo em label-sm e fg-muted, valor em numeric. Os pares se separam pela calha, nunca por fio vertical. No papel a ficha se separa por espaco; dentro de .box ela vira boxe. A faixa entre dois fios nao e opcao, porque desenha dois fios paralelos.',
+          'A ficha (.description-list) sao os dados-chave lado a lado. Cada par e um dado: rotulo em label-sm e fg-muted, valor em numeric. Os pares se separam pela calha, nunca por fio vertical. No papel a ficha se separa por espaco; dentro de .box ela vira boxe. A faixa entre dois fios nao e opcao, porque desenha dois fios paralelos.',
       },
     },
   },
@@ -37,11 +37,11 @@ const Ficha = ({
   dados?: Dado[];
   className?: string;
 }) => (
-  <dl className={`facts ${className}`.trim()}>
+  <dl className={`description-list ${className}`.trim()}>
     {dados.map(({ rotulo, valor }) => (
-      <div className="facts__item" key={rotulo}>
-        <dt className="facts__label">{rotulo}</dt>
-        <dd className="facts__value">{valor}</dd>
+      <div className="description-list__item" key={rotulo}>
+        <dt className="description-list__term">{rotulo}</dt>
+        <dd className="description-list__details">{valor}</dd>
       </div>
     ))}
   </dl>

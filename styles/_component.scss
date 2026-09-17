@@ -1,5 +1,8 @@
 // notebook-layout/styles/_component.scss
 
+@use 'sass:map';
+@use './metrics';
+
 // Camada 3: o contrato de componente. Cada knob e o ponto onde o nome de um
 // componente encontra um papel da camada 2.
 
@@ -26,7 +29,6 @@ $nav-bg-active: var(--app-bg-active) !default;
 $nav-bg-hover: var(--app-bg-hover) !default;
 $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
-
 
 $badge-radius: var(--app-radius-control) !default;
 $badge-fg: var(--app-fg-muted) !default;
@@ -59,7 +61,10 @@ $avatar-size: 80px !default;
 
 $carousel-gap: var(--app-gap-inline) !default;
 $carousel-thumbs-gap: var(--app-gap-inline) !default;
-$carousel-thumb-border-width: var(--app-border-width) !default;
+$carousel-thumb-pad: var(--app-space-2xs) !default;
+$carousel-thumb-bg-hover: var(--app-bg-hover) !default;
+$carousel-thumb-bg-active: var(--app-bg-active) !default;
+$carousel-thumb-bg-selected: var(--app-bg-selected) !default;
 $footer-bg: var(--app-bg-accent-solid) !default;
 $footer-fg: var(--app-fg-on-solid) !default;
 $footer-height: var(--app-size-control) !default;
@@ -94,16 +99,14 @@ $modal-shadow: var(--app-shadow-overlay) !default;
 $modal-radius: var(--app-radius-overlay) !default;
 $modal-footer-min-height: var(--app-size-control) !default;
 $modal-border: var(--app-border) !default;
-$carousel-indicator-border-color-active: var(--app-border-selected) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
 $card-radius: 0 !default;
-$carousel-indicator-shadow-active: inset 0 0 3px 0 var(--app-border-strong) !default;
 
 // -----------------------------------------------------------------------------
 // Os componentes proprios desta biblioteca.
 // -----------------------------------------------------------------------------
 
-$modal-body-pad: var(--app-pad-surface) !default;
+$modal-gutter: map.get(metrics.$spacers, 3) !default;
 
 $modal-footer-gap: var(--app-gap-inline) !default;
 $modal-divider-width: var(--app-border-width) !default;
@@ -135,6 +138,6 @@ $notebook-tabs-fg-hover: var(--app-fg-default) !default;
 $notebook-tabs-bg-active: var(--app-bg-selected) !default;
 $notebook-tabs-border-color-active: var(--app-border-strong) !default;
 $notebook-tabs-fg-active: var(--app-fg-emphasis) !default;
-$choice-border-color-hover: var(--app-border-selected) !default;
+$choice-border-color-hover: var(--app-border-strong) !default;
 $category-width: 102px !default;
 $category-font-size: var(--app-font-size-sm) !default;

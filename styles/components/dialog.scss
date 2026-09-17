@@ -42,7 +42,7 @@
 }
 
 .dialog::backdrop {
-  background: rgba(0, 0, 0, 0.75);
+  background: var(--app-bg-backdrop);
   animation: backdrop-in 180ms ease-out forwards;
   overscroll-behavior: none;
 }
@@ -56,9 +56,6 @@
   }
 }
 
-.dialog.-no-padding .modal__body {
-  padding: 0;
-}
 
 .dialog.-dense {
   max-height: 92dvh;

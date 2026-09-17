@@ -1,5 +1,7 @@
 // notebook-layout/stories/compositions/Abertura.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
+import { Button } from '@components/atoms';
+import { ExpandableText } from '@components/molecules';
 import { Group, Sheet } from '../atoms/specimen';
 import { photos } from '../molecules/figures';
 
@@ -10,7 +12,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A abertura de uma pagina de leitura: figura 1:1, titulo em display, headnote em subtitle e a ficha no papel logo abaixo. E composicao de pecas que ja existem — grade, .app-image, tipografia e .facts —, sem CSS proprio.',
+          'A abertura de uma pagina de leitura: titulo em display, a ficha, a figura 1:1, o headnote cortado em quatro linhas e a linha de acao. Estreita, e sequencia na ordem do DOM; com largura de conteudo, a figura vai para a direita, presa ao topo do titulo.',
       },
     },
   },
@@ -20,35 +22,38 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const FICHA = [
-  ['Preparo', '50 min'],
-  ['Rende', '12 porcoes'],
-  ['Energia', '255 kcal'],
+  ['Rendimento', '12 fatias'],
+  ['Tempo de preparo', '1 h 10 min'],
+  ['Dificuldade', 'Facil'],
 ];
 
-const Abertura = ({ foto = '' }: { foto?: string }) => (
-  <header className="row">
-    <div className="col-md-4">
-      {foto ? (
-        <img className="app-image" src={foto} alt="Bolo de cenoura com cobertura" />
-      ) : (
-        <span className="app-image" aria-hidden="true" />
+const HEADNOTE_LONGO =
+  'Ela fazia aos domingos, sempre na forma de furo que veio do enxoval. Aprendi olhando, porque ela nunca mediu nada, e passei anos errando o ponto ate entender que o segredo e nao bater depois de colocar o queijo.\n\nEsta versao e a mais perto que cheguei da dela.';
+
+const Abertura = ({ foto = '', headnote = '' }) => (
+  <header className={foto ? 'opening opening--with-figure' : 'opening'}>
+    <div className="opening__grid">
+      <h1 className="display opening__title">
+        Bolo de fuba cremoso da vo Lurdes
+      </h1>
+      <dl className="description-list">
+        {FICHA.map(([rotulo, valor]) => (
+          <div className="description-list__item" key={rotulo}>
+            <dt className="description-list__term">{rotulo}</dt>
+            <dd className="description-list__details">{valor}</dd>
+          </div>
+        ))}
+      </dl>
+      {foto && (
+        <div className="opening__figure">
+          <img className="app-image" src={foto} alt="" />
+        </div>
       )}
-    </div>
-    <div className="col-md-8">
-      <div className="l-stack -tight">
-        <h1 className="display">Bolo de cenoura da vo Lurdes</h1>
-        <p className="subtitle">
-          O de todo aniversario. A cobertura vai quente, para escorrer pelos
-          lados.
-        </p>
-        <dl className="facts">
-          {FICHA.map(([rotulo, valor]) => (
-            <div className="facts__item" key={rotulo}>
-              <dt className="facts__label">{rotulo}</dt>
-              <dd className="facts__value">{valor}</dd>
-            </div>
-          ))}
-        </dl>
+      {headnote && <ExpandableText text={headnote} textClassName="subtitle" />}
+      <div className="opening__actions">
+        <Button weight="texto">Editar</Button>
+        <Button weight="texto">Compartilhar</Button>
+        <Button weight="destrutiva">Apagar</Button>
       </div>
     </div>
   </header>
@@ -59,10 +64,10 @@ export const ComFoto: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Com foto"
-        note="A figura ocupa as quatro colunas e o texto as oito. Abaixo de md a figura vem primeiro e o texto depois, na mesma ordem de leitura."
+        title="Com foto e headnote longo"
+        note="O headnote corta em quatro linhas e so entao ganha Continuar lendo, que revela no lugar. Abaixo de 600px de conteudo a figura fica entre a ficha e o headnote."
       >
-        <Abertura foto={photos.bolo} />
+        <Abertura foto={photos.bolo} headnote={HEADNOTE_LONGO} />
       </Group>
     </Sheet>
   ),
@@ -73,10 +78,10 @@ export const SemFoto: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Sem foto"
-        note="O lugar da imagem continua ocupado pelo lavado bg-subtle. O titulo nao sobe para ocupar o espaco: a abertura tem a mesma forma com e sem foto."
+        title="Sem foto, headnote curto"
+        note="Nada ocupa o lugar da figura, e o texto sobe. O headnote curto nao tem botao, porque nao ha corte."
       >
-        <Abertura />
+        <Abertura headnote="Pra usar o arroz que sobrou do almoco." />
       </Group>
     </Sheet>
   ),

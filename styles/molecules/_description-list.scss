@@ -1,19 +1,19 @@
-// notebook-layout/styles/molecules/_facts.scss
+// notebook-layout/styles/molecules/_description-list.scss
 
-.facts {
+.description-list {
   column-gap: var(--app-gutter);
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
   margin: 0;
   row-gap: var(--app-space-sm);
-  justify-content: space-around;
 
-  &__label {
+  &__term {
     color: var(--app-fg-muted);
     font: var(--app-text-label-sm);
   }
 
-  &__value {
+  &__details {
     color: var(--app-fg-default);
     font: var(--app-text-numeric);
     font-variant-numeric: lining-nums var(--app-numeric-tabular);

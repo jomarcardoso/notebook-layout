@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'O alerta (.alert) nas tres cores de status e a marca de margem (.callout). As cores vem do adapter; info, primary, light e dark nao fazem parte do sistema.',
+          'O alerta (.alert) nas tres cores de status e o callout (.callout). As cores vem do adapter; info, primary, light e dark nao fazem parte do sistema.',
       },
     },
   },
@@ -49,12 +49,12 @@ export const Alerta: Story = {
 };
 
 export const MarcaDeMargem: Story = {
-  name: 'Marca de margem',
+  name: 'Callout',
   render: () => (
     <Sheet>
       <Group
-        title="Marca de margem"
-        note="O .callout sem modificador: um fio de marker-width na borda inicial, em border-selected, e mais nada. E a segunda tinta do autor marcando um aparte; nao tem fundo, raio nem variante de cor."
+        title="Callout"
+        note="O .callout sem modificador: o fio de sempre na borda inicial, em rule-strong, e mais nada. Separa um aparte sem cor: nao tem fundo, raio nem variante."
       >
         <div className="l-measure">
           <p className="p">

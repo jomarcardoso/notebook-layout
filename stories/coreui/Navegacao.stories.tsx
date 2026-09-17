@@ -165,7 +165,7 @@ export const BarraLateral: Story = {
     <Sheet>
       <Group
         title="Barra lateral"
-        note="A marcacao que o CSidebar do www renderiza, com a configuracao atual do adapter: fundo da pagina, hover e ativo com lavado. A barra tem a altura da janela, como no www. O DESIGN_LANGUAGE pede ativo com fio accent na borda inicial; a divergencia esta nas pendencias do inventario."
+        note="A marcacao que o CSidebar do www renderiza, com a configuracao atual do adapter: fundo da pagina, hover e ativo com lavado. A barra tem a altura da janela, como no www. O DESIGN_LANGUAGE pede ativo em fg-emphasis; a divergencia esta nas pendencias do inventario."
       >
         <div style={{ display: 'flex' }}>
           <nav className="sidebar" aria-label="Navegacao primaria">

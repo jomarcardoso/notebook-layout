@@ -29,3 +29,12 @@ $space-steps: (
 @function space($name) {
   @return $space-unit * space-step($name);
 }
+
+$spacers: (
+  0: 0,
+  1: space('2xs'),
+  2: space('xs'),
+  3: space('md'),
+  4: space('lg'),
+  5: space('2xl'),
+);

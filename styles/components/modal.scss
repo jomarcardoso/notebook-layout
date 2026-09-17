@@ -3,14 +3,7 @@
 @use '../utils.scss';
 
 .modal {
-  // What the body insets its content by. Named so a section that wants to run
-  // edge to edge can cancel exactly this and nothing else.
-  //
-  // It is the screen-size padding, not a number of its own. A dialog on a
-  // desktop is still a desktop: its content has to line up with the page it
-  // opened over, and a fixed 8px put every row inside it 8px off the rhythm
-  // everything outside it keeps.
-  --modal-body-pad: #{component.$modal-body-pad};
+  --modal-gutter: #{component.$modal-gutter};
 
   // These two arrived from the token layer, which used to paint `.modal`
   // directly — a component selector in a file whose job is tokens, and
@@ -26,14 +19,20 @@
   max-height: 100%;
   min-height: 0;
 
+  .heading {
+    border-bottom: component.$modal-divider-width solid
+      component.$modal-divider-color;
+    padding: var(--modal-gutter);
+  }
+
   &__body {
     flex: 1 1 auto;
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-bottom: calc(
-      var(--modal-body-pad) +
-        max(var(--dialog-keyboard-inset, 0px), env(safe-area-inset-bottom))
+    padding-bottom: max(
+      var(--dialog-keyboard-inset, 0px),
+      env(safe-area-inset-bottom)
     );
     font-size: 1rem;
     /* iOS momentum scroll */
@@ -43,19 +42,16 @@
     touch-action: pan-y;
   }
 
-  .heading {
-    border-bottom: component.$modal-divider-width solid component.$modal-divider-color;
-  }
-
   &__footer {
     align-items: center;
-    border-top: component.$modal-divider-width solid component.$modal-divider-color;
+    border-top: component.$modal-divider-width solid
+      component.$modal-divider-color;
     display: flex;
     flex: 0 0 auto;
     gap: component.$modal-footer-gap;
     justify-content: flex-end;
     min-height: component.$modal-footer-min-height;
-    padding: var(--modal-body-pad);
+    padding: var(--modal-gutter);
     flex-shrink: 0;
   }
 

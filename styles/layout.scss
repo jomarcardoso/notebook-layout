@@ -144,3 +144,15 @@
     );
   }
 }
+
+.l-only-wide {
+  @media (orientation: portrait) {
+    display: none;
+  }
+}
+
+.l-only-narrow {
+  @media (orientation: landscape) {
+    display: none;
+  }
+}

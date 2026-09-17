@@ -46,7 +46,6 @@ export interface DialogProps extends Omit<
   footer?: ReactNode;
   footerProps?: HTMLProps<HTMLDivElement>;
 
-  noPadding?: boolean;
   dense?: boolean;
   blank?: boolean;
   overlay?: 'auto' | 'off' | 'on';
@@ -65,7 +64,6 @@ export const Dialog: FC<DialogProps> = ({
   bodyProps,
   footer = '',
   footerProps,
-  noPadding,
   dense,
   className = '',
   open: openProp,
@@ -243,7 +241,6 @@ export const Dialog: FC<DialogProps> = ({
 
   const classes = generateClasses({
     dialog: true,
-    '-no-padding': noPadding,
     '-dense': dense,
     [className]: className,
   });
