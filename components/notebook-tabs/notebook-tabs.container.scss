@@ -39,5 +39,17 @@
     &__content {
       z-index: 1;
     }
+
+    // A lombada e do estreito. Numa pagina larga que ja tem indice ao lado ela
+    // repete uma navegacao que existe, e cobra por isso a coluna de 20px e o
+    // fio da direita.
+    &--narrow {
+      border-inline-end: 0;
+      display: block;
+
+      > .notebook-tabs {
+        display: none;
+      }
+    }
   }
 }
