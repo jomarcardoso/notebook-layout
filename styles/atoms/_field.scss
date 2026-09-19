@@ -32,11 +32,9 @@ input.form-control[type='number'] {
 
 input.form-control,
 .form-select {
-  block-size: var(--app-size-control);
   border-block-end: var(--field-rule-width) solid var(--field-rule-color);
   line-height: 1.3;
-  padding-block: calc(var(--app-size-control) - 1lh - 2px)
-    calc(2px - var(--field-rule-width));
+  padding-block: 0;
 }
 
 input.form-control:is(:autofill, :-webkit-autofill) {
@@ -82,7 +80,7 @@ input.form-control[type='search'] {
   --field-rule-offset: 2px;
   --field-rule-width: var(--app-border-width);
 
-  padding-block: 14px 0;
+  padding-block: 0;
 
   @include field-sheet;
 }
@@ -91,9 +89,9 @@ textarea.form-control {
   --field-line: var(--app-rhythm-1);
   --field-rule-offset: 2px;
 
-  min-block-size: calc(var(--field-line) * var(--field-min-rows, 3) + 14px);
+  min-block-size: calc(var(--field-line) * var(--field-min-rows, 3));
   line-height: var(--field-line);
-  padding-block: 14px 0;
+  padding-block: 0;
   resize: vertical;
 
   @supports (field-sizing: content) {
@@ -174,7 +172,6 @@ textarea.form-control[readonly] {
 
 .select-field-caret {
   color: var(--app-fg-default);
-  // Centra a seta na linha do texto: calibrar.
   inset-block-end: 4px;
   inset-inline-end: 0;
   pointer-events: none;
@@ -201,7 +198,6 @@ textarea.form-control[readonly] {
 
 .field-adorned-lead {
   color: var(--app-fg-muted);
-  // Centra o icone na altura das letras: calibrar.
   inset-block-end: 4px;
   inset-inline-start: 0;
   pointer-events: none;

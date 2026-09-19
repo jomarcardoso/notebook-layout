@@ -1,10 +1,15 @@
 @use '../../styles/component' as component;
 
 .carousel {
+  container-type: inline-size;
+  container-name: carousel;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: component.$carousel-gap;
+
+  &__layout {
+    display: flex;
+    flex-direction: column;
+    gap: component.$carousel-gap;
+  }
 
   &__banner {
     width: 100%;
@@ -40,7 +45,7 @@
     padding: component.$carousel-thumb-pad;
     scroll-snap-align: start;
     transition: background-color var(--app-duration-fast) var(--app-ease);
-    width: 80px;
+    width: component.$carousel-thumb-size;
 
     > * {
       width: 100%;
@@ -68,5 +73,30 @@
     &--active {
       background-color: component.$carousel-thumb-bg-selected;
     }
+  }
+}
+
+@container carousel (min-width: #{component.$carousel-aside-min}) {
+  .carousel__layout {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .carousel__banner {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .carousel__thumbs {
+    flex: 0 0 auto;
+    flex-direction: column;
+    max-block-size: calc(
+      100cqi - #{component.$carousel-thumb-size} - #{component.$carousel-gap}
+    );
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-block: 2px;
+    padding-inline: 0 2px;
+    scroll-snap-type: y mandatory;
   }
 }

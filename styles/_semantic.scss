@@ -35,7 +35,7 @@
     --app-space-2xl: calc(var(--app-space-unit) * #{metrics.space-step('2xl')});
     --app-pad-control-x: var(--app-space-sm);
     --app-pad-control-y: var(--app-space-xs);
-    --app-pad-surface: 8px;
+    --app-pad-surface: var(--app-space-md);
     --app-gap-inline: var(--app-space-xs);
     --app-gap-stack: var(--app-space-md);
     --app-gap-grid: var(--app-space-lg);
@@ -47,6 +47,7 @@
     --app-font-weight-body: var(--weight-regular);
     --app-font-weight-strong: var(--weight-medium);
     --app-line-height: var(--leading-prose);
+    --app-line-height-compact: var(--leading-normal);
 
     --app-text-display: var(--weight-regular) var(--size-8) /
       var(--leading-tight) var(--font-serif);
@@ -91,7 +92,7 @@
     --app-marker-column: 40px;
 
     --app-region-margin: 240px;
-    --app-region-apparatus: 352px;
+    --app-region-apparatus: clamp(var(--app-region-margin), 22vw, 352px);
     --app-icon-stroke: 1.25px;
     --app-ring-offset: 3px;
     --app-duration-fast: 120ms;
@@ -163,12 +164,6 @@
   --app-size-bar: var(--app-size-control);
 }
 
-@media screen and (min-width: 600px) {
-  :root {
-    --app-pad-surface: var(--app-space-sm);
-  }
-}
-
 @media screen and (min-width: 768px) {
   :root {
     --app-gap-section: var(--app-rhythm-2);
@@ -177,7 +172,6 @@
 
 @media (orientation: landscape) {
   :root {
-    --app-pad-surface: var(--app-space-md);
     --app-size-bar: 64px;
   }
 }

@@ -30,7 +30,10 @@
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
+    padding-inline: var(--modal-gutter);
+    padding-top: var(--modal-gutter);
     padding-bottom: max(
+      var(--modal-gutter),
       var(--dialog-keyboard-inset, 0px),
       env(safe-area-inset-bottom)
     );

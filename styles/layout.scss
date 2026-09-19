@@ -1,10 +1,12 @@
 // notebook-layout/styles/layout.scss
 
 .l-stack {
+  --l-stack-gap: var(--app-rhythm-1);
+
   display: block;
 
   > * + * {
-    margin-block-start: var(--l-stack-gap, var(--app-rhythm-1));
+    margin-block-start: var(--l-stack-gap);
   }
 
   &.-tight {
@@ -16,7 +18,7 @@
   }
 
   &.-section {
-    --l-stack-gap: var(--app-rhythm-3);
+    --l-stack-gap: var(--app-gap-section);
   }
 }
 

@@ -18,6 +18,30 @@ This is a public local UI/layout library consumed by the private app.
 When changing this package, verify that `www` still builds with the local import.
 
 
+## Design language
+
+[`DESIGN_LANGUAGE.md`](./DESIGN_LANGUAGE.md) is the contract for every visual
+decision in this package and in the app that consumes it: colour, rhythm, px
+versus rem, assembly, action, state and the list of prohibitions. **Read it
+before changing anything that is seen**, not only when in doubt.
+
+Its front matter is what a tool reads; the prose settles what a token cannot.
+When the two disagree the front matter is wrong until proven otherwise, and the
+correction goes in BOTH places (§13).
+
+**A change that departs from it is not finished until it is recorded in
+`deviations`**, with the reason and, when it is meant to be temporary, a
+`revisit`. A deviation that only lives in a commit message is a contract that
+silently stopped describing the product.
+
+Two rules that catch most mistakes:
+
+- **The rhythm unit is the only measure in `rem`; everything else is px** (§6).
+  Padding, gap, gutter, region width, touch target, breakpoint and container
+  query all measure space, not text.
+- **Flow space is a multiple of the rhythm unit; inner space has its own scale**
+  (§6). Paragraph to paragraph, title to body and item to item are flow.
+
 ## CSS
 
 Write CSS in BEM as described in [`BEM.md`](../BEM.md): blocks are global and declared before they are modified, elements belong to their block and are declared before they are modified, modifiers go on the block unless the element itself differs from its siblings, and rules follow the order set there.

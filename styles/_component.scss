@@ -25,7 +25,7 @@ $overlay-border-color: transparent !default;
 $nav-fg: var(--app-fg-muted) !default;
 $nav-fg-hover: var(--app-fg-default) !default;
 $nav-fg-active: var(--app-fg-emphasis) !default;
-$nav-bg-active: var(--app-bg-active) !default;
+$nav-bg-active: var(--app-bg-selected) !default;
 $nav-bg-hover: var(--app-bg-hover) !default;
 $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
@@ -59,7 +59,11 @@ $avatar-border-width: 4px !default;
 $avatar-radius: 0 !default;
 $avatar-size: 80px !default;
 
+$line-list-figure-size: 32px !default;
+
 $carousel-gap: var(--app-gap-inline) !default;
+$carousel-aside-min: 288px !default;
+$carousel-thumb-size: 80px !default;
 $carousel-thumbs-gap: var(--app-gap-inline) !default;
 $carousel-thumb-pad: var(--app-space-2xs) !default;
 $carousel-thumb-bg-hover: var(--app-bg-hover) !default;
@@ -102,9 +106,8 @@ $modal-border: var(--app-border) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
 $card-radius: 0 !default;
 
-// -----------------------------------------------------------------------------
-// Os componentes proprios desta biblioteca.
-// -----------------------------------------------------------------------------
+$dialog-width-desktop: 560px !default;
+$opening-figure-max: 320px !default;
 
 $modal-gutter: map.get(metrics.$spacers, 3) !default;
 
@@ -126,7 +129,8 @@ $choice-img-fg-hover: var(--app-fg-accent) !default;
 $choice-title-bg-hover: var(--app-bg-selected) !default;
 $intro-gap: var(--app-rhythm-half) !default;
 $notebook-tabs-font: var(--app-text-label-sm) !default;
-$notebook-tabs-tracking: -1px !default;
+$notebook-tabs-font-size: 0.75rem !default;
+$notebook-tabs-tracking: -2px !default;
 $notebook-tabs-gap: var(--app-space-xs) !default;
 $notebook-tabs-radius: var(--app-radius-control) !default;
 $notebook-tabs-border-width: var(--app-border-width) !default;

@@ -133,7 +133,26 @@ secondaryAction: outline
 voice: action-oriented
 ctaMood: imperative
 
-deviations: []
+deviations:
+  - decision: diagonal do aparato entre 240px e 352px, e nao fixa em 352px
+    because: as duas colunas de fora sao fixas, entao a janela que encolhe sai toda da coluna do meio; abaixo de ~1200px o conteudo ficava mais estreito que a nota de margem
+  - decision: abaixo de 1024px a pagina tem duas regioes e o aparato nao entra
+    because: 240 + 352 + duas calhas tomam 656px antes de o conteudo comecar; o colapso em sequencia do §7 nao foi implementado e o aparato apenas some
+    revisit: implementar o colapso do §7 no lugar do display none
+  - decision: todo dialogo no desktop e folha sobreposta, e nao encaixe na coluna
+    because: pedido explicito e declarado como 'por enquanto'; contraria overlayPolicy irreversible-or-context-break
+    revisit: rever quando o overlayPolicy for reavaliado
+  - decision: sombra de elevacao na barra de baixo e no trilho lateral, e fio nenhum
+    because: pedido explicito; o §10 (Barra superior) ja abria excecao de sombra e o documento se contradiz entre guardrail, §2 e §10. Fio mais sombra sao dois degraus da escada de separacao dizendo a mesma coisa; fica a sombra, que e a que diz levantado e nao apenas separado
+  - decision: figura de conteudo em px, revogando o override que a media em unidades de ritmo
+    because: coisa que nao e texto nao deve crescer com a fonte do leitor; em rem a figura deixa de caber na coluna que a abriga e leva o layout junto
+  - decision: campo sem sobra acima do texto; o alvo de 44px e rotulo mais caixa somados
+    because: §11 diz que size-control e area de toque e nunca tamanho pintado; a sobra acima separava o rotulo do proprio campo
+  - decision: item de lista com entrelinha compacta e um ritmo-meio entre itens
+    because: a entrelinha de prosa deixava as duas linhas do mesmo item mais longe entre si do que de itens vizinhos, e a proximidade parava de agrupar
+  - decision: limpar o rascunho confirma no proprio botao, e nao em modal
+    because: nada foi enviado ao servidor e a pagina toda e o rascunho; um modal para confirmar dentro de um formulario nao salvo e cerimonia sem risco correspondente
+    revisit: virar modal se o guardrail for mantido como esta
 
 overrides:
   - decision: size-control em 44px
@@ -142,7 +161,7 @@ overrides:
     because: se le de longe, com as maos ocupadas
   - decision: linha de acao e linha de marcar em uma unidade e meia (48px), e nao em multiplo inteiro da unidade
     because: o alvo de 44px nao cabe numa linha de 32px; em 48px a linha fica na meia pauta e nenhum alvo vizinho se cruza
-  - decision: figura de conteudo e imagem de indice medidas em unidades de ritmo (rem), e nao em px
+  - decision: imagem de indice medida em unidades de ritmo (rem), e nao em px
     because: elas existem para pousar na pauta; em px sairiam dela quando o leitor aumenta a fonte
 
 guardrails:

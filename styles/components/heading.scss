@@ -19,6 +19,8 @@
 
   p {
     grid-area: heading__subtitle;
+    line-height: var(--app-line-height-compact);
+    margin: 0;
   }
 
   &__indicator {

@@ -3,38 +3,40 @@
 @use '../../styles/helpers/media.scss' as *;
 @use '../../styles/utils.scss' as *;
 
-.tabs-layout__mobile {
-  @extend .portrait-only;
-}
-
-.tabs-layout__desktop {
-  @extend .landscape-only;
-}
-
-.tabs-layout__content {
-  width: 100%;
-}
-
-.tabs-layout__section {
-  display: grid;
-}
-
-@media (orientation: portrait) {
-  .tabs-layout__content {
-    padding-left: var(--app-pad-surface);
-    padding-right: var(--app-pad-surface);
-  }
-}
-
-@media (orientation: landscape) {
-  .tabs-layout__content {
-    color: component.$tabs-layout-content-fg;
-    height: 100%;
-    padding-block-start: var(--app-rhythm-1);
-    position: relative;
+.tabs-layout {
+  &__mobile {
+    @extend .portrait-only;
   }
 
-  .tabs-layout__section[data-tabs-layout-active='false'] {
-    display: none;
+  &__desktop {
+    @extend .landscape-only;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__section {
+    display: grid;
+  }
+
+  @media (orientation: portrait) {
+    &__content {
+      padding-left: var(--app-pad-surface);
+      padding-right: var(--app-pad-surface);
+    }
+  }
+
+  @media (orientation: landscape) {
+    &__content {
+      color: component.$tabs-layout-content-fg;
+      height: 100%;
+      padding-block-start: var(--app-rhythm-half);
+      position: relative;
+    }
+
+    &__section[data-tabs-layout-active='false'] {
+      display: none;
+    }
   }
 }

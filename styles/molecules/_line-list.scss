@@ -1,5 +1,6 @@
 // notebook-layout/styles/molecules/_line-list.scss
 
+@use '../component' as component;
 @use '../atoms/lozenge' as *;
 
 .line-list {
@@ -12,6 +13,7 @@
   counter-reset: line-list;
   display: grid;
   font: var(--app-text-body);
+  line-height: var(--app-line-height-compact);
   grid-auto-columns: max-content;
   grid-template-columns:
     var(--app-marker-column)
@@ -19,6 +21,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  row-gap: var(--app-rhythm-half);
 
   > li {
     counter-increment: line-list;
@@ -30,7 +33,9 @@
   }
 
   .content-figure {
+    block-size: component.$line-list-figure-size;
     display: block;
+    inline-size: component.$line-list-figure-size;
   }
 
   .form-check {
@@ -56,6 +61,7 @@
     font: var(--app-text-body);
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
+    line-height: var(--app-line-height-compact);
     padding-block: calc((var(--line-list-target) - 1lh) / 2);
   }
 
@@ -64,10 +70,14 @@
   }
 
   &__mark {
-    align-self: start;
+    align-self: center;
     grid-column: 1;
     grid-row: 1;
     justify-self: center;
+  }
+
+  &__item:has(&__description) &__mark {
+    grid-row: 1 / span 2;
   }
 
   &__description {
@@ -75,7 +85,6 @@
     font: var(--app-text-caption);
     grid-column: 2;
     grid-row: 2;
-    line-height: var(--app-rhythm-half);
   }
 
   &__trailing {
@@ -83,7 +92,6 @@
     font-variant-numeric: lining-nums var(--app-numeric-tabular);
     grid-column: 3;
     grid-row: 1;
-    line-height: var(--app-rhythm-1);
     padding-inline-start: var(--app-space-md);
     text-align: end;
     white-space: nowrap;
@@ -145,8 +153,6 @@
   }
 
   &--steps {
-    row-gap: var(--app-rhythm-half);
-
     .line-list__item::before {
       color: var(--app-fg-muted);
       content: counter(line-list);
@@ -155,7 +161,6 @@
       grid-column: 1;
       grid-row: 1;
       justify-self: center;
-      line-height: var(--app-rhythm-1);
     }
   }
 
@@ -180,7 +185,7 @@
       border-block-start: var(--app-border-width) var(--app-border-style)
         var(--app-rule);
       content: '';
-      inset-block-start: 0;
+      inset-block-start: calc(var(--app-rhythm-half) / -2);
       inset-inline: 0;
       pointer-events: none;
       position: absolute;

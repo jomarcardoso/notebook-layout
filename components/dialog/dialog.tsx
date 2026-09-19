@@ -8,7 +8,7 @@ import {
   useEffect,
   useRef,
 } from 'react';
-import { blockScroll, generateClasses, scrollToTop } from '../../utils/utils';
+import { blockScroll, generateClasses } from '../../utils/utils';
 import { Modal } from '../modal';
 import { useDialogCloseGesture } from './use-dialog-close-gesture';
 import { useDialogFieldReveal } from './use-dialog-field-reveal';
@@ -103,18 +103,7 @@ export const Dialog: FC<DialogProps> = ({
     release?.();
   }, []);
 
-  const isDesktop = useCallback(() => {
-    if (typeof window === 'undefined') return false;
-
-    return window.matchMedia('(min-width: 1024px)').matches;
-  }, []);
-
-  const shouldUseOverlay = useCallback(() => {
-    if (overlay === 'on') return true;
-    if (overlay === 'off') return false;
-
-    return !isDesktop();
-  }, [isDesktop, overlay]);
+  const shouldUseOverlay = useCallback(() => overlay !== 'off', [overlay]);
 
   useDialogCloseGesture({ dialogRef: ref, open: openProp });
   useDialogFieldReveal({ dialogRef: ref, open: openProp });
@@ -193,25 +182,6 @@ export const Dialog: FC<DialogProps> = ({
       window.removeEventListener('popstate', handlePopState);
     };
   }, [openProp]);
-
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog || !openProp) return;
-    if (typeof window === 'undefined') return;
-    if (!isDesktop()) return;
-
-    const frame = window.requestAnimationFrame(() => {
-      const rect = dialog.getBoundingClientRect();
-
-      scrollToTop({
-        top: window.scrollY + rect.top,
-      });
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-    };
-  }, [isDesktop, openProp]);
 
   const handleClose = useCallback(
     (event: React.SyntheticEvent<HTMLDialogElement>) => {
