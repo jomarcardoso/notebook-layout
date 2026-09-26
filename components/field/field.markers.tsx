@@ -16,15 +16,18 @@ function buildMarkers(
   lineCount: number,
 ): Marker[] {
   if (Array.isArray(listStyleImage)) {
-    return listStyleImage.map((entry, index) => {
-      const image = unwrapUrl(entry ?? '');
-      const text =
-        !image && listStyle && listStyle !== 'none'
-          ? formatListMarker(listStyle, index + 1)
-          : '';
+    return Array.from(
+      { length: Math.max(lineCount, listStyleImage.length) },
+      (_, index) => {
+        const image = unwrapUrl(listStyleImage[index] ?? '');
+        const text =
+          !image && listStyle && listStyle !== 'none'
+            ? formatListMarker(listStyle, index + 1)
+            : '';
 
-      return { image, text };
-    });
+        return { image, text };
+      },
+    );
   }
 
   if (typeof listStyleImage === 'string') {

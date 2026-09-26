@@ -150,6 +150,8 @@ deviations:
     because: §11 diz que size-control e area de toque e nunca tamanho pintado; a sobra acima separava o rotulo do proprio campo
   - decision: item de lista com entrelinha compacta e um ritmo-meio entre itens
     because: a entrelinha de prosa deixava as duas linhas do mesmo item mais longe entre si do que de itens vizinhos, e a proximidade parava de agrupar
+  - decision: a figura de abertura em retrato ganha superficie entintada ocupando a medida inteira, com a imagem centralizada ate o maximo em px
+    because: a escada do §2 pararia no espaco, mas o problema nao e separar dois blocos e sim a borda da coluna; com a figura limitada em px num telefone de 375px ela nao alcanca a mesma borda dos blocos vizinhos e o conteudo parece ter vazado. A faixa diz onde e a zona da imagem sem que a imagem precise crescer
   - decision: limpar o rascunho confirma no proprio botao, e nao em modal
     because: nada foi enviado ao servidor e a pagina toda e o rascunho; um modal para confirmar dentro de um formulario nao salvo e cerimonia sem risco correspondente
     revisit: virar modal se o guardrail for mantido como esta

@@ -12,7 +12,14 @@
 
   &__figure {
     margin-block-start: var(--app-rhythm-1);
-    max-inline-size: component.$opening-figure-max;
+    display: grid;
+    justify-items: center;
+    background-color: var(--app-bg-subtle);
+
+    > * {
+      max-inline-size: component.$opening-figure-max;
+      inline-size: 100%;
+    }
   }
 
   &__figure + * {
@@ -50,6 +57,7 @@
         grid-column: 2;
         grid-row: 1 / -1;
         margin-block-start: 0;
+        background-color: transparent;
       }
 
       .opening__figure + * {

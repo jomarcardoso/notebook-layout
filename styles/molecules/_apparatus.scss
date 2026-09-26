@@ -11,4 +11,9 @@
     font: var(--app-text-label-sm);
     margin-block: 0 var(--app-rhythm-half);
   }
+
+  table + a {
+    display: inline-block;
+    margin-block-start: var(--app-rhythm-half);
+  }
 }

@@ -81,6 +81,8 @@ $footer-bg-open: var(--app-bg-accent-solid) !default;
 $tabs-radius: var(--app-radius-control) !default;
 $tabs-bg: var(--app-bg-subtle) !default;
 $tabs-bg-hover: var(--app-bg-hover) !default;
+$tabs-sticky-bg: var(--app-bg-page) !default;
+$tabs-sticky-pad-block: var(--app-space-2xs) !default;
 
 $card-fg: var(--app-fg-default) !default;
 $card-gap: var(--app-space-xs) !default;
@@ -110,6 +112,8 @@ $dialog-width-desktop: 560px !default;
 $opening-figure-max: 320px !default;
 
 $modal-gutter: map.get(metrics.$spacers, 3) !default;
+$modal-gutter-block: map.get(metrics.$spacers, 2) !default;
+$modal-body-pad-bottom: var(--app-space-xl) !default;
 
 $modal-footer-gap: var(--app-gap-inline) !default;
 $modal-divider-width: var(--app-border-width) !default;

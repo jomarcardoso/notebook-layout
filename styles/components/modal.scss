@@ -3,12 +3,6 @@
 @use '../utils.scss';
 
 .modal {
-  --modal-gutter: #{component.$modal-gutter};
-
-  // These two arrived from the token layer, which used to paint `.modal`
-  // directly — a component selector in a file whose job is tokens, and
-  // unlayered, so it beat this file's own declarations without either side
-  // knowing. The dialog is a sheet lifted clear of the page, hence `raised`.
   background-color: component.$modal-bg;
   color: component.$modal-fg;
   box-shadow: component.$modal-shadow;
@@ -22,18 +16,20 @@
   .heading {
     border-bottom: component.$modal-divider-width solid
       component.$modal-divider-color;
-    padding: var(--modal-gutter);
+    padding: component.$modal-gutter-block component.$modal-gutter;
   }
 
   &__body {
+    --tabs-sticky-inset: #{component.$modal-gutter};
+
     flex: 1 1 auto;
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    padding-inline: var(--modal-gutter);
-    padding-top: var(--modal-gutter);
+    padding-inline: component.$modal-gutter;
+    padding-top: component.$modal-gutter;
     padding-bottom: max(
-      var(--modal-gutter),
+      component.$modal-body-pad-bottom,
       var(--dialog-keyboard-inset, 0px),
       env(safe-area-inset-bottom)
     );
@@ -54,7 +50,7 @@
     gap: component.$modal-footer-gap;
     justify-content: flex-end;
     min-height: component.$modal-footer-min-height;
-    padding: var(--modal-gutter);
+    padding: component.$modal-gutter-block component.$modal-gutter;
     flex-shrink: 0;
   }
 
@@ -62,8 +58,6 @@
     width: calc(100vw - var(--app-pad-surface));
   }
 
-  // A folha sobreposta e o unico elemento com sombra, e ela e a mesma em
-  // qualquer largura.
   @include utils.isDesktop {
     border: component.$modal-border;
   }

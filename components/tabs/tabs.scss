@@ -38,3 +38,16 @@
     }
   }
 }
+
+.tabs.-sticky {
+  position: sticky;
+  top: calc(-1 * var(--tabs-sticky-inset, 0px));
+  z-index: var(--app-z-sticky);
+  background-color: component.$tabs-sticky-bg;
+  padding-block: component.$tabs-sticky-pad-block;
+
+  .nav-tabs {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+}

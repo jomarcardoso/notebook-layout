@@ -20,6 +20,7 @@ export interface TabsProps extends Omit<
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
+  sticky?: boolean;
 }
 
 export const Tabs: FC<TabsProps> = ({
@@ -29,12 +30,14 @@ export const Tabs: FC<TabsProps> = ({
   defaultValue,
   className = '',
   onChange,
+  sticky = false,
   ...props
 }) => {
   const generatedId = useId().replace(/:/g, '');
   const groupName = name || `tabs-${generatedId}`;
   const values = tabs.map((tab, index) => tab.value ?? `${index}`);
-  const firstEnabledValue = values[tabs.findIndex((tab) => !tab.disabled)] ?? '';
+  const firstEnabledValue =
+    values[tabs.findIndex((tab) => !tab.disabled)] ?? '';
   const [uncontrolledValue, setUncontrolledValue] = useState(
     defaultValue ?? firstEnabledValue,
   );
@@ -46,7 +49,13 @@ export const Tabs: FC<TabsProps> = ({
   }
 
   return (
-    <nav className={generateClasses({ tabs: true, [className]: !!className })}>
+    <nav
+      className={generateClasses({
+        tabs: true,
+        '-sticky': sticky,
+        [className]: !!className,
+      })}
+    >
       <ul className="nav nav-tabs" {...props}>
         {tabs.map((tab, index) => {
           const tabValue = values[index];
