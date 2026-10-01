@@ -15,6 +15,8 @@ export * from './intro';
 export * from './intro-and-tabs';
 export * from './modal';
 export * from './dialog/dialog';
+export * from './confirm-dialog/confirm-dialog';
+export * from './toast/toast';
 export * from './chips/chips';
 export * from './notebook-tabs';
 export * from './tabs';

@@ -1,0 +1,60 @@
+// notebook-layout/styles/components/toast.scss
+.toast-region {
+  display: grid;
+  gap: var(--app-space-sm);
+  inset-block-end: max(
+    var(--toast-inset-block-end, var(--app-space-md)),
+    env(safe-area-inset-bottom)
+  );
+  inset-inline: var(--app-pad-surface);
+  justify-items: center;
+  pointer-events: none;
+  position: fixed;
+  z-index: var(--app-z-overlay);
+
+  &__live {
+    display: grid;
+    gap: var(--app-space-sm);
+    justify-items: center;
+  }
+}
+
+.toast {
+  align-items: center;
+  background-color: var(--app-bg-page);
+  border-radius: var(--app-radius-overlay);
+  box-shadow: var(--app-shadow-overlay);
+  color: var(--app-fg-default);
+  display: flex;
+  gap: var(--app-space-sm);
+  max-inline-size: 560px;
+  padding-block: var(--app-space-xs);
+  padding-inline: var(--app-space-md) var(--app-space-xs);
+  pointer-events: auto;
+
+  &.-danger {
+    color: var(--app-fg-danger);
+  }
+
+  &__message {
+    font: var(--app-text-body-sm);
+    margin: 0;
+  }
+
+  &__close {
+    flex: 0 0 auto;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toast {
+    animation: toast-enter 160ms ease-out;
+  }
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}

@@ -809,6 +809,17 @@ Sombra so quando ha conteudo rolado por baixo.
 **Modal.** `bg-page`, a unica sombra do sistema, raio da folha. Titulo, fio
 abaixo do titulo, conteudo, acoes no rodape a direita.
 
+**Confirmacao.** O modal com uma pergunta: titulo que diz o que vai acontecer,
+texto opcional sobre a consequencia, e no rodape "cancelar" em estruturante e o
+verbo do ato. O verbo e preenchido em danger quando o ato destroi conteudo, e em
+accent nos outros casos. Fechar o modal sem escolher e cancelar.
+
+**Aviso.** Uma frase sobre algo que ja aconteceu — copiado, enviado, nao deu
+certo —, nunca uma pergunta e nunca uma decisao. Pousa na base da tela com a
+superficie e a sombra do modal, `body-sm`, e um "fechar" em texto; some sozinho
+depois de alguns segundos. O de falha leva a tinta em danger e e anunciado na
+hora pelo leitor de tela; o neutro espera a fala corrente terminar.
+
 **Tag e marcador.** `bg-subtle`, tinta em `fg-muted`, raio zero, padding minimo.
 Estatica: se o lavado fosse clicavel, o componente seria um chip — e por isso o
 chip e contornado, para os dois se distinguirem pela aparencia.
