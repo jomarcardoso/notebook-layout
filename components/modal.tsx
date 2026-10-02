@@ -41,11 +41,7 @@ export const Modal: FC<ModalProps> = ({
         <Heading {...headingProps}>{title || header}</Heading>
       )}
       {children && (
-        <div
-          className="modal__body"
-          id="alert-dialog-description"
-          {...bodyProps}
-        >
+        <div className="modal__body" {...bodyProps}>
           {children}
         </div>
       )}

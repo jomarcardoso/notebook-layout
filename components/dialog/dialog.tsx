@@ -6,6 +6,7 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
+  useId,
   useRef,
 } from 'react';
 import { blockScroll, generateClasses } from '../../utils/utils';
@@ -72,9 +73,15 @@ export const Dialog: FC<DialogProps> = ({
   overlay = 'auto',
   ...props
 }) => {
+  const titleId = useId();
+  const descriptionId = useId();
+  // Ids per dialog: a confirmation opened over another dialog must not borrow its name.
+  const labelling = blank
+    ? {}
+    : { 'aria-labelledby': titleId, 'aria-describedby': descriptionId };
   const modalProps = {
     title,
-    titleProps,
+    titleProps: { id: titleId, ...titleProps },
     subtitle,
     subtitleProps,
     indicator,
@@ -82,7 +89,7 @@ export const Dialog: FC<DialogProps> = ({
     header,
     headerProps,
     children,
-    bodyProps,
+    bodyProps: { id: descriptionId, ...bodyProps },
     footer,
     footerProps,
   };
@@ -218,14 +225,18 @@ export const Dialog: FC<DialogProps> = ({
   return (
     <dialog
       ref={ref}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      {...labelling}
       className={classes}
       role="dialog"
       onClose={handleClose}
       onClick={(event) => {
-        if (event.target === ref.current) {
-          ref.current?.close();
+        const dialog = ref.current;
+
+        if (!dialog || event.target !== dialog) return;
+
+        // Like Escape: a click outside raises a cancelable `cancel` before closing.
+        if (dialog.dispatchEvent(new Event('cancel', { cancelable: true }))) {
+          dialog.close();
         }
       }}
       {...props}

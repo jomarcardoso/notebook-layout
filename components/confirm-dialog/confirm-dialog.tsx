@@ -34,10 +34,12 @@ const EMPTY_CONFIRM_OPTIONS: ConfirmOptions = {
 
 export interface ConfirmProviderProps {
   children?: ReactNode;
+  cancelLabel?: string;
 }
 
 export const ConfirmProvider: FC<ConfirmProviderProps> = ({
   children = null,
+  cancelLabel = 'Cancelar',
 }) => {
   const [options, setOptions] = useState(EMPTY_CONFIRM_OPTIONS);
   const [open, setOpen] = useState(false);
@@ -54,10 +56,10 @@ export const ConfirmProvider: FC<ConfirmProviderProps> = ({
       new Promise<boolean>((resolve) => {
         resolveRef.current(false);
         resolveRef.current = resolve;
-        setOptions({ ...EMPTY_CONFIRM_OPTIONS, ...next });
+        setOptions({ ...EMPTY_CONFIRM_OPTIONS, cancelLabel, ...next });
         setOpen(true);
       }),
-    [],
+    [cancelLabel],
   );
 
   return (

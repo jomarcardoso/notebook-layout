@@ -147,7 +147,7 @@ deviations:
   - decision: figura de conteudo em px, revogando o override que a media em unidades de ritmo
     because: coisa que nao e texto nao deve crescer com a fonte do leitor; em rem a figura deixa de caber na coluna que a abriga e leva o layout junto
   - decision: campo sem sobra acima do texto; o alvo de 44px e rotulo mais caixa somados
-    because: §11 diz que size-control e area de toque e nunca tamanho pintado; a sobra acima separava o rotulo do proprio campo
+    because: §11 diz que size-control e area de toque e nunca tamanho pintado; a sobra acima separava o rotulo do proprio campo. O input nao leva min-block-size nem padding para chegar a 44px sozinho; uma auditoria automatica de alvo (axe target-size) mede so a caixa do input e acusa esse campo, e isso nao e motivo para mudar. O §10 descreve a regra original; vale esta entrada
   - decision: item de lista com entrelinha compacta e um ritmo-meio entre itens
     because: a entrelinha de prosa deixava as duas linhas do mesmo item mais longe entre si do que de itens vizinhos, e a proximidade parava de agrupar
   - decision: a figura de abertura em retrato ganha superficie entintada ocupando a medida inteira, com a imagem centralizada ate o maximo em px
