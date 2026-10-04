@@ -14,9 +14,16 @@ body {
 }
 
 html {
+  font-size: calc(100% * env(preferred-text-scale, 1));
   height: 100vh;
   -webkit-font-smoothing: antialiased;
   text-size-adjust: 100%;
+}
+
+@supports (font: -apple-system-body) and (-webkit-touch-callout: none) {
+  html {
+    font: -apple-system-body;
+  }
 }
 
 // For CoreUI
