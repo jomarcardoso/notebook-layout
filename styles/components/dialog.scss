@@ -35,6 +35,7 @@
 
 .dialog[open] {
   display: grid;
+  margin-block: auto;
 }
 
 @keyframes dialog-in {

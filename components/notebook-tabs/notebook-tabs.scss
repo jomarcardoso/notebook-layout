@@ -34,12 +34,14 @@
       border-color var(--app-duration-fast) var(--app-ease),
       color var(--app-duration-fast) var(--app-ease);
     writing-mode: vertical-lr;
+  }
 
-    &.ovo-active {
-      background-color: component.$notebook-tabs-bg-active;
-      border-color: component.$notebook-tabs-border-color-active;
-      color: component.$notebook-tabs-fg-active;
-    }
+  ul:not(:has(.ovo-active)) > li:first-child > a,
+  &__link.ovo-active,
+  ul a.ovo-active {
+    background-color: component.$notebook-tabs-bg-active;
+    border-color: component.$notebook-tabs-border-color-active;
+    color: component.$notebook-tabs-fg-active;
   }
 }
 

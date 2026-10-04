@@ -46,8 +46,8 @@ function buildMarkers(
   }));
 }
 
-function countLines(text: string): number {
-  return Math.max(1, text ? text.split(/\r?\n/).length : 1);
+function splitLines(text: string): string[] {
+  return text ? text.split(/\r?\n/) : [''];
 }
 
 export interface FieldMarkersProps {
@@ -61,7 +61,9 @@ export function hasFieldMarkers({
   listStyleImage,
   text,
 }: FieldMarkersProps): boolean {
-  return buildMarkers(listStyle, listStyleImage, countLines(text)).length > 0;
+  return (
+    buildMarkers(listStyle, listStyleImage, splitLines(text).length).length > 0
+  );
 }
 
 export const FieldMarkers: FC<FieldMarkersProps> = ({
@@ -69,7 +71,8 @@ export const FieldMarkers: FC<FieldMarkersProps> = ({
   listStyleImage,
   text,
 }) => {
-  const markers = buildMarkers(listStyle, listStyleImage, countLines(text));
+  const lines = splitLines(text);
+  const markers = buildMarkers(listStyle, listStyleImage, lines.length);
 
   if (!markers.length) return null;
 
@@ -77,13 +80,17 @@ export const FieldMarkers: FC<FieldMarkersProps> = ({
     <ul className="field-markers" aria-hidden="true">
       {markers.map((marker, index) => (
         <li className="field-markers__item" key={index}>
-          {marker.image ? (
-            <img className="content-figure" src={marker.image} alt="" />
-          ) : (
-            marker.text && (
-              <span className="field-markers__glyph">{marker.text}</span>
-            )
-          )}
+          <span className="field-markers__mark">
+            {marker.image ? (
+              <img className="content-figure" src={marker.image} alt="" />
+            ) : (
+              marker.text && (
+                <span className="field-markers__glyph">{marker.text}</span>
+              )
+            )}
+          </span>
+
+          <span className="field-markers__line">{lines[index] ?? ''}</span>
         </li>
       ))}
     </ul>

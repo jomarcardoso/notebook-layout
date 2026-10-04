@@ -24,6 +24,7 @@
     "build",
     "example",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ]
 }
