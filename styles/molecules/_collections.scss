@@ -3,7 +3,6 @@
 @mixin linked-item {
   color: var(--app-fg-default);
   display: grid;
-  padding: var(--app-space-xs);
   text-decoration: none;
   transition: background-color var(--app-duration-fast) var(--app-ease);
 
@@ -96,7 +95,6 @@
     grid-area: image;
     inline-size: var(--index-item-image);
   }
-
 }
 
 .thumb-item {

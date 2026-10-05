@@ -98,6 +98,9 @@ O CoreUI entrega mecanica pronta, e ela se usa direto. Ela nao se embrulha num p
 | `d-*`, `d-{bp}-*`, `order-*`, `order-{bp}-*` | display e ordem por largura | e remontagem, nunca restyle |
 | `flex-*`, `justify-content-*`, `align-items-*`, `align-self-*` | mecanica de flex | |
 | `gap-*`, `row-gap-*`, `column-gap-*`, `m*-*`, `p*-*` | espaco interno na escala interna (4, 8, 16, 24, 48) | espaco de fluxo e `l-stack`; `mt-3` entre blocos que o olho desce mistura os dois eixos; `p-3` e a calha do modal, e o conteudo do corpo dele pede esse mesmo helper |
+| `mt-rhythm-*`, `mb-rhythm-*`, `my-rhythm-*`, `pt-rhythm-*`, `pb-rhythm-*`, `gy-rhythm-*` (`half`, `1`, `2`) | espaco de fluxo em unidade de ritmo num ponto so | declarados no `$utilities` do entry pela API de utilitarios do CoreUI; `gy-rhythm-*` e o espaco entre colunas de `row` que viram sequencia; varios irmaos descendo a pagina continuam sendo `l-stack` |
+| `mt-text`, `mb-text`, `pt-text`, `pb-text` | a folga que prende um texto ao fio ou ao corpo que vem logo depois | `--app-gap-text`, `0.2em` na fonte de quem usa; nao e fracao do ritmo, que e uma linha inteira e nao se subdivide abaixo de `half` |
+| `border-top`, `border-bottom`, `border-top-0`, `border-bottom-0` | fio horizontal | pintam `--app-rule` na espessura e estilo do sistema, e nao a borda do CoreUI; cor e espessura nao tem variante |
 | `position-*`, `top-*`, `bottom-*`, `start-*`, `end-*`, `translate-middle` | posicionamento | |
 | `sticky-top` | indice ancorado, cabecalho que acompanha a rolagem | z-index 1020, o mesmo de `--app-z-sticky` |
 | `visually-hidden`, `visually-hidden-focusable` | texto so para leitor de tela, link de pular para o conteudo | |
@@ -111,6 +114,9 @@ O CoreUI entrega mecanica pronta, e ela se usa direto. Ela nao se embrulha num p
 | precisa de | use |
 | --- | --- |
 | fluxo vertical em unidade de ritmo | `l-stack` |
+| um espaco de ritmo num elemento so, ou entre colunas empilhadas | `mt-rhythm-*`, `mb-rhythm-*`, `my-rhythm-*`, `pt-rhythm-*`, `pb-rhythm-*`, `gy-rhythm-*` |
+| titulo colado ao seu fio ou ao seu corpo | `pb-text`, `mb-text` |
+| fio horizontal acima ou abaixo de um bloco | `border-top`, `border-bottom` (e `-0` para tirar) |
 | grupo lado a lado que quebra | `l-cluster` |
 | margem, conteudo e aparato | `l-regions` |
 | medida de texto | `l-measure` |
@@ -126,7 +132,7 @@ Os utilitarios abaixo estao em `null` no `$utilities` do entry e nao existem no 
 | --- | --- |
 | `color`, `text-color`, `text-opacity`, `background-color`, `bg-opacity`, `subtle-background-color`, `gradient` | cor e fundo resolvem num token por configuracao; gradiente e guardrail |
 | `link-opacity`, `link-offset`, `link-underline`, `link-underline-opacity` | o link e o atom `_link.scss` |
-| `border`, `border-{lado}`, `border-color`, `border-{lado}-color`, `border-width`, `border-{lado}-width`, `subtle-border-color`, `border-opacity` | fio e borda sao tokens diferentes e cada componente escolhe o seu |
+| `border`, `border-start`, `border-end`, `border-color`, `border-{lado}-color`, `border-width`, `border-{lado}-width`, `subtle-border-color`, `border-opacity` | fio e borda sao tokens diferentes e cada componente escolhe o seu |
 | `rounded`, `rounded-{lado}` | raio e zero, exceto controle e folha sobreposta |
 | `shadow`, `opacity` | sombra so na folha sobreposta; opacidade e estado |
 | `focus-ring` | o foco e o anel nativo, nunca sombra |

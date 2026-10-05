@@ -109,9 +109,9 @@ collapseModel: reflow-not-restyle
 # texto, e cresce-las com a fonte espreme o conteudo.
 rhythmUnit: 2rem
 lengthUnit: px
-# `1rem` e o tamanho de texto que o leitor escolheu no sistema:
-# `env(preferred-text-scale)` no Android, `-apple-system-body` no iOS e a fonte
-# padrao do navegador no desktop. So CSS, sem limite nosso.
+# `1rem` e o tamanho de texto que o leitor escolheu no sistema: a meta
+# `text-scale` no Chromium, `-apple-system-body` no iOS e a fonte padrao do
+# navegador nos demais. Sem limite nosso.
 rootSize: reader-preference
 spacingAxes: [flow, inner]
 
@@ -498,12 +498,20 @@ do dedo, e o dedo nao muda de tamanho com a preferencia de fonte.
 A regra de decisao: **se o valor responde a pergunta "qual o tamanho deste
 texto?", e `rem`; se responde "quanto espaco esta coisa ocupa na tela", e px.**
 
-`1rem` e o tamanho de texto que o leitor pediu, e nao 16px fixos. O Safari no
-iOS e o Chrome no Android ignoram a preferencia do sistema por padrao, entao a
-raiz pede por ela, so com CSS: no Android, `font-size` da raiz multiplica `100%`
-por `env(preferred-text-scale)`; no iOS, a raiz usa `font: -apple-system-body`
-(o Dynamic Type, 17px no padrao), so onde existe `-webkit-touch-callout`, porque
-no macOS o mesmo valor vale 13px; no desktop vale a fonte padrao do navegador.
+A excecao e a folga que prende um texto ao que vem logo depois dele, o fio do
+titulo ou o corpo: `--app-gap-text`, em `em`, porque e medida da letra de quem a
+usa e nao da pagina. Ela nao e fracao do ritmo; abaixo de meia unidade o ritmo
+nao se divide.
+
+`1rem` e o tamanho de texto que o leitor pediu, e nao 16px fixos. A raiz declara
+`font-size: 100%` e nunca px, e o navegador resolve `100%` pela preferencia: a
+meta `<meta name="text-scale" content="scale">` faz o Chromium (Android e
+desktop) escalar `medium` pela escala de texto do sistema; no iOS, que nao le a
+meta, a raiz usa `font: -apple-system-body` (o Dynamic Type, 17px no padrao), so
+onde existe `-webkit-touch-callout`, porque no macOS o mesmo valor vale 13px; nos
+demais vale a fonte padrao do navegador. `env(preferred-text-scale)` nao entra na
+raiz: com a meta presente, `100%` ja esta escalado e multiplicar de novo aplica a
+escala duas vezes.
 Nao ha limite: e o leitor quem decide, como nos apps nativos, e o layout e que
 precisa conter o texto nos tamanhos grandes.
 

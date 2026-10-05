@@ -6,17 +6,14 @@
 }
 
 body {
+  min-height: 100dvh;
   font: var(--app-text-body);
 }
 
-.d-none {
-  display: none;
-}
-
 html {
-  font-size: calc(100% * env(preferred-text-scale, 1));
-  height: 100vh;
+  font-size: 100%;
   -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
@@ -59,4 +56,8 @@ details {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+.d-none {
+  display: none;
 }

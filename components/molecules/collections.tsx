@@ -63,14 +63,14 @@ const LinkedItem: FC<LinkedItemProps> = ({
 }) => {
   const textId = useId();
   const Link = linkComponent;
-  const className = generateClasses({
+  const classes = generateClasses({
     [block]: true,
     [`${block}--${variant}`]: variant !== 'default',
   });
 
   return (
     <li className={listClassName}>
-      <Link className={className} href={href} aria-labelledby={textId}>
+      <Link className={classes} href={href} aria-labelledby={textId}>
         {variant === 'brief' ? null : image.src ? (
           <img
             loading="lazy"
