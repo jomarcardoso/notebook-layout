@@ -57,7 +57,7 @@ O que o corpo reserva no fim nao e calha: e o teclado do telefone e a faixa de g
 | abertura | `.opening`, `display`, `.description-list`, `.app-image`, `ExpandableText`, `Button` | Composicoes/Abertura |
 | destaque de vitrine | `row` 7/5, `.section-title`, `ThumbItem` com `variant` `featured` e `brief` | Composicoes/Destaque de vitrine |
 | secao com acao | `l-cluster -between -baseline`, `.section-title.-plain`, link, `IndexList` | Composicoes/Secao com acao |
-| vazio | `l-measure -narrow`, `l-stack -tight`, `.state-illustration`, `title-sm`, `Button` | Composicoes/Vazio |
+| vazio | `l-measure -narrow`, `l-stack -block`, `.state-illustration`, `title-sm`, `Button` | Composicoes/Vazio |
 | grupo de campos | `.fieldset`, `l-stack`, `Field` | Composicoes/Grupo de campos |
 | montagem de leitura | `l-regions`, `sticky-top`, `LineList`, `.table.table-sm` | Composicoes/Montagem de leitura |
 

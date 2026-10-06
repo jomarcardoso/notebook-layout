@@ -49,7 +49,7 @@ export const PosicaoNaSequencia: Story = {
         title="Posicao na sequencia"
         note="Acima do passo, dizendo onde o leitor esta. O numero muda de largura sem mover o texto ao lado, porque os algarismos sao tabulares."
       >
-        <div className="l-measure l-stack -tight">
+        <div className="l-measure l-stack -block">
           <p className="folio">Passo 7 de 12</p>
           <p className="p">Junte a farinha aos poucos, alternando com o leite.</p>
         </div>

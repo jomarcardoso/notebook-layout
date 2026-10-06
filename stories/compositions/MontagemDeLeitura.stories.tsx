@@ -62,7 +62,7 @@ export const Receita: Story = {
       </nav>
 
       <article className="l-regions__content">
-        <div className="l-stack -loose">
+        <div className="l-stack -container">
           {SECOES.map(({ id, titulo, texto }) => (
             <section key={id} id={id}>
               <h2 className="section-title">{titulo}</h2>
@@ -74,7 +74,7 @@ export const Receita: Story = {
 
       <aside className="l-regions__apparatus" aria-label="Sobre esta receita">
         <div className="l-stack">
-          <section className="l-stack -tight">
+          <section className="l-stack">
             <h2 className="label-sm">Nutricional por porcao</h2>
             <table className="table table-sm">
               <tbody>
@@ -87,7 +87,7 @@ export const Receita: Story = {
               </tbody>
             </table>
           </section>
-          <section className="l-stack -tight">
+          <section className="l-stack">
             <h2 className="label-sm">Relacionadas</h2>
             <LineList family="data">
               <LineListItem href="#">Bolo de laranja</LineListItem>

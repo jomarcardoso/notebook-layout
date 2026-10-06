@@ -19,7 +19,6 @@
     var(--app-marker-column)
     minmax(0, var(--app-measure-body));
   list-style: none;
-  margin: 0;
   padding: 0;
   row-gap: var(--app-rhythm-half);
 
@@ -181,14 +180,11 @@
   }
 
   &--ruled {
-    > li + li::after {
+    row-gap: 0;
+
+    > li + li {
       border-block-start: var(--app-border-width) var(--app-border-style)
         var(--app-rule);
-      content: '';
-      inset-block-start: calc(var(--app-rhythm-half) / -2);
-      inset-inline: 0;
-      pointer-events: none;
-      position: absolute;
     }
   }
 }

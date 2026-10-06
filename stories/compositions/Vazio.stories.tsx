@@ -29,7 +29,7 @@ export const ListaVazia: Story = {
         title="Lista vazia"
         note="O que falta, para que serve e o que fazer. A acao e estruturante: adicionar nao produz nem destroi nada."
       >
-        <div className="l-measure -narrow l-stack -tight">
+        <div className="l-measure -narrow l-stack -block">
           <img className="state-illustration" src={figures.farinha} alt="" />
           <p className="title-sm">Nenhuma receita nesta lista</p>
           <p className="p">
@@ -54,7 +54,7 @@ export const BuscaSemResultado: Story = {
         title="Busca sem resultado"
         note="Sem ilustracao: o leitor esta no meio de uma tarefa, e a resposta cabe em texto. A saida e um link, porque leva a outro estado da mesma pagina e nao executa nada."
       >
-        <div className="l-measure -narrow l-stack -tight">
+        <div className="l-measure -narrow l-stack -block">
           <p className="title-sm">Nada encontrado para “bolo de fubá cremoso”</p>
           <p className="p">
             Confira a grafia ou procure por um ingrediente.{' '}

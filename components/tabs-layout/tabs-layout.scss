@@ -21,6 +21,10 @@
   }
 
   @media (orientation: portrait) {
+    &__content > * + * {
+      margin-block-start: var(--app-rhythm-2);
+    }
+
     &__content {
       padding-left: var(--app-pad-surface);
       padding-right: var(--app-pad-surface);

@@ -27,13 +27,12 @@
     overflow-x: hidden;
     overflow-y: auto;
     padding-inline: component.$modal-gutter;
-    padding-top: component.$modal-gutter;
+    padding-top: var(--app-rhythm-1);
     padding-bottom: max(
       component.$modal-body-pad-bottom,
       var(--dialog-keyboard-inset, 0px),
       env(safe-area-inset-bottom)
     );
-    font-size: 1rem;
     /* iOS momentum scroll */
     -webkit-overflow-scrolling: touch;
     scroll-padding-bottom: calc(24px + var(--dialog-keyboard-inset, 0px));

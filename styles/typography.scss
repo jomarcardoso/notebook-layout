@@ -93,14 +93,11 @@
   border-bottom: var(--app-border-width) solid var(--app-rule);
   border-radius: 0;
   display: block;
-  margin-block: var(--app-rhythm-2) var(--app-rhythm-half);
   max-width: 100%;
   padding: 0 0 var(--app-gap-text);
 
   &.-sub {
     @extend .title-sm;
-
-    margin-block: var(--app-rhythm-1) var(--app-rhythm-half);
   }
 
   &.-center {

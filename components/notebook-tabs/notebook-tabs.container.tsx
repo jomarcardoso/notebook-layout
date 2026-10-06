@@ -24,7 +24,9 @@ export const NotebookTabsContainer: FC<NotebookTabsContainerProps> = ({
     <div className={classes}>
       <NotebookTabs {...props} />
 
-      <div className="notebook-tabs-container__content">{children}</div>
+      <div className="notebook-tabs-container__content l-stack -container">
+        {children}
+      </div>
     </div>
   );
 };

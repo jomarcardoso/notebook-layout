@@ -55,7 +55,7 @@ export const NoPapel: Story = {
         title="No papel"
         note="O primeiro degrau da escada: so espaco. A ficha fica logo abaixo do headnote, e o que a separa do texto e a mudanca de escala e de tinta."
       >
-        <div className="l-stack -tight">
+        <div className="l-stack -block">
           <p className="title-lg">Bolo de cenoura da vo Lurdes</p>
           <p className="subtitle">
             O de todo aniversario. A cobertura vai quente, para escorrer pelos

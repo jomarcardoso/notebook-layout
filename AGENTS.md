@@ -54,7 +54,7 @@ never rewrite one in a third-party utility grammar.
 
 | primitive | what it resolves | knob |
 | --- | --- | --- |
-| `l-stack` | vertical flow in rhythm units, space on the joint | `--l-stack-gap` |
+| `l-stack` | vertical flow, space on the joint, named by what the element is: `-container` wraps sections (2 units), plain `l-stack` is a section (1 unit), `-block` is an element of a section with parts of its own (half a unit) | — |
 | `l-measure` | the text measure — body, narrow or apparatus | `--l-measure` |
 | `l-rule` | the rule as a separator between blocks | — |
 | `l-cluster` | horizontal grouping on the inner space axis | `--l-cluster-gap` |
@@ -76,7 +76,7 @@ the apparatus beside the content and the apparatus inside it — shows up in one
 them at a time. It reads orientation because that is what `l-regions` reads; a
 width-based `d-md-*` would show both copies on a tablet held upright.
 
-Modifiers use the repository's `.-modifier` form: `.l-stack.-tight`,
+Modifiers use the repository's `.-modifier` form: `.l-stack.-block`,
 `.l-measure.-apparatus`.
 
 Two rules that decide most questions:
@@ -84,6 +84,13 @@ Two rules that decide most questions:
 - **Flow space comes from `--app-rhythm-*`, inner space from `--app-space-*`.**
   Stacking with `mb-3` mixes the two and the vertical rhythm never closes.
   Anything the eye reads as descending the page belongs to `l-stack`.
+- **Space between things belongs to what holds them.** A component sets no
+  outer margin, neither its own nor towards a sibling (`.x + .x`), and does not
+  repeat the base reset's `margin: 0`. The `l-*` primitives sit in the `utilities`
+  layer, after every component, so a stack's joint always wins. A container
+  whose spacing changes with orientation or width writes the joint of its own
+  children (`&__content > * + *`) instead of using `l-stack`: a custom
+  property cannot carry the gap, because nested stacks would inherit it.
 - **Mechanics come from the library, values come from us.** `d-flex`,
   `order-*`, `position-*`, `overflow-*`, `d-md-none` and the 12-column grid are
   used directly. Colour, radius, shadow and typography utilities are not used at

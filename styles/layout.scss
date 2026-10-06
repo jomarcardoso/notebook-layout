@@ -1,24 +1,30 @@
 // notebook-layout/styles/layout.scss
 
 .l-stack {
-  --l-stack-gap: var(--app-rhythm-1);
-
   display: block;
 
   > * + * {
-    margin-block-start: var(--l-stack-gap);
+    margin-block-start: var(--app-rhythm-1);
   }
 
-  &.-tight {
-    --l-stack-gap: var(--app-rhythm-half);
+  > *:where(h1, h2, h3, h4, h5, h6, header) + * {
+    margin-block-start: var(--app-rhythm-half);
   }
 
-  &.-loose {
-    --l-stack-gap: var(--app-rhythm-2);
+  &.-container > * + * {
+    margin-block-start: var(--app-rhythm-2);
   }
 
-  &.-section {
-    --l-stack-gap: var(--app-gap-section);
+  &.-container > *:where(h1, h2, h3, h4, h5, h6, header) + * {
+    margin-block-start: var(--app-rhythm-1);
+  }
+
+  &.-block > * + * {
+    margin-block-start: var(--app-rhythm-half);
+  }
+
+  &.-block > *:where(h1, h2, h3, h4, h5, h6, header) + * {
+    margin-block-start: var(--app-gap-text);
   }
 }
 

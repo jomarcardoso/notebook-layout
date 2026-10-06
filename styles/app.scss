@@ -14,3 +14,8 @@
 
 @import './atoms';
 @import './molecules';
+
+// Space between things belongs to what holds them: layout comes after components.
+@layer utilities {
+  @import './layout';
+}

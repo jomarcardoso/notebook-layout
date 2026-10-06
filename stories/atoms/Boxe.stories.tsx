@@ -30,7 +30,7 @@ export const Aparte: Story = {
             Rale as cenouras no ralo fino e bata com os ovos e o oleo ate a
             mistura ficar lisa e alaranjada.
           </p>
-          <aside className="box l-stack -tight" aria-label="Dica">
+          <aside className="box l-stack -block" aria-label="Dica">
             <p className="label">Dica da vo</p>
             <p className="p">
               Cenoura muito grande e fibrosa deixa o bolo pesado. Prefira as
@@ -64,7 +64,7 @@ export const BoxeOuMarcaDeMargem: Story = {
           </div>
         </Row>
         <Row label="boxe">
-          <div className="box l-measure l-stack -tight">
+          <div className="box l-measure l-stack -block">
             <p className="label">Antes de comecar</p>
             <p className="p">
               Deixe os ovos e a manteiga fora da geladeira por meia hora, e unte

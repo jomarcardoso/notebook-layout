@@ -113,7 +113,7 @@ $opening-figure-max: 320px !default;
 
 $modal-gutter: map.get(metrics.$spacers, 3) !default;
 $modal-gutter-block: map.get(metrics.$spacers, 2) !default;
-$modal-body-pad-bottom: var(--app-space-xl) !default;
+$modal-body-pad-bottom: var(--app-rhythm-1) !default;
 
 $modal-footer-gap: var(--app-gap-inline) !default;
 $modal-divider-width: var(--app-border-width) !default;

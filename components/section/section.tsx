@@ -18,7 +18,10 @@ export const Section: FC<SectionProps> = ({
   const heading: ReactNode = header || title;
 
   return (
-    <section className={`section ${className}`.trim()} {...props}>
+    <section
+      className={`section l-stack ${className}`.trim()}
+      {...props}
+    >
       {heading && <SectionTitle>{heading}</SectionTitle>}
 
       <div className="section__body l-stack">{children}</div>
