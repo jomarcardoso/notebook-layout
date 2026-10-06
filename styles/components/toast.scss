@@ -6,7 +6,8 @@
     var(--toast-inset-block-end, var(--app-space-md)),
     env(safe-area-inset-bottom)
   );
-  inset-inline: var(--app-pad-surface);
+  inset-inline-start: max(var(--app-pad-surface), env(safe-area-inset-left));
+  inset-inline-end: max(var(--app-pad-surface), env(safe-area-inset-right));
   justify-items: center;
   pointer-events: none;
   position: fixed;
