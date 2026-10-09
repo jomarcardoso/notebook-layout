@@ -1,14 +1,13 @@
 // notebook-layout/components/atoms/icon-button.tsx
 import { type ButtonHTMLAttributes, type FC } from 'react';
-import { type IconType } from 'react-icons';
-import { Icon } from './icon';
+import { Icon, type IconGlyph } from './icon';
 
 export interface IconButtonProps extends Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
   'className'
 > {
-  icon: IconType;
-  iconMarked?: IconType;
+  icon: IconGlyph;
+  iconMarked?: IconGlyph;
   label: string;
   pressed?: boolean;
   className?: string;

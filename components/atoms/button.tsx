@@ -1,7 +1,6 @@
 // notebook-layout/components/atoms/button.tsx
 import { type ButtonHTMLAttributes, type FC, type ReactNode } from 'react';
-import { type IconType } from 'react-icons';
-import { Icon } from './icon';
+import { Icon, type IconGlyph } from './icon';
 
 /**
  * O peso comunica O CUSTO DE DESFAZER, nao a importancia da acao.
@@ -26,7 +25,7 @@ export interface ButtonProps extends Omit<
   'className'
 > {
   weight?: ButtonWeight;
-  icon?: IconType;
+  icon?: IconGlyph;
   loading?: boolean;
   className?: string;
   children?: ReactNode;

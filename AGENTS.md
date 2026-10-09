@@ -151,6 +151,4 @@ Collections are `index-list` and `thumb-grid` (`_collections.scss`), two lists a
 
 CoreUI's `list-group` is not imported, so it has no adapter entry and no layer-3 knob.
 
-The icons are Phosphor, through `react-icons/pi` — `Pi<Name>` is the regular
-weight, `Pi<Name>Fill` the marked one. No second icon package: one silhouette in
-two weights is what the filled-means-marked rule needs.
+The icons are Phosphor, through `@phosphor-icons/react`, imported one module per icon: `import { HeartIcon } from '@phosphor-icons/react/dist/ssr/Heart'`. A barrel of the whole set is one multi-megabyte file that development builds cannot trim, so it is never imported. `<Name>Icon` is the regular weight; `withWeight(<Name>Icon, 'fill')` from the `Icon` atom is the marked one, and `'bold'` the checks. No second icon package: one silhouette in two weights is what the filled-means-marked rule needs.

@@ -21,9 +21,9 @@
   },
   "homepage": "https://github.com/jomarcardoso/notebook-layout#readme",
   "peerDependencies": {
+    "@coreui/coreui": "^5.9.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "@coreui/coreui": "^5.9.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@coreui/coreui": "^5.9.0",
@@ -41,8 +41,8 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
     "ovos": "^1.3.3",
-    "react-icons": "^5.5.0",
     "the-new-css-reset": "^1.11.3"
   }
 }

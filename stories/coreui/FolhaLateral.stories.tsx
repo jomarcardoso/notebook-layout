@@ -1,7 +1,7 @@
 // notebook-layout/stories/coreui/FolhaLateral.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useId, useState } from 'react';
-import { PiX } from 'react-icons/pi';
+import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
 import { Button, IconButton } from '@components/atoms';
 import { Group, Sheet } from '../atoms/specimen';
 
@@ -66,7 +66,7 @@ const FolhaDemo = () => {
             Historico de edicoes
           </h2>
           <IconButton
-            icon={PiX}
+            icon={XIcon}
             label="Fechar"
             style={{ marginInlineStart: 'auto' }}
             onClick={() => setAberta(false)}

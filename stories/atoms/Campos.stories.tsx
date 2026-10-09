@@ -1,7 +1,9 @@
 // notebook-layout/stories/atoms/Campos.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { PiEye, PiMagnifyingGlass, PiX } from 'react-icons/pi';
+import { EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
+import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
+import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
 import { Icon, IconButton, Select, Textarea } from '@components/atoms';
 import { Field } from '@components/field';
 import { Group, Row, Sheet } from './specimen';
@@ -177,7 +179,7 @@ const SelectEAdornos = () => {
             Buscar
           </label>
           <div className="field-adorned">
-            <Icon icon={PiMagnifyingGlass} className="field-adorned-lead" />
+            <Icon icon={MagnifyingGlassIcon} className="field-adorned-lead" />
             <input
               id="busca"
               className="form-control"
@@ -188,7 +190,7 @@ const SelectEAdornos = () => {
             {termo && (
               <div className="field-adorned-trail">
                 <IconButton
-                  icon={PiX}
+                  icon={XIcon}
                   label="Limpar busca"
                   onClick={() => setTermo('')}
                 />
@@ -211,7 +213,7 @@ const SelectEAdornos = () => {
             />
             <div className="field-adorned-trail">
               <IconButton
-                icon={PiEye}
+                icon={EyeIcon}
                 label="Mostrar senha"
                 pressed={visivel}
                 onClick={() => setVisivel((v) => !v)}

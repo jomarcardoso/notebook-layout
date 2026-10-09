@@ -1,6 +1,6 @@
 // notebook-layout/components/atoms/select.tsx
 import { type FC, type SelectHTMLAttributes } from 'react';
-import { PiCaretDown } from 'react-icons/pi';
+import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
 import { Icon } from './icon';
 
 /** Uma escolha num campo que oferece um conjunto fechado delas. */
@@ -35,6 +35,6 @@ export const Select: FC<SelectProps> = ({
           </option>
         ))}
     </select>
-    <Icon icon={PiCaretDown} className="select-field-caret" />
+    <Icon icon={CaretDownIcon} className="select-field-caret" />
   </span>
 );

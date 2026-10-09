@@ -11,7 +11,7 @@ import {
   type TextareaHTMLAttributes,
   useId,
 } from 'react';
-import { PiX } from 'react-icons/pi';
+import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
 import { IconButton } from '../atoms/icon-button';
 import {
   FieldInput,
@@ -156,7 +156,7 @@ export const Field: FC<FieldProps> = ({
 
         {showErase && (
           <div className="field-adorned-trail">
-            <IconButton icon={PiX} label="Limpar" onClick={() => onErase?.()} />
+            <IconButton icon={XIcon} label="Limpar" onClick={() => onErase?.()} />
           </div>
         )}
       </div>

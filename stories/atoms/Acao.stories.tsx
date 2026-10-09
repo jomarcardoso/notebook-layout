@@ -1,14 +1,14 @@
 // notebook-layout/stories/atoms/Acao.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  PiBookmarkSimple,
-  PiBookmarkSimpleFill,
-  PiDotsThree,
-  PiPlus,
-  PiX,
-} from 'react-icons/pi';
+import { BookmarkSimpleIcon } from '@phosphor-icons/react/dist/ssr/BookmarkSimple';
+import { DotsThreeIcon } from '@phosphor-icons/react/dist/ssr/DotsThree';
+import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
+import { withWeight } from '@components/atoms';
 import { Button, IconButton } from '@components/atoms';
 import { Group, Row, Sheet } from './specimen';
+
+const BookmarkSimpleFillIcon = withWeight(BookmarkSimpleIcon, 'fill');
 
 const meta = {
   title: 'Atomos/Acao',
@@ -38,7 +38,7 @@ export const Botao: Story = {
         </Row>
         <Row label="estruturante">
           <Button weight="estruturante">Cancelar</Button>
-          <Button weight="estruturante" icon={PiPlus}>
+          <Button weight="estruturante" icon={PlusIcon}>
             Adicionar parte
           </Button>
         </Row>
@@ -115,28 +115,28 @@ export const BotaoSoDeIcone: Story = {
         note="O unico lugar onde o icone aparece sem palavra, entao ele so existe com desenho universal e com nome acessivel obrigatorio. A tinta e cheia, e nao accent: uma barra com quatro icones em accent gastaria o orcamento da tela inteira."
       >
         <Row label="repouso">
-          <IconButton icon={PiDotsThree} label="Mais opcoes" />
-          <IconButton icon={PiX} label="Fechar" />
-          <IconButton icon={PiPlus} label="Adicionar" />
+          <IconButton icon={DotsThreeIcon} label="Mais opcoes" />
+          <IconButton icon={XIcon} label="Fechar" />
+          <IconButton icon={PlusIcon} label="Adicionar" />
         </Row>
         <Row label="alternavel, desligado">
           <IconButton
-            icon={PiBookmarkSimple}
-            iconMarked={PiBookmarkSimpleFill}
+            icon={BookmarkSimpleIcon}
+            iconMarked={BookmarkSimpleFillIcon}
             label="Salvar"
             pressed={false}
           />
         </Row>
         <Row label="alternavel, ligado">
           <IconButton
-            icon={PiBookmarkSimple}
-            iconMarked={PiBookmarkSimpleFill}
+            icon={BookmarkSimpleIcon}
+            iconMarked={BookmarkSimpleFillIcon}
             label="Salvar"
             pressed
           />
         </Row>
         <Row label="desabilitado">
-          <IconButton icon={PiDotsThree} label="Mais opcoes" disabled />
+          <IconButton icon={DotsThreeIcon} label="Mais opcoes" disabled />
         </Row>
       </Group>
       <p className="caption">

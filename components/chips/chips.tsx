@@ -9,7 +9,8 @@ import {
   useContext,
   useId,
 } from 'react';
-import { PiCheck, PiX } from 'react-icons/pi';
+import { CheckIcon } from '@phosphor-icons/react/dist/ssr/Check';
+import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
 import { Icon } from '../atoms/icon';
 
 type ChipInputType = 'radio' | 'checkbox';
@@ -32,7 +33,7 @@ export const Chip: FC<HTMLProps<HTMLInputElement>> = ({
   return (
     <li className="chip">
       <input type={type} name={name} {...props} id={id} />
-      <Icon icon={PiCheck} className="chip-check" />
+      <Icon icon={CheckIcon} className="chip-check" />
       <label htmlFor={id}>{children}</label>
     </li>
   );
@@ -91,7 +92,7 @@ export const FilterChip: FC<FilterChipProps> = ({
     aria-pressed={selected}
     className={['chip', className].filter(Boolean).join(' ')}
   >
-    {selected && <Icon icon={PiCheck} />}
+    {selected && <Icon icon={CheckIcon} />}
     {children}
   </button>
 );
@@ -122,7 +123,7 @@ export const RemovableChip: FC<RemovableChipProps> = ({
       aria-label={removeLabel}
       onClick={onRemove}
     >
-      <Icon icon={PiX} />
+      <Icon icon={XIcon} />
     </button>
   </span>
 );

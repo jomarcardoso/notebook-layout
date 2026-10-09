@@ -1,7 +1,9 @@
 // notebook-layout/stories/coreui/Dica.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { type CSSProperties, type ReactNode, useEffect, useId, useState } from 'react';
-import { PiDotsThree, PiPlus, PiX } from 'react-icons/pi';
+import { DotsThreeIcon } from '@phosphor-icons/react/dist/ssr/DotsThree';
+import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
 import { Button, IconButton } from '@components/atoms';
 import { Group, Row, Sheet } from '../atoms/specimen';
 
@@ -97,9 +99,9 @@ export const Posicoes: Story = {
 };
 
 const BOTOES = [
-  { icone: PiPlus, rotulo: 'Adicionar ingrediente' },
-  { icone: PiDotsThree, rotulo: 'Mais opcoes' },
-  { icone: PiX, rotulo: 'Fechar' },
+  { icone: PlusIcon, rotulo: 'Adicionar ingrediente' },
+  { icone: DotsThreeIcon, rotulo: 'Mais opcoes' },
+  { icone: XIcon, rotulo: 'Fechar' },
 ];
 
 interface BotaoComDicaProps {
@@ -179,7 +181,7 @@ export const TextoLongo: Story = {
         note="A largura maxima e a medida do aparato. Uma dica que precisa de mais que isso ja e nota de margem ou texto de ajuda do campo, e nao dica."
       >
         <div style={{ minBlockSize: 'var(--app-rhythm-4)', position: 'relative' }}>
-          <IconButton icon={PiDotsThree} label="Mais opcoes" />
+          <IconButton icon={DotsThreeIcon} label="Mais opcoes" />
           <div
             role="tooltip"
             className="tooltip bs-tooltip-bottom show"

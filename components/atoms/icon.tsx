@@ -1,10 +1,29 @@
 // notebook-layout/components/atoms/icon.tsx
-import { type FC } from 'react';
-import { type IconType } from 'react-icons';
+import type { IconWeight } from '@phosphor-icons/react';
+import { type ComponentType, type FC } from 'react';
+
+export type IconGlyphProps = {
+  className?: string;
+  role?: 'img';
+  'aria-label'?: string;
+  'aria-hidden'?: boolean;
+};
+
+export type IconGlyph = ComponentType<IconGlyphProps>;
+
+type PhosphorGlyph = ComponentType<IconGlyphProps & { weight?: IconWeight }>;
+
+export function withWeight(Glyph: PhosphorGlyph, weight: IconWeight): IconGlyph {
+  const Weighted: FC<IconGlyphProps> = (props) => (
+    <Glyph {...props} weight={weight} />
+  );
+
+  return Weighted;
+}
 
 export interface IconProps {
-  icon: IconType;
-  iconMarked?: IconType;
+  icon: IconGlyph;
+  iconMarked?: IconGlyph;
   marked?: boolean;
   label?: string;
   className?: string;

@@ -1,15 +1,15 @@
 // notebook-layout/stories/atoms/MarcasDeLeitura.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import {
-  PiCaretDown,
-  PiHeart,
-  PiHeartFill,
-  PiMagnifyingGlass,
-  PiPlus,
-} from 'react-icons/pi';
+import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
+import { HeartIcon } from '@phosphor-icons/react/dist/ssr/Heart';
+import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
+import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
+import { withWeight } from '@components/atoms';
 import { Icon, Tag } from '@components/atoms';
 import { LineList, LineListItem } from '@components/molecules';
 import { Group, Row, Sheet } from './specimen';
+
+const HeartFillIcon = withWeight(HeartIcon, 'fill');
 
 const meta = {
   title: 'Atomos/Marcas de leitura',
@@ -146,23 +146,23 @@ export const Iconografia: Story = {
         note="Um tamanho so, 20px. Na Phosphor a espessura vem presa ao peso, entao dois tamanhos na mesma tela seriam duas espessuras de tinta. Ele nunca tem cor propria: herda a tinta do elemento que o contem."
       >
         <Row label="na tinta do corpo">
-          <Icon icon={PiPlus} />
-          <Icon icon={PiMagnifyingGlass} />
-          <Icon icon={PiCaretDown} />
+          <Icon icon={PlusIcon} />
+          <Icon icon={MagnifyingGlassIcon} />
+          <Icon icon={CaretDownIcon} />
         </Row>
         <Row label="contorno e preenchido">
-          <Icon icon={PiHeart} iconMarked={PiHeartFill} />
-          <Icon icon={PiHeart} iconMarked={PiHeartFill} marked />
+          <Icon icon={HeartIcon} iconMarked={HeartFillIcon} />
+          <Icon icon={HeartIcon} iconMarked={HeartFillIcon} marked />
         </Row>
         <Row label="herdando a tinta">
           <span style={{ color: 'var(--app-fg-muted)' }}>
-            <Icon icon={PiPlus} />
+            <Icon icon={PlusIcon} />
           </span>
           <span style={{ color: 'var(--app-fg-accent)' }}>
-            <Icon icon={PiPlus} />
+            <Icon icon={PlusIcon} />
           </span>
           <span style={{ color: 'var(--app-fg-danger)' }}>
-            <Icon icon={PiPlus} />
+            <Icon icon={PlusIcon} />
           </span>
         </Row>
       </Group>

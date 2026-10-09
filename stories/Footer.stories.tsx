@@ -1,10 +1,8 @@
 ﻿import type { Meta, StoryObj } from '@storybook/react';
-import {
-  IoAddCircleOutline,
-  IoCreateOutline,
-  IoShareOutline,
-  IoTrashOutline,
-} from 'react-icons/io5';
+import { ExportIcon } from '@phosphor-icons/react/dist/ssr/Export';
+import { PencilSimpleIcon } from '@phosphor-icons/react/dist/ssr/PencilSimple';
+import { PlusCircleIcon } from '@phosphor-icons/react/dist/ssr/PlusCircle';
+import { TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
 import { Footer } from '@components/footer';
 
 const meta = {
@@ -25,17 +23,17 @@ const meta = {
     open: false,
     items: [
       {
-        icon: <IoAddCircleOutline />,
+        icon: <PlusCircleIcon />,
         'aria-label': 'Adicionar',
         onClick: () => {},
       },
-      { icon: <IoCreateOutline />, 'aria-label': 'Editar', onClick: () => {} },
+      { icon: <PencilSimpleIcon />, 'aria-label': 'Editar', onClick: () => {} },
       {
-        icon: <IoShareOutline />,
+        icon: <ExportIcon />,
         'aria-label': 'Compartilhar',
         onClick: () => {},
       },
-      { icon: <IoTrashOutline />, 'aria-label': 'Remover', onClick: () => {} },
+      { icon: <TrashIcon />, 'aria-label': 'Remover', onClick: () => {} },
     ],
   },
   argTypes: {

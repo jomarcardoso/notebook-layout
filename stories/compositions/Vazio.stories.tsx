@@ -1,6 +1,6 @@
 // notebook-layout/stories/compositions/Vazio.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { PiPlus } from 'react-icons/pi';
+import { PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Button } from '@components/atoms';
 import { Group, Sheet } from '../atoms/specimen';
 import { figures } from '../molecules/figures';
@@ -36,7 +36,7 @@ export const ListaVazia: Story = {
             Guarde aqui as receitas que voce quer encontrar sem precisar buscar.
           </p>
           <div>
-            <Button weight="estruturante" icon={PiPlus}>
+            <Button weight="estruturante" icon={PlusIcon}>
               Adicionar receita
             </Button>
           </div>

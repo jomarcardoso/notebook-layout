@@ -1,7 +1,7 @@
 // notebook-layout/stories/coreui/Revelacao.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useId, useState } from 'react';
-import { PiCaretDown } from 'react-icons/pi';
+import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
 import { Button, Icon, Tag } from '@components/atoms';
 import { Group, Sheet } from '../atoms/specimen';
 
@@ -54,7 +54,7 @@ const ItemDeAcordeao = ({
               &nbsp;<Tag count>{contagem}</Tag>
             </>
           )}
-          <Icon icon={PiCaretDown} className="accordion-indicator" />
+          <Icon icon={CaretDownIcon} className="accordion-indicator" />
         </button>
       </h3>
       <div

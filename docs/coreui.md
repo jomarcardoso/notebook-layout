@@ -167,7 +167,7 @@ E os helpers que ficam fora do entry:
 | `reboot`, `type` | o reset e `the-new-css-reset`, e a tipografia sao os papeis de `typography.scss` |
 | `forms/floating-labels` | o rotulo fica sempre acima do campo |
 | `forms/input-group` | o campo com icone ou botao e `.field-adorned` |
-| `popover`, `toast`, `button-group`, `forms/form-range`, `icon` | nenhum consumidor; os icones sao Phosphor via `react-icons/pi` |
+| `popover`, `toast`, `button-group`, `forms/form-range`, `icon` | nenhum consumidor; os icones sao Phosphor via `@phosphor-icons/react`, um modulo por icone |
 
 `CSmartTable` e os demais componentes PRO nao estao instalados.
 

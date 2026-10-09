@@ -7,7 +7,12 @@ import {
   type Ref,
   useId,
 } from 'react';
-import { PiCheckBold, PiMinusBold } from 'react-icons/pi';
+import { CheckIcon } from '@phosphor-icons/react/dist/ssr/Check';
+import { MinusIcon } from '@phosphor-icons/react/dist/ssr/Minus';
+import { withWeight } from '../atoms/icon';
+
+const CheckBoldIcon = withWeight(CheckIcon, 'bold');
+const MinusBoldIcon = withWeight(MinusIcon, 'bold');
 
 type Kind = 'checkbox' | 'radio' | 'switch';
 
@@ -23,8 +28,8 @@ export interface ReaderMarkProps extends Omit<
 const glyphs: Record<Kind, ReactNode> = {
   checkbox: (
     <>
-      <PiCheckBold className="check-glyph check-glyph-on" />
-      <PiMinusBold className="check-glyph check-glyph-mixed" />
+      <CheckBoldIcon className="check-glyph check-glyph-on" />
+      <MinusBoldIcon className="check-glyph check-glyph-mixed" />
     </>
   ),
   radio: null,

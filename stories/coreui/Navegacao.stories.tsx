@@ -1,13 +1,11 @@
 // notebook-layout/stories/coreui/Navegacao.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import {
-  PiBookOpen,
-  PiDotsThree,
-  PiGear,
-  PiListBullets,
-  PiMagnifyingGlass,
-} from 'react-icons/pi';
+import { BookOpenIcon } from '@phosphor-icons/react/dist/ssr/BookOpen';
+import { DotsThreeIcon } from '@phosphor-icons/react/dist/ssr/DotsThree';
+import { GearIcon } from '@phosphor-icons/react/dist/ssr/Gear';
+import { ListBulletsIcon } from '@phosphor-icons/react/dist/ssr/ListBullets';
+import { MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { IconButton, Icon } from '@components/atoms';
 import { Breadcrumbs } from '@components/breadcrumbs';
 import { Group, Row, Sheet } from '../atoms/specimen';
@@ -96,7 +94,7 @@ const MenuDemo = () => {
         <Row label="aberto">
           <div className="dropdown" style={{ minBlockSize: '17rem' }}>
             <IconButton
-              icon={PiDotsThree}
+              icon={DotsThreeIcon}
               label="Mais opcoes"
               aria-haspopup="menu"
               aria-expanded={aberto}
@@ -153,10 +151,10 @@ export const MenuSuspenso: Story = {
 };
 
 const ITENS_DA_BARRA = [
-  { rotulo: 'Minhas receitas', icone: PiBookOpen, ativo: true },
-  { rotulo: 'Listas', icone: PiListBullets, ativo: false },
-  { rotulo: 'Buscar', icone: PiMagnifyingGlass, ativo: false },
-  { rotulo: 'Ajustes', icone: PiGear, ativo: false },
+  { rotulo: 'Minhas receitas', icone: BookOpenIcon, ativo: true },
+  { rotulo: 'Listas', icone: ListBulletsIcon, ativo: false },
+  { rotulo: 'Buscar', icone: MagnifyingGlassIcon, ativo: false },
+  { rotulo: 'Ajustes', icone: GearIcon, ativo: false },
 ];
 
 export const BarraLateral: Story = {
