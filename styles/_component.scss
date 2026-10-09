@@ -109,6 +109,7 @@ $field-border: var(--app-border-width) solid var(--app-border-default) !default;
 $card-radius: 0 !default;
 
 $dialog-width-desktop: 560px !default;
+$dialog-width-wide: 860px !default;
 $opening-figure-max: 320px !default;
 
 $modal-gutter: map.get(metrics.$spacers, 3) !default;

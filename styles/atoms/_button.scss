@@ -21,7 +21,7 @@
   display: inline-flex;
   gap: var(--app-space-xs);
   justify-content: center;
-  max-inline-size: 320px;
+  max-inline-size: 256px;
   min-block-size: var(--app-size-control);
   transition-duration: var(--app-duration-fast);
   transition-property: color, background-color, border-color;

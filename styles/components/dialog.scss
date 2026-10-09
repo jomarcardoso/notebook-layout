@@ -1,5 +1,5 @@
-@use '../component' as component;
-@use '../utils.scss';
+@use "../component" as component;
+@use "../utils.scss";
 
 .dialog {
   --dialog-visual-viewport-height: 100dvh;
@@ -63,6 +63,10 @@
 
 .dialog.-dense {
   max-height: 92dvh;
+}
+
+.dialog.-wide {
+  --dialog-width: #{component.$dialog-width-wide};
 }
 
 @include utils.isMobile {

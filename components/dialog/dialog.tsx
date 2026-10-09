@@ -48,6 +48,7 @@ export interface DialogProps extends Omit<
   footerProps?: HTMLProps<HTMLDivElement>;
 
   dense?: boolean;
+  wide?: boolean;
   blank?: boolean;
   overlay?: 'auto' | 'off' | 'on';
 }
@@ -66,6 +67,7 @@ export const Dialog: FC<DialogProps> = ({
   footer = '',
   footerProps,
   dense,
+  wide = false,
   className = '',
   open: openProp,
   onClose,
@@ -219,6 +221,7 @@ export const Dialog: FC<DialogProps> = ({
   const classes = generateClasses({
     dialog: true,
     '-dense': dense,
+    '-wide': wide,
     [className]: className,
   });
 
