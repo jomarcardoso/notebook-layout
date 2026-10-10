@@ -4,7 +4,7 @@
 
 Este documento e o inventario do CoreUI dentro do `notebook-layout`: o que entra, onde cada decisao mora, o que fica de fora e por que. A regra geral de camadas esta em `AGENTS.md` (secao CSS) e a linguagem visual em `DESIGN_LANGUAGE.md`; aqui fica so o que e especifico da biblioteca.
 
-A versao instalada e `@coreui/coreui` 5.9. O pacote declara so o CSS como dependencia: os componentes desta biblioteca escrevem a marcacao com as classes do CoreUI e nao importam `@coreui/react`. O `www` usa `@coreui/react` diretamente.
+A versao instalada e `@coreui/coreui` 5.9, com `@coreui/react` 5.13. O componente vem do CoreUI e a abstracao visual fica aqui: um componente desta biblioteca usa o componente React do CoreUI quando ele existe (`Breadcrumbs` sobre `CBreadcrumb`) e escreve a marcacao com as classes do CoreUI quando nao existe. O `www` usa `@coreui/react` diretamente so para ligar componentes a aplicacao.
 
 ## Onde cada decisao mora
 
@@ -33,7 +33,7 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 | --- | --- | --- | --- |
 | `root`, `containers`, `grid`, `utilities/api` | entry (`$spacers`, `$grid-gutter-width`, `$enable-cssgrid`, `$utilities`) | `www` (`row`, `col-*`, `.grid`, `container`, utilitarios de mecanica) | CoreUI/Grade, CoreUI/Mecanica |
 | `helpers/clearfix`, `position`, `ratio`, `text-truncation`, `visually-hidden` | entry, um a um | `www` (`visually-hidden`, `ratio`) | CoreUI/Mecanica |
-| `breadcrumb` | adapter | `Breadcrumbs` | CoreUI/Navegacao |
+| `breadcrumb` | entry (`$breadcrumb-margin-bottom`, `$breadcrumb-item-padding-x`), atom `_breadcrumb.scss` (tinta, papel, link e modo compacto por container query) | `Breadcrumbs` sobre `CBreadcrumb` | CoreUI/Navegacao |
 | `nav` | entry (`$nav-*`, `$nav-tabs-*`) | `Tabs` | Navegacao/Abas |
 | `buttons` | entry (`$btn-*`), atom `_button.scss` | `Button`, `IconButton` | Atomos/Acao |
 | `accordion` | entry (`$accordion-*`), adapter | `www` `filed-recipes` (marcacao) | CoreUI/Revelacao |

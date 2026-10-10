@@ -31,7 +31,7 @@ export const Trilha: Story = {
     <Sheet>
       <Group
         title="Trilha"
-        note="O componente Breadcrumbs sobre .breadcrumb. O ultimo item e a pagina atual, em fg-emphasis e sem link."
+        note="O componente Breadcrumbs sobre o CBreadcrumb. O ultimo item e a pagina atual, em fg-emphasis e sem link."
       >
         <Breadcrumbs
           items={[
@@ -40,6 +40,21 @@ export const Trilha: Story = {
             { label: 'Bolo de laranja' },
           ]}
         />
+      </Group>
+
+      <Group
+        title="Trilha compacta"
+        note="Num container mais estreito que a trilha, so o pai aparece, como voltar. Quem decide e a largura do container, nao a da tela."
+      >
+        <div style={{ maxWidth: 320 }}>
+          <Breadcrumbs
+            items={[
+              { label: 'Caderno', href: '#' },
+              { label: 'Doces', href: '#' },
+              { label: 'Bolo de laranja' },
+            ]}
+          />
+        </div>
       </Group>
     </Sheet>
   ),

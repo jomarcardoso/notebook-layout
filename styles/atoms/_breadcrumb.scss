@@ -1,0 +1,39 @@
+// notebook-layout/styles/atoms/_breadcrumb.scss
+
+.breadcrumb {
+  --cui-breadcrumb-divider-color: var(--app-fg-muted);
+  --cui-breadcrumb-item-active-color: var(--app-fg-muted);
+  container: breadcrumb / inline-size;
+  color: var(--app-fg-muted);
+  font: var(--app-text-caption);
+
+  .app-icon {
+    display: none;
+  }
+
+  .breadcrumb-item > a {
+    @include link-in-text;
+  }
+
+  @container breadcrumb (width < 480px) {
+    .breadcrumb-item {
+      --cui-breadcrumb-divider: '';
+      --cui-breadcrumb-item-padding-x: 0;
+
+      &:not(:nth-last-child(2)) {
+        display: none;
+      }
+
+      > a {
+        align-items: center;
+        display: inline-flex;
+        gap: var(--app-space-2xs);
+        min-block-size: var(--app-size-control);
+      }
+    }
+
+    .app-icon {
+      display: inline-block;
+    }
+  }
+}

@@ -1,12 +1,28 @@
 // notebook-layout/styles/atoms/_link.scss
 
-a:not([class]):not(nav *) {
-  color: var(--app-fg-accent);
-  text-decoration-line: none;
-  // Fino e deslocado, respeitando o descendente.
+// Fino e deslocado, respeitando o descendente.
+@mixin link-line {
   text-decoration-skip-ink: auto;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
+}
+
+@mixin link-in-text {
+  @include link-line;
+  color: inherit;
+  text-decoration-color: var(--app-fg-accent);
+  text-decoration-line: underline;
+
+  &:hover {
+    color: inherit;
+    text-decoration-thickness: 2px;
+  }
+}
+
+a:not([class]):not(nav *) {
+  @include link-line;
+  color: var(--app-fg-accent);
+  text-decoration-line: none;
 
   &:hover {
     color: var(--app-fg-accent);
@@ -16,12 +32,5 @@ a:not([class]):not(nav *) {
 
 .prose a,
 .p a {
-  color: inherit;
-  text-decoration-color: var(--app-fg-accent);
-  text-decoration-line: underline;
-
-  &:hover {
-    color: inherit;
-    text-decoration-thickness: 2px;
-  }
+  @include link-in-text;
 }

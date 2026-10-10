@@ -99,6 +99,8 @@ $rhythm-values: (
   $form-feedback-invalid-color: var(--app-fg-danger),
   $form-feedback-valid-color: var(--app-fg-success),
   $form-feedback-font-size: null,
+  $breadcrumb-margin-bottom: 0,
+  $breadcrumb-item-padding-x: metrics.space('xs'),
   $nav-link-color: var(--app-fg-muted),
   $nav-link-hover-color: var(--app-fg-default),
   $nav-link-disabled-color: var(--app-fg-disabled),

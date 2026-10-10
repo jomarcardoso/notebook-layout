@@ -159,6 +159,8 @@ deviations:
   - decision: limpar o rascunho confirma no proprio botao, e nao em modal
     because: nada foi enviado ao servidor e a pagina toda e o rascunho; um modal para confirmar dentro de um formulario nao salvo e cerimonia sem risco correspondente
     revisit: virar modal se o guardrail for mantido como esta
+  - decision: a trilha compacta leva o icone `‹` dentro do link do pai
+    because: o §8 proibe icone em link, mas ali o icone nao decora, ele e o verbo; sozinho e em caption, o nome do pai no topo da pagina nao se le como voltar
 
 overrides:
   - decision: size-control em 44px
@@ -826,6 +828,16 @@ Sombra so quando ha conteudo rolado por baixo.
 
 **Barra lateral.** Margem, nao painel: fio vertical, itens sem fundo, ativo em
 `fg-emphasis` contra os outros em `fg-muted`.
+
+**Trilha.** Diz onde a pagina mora, nunca de onde o leitor veio: o mesmo
+endereco mostra sempre a mesma trilha, e o caminho percorrido e do voltar do
+navegador. E meta e nao disputa com o titulo: `caption` em `fg-muted` inteira,
+links, separador e pagina atual. O link se distingue pelo sublinhado em accent,
+sempre presente, como o link em prosa; a pagina atual e o unico item sem ele, e
+nada mais a diferencia, porque o titulo logo abaixo ja diz o nome dela. Meia
+unidade separa a trilha do titulo. Num container mais estreito que a trilha, so o
+pai aparece, como `‹ Pai`, com alvo de 44px: e o voltar da pagina, com o destino
+escrito. Raiz de aba nao leva trilha.
 
 **Modal.** `bg-page`, a unica sombra do sistema, raio da folha. Titulo, fio
 abaixo do titulo, conteudo, acoes no rodape a direita.

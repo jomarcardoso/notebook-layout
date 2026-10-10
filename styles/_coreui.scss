@@ -286,11 +286,6 @@ $_token: (
     --cui-sidebar-toggler-hover-color: #{component.$sidebar-toggler-fg-hover};
     --cui-sidebar-toggler-focus-color: #{component.$sidebar-toggler-fg-hover};
   }
-
-  .breadcrumb {
-    --cui-breadcrumb-divider-color: #{component.$breadcrumb-divider-fg};
-    --cui-breadcrumb-item-active-color: #{component.$breadcrumb-item-fg-selected};
-  }
 }
 
 @mixin _important-overrides() {

@@ -1,6 +1,9 @@
-// components/breadcrumbs/breadcrumbs.tsx
+'use client';
+// notebook-layout/components/breadcrumbs/breadcrumbs.tsx
+import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react';
+import { CaretLeftIcon } from '@phosphor-icons/react/dist/ssr/CaretLeft';
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
-import { generateClasses } from '../../utils/utils';
+import { Icon } from '../atoms/icon';
 
 export interface BreadcrumbItem {
   label: ReactNode;
@@ -8,51 +11,36 @@ export interface BreadcrumbItem {
 }
 
 export interface BreadcrumbsProps extends Omit<
-  HTMLAttributes<HTMLElement>,
+  HTMLAttributes<HTMLOListElement>,
   'children'
 > {
   items?: BreadcrumbItem[];
-  label?: string;
   linkComponent?: ElementType<{ children: ReactNode; href: string }>;
 }
 
 export const Breadcrumbs = ({
   items = [],
-  label = 'Breadcrumb',
   linkComponent = 'a',
-  className = '',
   ...props
-}: BreadcrumbsProps) => {
-  const LinkComponent = linkComponent;
-  const classes = generateClasses({
-    breadcrumbs: true,
-    [className]: Boolean(className),
-  });
+}: BreadcrumbsProps) => (
+  <CBreadcrumb {...props}>
+    {items.map((item, index) => {
+      const current = index === items.length - 1;
+      const link =
+        !current && item.href
+          ? { as: linkComponent, href: item.href }
+          : { as: undefined, href: undefined };
 
-  return (
-    <nav aria-label={label} className={classes} {...props}>
-      <ol className="breadcrumb">
-        {items.map((item, index) => {
-          const isActive = index === items.length - 1;
-
-          return (
-            <li
-              aria-current={isActive ? 'page' : undefined}
-              className={generateClasses({
-                'breadcrumb-item': true,
-                active: isActive,
-              })}
-              key={`${item.href ?? ''}-${index}`}
-            >
-              {!isActive && item.href ? (
-                <LinkComponent href={item.href}>{item.label}</LinkComponent>
-              ) : (
-                item.label
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-};
+      return (
+        <CBreadcrumbItem
+          key={`${item.href ?? ''}-${index}`}
+          active={current}
+          {...link}
+        >
+          {index === items.length - 2 && <Icon icon={CaretLeftIcon} />}
+          {item.label}
+        </CBreadcrumbItem>
+      );
+    })}
+  </CBreadcrumb>
+);
