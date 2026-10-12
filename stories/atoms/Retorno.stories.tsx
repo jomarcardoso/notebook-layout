@@ -28,7 +28,7 @@ export const Esqueleto: Story = {
               style={{ inlineSize: '70%' }}
             />
           </div>
-          <p className="p">
+          <p className="body">
             <SkeletonText lines={4} />
           </p>
         </div>
@@ -45,11 +45,11 @@ export const Esqueleto: Story = {
             gridTemplateColumns: '1fr 1fr',
           }}
         >
-          <p className="p">
+          <p className="body">
             Bata as claras em neve e reserve. Misture a farinha peneirada com o
             fermento e junte as gemas, mexendo devagar ate a massa ficar lisa.
           </p>
-          <p className="p" aria-busy="true">
+          <p className="body" aria-busy="true">
             <SkeletonText lines={4} />
           </p>
         </div>

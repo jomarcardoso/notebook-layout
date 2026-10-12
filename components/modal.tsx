@@ -1,13 +1,14 @@
-import { FC, HTMLProps, ReactNode } from 'react';
+// notebook-layout/components/modal.tsx
+import { type ComponentProps, type FC, type ReactNode } from 'react';
 import { Heading, HeadingProps } from './heading';
 
-interface Props extends Omit<HTMLProps<HTMLDivElement>, 'header' | 'title'> {
+interface Props extends Omit<ComponentProps<'div'>, 'header' | 'title'> {
   header?: ReactNode;
-  headerProps?: HTMLProps<HTMLDivElement>;
+  headerProps?: ComponentProps<'div'>;
   children?: ReactNode;
-  bodyProps?: HTMLProps<HTMLDivElement>;
+  bodyProps?: ComponentProps<'div'>;
   footer?: ReactNode;
-  footerProps?: HTMLProps<HTMLDivElement>;
+  footerProps?: ComponentProps<'div'>;
 }
 
 export type ModalProps = Props & HeadingProps;

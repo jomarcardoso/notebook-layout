@@ -1,6 +1,6 @@
 'use client';
-import type { FC, HTMLProps, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+// notebook-layout/components/tabs-layout/TabsLayout.tsx
+import { type ComponentProps, type FC, useEffect, useState } from 'react';
 import { decorateSections, generateClasses } from '../../utils/utils';
 import {
   NotebookTabs,
@@ -13,7 +13,7 @@ import { useSectionsChildren } from '../../hooks/use-sections-children';
 type NotebookTabsBaseProps = Omit<NotebookTabsProps, 'tabs' | 'className'>;
 type TabsBaseProps = Omit<TabsProps, 'tabs' | 'className'>;
 
-export interface TabsLayoutProps extends HTMLProps<HTMLDivElement> {
+export interface TabsLayoutProps extends ComponentProps<'div'> {
   mobileTabs?: NotebookTabsProps['tabs'];
   desktopTabs?: TabsProps['tabs'];
   mobileProps?: NotebookTabsBaseProps;
@@ -166,4 +166,3 @@ export const TabsLayout: FC<TabsLayoutProps> = ({
   );
 };
 
-export default TabsLayout;

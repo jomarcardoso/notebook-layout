@@ -1,7 +1,7 @@
 // notebook-layout/components/field/field.messages.tsx
-import { type FC, type HTMLProps, type ReactNode } from 'react';
+import { type ComponentProps, type FC, type ReactNode } from 'react';
 
-export interface FieldLabelProps extends HTMLProps<HTMLLabelElement> {
+export interface FieldLabelProps extends ComponentProps<'label'> {
   htmlFor: string;
   optional?: boolean;
   children: ReactNode;

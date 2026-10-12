@@ -1,16 +1,17 @@
 // notebook-layout/components/atoms/waiting.tsx
-import { type CSSProperties, type FC } from 'react';
+import { type ComponentProps, type CSSProperties, type FC } from 'react';
+import { generateClasses } from '../../utils/utils';
 
-export interface SkeletonTextProps {
+export interface SkeletonTextProps extends ComponentProps<'span'> {
   lines?: number;
-  className?: string;
 }
 
 export const SkeletonText: FC<SkeletonTextProps> = ({
   lines = 3,
   className = '',
+  ...props
 }) => (
-  <span aria-hidden="true" className={className || undefined}>
+  <span {...props} aria-hidden="true" className={className || undefined}>
     {Array.from({ length: lines }, (_, index) => (
       <span
         key={index}
@@ -26,18 +27,69 @@ export const SkeletonText: FC<SkeletonTextProps> = ({
   </span>
 );
 
+export interface WaitingProps extends ComponentProps<'div'> {
+  label?: string;
+}
+
 /**
  * ESPERA SEM FORMA CONHECIDA, numa regiao.
  */
-export const Waiting: FC<{ label?: string }> = ({ label = 'Carregando' }) => (
-  <div className="spinner-region">
+export const Waiting: FC<WaitingProps> = ({
+  label = 'Carregando',
+  className = '',
+  ...props
+}) => (
+  <div
+    {...props}
+    className={generateClasses({
+      'spinner-region': true,
+      [className]: Boolean(className),
+    })}
+  >
     <span className="spinner-border" role="status">
       <span className="visually-hidden">{label}</span>
     </span>
   </div>
 );
 
-export interface ProgressProps {
+export interface ProgressMeterProps extends ComponentProps<'div'> {
+  label: string;
+  valueText: string;
+  accessibleLabel: string;
+  value: number;
+  max: number;
+}
+
+export const ProgressMeter: FC<ProgressMeterProps> = ({
+  label,
+  valueText,
+  accessibleLabel,
+  value,
+  max,
+  ...props
+}) => (
+  <div {...props}>
+    <div className="progress-meta">
+      <span>{label}</span>
+      <span className="numeric">{valueText}</span>
+    </div>
+    <div
+      className="progress"
+      role="progressbar"
+      aria-label={accessibleLabel}
+      aria-valuenow={value}
+      aria-valuemin={0}
+      aria-valuemax={max}
+    >
+      <div
+        className="progress-bar"
+        style={{ width: `${(value / max) * 100}%` }}
+      />
+    </div>
+  </div>
+);
+
+export interface ProgressProps extends ComponentProps<'div'> {
   label: string;
   value: number;
 }
@@ -45,25 +97,17 @@ export interface ProgressProps {
 /**
  * UM FIO QUE SE ENCHE DE TINTA.
  */
-export const Progress: FC<ProgressProps> = ({ label, value }) => {
+export const Progress: FC<ProgressProps> = ({ label, value, ...props }) => {
   const rounded = Math.round(value);
 
   return (
-    <div>
-      <div className="progress-meta">
-        <span>{label}</span>
-        <span className="numeric">{rounded}%</span>
-      </div>
-      <div
-        className="progress"
-        role="progressbar"
-        aria-label={label}
-        aria-valuenow={rounded}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
-        <div className="progress-bar" style={{ width: `${rounded}%` }} />
-      </div>
-    </div>
+    <ProgressMeter
+      {...props}
+      label={label}
+      valueText={`${rounded}%`}
+      accessibleLabel={label}
+      value={rounded}
+      max={100}
+    />
   );
 };

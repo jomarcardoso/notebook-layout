@@ -39,13 +39,13 @@ const Cabecalho = () => (
   <thead>
     <tr>
       <th scope="col">Nutriente</th>
-      <th scope="col" className="numeric">
+      <th scope="col" className="text-end">
         Porcao
       </th>
-      <th scope="col" className="numeric">
+      <th scope="col" className="text-end">
         100 g
       </th>
-      <th scope="col" className="numeric">
+      <th scope="col" className="text-end">
         %VD
       </th>
     </tr>
@@ -55,9 +55,9 @@ const Cabecalho = () => (
 const Linha = ({ nome, porcao, cem, vd }: Nutriente) => (
   <tr>
     <th scope="row">{nome}</th>
-    <td className="numeric">{porcao}</td>
-    <td className="numeric">{cem}</td>
-    <td className="numeric">{vd}</td>
+    <td className="text-end">{porcao}</td>
+    <td className="text-end">{cem}</td>
+    <td className="text-end">{vd}</td>
   </tr>
 );
 
@@ -136,7 +136,7 @@ const LinhasDeAcaoDemo = () => {
             <tr>
               <th scope="col">Receita</th>
               <th scope="col">Lista</th>
-              <th scope="col" className="numeric">
+              <th scope="col" className="text-end">
                 Porcoes
               </th>
             </tr>
@@ -160,7 +160,7 @@ const LinhasDeAcaoDemo = () => {
                   </a>
                 </th>
                 <td>{lista}</td>
-                <td className="numeric">{porcoes}</td>
+                <td className="text-end">{porcoes}</td>
               </tr>
             ))}
           </tbody>
@@ -232,21 +232,21 @@ export const ComCaixaDeMarcar: Story = {
   render: () => <CaixaDeMarcarDemo />,
 };
 
-export const CompactaNoAparato: Story = {
-  name: 'Compacta no aparato',
+export const NoAparato: Story = {
+  name: 'No aparato',
   render: () => (
     <Sheet>
       <Group
-        title="Compacta no aparato"
-        note="table-sm e a densidade da nota de margem: meio padding, na medida do aparato. A tabela nao ganha a largura do conteudo."
+        title="No aparato"
+        note="Na nota de margem a tabela fica na medida do aparato, sem variante: a mesma .table, sem ganhar a largura do conteudo."
       >
         <div className="l-measure -apparatus">
-          <table className="table table-sm">
+          <table className="table">
             <tbody>
               {MACRONUTRIENTES.map(({ nome, porcao }) => (
                 <tr key={nome}>
                   <th scope="row">{nome}</th>
-                  <td className="numeric">{porcao}</td>
+                  <td className="text-end">{porcao}</td>
                 </tr>
               ))}
             </tbody>
@@ -278,7 +278,7 @@ export const Rolagem: Story = {
               <tr>
                 <th scope="col">Ingrediente</th>
                 {COLUNAS.map((coluna) => (
-                  <th key={coluna} scope="col" className="numeric">
+                  <th key={coluna} scope="col" className="text-end">
                     {coluna}
                   </th>
                 ))}
@@ -289,7 +289,7 @@ export const Rolagem: Story = {
                 <tr key={nome}>
                   <th scope="row">{nome}</th>
                   {valores.map((valor, index) => (
-                    <td key={COLUNAS[index]} className="numeric">
+                    <td key={COLUNAS[index]} className="text-end">
                       {valor}
                     </td>
                   ))}

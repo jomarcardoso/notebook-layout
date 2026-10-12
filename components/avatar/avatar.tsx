@@ -1,9 +1,10 @@
 'use client';
-import { FC, ImgHTMLAttributes, useEffect, useMemo, useState } from 'react';
+// notebook-layout/components/avatar/avatar.tsx
+import { type ComponentProps, type FC, useMemo } from 'react';
 import { generateClasses } from '../../utils/utils';
 import './avatar.scss';
 
-export interface AvatarProps extends ImgHTMLAttributes<HTMLImageElement> {
+export interface AvatarProps extends ComponentProps<'img'> {
   fallbackSrc?: string;
 }
 

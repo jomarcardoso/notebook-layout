@@ -1,0 +1,128 @@
+// notebook-layout/styles/_coreui-utilities.scss
+
+// O mapa `$utilities` do CoreUI: as familias que nao compilam (null) e os
+// utilitarios de ritmo e de texto que o sistema acrescenta.
+
+$rhythm-values: (
+  half: var(--app-rhythm-half),
+  1: var(--app-rhythm-1),
+  2: var(--app-rhythm-2),
+);
+
+$utilities: (
+  'color': null,
+  'text-color': null,
+  'text-opacity': null,
+  'link-opacity': null,
+  'link-offset': null,
+  'link-underline': null,
+  'link-underline-opacity': null,
+  'background-color': null,
+  'bg-opacity': null,
+  'subtle-background-color': null,
+  'gradient': null,
+  'opacity': null,
+  'shadow': null,
+  'focus-ring': null,
+  'border': null,
+  'border-top': (
+    property: border-top,
+    class: border-top,
+    values: (
+      null: var(--app-border-width) var(--app-border-style) var(--app-rule),
+      0: 0,
+    ),
+  ),
+  'border-end': null,
+  'border-bottom': (
+    property: border-bottom,
+    class: border-bottom,
+    values: (
+      null: var(--app-border-width) var(--app-border-style) var(--app-rule),
+      0: 0,
+    ),
+  ),
+  'border-start': null,
+  'border-color': null,
+  'border-top-color': null,
+  'border-end-color': null,
+  'border-bottom-color': null,
+  'border-start-color': null,
+  'border-width': null,
+  'border-top-width': null,
+  'border-end-width': null,
+  'border-bottom-width': null,
+  'border-start-width': null,
+  'subtle-border-color': null,
+  'border-opacity': null,
+  'rounded': null,
+  'rounded-top': null,
+  'rounded-end': null,
+  'rounded-bottom': null,
+  'rounded-start': null,
+  'font-family': null,
+  'font-size': null,
+  'font-style': null,
+  'font-weight': null,
+  'line-height': null,
+  'text-decoration': null,
+  'text-transform': null,
+  'margin-y-rhythm': (
+    property: margin-top margin-bottom,
+    class: my-rhythm,
+    values: $rhythm-values,
+  ),
+  'margin-top-rhythm': (
+    property: margin-top,
+    class: mt-rhythm,
+    values: $rhythm-values,
+  ),
+  'margin-bottom-rhythm': (
+    property: margin-bottom,
+    class: mb-rhythm,
+    values: $rhythm-values,
+  ),
+  'padding-top-rhythm': (
+    property: padding-top,
+    class: pt-rhythm,
+    values: $rhythm-values,
+  ),
+  'padding-bottom-rhythm': (
+    property: padding-bottom,
+    class: pb-rhythm,
+    values: $rhythm-values,
+  ),
+  'margin-top-text': (
+    property: margin-top,
+    class: mt,
+    values: (
+      text: var(--app-gap-text),
+    ),
+  ),
+  'margin-bottom-text': (
+    property: margin-bottom,
+    class: mb,
+    values: (
+      text: var(--app-gap-text),
+    ),
+  ),
+  'padding-top-text': (
+    property: padding-top,
+    class: pt,
+    values: (
+      text: var(--app-gap-text),
+    ),
+  ),
+  'padding-bottom-text': (
+    property: padding-bottom,
+    class: pb,
+    values: (
+      text: var(--app-gap-text),
+    ),
+  ),
+  'gutter-y-rhythm': (
+    property: --cui-gutter-y,
+    class: gy-rhythm,
+    values: $rhythm-values,
+  ),
+);

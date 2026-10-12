@@ -1,12 +1,9 @@
 // notebook-layout/components/atoms/textarea.tsx
-import {
-  type CSSProperties,
-  type FC,
-  type TextareaHTMLAttributes,
-} from 'react';
+import { type ComponentProps, type CSSProperties, type FC } from 'react';
+import { generateClasses } from '../../utils/utils';
 
 export interface TextareaProps extends Omit<
-  TextareaHTMLAttributes<HTMLTextAreaElement>,
+  ComponentProps<'textarea'>,
   'className'
 > {
   className?: string;
@@ -29,7 +26,10 @@ export const Textarea: FC<TextareaProps> = ({
     <textarea
       {...props}
       rows={lines}
-      className={['form-control', className].filter(Boolean).join(' ')}
+      className={generateClasses({
+        'form-control': true,
+        [className]: Boolean(className),
+      })}
       style={{ '--field-min-rows': lines, ...(style || {}) } as CSSProperties}
     />
   );

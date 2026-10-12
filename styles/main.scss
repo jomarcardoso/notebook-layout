@@ -1,3 +1,4 @@
+// notebook-layout/styles/main.scss
 // =============================================================================
 // NOTEBOOK-LAYOUT — the component stylesheets
 // =============================================================================
@@ -18,7 +19,8 @@
 
 @forward 'form';
 @forward 'components/img';
-@forward 'components/category';
+@forward 'components/media-tile';
+@forward 'components/dock';
 @forward 'components/heading';
 @forward 'components/dialog';
 @forward 'components/modal';

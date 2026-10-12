@@ -57,12 +57,12 @@ export const MarcaDeMargem: Story = {
         note="O .callout sem modificador: o fio de sempre na borda inicial, em rule-strong, e mais nada. Separa um aparte sem cor: nao tem fundo, raio nem variante."
       >
         <div className="l-measure">
-          <p className="p">
+          <p className="body">
             Bata as claras em neve e reserve na geladeira enquanto prepara o
             restante da massa.
           </p>
           <div className="callout">
-            <p className="p">
+            <p className="body">
               Se a sua batedeira for fraca, bata as claras com uma pitada de sal:
               elas firmam mais depressa e nao desandam quando entram na massa.
             </p>

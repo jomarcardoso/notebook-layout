@@ -32,7 +32,7 @@ export const ListaVazia: Story = {
         <div className="l-measure -narrow l-stack -block">
           <img className="state-illustration" src={figures.farinha} alt="" />
           <p className="title-sm">Nenhuma receita nesta lista</p>
-          <p className="p">
+          <p className="body">
             Guarde aqui as receitas que voce quer encontrar sem precisar buscar.
           </p>
           <div>
@@ -56,7 +56,7 @@ export const BuscaSemResultado: Story = {
       >
         <div className="l-measure -narrow l-stack -block">
           <p className="title-sm">Nada encontrado para “bolo de fubá cremoso”</p>
-          <p className="p">
+          <p className="body">
             Confira a grafia ou procure por um ingrediente.{' '}
             <a href="#">Limpar a busca</a>
           </p>

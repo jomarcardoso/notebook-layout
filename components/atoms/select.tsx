@@ -1,6 +1,7 @@
 // notebook-layout/components/atoms/select.tsx
-import { type FC, type SelectHTMLAttributes } from 'react';
+import { type ComponentProps, type FC } from 'react';
 import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
+import { generateClasses } from '../../utils/utils';
 import { Icon } from './icon';
 
 /** Uma escolha num campo que oferece um conjunto fechado delas. */
@@ -10,7 +11,7 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends Omit<
-  SelectHTMLAttributes<HTMLSelectElement>,
+  ComponentProps<'select'>,
   'className'
 > {
   options?: SelectOption[];
@@ -26,7 +27,10 @@ export const Select: FC<SelectProps> = ({
   <span className="select-field">
     <select
       {...props}
-      className={['form-select', className].filter(Boolean).join(' ')}
+      className={generateClasses({
+        'form-select': true,
+        [className]: Boolean(className),
+      })}
     >
       {children ??
         options.map((option) => (

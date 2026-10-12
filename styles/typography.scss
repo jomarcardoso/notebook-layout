@@ -1,10 +1,5 @@
+// notebook-layout/styles/typography.scss
 @use './component' as component;
-
-// Um papel por classe, cada um lendo o token composto da camada 2 pela
-// propriedade `font`. Nenhum titulo leva peso: hierarquia e tamanho, familia e
-// espaco. Peso 600+ fica para `<strong>` dentro do corpo.
-//
-// `font` reseta tracking e `font-variant-numeric`, entao os dois vem depois.
 
 .display {
   color: var(--app-fg-emphasis);
@@ -35,6 +30,12 @@
   color: var(--app-fg-muted);
   font: var(--app-text-subtitle);
   max-width: var(--app-measure-narrow);
+}
+
+.body {
+  color: var(--app-fg-default);
+  font: var(--app-text-body);
+  max-width: var(--app-measure-body);
 }
 
 .body-lg {
@@ -77,14 +78,6 @@
   }
 }
 
-.recipe-title {
-  @extend .display;
-}
-
-.page-title {
-  @extend .title-lg;
-}
-
 .section-title {
   @extend .title-md;
 
@@ -113,18 +106,4 @@
     border-bottom: 0;
     margin-inline-start: calc(-1 * var(--app-gutter));
   }
-}
-
-.p {
-  color: var(--app-fg-default);
-  font: var(--app-text-body);
-  max-width: var(--app-measure-body);
-
-  &.-large {
-    font: var(--app-text-body-lg);
-  }
-}
-
-.small {
-  font-size: 0.85em;
 }

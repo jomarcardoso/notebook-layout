@@ -1,14 +1,14 @@
 'use client';
+// notebook-layout/components/notebook-tabs/notebook-tabs.tsx
 
-import type { FC, HTMLProps } from 'react';
-import { useEffect } from 'react';
+import { type ComponentProps, type FC, useEffect } from 'react';
 import './notebook-tabs.scss';
 import { generateClasses, scrollToTop } from '../../utils/utils';
 import { scrollspy } from 'ovos';
 
-export type NotebookTabProps = HTMLProps<HTMLAnchorElement>;
+export type NotebookTabProps = ComponentProps<'a'>;
 
-export interface NotebookTabsProps extends HTMLProps<HTMLDivElement> {
+export interface NotebookTabsProps extends ComponentProps<'div'> {
   tabs: NotebookTabProps[];
   useScrollspy?: boolean;
 }

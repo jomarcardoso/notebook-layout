@@ -1,5 +1,6 @@
 // notebook-layout/components/atoms/button.tsx
-import { type ButtonHTMLAttributes, type FC, type ReactNode } from 'react';
+import { type ComponentProps, type FC, type ReactNode } from 'react';
+import { generateClasses } from '../../utils/utils';
 import { Icon, type IconGlyph } from './icon';
 
 /**
@@ -21,12 +22,14 @@ const CLASS_BY_WEIGHT: Record<ButtonWeight, string> = {
 };
 
 export interface ButtonProps extends Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
+  ComponentProps<'button'>,
   'className'
 > {
   weight?: ButtonWeight;
   icon?: IconGlyph;
   loading?: boolean;
+  block?: boolean;
+  description?: ReactNode;
   className?: string;
   children?: ReactNode;
 }
@@ -35,15 +38,20 @@ export const Button: FC<ButtonProps> = ({
   weight = 'estruturante',
   icon,
   loading = false,
+  block = false,
+  description = '',
   className = '',
   children,
   onClick,
   type = 'button',
   ...props
 }) => {
-  const classes = ['btn', CLASS_BY_WEIGHT[weight], className]
-    .filter(Boolean)
-    .join(' ');
+  const classes = generateClasses({
+    btn: true,
+    [CLASS_BY_WEIGHT[weight]]: true,
+    'btn-block': block,
+    [className]: Boolean(className),
+  });
 
   return (
     <button
@@ -58,6 +66,7 @@ export const Button: FC<ButtonProps> = ({
         {icon && <Icon icon={icon} />}
         {children}
       </span>
+      {description && <small>{description}</small>}
       {loading && <span className="spinner-border" aria-hidden="true" />}
     </button>
   );

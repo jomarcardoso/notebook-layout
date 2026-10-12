@@ -7,6 +7,16 @@
 // componente encontra um papel da camada 2.
 
 $sidebar-narrow-width: var(--app-size-bar) !default;
+$sidebar-rule-width: var(--app-border-width) !default;
+$dock-bg: var(--app-bg-page) !default;
+$dock-rule-width: var(--app-border-width) !default;
+$dock-rule-color: var(--app-rule) !default;
+$dock-fg: var(--app-fg-muted) !default;
+$dock-fg-hover: var(--app-fg-default) !default;
+$dock-fg-current: var(--app-fg-emphasis) !default;
+$dock-font: var(--app-text-label-sm) !default;
+$dock-height: var(--app-size-control) !default;
+$sidebar-rule-color: var(--app-rule) !default;
 $sidebar-toggler-width: var(--app-size-icon) !default;
 $sidebar-toggler-height: var(--app-size-icon) !default;
 $sidebar-toggler-fg: var(--app-fg-muted) !default;
@@ -15,8 +25,16 @@ $surface-bg: var(--app-bg-page) !default;
 $surface-pad: var(--app-pad-surface) !default;
 
 $table-fg: var(--app-fg-default) !default;
+$table-font: var(--app-text-numeric) !default;
 $table-border-color: var(--app-rule) !default;
 $table-row-bg-hover: var(--app-bg-hover) !default;
+$table-head-fg: var(--app-fg-muted) !default;
+$table-head-font: var(--app-text-label-sm) !default;
+$table-head-rule-color: var(--app-rule-strong) !default;
+$table-caption-fg: var(--app-fg-muted) !default;
+$table-caption-font: var(--app-text-caption) !default;
+$table-group-fg: var(--app-fg-emphasis) !default;
+$table-group-font: var(--app-text-label) !default;
 
 $overlay-bg: var(--app-bg-page) !default;
 $overlay-fg: var(--app-fg-default) !default;
@@ -30,15 +48,26 @@ $nav-bg-hover: var(--app-bg-hover) !default;
 $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
 
+// Badge: lido pelo `$badge-*` do coreui-entry. Aqui o atom `_tag.scss` decide a Tag.
 $badge-radius: var(--app-radius-control) !default;
 $badge-fg: var(--app-fg-muted) !default;
 
 $nav-radius: var(--app-radius-control) !default;
 $nav-fg-disabled: var(--app-fg-disabled) !default;
 
+$accordion-fg: var(--app-fg-default) !default;
+$accordion-bg: transparent !default;
+$accordion-pad-x: 0 !default;
+$accordion-pad-y: var(--app-pad-control-y) !default;
+$accordion-radius: 0 !default;
 $accordion-rule-width: var(--app-border-width) !default;
 $accordion-rule-color: var(--app-rule) !default;
 $accordion-header-font: var(--app-text-label) !default;
+$accordion-button-fg: var(--app-fg-default) !default;
+$accordion-button-fg-open: var(--app-fg-emphasis) !default;
+$accordion-button-bg-open: transparent !default;
+$accordion-button-gap: var(--app-space-xs) !default;
+$accordion-motion: var(--app-duration-base) var(--app-ease) !default;
 
 $dropdown-bg-hover: var(--app-bg-hover) !default;
 
@@ -81,6 +110,8 @@ $tabs-bg-hover: var(--app-bg-hover) !default;
 $tabs-sticky-bg: var(--app-bg-page) !default;
 $tabs-sticky-pad-block: var(--app-space-2xs) !default;
 
+// Card: lido pelo `$card-*` do coreui-entry. Este sistema nao usa card, mas a
+// configuracao fica pronta para outros projetos; nao remover.
 $card-fg: var(--app-fg-default) !default;
 $card-gap: var(--app-space-xs) !default;
 $card-meta-fg: var(--app-fg-muted) !default;
@@ -103,6 +134,7 @@ $modal-radius: var(--app-radius-overlay) !default;
 $modal-footer-min-height: var(--app-size-control) !default;
 $modal-border: var(--app-border) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
+// Card, junto dos demais `$card-*` acima.
 $card-radius: 0 !default;
 
 $dialog-width-desktop: 560px !default;
@@ -144,5 +176,9 @@ $notebook-tabs-bg-active: var(--app-bg-selected) !default;
 $notebook-tabs-border-color-active: var(--app-border-strong) !default;
 $notebook-tabs-fg-active: var(--app-fg-emphasis) !default;
 $choice-border-color-hover: var(--app-border-strong) !default;
-$category-width: 102px !default;
-$category-font-size: var(--app-font-size-sm) !default;
+$media-tile-ratio: 1 !default;
+$media-tile-bg: var(--app-bg-subtle) !default;
+$media-tile-status-bg: var(--app-bg-muted) !default;
+$media-tile-status-fg: var(--app-fg-muted) !default;
+$media-tile-status-bg-danger: var(--app-bg-danger-subtle) !default;
+$media-tile-status-fg-danger: var(--app-fg-danger) !default;

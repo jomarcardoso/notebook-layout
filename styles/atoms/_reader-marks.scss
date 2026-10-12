@@ -67,6 +67,12 @@
   position: relative;
 }
 
+.form-check-description {
+  color: var(--app-fg-muted);
+  display: block;
+  font: var(--app-text-caption);
+}
+
 .form-check-input:is(:disabled, [disabled]) ~ .form-check-label {
   color: var(--app-fg-disabled);
   cursor: not-allowed;

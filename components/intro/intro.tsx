@@ -1,13 +1,14 @@
+// notebook-layout/components/intro/intro.tsx
 import {
+  type ComponentProps,
   type ElementType,
   type FC,
-  type HTMLProps,
   type ReactNode,
 } from 'react';
 import { generateClasses } from '../../utils/utils';
 import './intro.scss';
 
-export interface IntroProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
+export interface IntroProps extends Omit<ComponentProps<'div'>, 'title'> {
   title?: ReactNode;
   intro?: ReactNode;
   titleAs?: ElementType;
@@ -32,7 +33,7 @@ export const Intro: FC<IntroProps> = ({
         <div className="grid">
           <div className="g-col-12">
             {title && <TitleTag className="title-lg">{title}</TitleTag>}
-            {intro && <p className="p">{intro}</p>}
+            {intro && <p className="body">{intro}</p>}
           </div>
         </div>
       )}

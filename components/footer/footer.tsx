@@ -1,13 +1,14 @@
 'use client';
-import { useMemo, type FC, type HTMLProps, type ReactNode } from 'react';
+// notebook-layout/components/footer/footer.tsx
+import { type ComponentProps, type FC, type ReactNode, useMemo } from 'react';
 import './footer.scss';
 import { generateClasses } from '../../utils/utils';
 
-export interface FooterItemProps extends HTMLProps<HTMLButtonElement> {
+export interface FooterItemProps extends ComponentProps<'button'> {
   icon?: ReactNode;
 }
 
-export interface FooterProps extends HTMLProps<HTMLDivElement> {
+export interface FooterProps extends ComponentProps<'div'> {
   items?: FooterItemProps[];
   footerMenu?: boolean;
   open?: boolean;
@@ -57,4 +58,3 @@ export const Footer: FC<FooterProps> = ({
   return renderMemo;
 };
 
-export default Footer;

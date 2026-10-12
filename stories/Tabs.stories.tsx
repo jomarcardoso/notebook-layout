@@ -41,7 +41,7 @@ const Fichario = ({ abas = ABAS }: { abas?: typeof ABAS }) => {
   return (
     <div style={{ maxInlineSize: '40rem' }}>
       <Tabs tabs={abas} value={aba} onChange={setAba} />
-      <p className="p" style={{ paddingBlockStart: 'var(--app-rhythm-1)' }}>
+      <p className="body" style={{ paddingBlockStart: 'var(--app-rhythm-1)' }}>
         {PAINEL[aba] ?? ''}
       </p>
     </div>

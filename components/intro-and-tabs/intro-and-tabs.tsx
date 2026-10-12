@@ -1,6 +1,7 @@
 'use client';
+// notebook-layout/components/intro-and-tabs/intro-and-tabs.tsx
 
-import type { FC, ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 import { generateClasses } from '../../utils/utils';
 import { Intro, type IntroProps } from '../intro';
 import { TabsLayout, type TabsLayoutProps } from '../tabs-layout';

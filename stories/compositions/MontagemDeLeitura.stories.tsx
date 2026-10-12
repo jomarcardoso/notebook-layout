@@ -66,7 +66,7 @@ export const Receita: Story = {
           {SECOES.map(({ id, titulo, texto }) => (
             <section key={id} id={id}>
               <h2 className="section-title">{titulo}</h2>
-              <p className="p">{texto}</p>
+              <p className="body">{texto}</p>
             </section>
           ))}
         </div>
@@ -76,12 +76,12 @@ export const Receita: Story = {
         <div className="l-stack">
           <section className="l-stack">
             <h2 className="label-sm">Nutricional por porcao</h2>
-            <table className="table table-sm">
+            <table className="table">
               <tbody>
                 {NUTRICIONAL.map(([nome, valor]) => (
                   <tr key={nome}>
                     <th scope="row">{nome}</th>
-                    <td className="numeric">{valor}</td>
+                    <td className="text-end">{valor}</td>
                   </tr>
                 ))}
               </tbody>

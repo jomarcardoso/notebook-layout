@@ -91,6 +91,7 @@ Two rules that decide most questions:
   whose spacing changes with orientation or width writes the joint of its own
   children (`&__content > * + *`) instead of using `l-stack`: a custom
   property cannot carry the gap, because nested stacks would inherit it.
+- **A component of this package is used with one class, or a few.** Its block and its modifiers carry everything it looks like: `.accordion`, `.alert`, `.btn` and the like never ask the consumer for a second set of classes to look right. Its own markup carries no utility class (`d-flex`, `gap-*`, `m*-*`, `justify-content-*`): the layout of its parts is written in its CSS, where a consumer cannot forget it. The 12-column grid (`row`, `col-*`, `.grid`) and the `l-*` primitives may appear inside a composition that is a layout by nature.
 - **Mechanics come from the library, values come from us.** `d-flex`,
   `order-*`, `position-*`, `overflow-*`, `d-md-none` and the 12-column grid are
   used directly. Colour, radius, shadow and typography utilities are not used at
@@ -152,3 +153,7 @@ Collections are `index-list` and `thumb-grid` (`_collections.scss`), two lists a
 CoreUI's `list-group` is not imported, so it has no adapter entry and no layer-3 knob.
 
 The icons are Phosphor, through `@phosphor-icons/react`, imported one module per icon: `import { HeartIcon } from '@phosphor-icons/react/dist/ssr/Heart'`. A barrel of the whole set is one multi-megabyte file that development builds cannot trim, so it is never imported. `<Name>Icon` is the regular weight; `withWeight(<Name>Icon, 'fill')` from the `Icon` atom is the marked one, and `'bold'` the checks. No second icon package: one silhouette in two weights is what the filled-means-marked rule needs.
+
+## React
+
+Write components as described in [`REACT.md`](../REACT.md): a component extends an HTML element and sends its props to the first element or to the one that matters, builds its class with `generateClasses` including the user's `className`, and is a Server Component unless it needs the browser.

@@ -1,8 +1,8 @@
 // notebook-layout/components/molecules/expandable-text.tsx
 'use client';
 import {
+  type ComponentProps,
   type FC,
-  type HTMLAttributes,
   useEffect,
   useId,
   useRef,
@@ -11,7 +11,7 @@ import {
 import { generateClasses } from '../../utils/utils';
 import { Button } from '../atoms/button';
 
-export interface ExpandableTextProps extends HTMLAttributes<HTMLDivElement> {
+export interface ExpandableTextProps extends ComponentProps<'div'> {
   text: string;
   textClassName?: string;
   moreLabel?: string;

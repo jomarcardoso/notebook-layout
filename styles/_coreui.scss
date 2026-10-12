@@ -176,11 +176,6 @@ $_token: (
     border-color: #{component.$rule-border-color};
   }
 
-  .badge {
-    --cui-badge-color: #{component.$badge-fg};
-    --cui-badge-border-radius: #{component.$badge-radius};
-  }
-
   .accordion-item {
     border-block-end: component.$accordion-rule-width solid
       component.$accordion-rule-color;
@@ -196,52 +191,18 @@ $_token: (
     content: none;
   }
 
+  .accordion-button {
+    gap: component.$accordion-button-gap;
+  }
+
   .accordion-indicator {
     margin-inline-start: auto;
-    transition: transform var(--app-duration-base) var(--app-ease);
+    transition: transform component.$accordion-motion;
   }
 
   .accordion-button:not(.collapsed) .accordion-indicator {
     transform: rotate(-180deg);
   }
-
-  .card {
-    // --cui-card-bg: #{component.$card-content-bg};
-    // --cui-card-color: #{component.$card-fg};
-    // --cui-card-border-width: #{component.$card-border-width};
-    // --cui-card-border-color: #{component.$card-content-border-color};
-    // --cui-card-border-radius: #{component.$card-radius};
-    // --cui-card-inner-border-radius: #{component.$card-content-radius};
-    // --cui-card-box-shadow: #{component.$card-content-shadow};
-
-    // --cui-card-spacer-y: #{component.$card-body-pad};
-    // --cui-card-spacer-x: #{component.$card-body-pad};
-    // --cui-card-title-spacer-y: #{component.$card-gap};
-
-    // --cui-card-subtitle-color: #{component.$card-meta-fg};
-
-    // --cui-card-cap-bg: #{component.$card-footer-bg};
-    // --cui-card-cap-color: #{component.$card-footer-fg};
-    // --cui-card-cap-padding-y: #{component.$card-footer-pad};
-    // --cui-card-cap-padding-x: #{component.$card-body-pad};
-  }
-
-  // .card-subtitle {
-  // }
-
-  // .card-footer,
-  // .card-header {
-  // }
-
-  // .card-footer {
-  //   border-block-start: #{component.$card-divider-width} solid
-  //     #{component.$card-footer-border-color};
-  // }
-
-  // .card-header {
-  //   border-block-end: #{component.$card-divider-width} solid
-  //     #{component.$card-footer-border-color};
-  // }
 
   .sidebar {
     --cui-sidebar-bg: #{component.$surface-bg};

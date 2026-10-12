@@ -1,10 +1,10 @@
+// notebook-layout/components/choice/choice.tsx
 import './choice.scss';
-import type {
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  ElementType,
-  FC,
-  ReactNode,
+import {
+  type ComponentProps,
+  type ElementType,
+  type FC,
+  type ReactNode,
 } from 'react';
 import { generateClasses } from '../../utils/utils';
 
@@ -16,8 +16,8 @@ interface Props {
 }
 
 export type ChoiceProps = Props &
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'title'> &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'title'>;
+  Omit<ComponentProps<'button'>, 'title'> &
+  Omit<ComponentProps<'a'>, 'title'>;
 
 export const Choice: FC<ChoiceProps> = ({
   as: Component = 'button',

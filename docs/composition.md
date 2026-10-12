@@ -15,6 +15,8 @@ Quase tudo aqui e composicao: primitivos `l-*`, grade do CoreUI, tipografia e co
 | folio | `.folio` | atom `styles/atoms/_folio.scss` | Composicoes/Folio |
 | aparato | `.apparatus` | molecula `styles/molecules/_apparatus.scss` | — |
 | modal | `.modal`, `.modal__body`, `.modal__footer` | componente `styles/components/modal.scss` | — |
+| doca | `.dock`, `.dock__list`, `.dock__item`, `.dock__label`, pelo `Dock` | componente `styles/components/dock.scss` | Componentes/Avisos, revelacao e midia |
+| ladrilho de midia | `.media-tile`, `.media-tile__media`, `.media-tile__status`, `.media-tile__actions`, `.media-tile__error`, pelo `MediaTile` | componente `styles/components/media-tile.scss` | — |
 
 ### Boxe
 
@@ -42,6 +44,14 @@ A coluna de nota de margem, na classe `.apparatus`: `body-sm` em `fg-muted`, med
 
 A classe existe porque o aparato nao e um lugar, e uma natureza. Numa tela larga ele fica ao lado do conteudo; numa estreita nao ha lado, e a montagem o traz para dentro do conteudo. A peca e a mesma nos dois casos, e sao `l-only-wide` e `l-only-narrow` que decidem qual copia entra na tela.
 
+### Doca
+
+Os destinos principais numa fileira presa a borda de baixo da tela, no telefone: icone e rotulo curto, um alvo de toque inteiro por destino. Tom da pagina e fio em cima, como a barra superior tem fio embaixo; nenhum raio e nenhuma sombra. O atual fica em `fg-emphasis` com o icone preenchido, que e o estado marcado do sistema, e os outros em `fg-muted`; nada e preenchido em accent. Na tela larga a navegacao e o `Sidebar`, e quem escolhe qual dos dois aparece sao `l-only-narrow` e `l-only-wide`.
+
+### Ladrilho de midia
+
+A imagem quadrada de uma escolha ou de um envio, com o que acontece com ela: uma palavra por cima so enquanto o estado e passageiro (enviando, falhou), a linha de acoes embaixo e o erro em `caption`. Sem imagem e sem espera, mostra o rotulo no lugar. Nao tem raio nem borda; o tom de espera e `$media-tile-bg`. O arquivo chega pelo `FileButton`: um `Button` na frente de um input de arquivo escondido, que no telefone abre a camera ou a galeria.
+
 ### Modal
 
 A folha sobreposta: `bg-page`, a unica sombra do sistema, raio de folha, cabecalho com fio abaixo, conteudo e rodape com as acoes a direita.
@@ -59,7 +69,7 @@ O que o corpo reserva no fim nao e calha: e o teclado do telefone e a faixa de g
 | secao com acao | `l-cluster -between -baseline`, `.section-title.-plain`, link, `IndexList` | Composicoes/Secao com acao |
 | vazio | `l-measure -narrow`, `l-stack -block`, `.state-illustration`, `title-sm`, `Button` | Composicoes/Vazio |
 | grupo de campos | `.fieldset`, `l-stack`, `Field` | Composicoes/Grupo de campos |
-| montagem de leitura | `l-regions`, `sticky-top`, `LineList`, `.table.table-sm` | Composicoes/Montagem de leitura |
+| montagem de leitura | `l-regions`, `sticky-top`, `LineList`, `.table` | Composicoes/Montagem de leitura |
 
 ### Abertura
 
@@ -95,7 +105,7 @@ Uma proposta, ainda nao decidida — ver Decisoes a confirmar. A pagina de leitu
 
 - **margem:** o indice ancorado, uma `LineList` de links presa por `sticky-top`, com a secao atual em `selected`;
 - **conteudo:** as secoes da receita;
-- **aparato:** o que acompanha o conteudo — nutricional em `.table.table-sm` e relacionadas — com titulos internos em `label-sm`.
+- **aparato:** o que acompanha o conteudo — nutricional em `.table` e relacionadas — com titulos internos em `label-sm`.
 
 A proposta poe o indice ancorado na margem porque no aparato ele dividiria a coluna com nutricional e relacionadas. Ela so respeita o teto de tres regioes (`regionsMax: 3`) se o trilho de navegacao do app for moldura (`frame: app-frame`) e nao regiao.
 

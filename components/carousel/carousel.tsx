@@ -1,9 +1,10 @@
 'use client';
-import { type ReactNode, type FC, type HTMLAttributes, useState } from 'react';
+// notebook-layout/components/carousel/carousel.tsx
+import { type ComponentProps, type FC, type ReactNode, useState } from 'react';
 
 import './carousel.scss';
 
-export interface CarouselProps extends HTMLAttributes<HTMLDivElement> {
+export interface CarouselProps extends ComponentProps<'div'> {
   items: ReactNode[];
   initialIndex?: number;
 }

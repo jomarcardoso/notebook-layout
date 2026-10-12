@@ -1,18 +1,24 @@
+// notebook-layout/components/index.ts
 export * from './atoms';
 export * from './reader-marks';
 export * from './molecules';
 
+export * from './accordion';
+export * from './alert';
 export * from './avatar';
 export * from './breadcrumbs';
 export * from './choice';
+export * from './dock';
 export * from './carousel';
 export * from './field';
+export * from './file-button';
 export * from './section';
-export * from './section-title';
+export * from './sidebar';
 export * from './footer';
 export * from './heading';
 export * from './intro';
 export * from './intro-and-tabs';
+export * from './media-tile';
 export * from './modal';
 export * from './dialog/dialog';
 export * from './confirm-dialog/confirm-dialog';

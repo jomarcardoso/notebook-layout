@@ -4,13 +4,33 @@
 
 Este documento e o inventario do CoreUI dentro do `notebook-layout`: o que entra, onde cada decisao mora, o que fica de fora e por que. A regra geral de camadas esta em `AGENTS.md` (secao CSS) e a linguagem visual em `DESIGN_LANGUAGE.md`; aqui fica so o que e especifico da biblioteca.
 
-A versao instalada e `@coreui/coreui` 5.9, com `@coreui/react` 5.13. O componente vem do CoreUI e a abstracao visual fica aqui: um componente desta biblioteca usa o componente React do CoreUI quando ele existe (`Breadcrumbs` sobre `CBreadcrumb`) e escreve a marcacao com as classes do CoreUI quando nao existe. O `www` usa `@coreui/react` diretamente so para ligar componentes a aplicacao.
+A versao instalada e `@coreui/coreui` 5.9, com `@coreui/react` 5.13. O estilo vem sempre do CoreUI, pelo entry. A marcacao vem do componente React do CoreUI so quando ele ajuda mais do que atrapalha.
+
+**Usa o componente React** quando ele carrega comportamento: estado de aberto e fechado, foco preso, posicionamento, teclado, transicao ou portal. Dobra, acordeao, menu suspenso, dica, folha lateral, aviso com fechar e barra lateral entram aqui. Esses componentes ja sao cliente pela natureza deles, e o `'use client'` nao custa nada a mais.
+
+**Escreve a marcacao** quando o componente React so embrulha HTML com classes, como badge, spinner, barra de progresso, rotulo, texto de apoio, botao, aviso fixo, abas e trilha. Aqui o embrulho nao economiza codigo e traz custo: `@coreui/react` cria contextos ao ser carregado, entao o arquivo vira cliente e nao pode receber funcao de um Server Component. Alguns desses embrulhos tambem fixam o que este sistema precisa decidir: `CBreadcrumb` poe `aria-label="breadcrumb"` em ingles, `CNav` poe `role="navigation"` na lista, `CNavLink` marca o ativo com `aria-current="page"`, `CProgress` manda o `aria-label` para a barra interna e `CFormCheck` remonta o input a cada render.
+
+Hoje so o `Sidebar` usa `@coreui/react`, sobre o `CSidebar`: estado recolhido, troca entre trilho e gaveta e veu no telefone nao tem equivalente nativo. O `www` nao importa `@coreui/react` e aliasa o pacote para a propria copia, para que app e biblioteca usem a mesma instancia.
+
+**Nao troca nativo por JS.** Quando a plataforma ja resolve com um elemento semantico (`<dialog>`, `<details>`, `radio`, `scroll-snap`, `popover`), o componente usa o elemento e o CoreUI entra so com o estilo. Um componente React do CoreUI que refaz em JS o que o elemento ja faz e regressao, mesmo carregando comportamento. A integracao do produto, como o historico que fecha o dialogo, e escrita por cima do elemento nativo.
+
+Por isso estes componentes tem comportamento e mesmo assim sao escritos aqui:
+
+| componente | em vez de | por que |
+| --- | --- | --- |
+| `Dialog`, `ConfirmDialog` | `CModal` | o `<dialog>` nativo com `showModal()` da camada superior, fundo inerte inclusive para leitor de tela, foco preso e devolvido, Escape e `::backdrop`; `show()` abre sem bloquear o fundo. O componente soma a entrada no historico, para o voltar do telefone fechar o dialogo. O `CModal` e um `div` com `role="dialog"` num portal, prende o foco por listener de teclado no `document`, trava a rolagem escrevendo no `style` do `body` e nao torna o fundo inerte |
+| `Toast`, `useToast` | `CToaster` | o aviso sai de qualquer lugar por um hook, e as regioes `status` e `alert` ficam montadas desde o inicio, que e o que faz o leitor de tela anunciar |
+| `Carousel` | `CCarousel` | prateleira rolada com o dedo, por `scroll-snap`; o `CCarousel` troca slides por transicao em JS |
+| `Tabs` | `CTabs` | cada aba e um `radio`, e o teclado entre elas e o do proprio grupo de radios |
+| `AccordionItem` | `CAccordion` | `<details>` e `<summary>` abrem e fecham sem estado em JS |
+| `ExpandableText` | — | corte em quatro linhas medido de novo quando a largura muda; o CoreUI nao tem equivalente |
 
 ## Onde cada decisao mora
 
 | arquivo | o que guarda | exemplo |
 | --- | --- | --- |
 | `styles/coreui-entry.scss` | variaveis Sass que a biblioteca aceita e os parciais importados | `$input-bg: transparent` |
+| `styles/_coreui-utilities.scss` | o mapa `$utilities`: familias desligadas (`null`) e os utilitarios de ritmo e de texto do sistema | `mt-rhythm-1`, `mb-text` |
 | `styles/_coreui.scss` | a traducao entre os nomes `--cui-*` e os papeis da camada 2 | `--cui-callout-border-left-color` e `rule-strong` |
 | `styles/_component.scss` | knobs de camada 3 que o adapter e os componentes proprios leem | `$accordion-rule-color` |
 | `styles/atoms/*` | regra do sistema que nenhuma variavel expressa | o fio de base do campo, o pressionado de 1px |
@@ -19,7 +39,7 @@ A versao instalada e `@coreui/coreui` 5.9, com `@coreui/react` 5.13. O component
 
 Tres consequencias praticas:
 
-- Uma variavel Sass do CoreUI que ainda nao tem consumidor fica no entry mesmo assim. Ela nao gera CSS por si so, serve ao dia em que o componente entrar e a outros projetos que usem esta fundacao.
+- Uma variavel Sass do CoreUI que ainda nao tem consumidor fica no entry mesmo assim. Ela nao gera CSS por si so, serve ao dia em que o componente entrar e a outros projetos que usem esta fundacao. O mesmo vale para os knobs de `styles/_component.scss`: eles centralizam a customizacao de cada componente e sao a base de componentes e projetos novos, e um knob sem leitor neste projeto continua la. Variavel e knob mantidos assim levam um comentario dizendo por que ficam.
 - O adapter emite na layer `vendor-config`, depois de `vendor`. Uma regra dele num seletor de componente vence qualquer variante da biblioteca, com qualquer especificidade. Por isso um padrao que a variante precisa trocar vai no `:root` do adapter, herdado, e nao no seletor do componente.
 - `$enable-rounded` e `$enable-shadows` estao desligados. As variaveis de raio e sombra de um componente viram custom property, mas os mixins `border-radius()` e `box-shadow()` nao emitem a propriedade. Raio de controle e sombra de folha chegam por atom.
 
@@ -31,36 +51,35 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 
 | parcial | configurado em | quem usa | Storybook |
 | --- | --- | --- | --- |
-| `root`, `containers`, `grid`, `utilities/api` | entry (`$spacers`, `$grid-gutter-width`, `$enable-cssgrid`, `$utilities`) | `www` (`row`, `col-*`, `.grid`, `container`, utilitarios de mecanica) | CoreUI/Grade, CoreUI/Mecanica |
+| `root`, `containers`, `grid`, `utilities/api` | entry (`$spacers`, `$grid-gutter-width`, `$enable-cssgrid`) e `_coreui-utilities.scss` (`$utilities`) | `www` (`row`, `col-*`, `.grid`, `container`, utilitarios de mecanica) | CoreUI/Grade, CoreUI/Mecanica |
 | `helpers/clearfix`, `position`, `ratio`, `text-truncation`, `visually-hidden` | entry, um a um | `www` (`visually-hidden`, `ratio`) | CoreUI/Mecanica |
-| `breadcrumb` | entry (`$breadcrumb-margin-bottom`, `$breadcrumb-item-padding-x`), atom `_breadcrumb.scss` (tinta, papel, link e modo compacto por container query) | `Breadcrumbs` sobre `CBreadcrumb` | CoreUI/Navegacao |
+| `breadcrumb` | entry (`$breadcrumb-margin-bottom`, `$breadcrumb-item-padding-x`), atom `_breadcrumb.scss` (tinta, papel, link e modo compacto por container query) | `Breadcrumbs` | CoreUI/Navegacao |
 | `nav` | entry (`$nav-*`, `$nav-tabs-*`) | `Tabs` | Navegacao/Abas |
 | `buttons` | entry (`$btn-*`), atom `_button.scss` | `Button`, `IconButton` | Atomos/Acao |
-| `accordion` | entry (`$accordion-*`), adapter | `www` `filed-recipes` (marcacao) | CoreUI/Revelacao |
+| `accordion` | knobs `$accordion-*` de `_component.scss`, lidos pelo entry, pelo adapter e pelo atom `_accordion.scss` (o aberto pelo `[open]` do `details`) | `Accordion` e `AccordionItem`, usados pelo `FiledRecipes` do `www` | CoreUI/Revelacao |
 | `transitions` | entry (`$transition-*`) | `.collapse` do acordeao | CoreUI/Revelacao |
 | `images` | — | `.app-image` e atom proprio | Moleculas/Indice e grade |
-| `sidebar` | entry (`$sidebar-toggler-*`), adapter | `www` `CSidebar` | CoreUI/Navegacao |
-| `badge` | entry, adapter, atom `_tag.scss` | `Tag` | Atomos/Marcas de leitura |
-| `card` | entry (`$card-border-color`) | `www` `CCard` em `food-icons` | — |
+| `sidebar` | entry (`$sidebar-toggler-*`), adapter, atom `_sidebar.scss` | `Sidebar` sobre `CSidebar` | CoreUI/Navegacao |
+| `badge` | entry, atom `_tag.scss` | `Tag` | Atomos/Marcas de leitura |
 | `forms/*` (labels, form-text, form-control, form-select, form-check, validation) | entry (`$input-*`, `$form-*`), atoms `_field`, `_label`, `_field-message`, `_reader-marks` | `Select`, `Textarea`, `Field`, `LineListCheck` | Atomos/Campos, Atomos/Marcas do leitor, Moleculas/Campo completo |
-| `spinners`, `progress` | entry (`$spinner-*`, `$progress-*`), atom `_progress.scss` | `Waiting`, `Progress`, `Button` carregando | Atomos/Retorno |
+| `spinners`, `progress` | entry (`$spinner-*`, `$progress-*`), atom `_progress.scss` (cor herdada do spinner, linha de rotulo da barra) | `Waiting`, `Progress`, `ProgressIndicator`, `Button` carregando | Atomos/Retorno |
 | `dropdown` | entry (`$dropdown-*`), adapter | — | CoreUI/Navegacao |
 | `pagination` | entry (`$pagination-*`), adapter | — | CoreUI/Navegacao |
 | `callout` | entry (`$callout-*`), adapter | — | CoreUI/Avisos |
-| `alert` | entry (`$alert-*`), cores pelo adapter | — | CoreUI/Avisos |
+| `alert` | entry (`$alert-*`), cores pelo adapter | `www` `.alert` na revisao de alimento do admin | CoreUI/Avisos |
 | `offcanvas` | entry (`$offcanvas-*`) | — | CoreUI/Folha lateral |
-| `tables` | entry (`$table-*`), atom `_table.scss`, `resets.scss` | `www` `AminoAcidsTable` e a revisao de alimento do admin | CoreUI/Tabela |
+| `tables` | knobs `$table-*` de `_component.scss`, lidos pelo entry (`$table-*`) e pelo atom `_table.scss` (fonte da celula, cabecalho, legenda e grupo de linhas, que o CoreUI nao configura), e `resets.scss` | `www` `AminoAcidsTable` e a revisao de alimento do admin | CoreUI/Tabela |
 | `tooltip` | entry (`$tooltip-*`), atom `_tooltip.scss` | — | CoreUI/Dica |
 
 ### Como cada um e usado
 
-**Botao.** Pela prop `weight` do `Button`, nunca pela prop `color` do `CButton`: `compromisso` e `btn-primary`, `estruturante` e `btn-outline-secondary`, `texto` e `btn-ghost-primary`, `destrutiva` e `btn-ghost-danger`, `confirmacao-destrutiva` e `btn-danger`. O pressionado de 1px e o 0.45 do solido desabilitado ja estao no atom.
+**Botao.** Pela prop `weight` do `Button`, nunca por `btn-*` escrito a mao no `www`: `compromisso` e `btn-primary`, `estruturante` e `btn-outline-secondary`, `texto` e `btn-ghost-primary`, `destrutiva` e `btn-ghost-danger`, `confirmacao-destrutiva` e `btn-danger`. O pressionado de 1px e o 0.45 do solido desabilitado ja estao no atom. A linha de apoio sob o rotulo e a prop `description`, que vira o `small` irmao do `.btn-label`; `.btn-secondary` nao tem estilo neste sistema. Link com cara de botao usa `btn btn-primary` ou `btn btn-outline-secondary`.
 
 **Campo, select, caixa de marcar e interruptor.** O fio de base, a pauta da textarea, a seta Phosphor do select (`.select-field-caret`) e o interruptor quadrado ja estao nos atoms. `$form-select-indicator`, `$form-check-input-checked-bg-image` e `$form-switch-*-bg-image` estao em `none` no entry, entao nenhum SVG com cor literal da biblioteca chega ao CSS. O rotulo flutuante e os tamanhos `sm` e `lg` nao sao usados.
 
-**Tag.** `Tag` sobre `.badge`, com `status` para as tres cores de status. As classes `text-bg-*` e a prop `color` do `CBadge` nao sao usadas.
+**Tag.** `Tag` sobre `.badge`, com `status` para as tres cores de status. As classes `text-bg-*` nao sao usadas.
 
-**Acordeao.** Um fio por item, desenhado pelo adapter em `.accordion-item`. O indicador e um `Icon` Phosphor com a classe `accordion-indicator`; a seta SVG da biblioteca esta desligada. A variante `accordion-flush` nao muda nada aqui: o adapter ja tira as bordas laterais, e a regra dele vence o `last-child` sem borda da variante.
+**Acordeao.** `AccordionItem` e um `<details class="accordion-item">` com `<summary class="accordion-button">`: abrir, fechar e o teclado sao do elemento, e o titulo pode ser um heading (`titleAs`). As medidas, as cores e o movimento vem dos knobs `$accordion-*` de `_component.scss`: o `.accordion` do CoreUI e o `AccordionItem` leem os mesmos, e outro projeto que use so o do CoreUI ja recebe a configuracao. O atom `_accordion.scss` le o aberto pelo `[open]`, e nao pela ausencia de `.collapsed`, e anima a altura por `::details-content`, que some com `prefers-reduced-motion`. Um fio por item, desenhado pelo adapter em `.accordion-item`. O indicador e um `Icon` Phosphor com a classe `accordion-indicator`; a seta SVG da biblioteca esta desligada. A variante `accordion-flush` nao muda nada aqui: o adapter ja tira as bordas laterais, e a regra dele vence o `last-child` sem borda da variante.
 
 **Dobra.** `.collapse` com `.show`, controlada por um botao de peso `texto` com `aria-expanded`. A altura anima com `--app-duration-base` quando o `CCollapse` usa `.collapsing`, e o movimento some com `prefers-reduced-motion`. A dobra esconde o bloco inteiro; quando o que se protege sao as linhas que sobram de um texto, o componente e `ExpandableText`, que corta em quatro linhas com reticencias — `.collapse` nao corta nada e `text-truncate` so vale para uma linha.
 
@@ -76,13 +95,11 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 
 **Dica.** `.tooltip` e folha: `bg-page`, fio `rule`, `--app-radius-overlay`, `--app-shadow-overlay` e texto em `caption`, alinhado ao inicio. Raio, sombra, fio e fonte estao no atom, porque `.tooltip-inner` nao tem variavel de borda e os mixins de raio e sombra estao desligados. A largura maxima e `--app-measure-apparatus`. A seta fica escondida: na cor da pagina ela nao se distingue do fundo. A dica aparece com o ponteiro do mouse e com o foco, some com Escape e complementa o nome acessivel do controle, nunca o substitui. O lugar dela e o botao so de icone com desenho universal.
 
-**Tabela.** `.table` e a pagina de dados: fios horizontais em `rule`, nenhuma superficie, celula no papel `numeric` (1.125rem com entrelinha 1.4), que o §5 da ao dado e a celula de tabela, e nao a entrelinha de prosa; em `table-sm` a celula fica no mesmo papel em `--app-font-size` (1rem), com a mesma entrelinha. Os algarismos tabulares continuam so na coluna com `.numeric`. O cabecalho e `label-sm` em `fg-muted`, com o fio de baixo em `--app-rule-strong`: um degrau mais escuro, na mesma espessura. Coluna de numero leva `.numeric` na celula e no cabecalho — papel `numeric`, algarismos tabulares, alinhada ao fim. O nome da linha e `<th scope="row">`. Grupo de linhas e um `<tbody>` por grupo, aberto por `<th scope="rowgroup">` em `label`, separado por espaco acima e nunca por faixa. `table-hover` pinta o lavado so em aparelho com hover, e so quando a linha leva a algum lugar; `table-active` marca a linha escolhida com `bg-selected`. `table-sm` e a densidade do aparato, e `table-responsive` rola a tabela larga sem mexer na pagina. O zebrado nao pinta nada (`$table-striped-bg: transparent`), `$table-variants` esta vazio, e `table-bordered`, `table-borderless`, `table-dark` e `table-group-divider` nao sao usados. O reset zera a borda de cada celula; `resets.scss` devolve so o estilo e a cor herdada que o reboot do CoreUI daria, com `:where` para a largura da biblioteca vencer.
+**Tabela.** A marcacao e `.table`, e `.table-responsive` em volta quando a tabela e larga: a largura rola sem mexer na pagina. Nenhuma variante nossa entra na marcacao; o resto se ajusta pela estrutura e pela configuracao do entry. `.table` e a pagina de dados: fios horizontais em `rule`, nenhuma superficie, celula no papel `numeric` (1.125rem com entrelinha 1.4) com algarismos tabulares na tabela inteira. A legenda (`<caption>`) e `caption` em `fg-muted`. O cabecalho e `label-sm` em `fg-muted`, com o fio de baixo em `--app-rule-strong`: um degrau mais escuro, na mesma espessura. O nome da linha e `<th scope="row">`. Grupo de linhas e um `<tbody>` por grupo, aberto por `<th scope="rowgroup">` em `label`, separado por espaco acima e nunca por faixa. Das classes do CoreUI entram so as que dizem algo que a estrutura nao diz: `text-end` na coluna de numero, `table-active` na celula ou linha marcada (`bg-selected`) e `table-hover` quando a linha leva a algum lugar, pintado so em aparelho com hover. O zebrado nao pinta nada (`$table-striped-bg: transparent`), `$table-variants` esta vazio, e `table-sm`, `table-bordered`, `table-borderless`, `table-dark` e `table-group-divider` nao sao usados; o `$table-*-sm` continua configurado no entry. O reset zera a borda de cada celula; `resets.scss` devolve so o estilo e a cor herdada que o reboot do CoreUI daria, com `:where` para a largura da biblioteca vencer.
 
 **Grade.** Usada direto, e mecanica: `row` e `col-*` em flex, `.grid` e `g-col-*` em CSS grid. A calha e a de `--app-gutter` (32px): `$grid-gutter-width` le o mesmo valor de `_metrics.scss`, porque o CoreUI faz conta com ela; o padding do `container` e a metade dela. A secao Utilitarios e helpers diz o que mais se usa assim.
 
-**Barra lateral.** `CSidebar` no `www`, em `bg-page`, com os links do nav pelo adapter.
-
-**Card.** Importado porque a tela de icones do admin usa `CCard`. Nenhum componente novo nasce dele (`Nenhum componente chamado card`), e ele nao entra no Storybook.
+**Barra lateral.** `Sidebar` sobre `CSidebar`, em `bg-page`, com os links do nav pelo adapter. Recebe os itens, o cabecalho e o `linkComponent`; recolhe para os icones, e a escolha do leitor vale para todas as paginas, porque o estado fica fora delas (`sidebar-fold.ts`). Comeca recolhido abaixo de 1024px. Cabecalho e rodape ficam a duas unidades de ritmo dos links.
 
 ## Utilitarios e helpers
 
@@ -98,7 +115,7 @@ O CoreUI entrega mecanica pronta, e ela se usa direto. Ela nao se embrulha num p
 | `d-*`, `d-{bp}-*`, `order-*`, `order-{bp}-*` | display e ordem por largura | e remontagem, nunca restyle |
 | `flex-*`, `justify-content-*`, `align-items-*`, `align-self-*` | mecanica de flex | |
 | `gap-*`, `row-gap-*`, `column-gap-*`, `m*-*`, `p*-*` | espaco interno na escala interna (4, 8, 16, 24, 48) | espaco de fluxo e `l-stack`; `mt-3` entre blocos que o olho desce mistura os dois eixos; `p-3` e a calha do modal, e o conteudo do corpo dele pede esse mesmo helper |
-| `mt-rhythm-*`, `mb-rhythm-*`, `my-rhythm-*`, `pt-rhythm-*`, `pb-rhythm-*`, `gy-rhythm-*` (`half`, `1`, `2`) | espaco de fluxo em unidade de ritmo num ponto so | declarados no `$utilities` do entry pela API de utilitarios do CoreUI; `gy-rhythm-*` e o espaco entre colunas de `row` que viram sequencia; varios irmaos descendo a pagina continuam sendo `l-stack` |
+| `mt-rhythm-*`, `mb-rhythm-*`, `my-rhythm-*`, `pt-rhythm-*`, `pb-rhythm-*`, `gy-rhythm-*` (`half`, `1`, `2`) | espaco de fluxo em unidade de ritmo num ponto so | declarados no `$utilities` de `_coreui-utilities.scss` pela API de utilitarios do CoreUI; `gy-rhythm-*` e o espaco entre colunas de `row` que viram sequencia; varios irmaos descendo a pagina continuam sendo `l-stack` |
 | `mt-text`, `mb-text`, `pt-text`, `pb-text` | a folga que prende um texto ao fio ou ao corpo que vem logo depois | `--app-gap-text`, `0.2em` na fonte de quem usa; nao e fracao do ritmo, que e uma linha inteira e nao se subdivide abaixo de `half` |
 | `border-top`, `border-bottom`, `border-top-0`, `border-bottom-0` | fio horizontal | pintam `--app-rule` na espessura e estilo do sistema, e nao a borda do CoreUI; cor e espessura nao tem variante |
 | `position-*`, `top-*`, `bottom-*`, `start-*`, `end-*`, `translate-middle` | posicionamento | |
@@ -126,7 +143,7 @@ O CoreUI entrega mecanica pronta, e ela se usa direto. Ela nao se embrulha num p
 
 ### Nao compilados
 
-Os utilitarios abaixo estao em `null` no `$utilities` do entry e nao existem no CSS:
+Os utilitarios abaixo estao em `null` no `$utilities` de `_coreui-utilities.scss` e nao existem no CSS:
 
 | familia | por que |
 | --- | --- |
@@ -163,7 +180,8 @@ E os helpers que ficam fora do entry:
 | `list-group` | toda lista de leitura e `line-list`, e colecao e `index-list` ou `thumb-grid` |
 | `placeholders` | o esqueleto e o atom `.skeleton`, que espera 300ms antes de aparecer; nenhuma variavel do CoreUI expressa esse atraso |
 | `close` | `.btn-close` e um SVG em data-URI com cor literal; o X e `IconButton` com `PiX` |
-| `navbar` | a barra do telefone e `.app-navbar` no `www` |
+| `navbar` | o `.navbar` do CoreUI e a barra de cabecalho com marca, toggler e menu que recolhe. A barra de destinos do telefone e outro padrao e e o `Dock` (`.dock`); o nome `.navbar` fica livre para o parcial, se ele entrar |
+| `card` | nao ha card neste sistema: item de colecao nao tem superficie, e o aparte e `.box`. A tela de icones do admin escreve o proprio bloco. O `$card-*` fica configurado no entry, com o import comentado, para outros projetos |
 | `reboot`, `type` | o reset e `the-new-css-reset`, e a tipografia sao os papeis de `typography.scss` |
 | `forms/floating-labels` | o rotulo fica sempre acima do campo |
 | `forms/input-group` | o campo com icone ou botao e `.field-adorned` |
@@ -181,11 +199,10 @@ Decisoes que dependem de aprovacao. Nenhuma delas esta aplicada.
 
 1. **Z-index.** Decidir se `$zindex-*` segue os tokens, inclusive a troca de tooltip e toast.
 2. **Colisoes.** Para usar `CModal` ou `CChip` o bloco proprio precisa de outro nome. Sem isso, os proprios continuam e os do CoreUI ficam fora.
-3. **Repeticao entre atom e entry.** `_progress.scss` repete em `--cui-spinner-*` e `--cui-progress-*` os mesmos valores que `$spinner-*` e `$progress-*` ja definem. `_tag.scss` fixa `border-radius: 0` enquanto `$badge-radius` e o adapter apontam para `--app-radius-control`.
-4. **Adapter sem componente importado.** Os blocos `.modal` (que alcanca o `.modal` proprio) e `.navbar-toggler-icon`, o bloco `.card` comentado, e `_important-overrides`, que pinta `.text-bg-*` enquanto o helper `color-bg` nao e mais compilado.
-5. **Estilos existentes que divergem do `DESIGN_LANGUAGE.md`.**
+3. **Adapter sem componente importado.** Os blocos `.modal` (que alcanca o `.modal` proprio) e `.navbar-toggler-icon`, e `_important-overrides`, que pinta `.text-bg-*` enquanto o helper `color-bg` nao e mais compilado.
+4. **Estilos existentes que divergem do `DESIGN_LANGUAGE.md`.**
    - A barra lateral pinta hover e ativo com fundo e raio (`$nav-bg-hover`, `$nav-bg-active`, `$nav-radius`); o §10 pede itens sem fundo e ativo em `fg-emphasis`.
    - `dialog.scss` pinta o veu com `rgba(0, 0, 0, 0.75)` em vez de `--app-bg-backdrop`.
    - `$footer-bg` e `bg-accent-solid`; o §11 diz que rodape nao e preenchido em accent.
-6. **Lint.** O bloco de `overrides` para `components/**` e `styles/**` redefine `declaration-property-value-disallowed-list` e substitui a lista que proibe `#`, `rgb`, `hsl` e `oklch` em propriedades de cor. E por isso que o literal do `dialog.scss` passa.
-7. **Storybook.** `stories/Configure.mdx` e `stories/assets/` sao o onboarding padrao do Storybook.
+5. **Lint.** O bloco de `overrides` para `components/**` e `styles/**` redefine `declaration-property-value-disallowed-list` e substitui a lista que proibe `#`, `rgb`, `hsl` e `oklch` em propriedades de cor. E por isso que o literal do `dialog.scss` passa.
+6. **Storybook.** `stories/Configure.mdx` e `stories/assets/` sao o onboarding padrao do Storybook.

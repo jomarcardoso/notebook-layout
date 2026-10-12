@@ -2,12 +2,7 @@
 @use './coreui-config' as cfg;
 @use './component';
 @use './metrics';
-
-$rhythm-values: (
-  half: var(--app-rhythm-half),
-  1: var(--app-rhythm-1),
-  2: var(--app-rhythm-2),
-);
+@use './coreui-utilities' as utilities-config;
 
 @use '@coreui/coreui/scss/variables' with (
   $primary: cfg.$primary,
@@ -51,6 +46,8 @@ $rhythm-values: (
   $hr-opacity: 1,
 
   $badge-font-weight: var(--app-font-weight-body),
+  $badge-color: component.$badge-fg,
+  $badge-border-radius: component.$badge-radius,
   $enable-gradients: false,
   $enable-shadows: false,
 
@@ -114,25 +111,28 @@ $rhythm-values: (
   $nav-tabs-link-active-bg: var(--app-bg-page),
   $nav-tabs-link-active-border-color: var(--app-rule) var(--app-rule)
     var(--app-bg-page),
-  $accordion-color: var(--app-fg-default),
-  $accordion-bg: transparent,
-  $accordion-padding-x: 0,
-  $accordion-padding-y: var(--app-pad-control-y),
-  $accordion-border-color: var(--app-rule),
-  $accordion-border-radius: 0,
-  $accordion-button-color: var(--app-fg-default),
-  $accordion-button-active-color: var(--app-fg-emphasis),
-  $accordion-button-active-bg: transparent,
+  $accordion-color: component.$accordion-fg,
+  $accordion-bg: component.$accordion-bg,
+  $accordion-padding-x: component.$accordion-pad-x,
+  $accordion-padding-y: component.$accordion-pad-y,
+  $accordion-border-color: component.$accordion-rule-color,
+  $accordion-border-width: component.$accordion-rule-width,
+  $accordion-border-radius: component.$accordion-radius,
+  $accordion-button-color: component.$accordion-button-fg,
+  $accordion-button-active-color: component.$accordion-button-fg-open,
+  $accordion-button-active-bg: component.$accordion-button-bg-open,
   $accordion-button-focus-box-shadow: none,
   $accordion-button-icon: none,
   $accordion-button-active-icon: none,
 
+  $spinner-animation-speed: 0.9s,
   $spinner-border-width: var(--app-icon-stroke),
   $spinner-width: var(--app-size-icon),
   $spinner-height: var(--app-size-icon),
   $progress-height: 4px,
   $progress-bg: var(--app-rule),
   $progress-bar-bg: var(--app-bg-neutral-solid),
+  $progress-bar-transition: width var(--app-duration-fast) linear,
   $progress-border-radius: 0,
   $progress-box-shadow: none,
 
@@ -216,8 +216,8 @@ $rhythm-values: (
   $table-hover-bg: component.$table-row-bg-hover,
   $table-border-width: var(--app-border-width),
   $table-border-color: component.$table-border-color,
-  $table-group-separator-color: var(--app-rule-strong),
-  $table-caption-color: var(--app-fg-muted),
+  $table-group-separator-color: component.$table-head-rule-color,
+  $table-caption-color: component.$table-caption-fg,
   $table-variants: (),
   $tooltip-max-width: var(--app-measure-apparatus),
   $tooltip-color: var(--app-fg-default),
@@ -232,25 +232,26 @@ $rhythm-values: (
 
   $sidebar-toggler-padding-x: var(--app-space-sm),
   $sidebar-toggler-padding-y: var(--app-space-sm),
-  // $card-spacer-y: $spacer;
-  // $card-spacer-x: $spacer;
-  // $card-title-spacer-y: $spacer * 0.5;
-  // $card-title-color: null;
-  // $card-subtitle-color: null;
-  // $card-border-width: var(--#{$prefix}border-width);
+
+  // Card: configurado mesmo sem o parcial importado (ver o import comentado
+  // abaixo). Serve a outros projetos que usam esta fundacao; nao remover.
+  // spacer e cap-padding sao metrics porque o CoreUI faz conta com eles.
+  $card-spacer-y: metrics.space('md'),
+  $card-spacer-x: metrics.space('md'),
+  $card-title-spacer-y: metrics.space('xs'),
+  $card-title-color: component.$card-fg,
+  $card-subtitle-color: component.$card-meta-fg,
+  $card-border-width: component.$card-border-width,
   $card-border-color: component.$card-content-border-color,
-  // $card-border-radius: var(--#{$prefix}border-radius);
-  // $card-box-shadow: null;
-  // $card-inner-border-radius: subtract($card-border-radius, $card-border-width);
-  // $card-cap-padding-y: $card-spacer-y * 0.5;
-  // $card-cap-padding-x: $card-spacer-x;
-  // $card-cap-bg: rgba(var(--#{$prefix}body-color-rgb), 0.03);
-  // $card-cap-color: null;
-  // $card-height: null;
-  // $card-color: null;
-  // $card-bg: var(--#{$prefix}body-bg);
-  // $card-img-overlay-padding: $spacer;
-   // $card-group-margin: $grid-gutter-width * 0.5;
+  $card-border-radius: component.$card-radius,
+  $card-box-shadow: component.$card-content-shadow,
+  $card-cap-padding-y: metrics.space('xs'),
+  $card-cap-padding-x: metrics.space('md'),
+  $card-cap-bg: component.$card-footer-bg,
+  $card-cap-color: component.$card-footer-fg,
+  $card-color: component.$card-fg,
+  $card-bg: component.$card-content-bg,
+  $card-img-overlay-padding: metrics.space('md'),
 );
 
 @use '@coreui/coreui/scss/variables-dark';
@@ -266,123 +267,7 @@ $rhythm-values: (
 @use '@coreui/coreui/scss/helpers/visually-hidden';
 
 @use '@coreui/coreui/scss/utilities' with (
-  $utilities: (
-    'color': null,
-    'text-color': null,
-    'text-opacity': null,
-    'link-opacity': null,
-    'link-offset': null,
-    'link-underline': null,
-    'link-underline-opacity': null,
-    'background-color': null,
-    'bg-opacity': null,
-    'subtle-background-color': null,
-    'gradient': null,
-    'opacity': null,
-    'shadow': null,
-    'focus-ring': null,
-    'border': null,
-    'border-top': (
-      property: border-top,
-      class: border-top,
-      values: (
-        null: var(--app-border-width) var(--app-border-style) var(--app-rule),
-        0: 0,
-      ),
-    ),
-    'border-end': null,
-    'border-bottom': (
-      property: border-bottom,
-      class: border-bottom,
-      values: (
-        null: var(--app-border-width) var(--app-border-style) var(--app-rule),
-        0: 0,
-      ),
-    ),
-    'border-start': null,
-    'border-color': null,
-    'border-top-color': null,
-    'border-end-color': null,
-    'border-bottom-color': null,
-    'border-start-color': null,
-    'border-width': null,
-    'border-top-width': null,
-    'border-end-width': null,
-    'border-bottom-width': null,
-    'border-start-width': null,
-    'subtle-border-color': null,
-    'border-opacity': null,
-    'rounded': null,
-    'rounded-top': null,
-    'rounded-end': null,
-    'rounded-bottom': null,
-    'rounded-start': null,
-    'font-family': null,
-    'font-size': null,
-    'font-style': null,
-    'font-weight': null,
-    'line-height': null,
-    'text-decoration': null,
-    'text-transform': null,
-    'margin-y-rhythm': (
-      property: margin-top margin-bottom,
-      class: my-rhythm,
-      values: $rhythm-values,
-    ),
-    'margin-top-rhythm': (
-      property: margin-top,
-      class: mt-rhythm,
-      values: $rhythm-values,
-    ),
-    'margin-bottom-rhythm': (
-      property: margin-bottom,
-      class: mb-rhythm,
-      values: $rhythm-values,
-    ),
-    'padding-top-rhythm': (
-      property: padding-top,
-      class: pt-rhythm,
-      values: $rhythm-values,
-    ),
-    'padding-bottom-rhythm': (
-      property: padding-bottom,
-      class: pb-rhythm,
-      values: $rhythm-values,
-    ),
-    'margin-top-text': (
-      property: margin-top,
-      class: mt,
-      values: (
-        text: var(--app-gap-text),
-      ),
-    ),
-    'margin-bottom-text': (
-      property: margin-bottom,
-      class: mb,
-      values: (
-        text: var(--app-gap-text),
-      ),
-    ),
-    'padding-top-text': (
-      property: padding-top,
-      class: pt,
-      values: (
-        text: var(--app-gap-text),
-      ),
-    ),
-    'padding-bottom-text': (
-      property: padding-bottom,
-      class: pb,
-      values: (
-        text: var(--app-gap-text),
-      ),
-    ),
-    'gutter-y-rhythm': (
-      property: --cui-gutter-y,
-      class: gy-rhythm,
-      values: $rhythm-values,
-    ),
-  )
+  $utilities: utilities-config.$utilities
 );
 @use '@coreui/coreui/scss/utilities/api';
 
@@ -402,7 +287,9 @@ $rhythm-values: (
 @import '@coreui/coreui/scss/sidebar.import';
 
 @import '@coreui/coreui/scss/badge.import';
-@import '@coreui/coreui/scss/card.import';
+// Card fica fora: este sistema nao tem card (docs/coreui.md, Nao importados).
+// A configuracao $card-* acima ja esta pronta; descomente para outro projeto.
+// @import '@coreui/coreui/scss/card.import';
 
 @import '@coreui/coreui/scss/forms/labels.import';
 @import '@coreui/coreui/scss/forms/form-text.import';

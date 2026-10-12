@@ -26,19 +26,19 @@ export const Aparte: Story = {
         note="Dentro da prosa, na medida do corpo. O texto de dentro continua em body; o link dentro dele usa o hover de alfa, que escurece sobre o lavado sem token novo."
       >
         <div className="l-measure l-stack">
-          <p className="p">
+          <p className="body">
             Rale as cenouras no ralo fino e bata com os ovos e o oleo ate a
             mistura ficar lisa e alaranjada.
           </p>
           <aside className="box l-stack -block" aria-label="Dica">
             <p className="label">Dica da vo</p>
-            <p className="p">
+            <p className="body">
               Cenoura muito grande e fibrosa deixa o bolo pesado. Prefira as
               medias e, se puder, use a <a href="#">farinha peneirada duas
               vezes</a>.
             </p>
           </aside>
-          <p className="p">
+          <p className="body">
             Junte a farinha e o acucar aos poucos, mexendo com a espatula, e por
             ultimo o fermento.
           </p>
@@ -58,7 +58,7 @@ export const BoxeOuMarcaDeMargem: Story = {
       >
         <Row label="callout">
           <div className="callout l-measure">
-            <p className="p">
+            <p className="body">
               Nao abra o forno nos primeiros vinte minutos.
             </p>
           </div>
@@ -66,7 +66,7 @@ export const BoxeOuMarcaDeMargem: Story = {
         <Row label="boxe">
           <div className="box l-measure l-stack -block">
             <p className="label">Antes de comecar</p>
-            <p className="p">
+            <p className="body">
               Deixe os ovos e a manteiga fora da geladeira por meia hora, e unte
               a forma antes de ligar o forno.
             </p>

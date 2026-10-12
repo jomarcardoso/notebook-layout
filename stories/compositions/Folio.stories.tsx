@@ -27,7 +27,7 @@ export const PeDePagina: Story = {
         note="O titulo corrido no inicio e a posicao no fim, na mesma linha de base. O espaco acima e uma unidade de ritmo inteira."
       >
         <div className="l-measure l-stack">
-          <p className="p">
+          <p className="body">
             Leve ao forno preaquecido a 180 graus por quarenta minutos, ou ate o
             palito sair limpo. Espere esfriar antes de desenformar.
           </p>
@@ -51,7 +51,7 @@ export const PosicaoNaSequencia: Story = {
       >
         <div className="l-measure l-stack -block">
           <p className="folio">Passo 7 de 12</p>
-          <p className="p">Junte a farinha aos poucos, alternando com o leite.</p>
+          <p className="body">Junte a farinha aos poucos, alternando com o leite.</p>
         </div>
       </Group>
     </Sheet>

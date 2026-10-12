@@ -1,6 +1,12 @@
 'use client';
-import type { FC, HTMLProps, ReactNode } from 'react';
-import { useId, useState } from 'react';
+// notebook-layout/components/tabs/Tabs.tsx
+import {
+  type ComponentProps,
+  type FC,
+  type ReactNode,
+  useId,
+  useState,
+} from 'react';
 import { generateClasses } from '../../utils/utils';
 import './tabs.scss';
 
@@ -12,7 +18,7 @@ export interface TabItem {
 }
 
 export interface TabsProps extends Omit<
-  HTMLProps<HTMLUListElement>,
+  ComponentProps<'ul'>,
   'onChange'
 > {
   tabs: TabItem[];
@@ -92,4 +98,3 @@ export const Tabs: FC<TabsProps> = ({
   );
 };
 
-export default Tabs;

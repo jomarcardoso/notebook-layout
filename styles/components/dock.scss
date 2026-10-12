@@ -1,0 +1,45 @@
+// notebook-layout/styles/components/dock.scss
+@use '../component' as component;
+
+.dock {
+  background-color: component.$dock-bg;
+  border-block-start: component.$dock-rule-width var(--app-border-style)
+    component.$dock-rule-color;
+  padding-block-end: env(safe-area-inset-bottom);
+
+  &__list {
+    display: flex;
+  }
+
+  &__entry {
+    flex: 1 1 0;
+  }
+
+  &__item {
+    align-items: center;
+    color: component.$dock-fg;
+    display: flex;
+    font: component.$dock-font;
+    gap: var(--app-space-xs);
+    justify-content: center;
+    min-block-size: component.$dock-height;
+    padding-inline: var(--app-space-xs);
+    text-decoration: none;
+
+    &[aria-current] {
+      color: component.$dock-fg-current;
+    }
+
+    @media (hover: hover) {
+      &:hover:not([aria-current]) {
+        color: component.$dock-fg-hover;
+      }
+    }
+  }
+
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

@@ -155,7 +155,7 @@ export const Link: Story = {
         title="Na prosa"
         note="O texto fica na tinta do corpo e so o sublinhado leva accent. Em texto corrido ninguem distingue a cor de um link da cor de uma enfase, entao o sublinhado tem que estar sempre presente — e com ele presente, pintar tambem o texto e redundante."
       >
-        <p className="p">
+        <p className="body">
           Bata as claras em neve antes de misturar, como está escrito na{' '}
           <a href="#nowhere">receita original da sua avó</a>, e reserve. O
           sublinhado engrossa no hover: é o mesmo gesto do fio do campo no foco,

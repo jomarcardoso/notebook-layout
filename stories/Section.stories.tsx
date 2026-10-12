@@ -1,15 +1,16 @@
+// notebook-layout/stories/Section.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { Section } from '@components/section';
 import { Field } from '@components/field';
 
 const textBlock = (
   <>
-    <p className="p">
+    <p className="body">
       Estrutura usada para separar conteudos em paginas de receita, aplicando o
       mesmo espaco das paginas ilustradas.
     </p>
-    <p className="p">
-      Combine com `SectionTitle` ou `Field` para manter o layout coerente em
+    <p className="body">
+      Combine com `.section-title` ou `Field` para manter o layout coerente em
       diferentes contextos.
     </p>
   </>
@@ -28,7 +29,7 @@ const meta = {
     },
   },
   args: {
-    header: 'Resumo da receita',
+    title: 'Resumo da receita',
     children: textBlock,
   },
   argTypes: {
@@ -52,7 +53,7 @@ export const Default: Story = {};
 
 export const WithoutTitle: Story = {
   args: {
-    header: '',
+    title: '',
   },
   parameters: {
     docs: {
@@ -65,11 +66,11 @@ export const WithoutTitle: Story = {
 
 export const WithInteractiveContent: Story = {
   args: {
-    header: 'Detalhes da etapa',
+    title: 'Detalhes da etapa',
   },
   render: (args) => (
     <Section {...args}>
-      <Section header="Informacoes principais">
+      <Section title="Informacoes principais">
         <Field label="Titulo" placeholder="Bolo de chocolate" />
         <Field
           label="Ingredientes"

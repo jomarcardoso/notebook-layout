@@ -1,4 +1,5 @@
-import { FC } from 'react';
+// notebook-layout/components/notebook-tabs/notebook-tabs.wrapper.tsx
+import { type FC } from 'react';
 import {
   NotebookTabsContainer,
   NotebookTabsContainerProps,

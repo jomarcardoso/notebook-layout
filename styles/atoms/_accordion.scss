@@ -1,0 +1,48 @@
+// notebook-layout/styles/atoms/_accordion.scss
+@use '../component';
+
+details.accordion-item {
+  interpolate-size: allow-keywords;
+
+  > .accordion-button {
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .accordion-title {
+    flex: 1 1 auto;
+    font: inherit;
+  }
+
+  &:not([open]) > .accordion-button {
+    background-color: component.$accordion-bg;
+    box-shadow: none;
+    color: component.$accordion-button-fg;
+
+    .accordion-indicator {
+      transform: none;
+    }
+  }
+
+  &::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition:
+      block-size component.$accordion-motion,
+      content-visibility component.$accordion-motion allow-discrete;
+  }
+
+  &[open]::details-content {
+    block-size: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::details-content {
+      transition: none;
+    }
+  }
+}

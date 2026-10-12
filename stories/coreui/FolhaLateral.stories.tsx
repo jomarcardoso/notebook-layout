@@ -73,7 +73,7 @@ const FolhaDemo = () => {
           />
         </div>
         <div className="offcanvas-body">
-          <p className="p">
+          <p className="body">
             A versao anterior desta receita sera descartada quando a nova for
             publicada, e nao ha como recupera-la depois.
           </p>

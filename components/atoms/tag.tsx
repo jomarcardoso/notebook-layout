@@ -1,25 +1,29 @@
 // notebook-layout/components/atoms/tag.tsx
-import { type FC, type ReactNode } from 'react';
+import { type ComponentProps, type FC } from 'react';
+import { generateClasses } from '../../utils/utils';
 
-export interface TagProps {
-  children: ReactNode;
-  status?: 'success' | 'warning' | 'danger';
+export interface TagProps extends ComponentProps<'span'> {
+  status?: 'success' | 'warning' | 'danger' | '';
   count?: boolean;
-  className?: string;
 }
 
 /**
  * UM MARCADOR ESTATICO.
  */
 export const Tag: FC<TagProps> = ({
-  children,
-  status,
+  status = '',
   count = false,
   className = '',
+  children,
+  ...props
 }) => (
   <span
-    className={['badge', className].filter(Boolean).join(' ')}
-    data-status={status}
+    {...props}
+    className={generateClasses({
+      badge: true,
+      [className]: Boolean(className),
+    })}
+    data-status={status || undefined}
     data-count={count || undefined}
   >
     {children}

@@ -1,8 +1,8 @@
 'use client';
+// notebook-layout/components/dialog/dialog.tsx
 import {
-  type DialogHTMLAttributes,
+  type ComponentProps,
   type FC,
-  type HTMLProps,
   type ReactNode,
   useCallback,
   useEffect,
@@ -29,23 +29,23 @@ const readDialogHistoryMarkerId = (state: unknown): string | null => {
 };
 
 export interface DialogProps extends Omit<
-  DialogHTMLAttributes<HTMLDialogElement>,
+  ComponentProps<'dialog'>,
   'title'
 > {
   title?: ReactNode;
-  titleProps?: HTMLProps<HTMLHeadingElement>;
+  titleProps?: ComponentProps<'h2'>;
   subtitle?: ReactNode;
-  subtitleProps?: HTMLProps<HTMLParagraphElement>;
+  subtitleProps?: ComponentProps<'p'>;
   indicator?: ReactNode;
-  indicatorProps?: HTMLProps<HTMLDivElement>;
+  indicatorProps?: ComponentProps<'div'>;
   header?: ReactNode;
-  headerProps?: HTMLProps<HTMLHeadingElement>;
+  headerProps?: ComponentProps<'h2'>;
 
   children?: ReactNode;
-  bodyProps?: HTMLProps<HTMLDivElement>;
+  bodyProps?: ComponentProps<'div'>;
 
   footer?: ReactNode;
-  footerProps?: HTMLProps<HTMLDivElement>;
+  footerProps?: ComponentProps<'div'>;
 
   dense?: boolean;
   wide?: boolean;

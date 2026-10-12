@@ -1,8 +1,8 @@
 // notebook-layout/components/molecules/line-list.tsx
 import {
+  type ComponentProps,
   type ElementType,
   type FC,
-  type HTMLAttributes,
   type MouseEventHandler,
   type ReactNode,
 } from 'react';
@@ -11,7 +11,7 @@ import { Checkbox, type CheckboxProps } from '../reader-marks';
 
 export type LineListFamily = 'plain' | 'prose' | 'steps' | 'data';
 
-export interface LineListProps extends HTMLAttributes<HTMLElement> {
+export interface LineListProps extends Omit<ComponentProps<'ul'>, 'ref'> {
   family?: LineListFamily;
   ruled?: boolean;
   children: ReactNode;

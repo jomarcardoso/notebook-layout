@@ -109,3 +109,25 @@ export const Grade: Story = {
     </Sheet>
   ),
 };
+
+export const GradeDeEscolha: Story = {
+  name: 'Grade de escolha',
+  render: () => (
+    <Sheet>
+      <Group
+        title="Grade de escolha"
+        note="A mesma grade quando o item escolhe em vez de levar a outro lugar: com onClick ele e um botao. Sem foto em nenhum item, a variante brief tira o lugar da imagem e fica so o rotulo; com foto em parte deles, o lavado segura o lugar dos que nao tem."
+      >
+        <ThumbGrid>
+          {['Bolos e tortas', 'Massas', 'Sopas e caldos', 'Paes', 'Saladas'].map(
+            (categoria) => (
+              <ThumbItem key={categoria} variant="brief" onClick={() => {}}>
+                {categoria}
+              </ThumbItem>
+            ),
+          )}
+        </ThumbGrid>
+      </Group>
+    </Sheet>
+  ),
+};

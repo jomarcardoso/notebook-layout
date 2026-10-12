@@ -1,16 +1,16 @@
 'use client';
 // notebook-layout/components/chips/chips.tsx
 import {
-  type ButtonHTMLAttributes,
-  type FC,
-  type HTMLProps,
-  type ReactNode,
+  type ComponentProps,
   createContext,
+  type FC,
+  type ReactNode,
   useContext,
   useId,
 } from 'react';
 import { CheckIcon } from '@phosphor-icons/react/dist/ssr/Check';
 import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
+import { generateClasses } from '../../utils/utils';
 import { Icon } from '../atoms/icon';
 
 type ChipInputType = 'radio' | 'checkbox';
@@ -23,7 +23,7 @@ const ChipConfigContext = createContext<{ name: string; type: ChipInputType }>({
 /**
  * O chip de ESCOLHA: um `input` dentro de um grupo nomeado.
  */
-export const Chip: FC<HTMLProps<HTMLInputElement>> = ({
+export const Chip: FC<ComponentProps<'input'>> = ({
   children,
   ...props
 }) => {
@@ -39,7 +39,7 @@ export const Chip: FC<HTMLProps<HTMLInputElement>> = ({
   );
 };
 
-export interface ChipsProps extends HTMLProps<HTMLFieldSetElement> {
+export interface ChipsProps extends ComponentProps<'fieldset'> {
   full?: boolean;
   name: string;
   legend?: string;
@@ -61,7 +61,7 @@ export const Chips: FC<ChipsProps> = ({
     <fieldset {...props} className={className || undefined}>
       {legend && <legend className="form-legend">{legend}</legend>}
       {description && <p className="form-text">{description}</p>}
-      <ul className={['chip-group', full && '-full'].filter(Boolean).join(' ')}>
+      <ul className={generateClasses({ 'chip-group': true, '-full': !!full })}>
         {children}
       </ul>
     </fieldset>
@@ -69,7 +69,7 @@ export const Chips: FC<ChipsProps> = ({
 );
 
 export interface FilterChipProps extends Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
+  ComponentProps<'button'>,
   'type' | 'aria-pressed' | 'className'
 > {
   selected: boolean;
@@ -90,18 +90,16 @@ export const FilterChip: FC<FilterChipProps> = ({
     {...props}
     type="button"
     aria-pressed={selected}
-    className={['chip', className].filter(Boolean).join(' ')}
+    className={generateClasses({ chip: true, [className]: Boolean(className) })}
   >
     {selected && <Icon icon={CheckIcon} />}
     {children}
   </button>
 );
 
-export interface RemovableChipProps {
-  children: ReactNode;
+export interface RemovableChipProps extends ComponentProps<'span'> {
   removeLabel: string;
   onRemove(): void;
-  className?: string;
 }
 
 /**
@@ -112,9 +110,14 @@ export const RemovableChip: FC<RemovableChipProps> = ({
   removeLabel,
   onRemove,
   className = '',
+  ...props
 }) => (
   <span
-    className={['chip', 'chip-removable', className].filter(Boolean).join(' ')}
+    {...props}
+    className={generateClasses({
+      'chip chip-removable': true,
+      [className]: Boolean(className),
+    })}
   >
     {children}
     <button

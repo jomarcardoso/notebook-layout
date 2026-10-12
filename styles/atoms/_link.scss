@@ -31,6 +31,6 @@ a:not([class]):not(nav *) {
 }
 
 .prose a,
-.p a {
+.body a {
   @include link-in-text;
 }

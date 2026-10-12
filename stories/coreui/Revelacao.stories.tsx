@@ -64,7 +64,7 @@ const ItemDeAcordeao = ({
         className={`accordion-collapse collapse${aberto ? ' show' : ''}`}
       >
         <div className="accordion-body">
-          <p className="p">{corpo}</p>
+          <p className="body">{corpo}</p>
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@ const DobraDemo = () => {
         note="Um botao de texto controla um trecho que ja pertence a pagina. O trecho abre no lugar e empurra o que vem depois; o rotulo diz o que vai acontecer."
       >
         <div style={{ maxInlineSize: '40rem' }}>
-          <p className="p">
+          <p className="body">
             Tres ovos, duas xicaras de farinha, uma xicara de acucar e uma
             colher de fermento.
           </p>
@@ -147,7 +147,7 @@ const DobraDemo = () => {
             {aberta ? 'Esconder os opcionais' : 'Ver os opcionais'}
           </Button>
           <div id={`${id}-dobra`} className={`collapse${aberta ? ' show' : ''}`}>
-            <p className="p">
+            <p className="body">
               Raspas de laranja, uma pitada de canela e cem gramas de nozes
               picadas.
             </p>

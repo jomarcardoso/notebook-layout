@@ -1,30 +1,34 @@
 // notebook-layout/components/section/section.tsx
 import './section.scss';
-import { FC, HTMLProps, ReactNode } from 'react';
-import { SectionTitle } from '../section-title';
+import {
+  type ComponentProps,
+  type ElementType,
+  type FC,
+  type ReactNode,
+} from 'react';
+import { generateClasses } from '../../utils/utils';
 
-export interface SectionProps extends HTMLProps<HTMLDivElement> {
-  title?: string;
-  header?: ReactNode;
+export interface SectionProps extends Omit<ComponentProps<'section'>, 'title'> {
+  title?: ReactNode;
+  titleAs?: ElementType;
 }
 
 export const Section: FC<SectionProps> = ({
-  className = '',
-  header = '',
   title = '',
+  titleAs: Title = 'h3',
+  className = '',
   children,
   ...props
-}) => {
-  const heading: ReactNode = header || title;
+}) => (
+  <section
+    {...props}
+    className={generateClasses({
+      'section l-stack': true,
+      [className]: Boolean(className),
+    })}
+  >
+    {title && <Title className="section-title">{title}</Title>}
 
-  return (
-    <section
-      className={`section l-stack ${className}`.trim()}
-      {...props}
-    >
-      {heading && <SectionTitle>{heading}</SectionTitle>}
-
-      <div className="section__body l-stack">{children}</div>
-    </section>
-  );
-};
+    <div className="section__body l-stack">{children}</div>
+  </section>
+);

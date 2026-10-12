@@ -1,0 +1,20 @@
+// notebook-layout/styles/atoms/_sidebar.scss
+@use '../component';
+
+.sidebar {
+  border-inline-end: component.$sidebar-rule-width var(--app-border-style)
+    component.$sidebar-rule-color;
+}
+
+.sidebar-header {
+  margin-block-end: var(--app-rhythm-2);
+}
+
+.sidebar-footer {
+  display: none;
+  margin-block-start: var(--app-rhythm-2);
+
+  @media (min-width: 576px) {
+    display: flex;
+  }
+}

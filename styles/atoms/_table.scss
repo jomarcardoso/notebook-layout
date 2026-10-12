@@ -1,42 +1,28 @@
 // notebook-layout/styles/atoms/_table.scss
+@use '../component';
 
 .table {
-  font: var(--app-text-numeric);
+  font: component.$table-font;
+  font-variant-numeric: lining-nums var(--app-numeric-tabular);
   margin-block-end: 0;
 
   > caption {
-    color: var(--app-fg-muted);
-    font: var(--app-text-caption);
+    color: component.$table-caption-fg;
+    font: component.$table-caption-font;
     padding-block: var(--app-space-xs);
     text-align: start;
   }
 
   > thead > tr > * {
-    border-block-end-color: var(--app-rule-strong);
-    color: var(--app-fg-muted);
-    font: var(--app-text-label-sm);
+    border-block-end-color: component.$table-head-rule-color;
+    color: component.$table-head-fg;
+    font: component.$table-head-font;
   }
 
   > tbody > tr > th[scope='rowgroup'] {
-    color: var(--app-fg-emphasis);
-    font: var(--app-text-label);
+    color: component.$table-group-fg;
+    font: component.$table-group-font;
     padding-block-start: var(--app-space-md);
-  }
-
-  :is(th, td).numeric {
-    font-variant-numeric: lining-nums var(--app-numeric-tabular);
-    text-align: end;
-  }
-}
-
-.table-sm {
-  font: var(--app-text-numeric);
-  font-size: var(--app-font-size);
-
-  :is(th, td).numeric {
-    font: var(--app-text-numeric);
-    font-size: var(--app-font-size);
-    font-variant-numeric: lining-nums var(--app-numeric-tabular);
   }
 }
 

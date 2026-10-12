@@ -1,9 +1,10 @@
 // notebook-layout/components/atoms/icon-button.tsx
-import { type ButtonHTMLAttributes, type FC } from 'react';
+import { type ComponentProps, type FC } from 'react';
+import { generateClasses } from '../../utils/utils';
 import { Icon, type IconGlyph } from './icon';
 
 export interface IconButtonProps extends Omit<
-  ButtonHTMLAttributes<HTMLButtonElement>,
+  ComponentProps<'button'>,
   'className'
 > {
   icon: IconGlyph;
@@ -25,9 +26,10 @@ export const IconButton: FC<IconButtonProps> = ({
   <button
     {...props}
     type={type}
-    className={['btn', 'btn-ghost-secondary', 'btn-icon', className]
-      .filter(Boolean)
-      .join(' ')}
+    className={generateClasses({
+      'btn btn-ghost-secondary btn-icon': true,
+      [className]: Boolean(className),
+    })}
     aria-label={label}
     aria-pressed={pressed}
   >

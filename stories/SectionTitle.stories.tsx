@@ -1,84 +1,40 @@
+// notebook-layout/stories/SectionTitle.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
-import { SectionTitle } from '@components/section-title';
+import { Group, Row, Sheet } from './atoms/specimen';
 
 const meta = {
-  title: 'Componentes/Titulo de secao',
-  component: SectionTitle,
-  tags: ['autodocs'],
-  args: {
-    children: 'Ingredientes',
-    opaque: false,
-  },
+  title: 'Tipografia/Titulo de secao',
   parameters: {
+    layout: 'padded',
     docs: {
       description: {
         component:
-          'Heading estilizado com linhas laterais que simula a escrita em caderno. Pode receber a variante opaca para uso fora do fundo texturizado.',
+          'O titulo de secao e uma classe, .section-title, no heading do nivel que a pagina pedir: papel title-md com um fio embaixo. Os modificadores mudam o tamanho, o alinhamento e o fio.',
       },
     },
   },
-  argTypes: {
-    children: {
-      control: 'text',
-      description: 'Texto que sera exibido com o estilo de cabecalho.',
-    },
-    opaque: {
-      control: 'boolean',
-      description: 'Aplica fundo branco e contorno solido, pensado para fundos coloridos ou fotos.',
-    },
-    className: { control: false },
-  },
-  decorators: [
-    (Story) => (
-      <div
-        style={{
-          background: 'linear-gradient(180deg, #f9f0e3 0%, #fff8f0 100%)',
-          padding: '32px',
-        }}
-      >
-        <Story />
-      </div>
-    ),
-  ],
-} satisfies Meta<typeof SectionTitle>;
+} satisfies Meta;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
-
-export const Opaque: Story = {
-  args: {
-    opaque: true,
-    children: 'Titulo sobre foto',
-  },
-  parameters: {
-    backgrounds: {
-      default: 'dark',
-      values: [
-        { name: 'dark', value: '#24313c' },
-      ],
-    },
-    docs: {
-      description: {
-        story:
-          'A variante opaca adiciona uma faixa clara que melhora a leitura sobre fundos mais escuros.',
-      },
-    },
-  },
-};
-
-export const LongText: Story = {
-  args: {
-    children: 'Um titulo extenso demonstra a distribuicao da tipografia com multiplas palavras',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'O componente permite titulos maiores mantendo o espacamento vertical definido pela tipografia base.',
-      },
-    },
-  },
+export const Variantes: Story = {
+  render: () => (
+    <Sheet>
+      <Group title=".section-title">
+        <Row label="padrao">
+          <h2 className="section-title">Ingredientes</h2>
+        </Row>
+        <Row label="-sub">
+          <h3 className="section-title -sub">Massa</h3>
+        </Row>
+        <Row label="-center">
+          <h2 className="section-title -center">Modo de preparo</h2>
+        </Row>
+        <Row label="-plain">
+          <h2 className="section-title -plain">Relacionadas</h2>
+        </Row>
+      </Group>
+    </Sheet>
+  ),
 };

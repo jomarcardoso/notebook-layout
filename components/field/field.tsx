@@ -3,15 +3,14 @@
 
 import {
   type ChangeEventHandler,
+  type ComponentProps,
   type FC,
   type FocusEventHandler,
-  type HTMLProps,
-  type InputHTMLAttributes,
   type ReactNode,
-  type TextareaHTMLAttributes,
   useId,
 } from 'react';
 import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
+import { Icon, type IconGlyph } from '../atoms/icon';
 import { IconButton } from '../atoms/icon-button';
 import {
   FieldInput,
@@ -24,14 +23,16 @@ import {
   hasFieldMarkers,
   type FieldListStyleImage,
 } from './field.markers';
+import { generateClasses } from '../../utils/utils';
 import { FieldError, FieldHint, FieldLabel } from './field.messages';
 
 export type { FieldOption };
 
 interface OwnProps {
-  rootProps?: HTMLProps<HTMLDivElement>;
-  labelProps?: HTMLProps<HTMLLabelElement>;
+  rootProps?: ComponentProps<'div'>;
+  labelProps?: ComponentProps<'label'>;
   label?: ReactNode;
+  icon?: IconGlyph;
   options?: FieldOption[];
   multiline?: boolean;
   breakline?: boolean;
@@ -45,11 +46,11 @@ interface OwnProps {
 }
 
 type FieldNativeProps = Omit<
-  InputHTMLAttributes<HTMLInputElement>,
+  ComponentProps<'input'>,
   'onChange' | 'onBlur' | 'onFocus' | 'size'
 > &
   Omit<
-    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    ComponentProps<'textarea'>,
     'onChange' | 'onBlur' | 'onFocus'
   >;
 
@@ -74,6 +75,7 @@ function readText(
 
 export const Field: FC<FieldProps> = ({
   label = '',
+  icon,
   labelProps,
   rootProps,
   options,
@@ -127,15 +129,13 @@ export const Field: FC<FieldProps> = ({
   return (
     <div
       {...rootProps}
-      className={[
-        'field',
-        isTextarea && 'field--sheet',
-        size === 'large' && 'field--large',
-        marked && 'field--marked',
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+      className={generateClasses({
+        field: true,
+        'field--sheet': isTextarea,
+        'field--large': size === 'large',
+        'field--marked': marked,
+        [className]: Boolean(className),
+      })}
     >
       {label && (
         <FieldLabel {...labelProps} htmlFor={id} optional={optional}>
@@ -144,6 +144,7 @@ export const Field: FC<FieldProps> = ({
       )}
 
       <div className="field-adorned">
+        {icon && <Icon icon={icon} className="field-adorned-lead" />}
         {marked && <FieldMarkers {...markers} />}
 
         {isSelect ? (

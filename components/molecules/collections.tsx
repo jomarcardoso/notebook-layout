@@ -1,15 +1,15 @@
 // notebook-layout/components/molecules/collections.tsx
 import {
+  type ComponentProps,
   type ElementType,
   type FC,
-  type HTMLAttributes,
-  type ImgHTMLAttributes,
+  type MouseEventHandler,
   type ReactNode,
   useId,
 } from 'react';
 import { generateClasses } from '../../utils/utils';
 
-export interface CollectionProps extends HTMLAttributes<HTMLUListElement> {
+export interface CollectionProps extends ComponentProps<'ul'> {
   children: ReactNode;
 }
 
@@ -32,9 +32,10 @@ export const ThumbGrid = collection('thumb-grid');
 export type ThumbItemVariant = 'default' | 'featured' | 'brief';
 
 export interface ThumbItemProps {
-  href: string;
+  href?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   children: ReactNode;
-  image?: ImgHTMLAttributes<HTMLImageElement>;
+  image?: ComponentProps<'img'>;
   description?: string[];
   linkComponent?: ElementType;
   variant?: ThumbItemVariant;
@@ -53,7 +54,8 @@ interface LinkedItemProps extends IndexItemProps {
 const LinkedItem: FC<LinkedItemProps> = ({
   block,
   listClassName,
-  href,
+  href = '',
+  onClick,
   children,
   image = {},
   excerpt = '',
@@ -68,9 +70,8 @@ const LinkedItem: FC<LinkedItemProps> = ({
     [`${block}--${variant}`]: variant !== 'default',
   });
 
-  return (
-    <li className={listClassName}>
-      <Link className={classes} href={href} aria-labelledby={textId}>
+  const content = (
+    <>
         {variant === 'brief' ? null : image.src ? (
           <img
             loading="lazy"
@@ -88,7 +89,25 @@ const LinkedItem: FC<LinkedItemProps> = ({
         {description.length ? (
           <p className={`${block}__description`}>{description.join(' · ')}</p>
         ) : null}
-      </Link>
+    </>
+  );
+
+  return (
+    <li className={listClassName}>
+      {onClick ? (
+        <button
+          type="button"
+          className={classes}
+          aria-labelledby={textId}
+          onClick={onClick}
+        >
+          {content}
+        </button>
+      ) : (
+        <Link className={classes} href={href} aria-labelledby={textId}>
+          {content}
+        </Link>
+      )}
     </li>
   );
 };

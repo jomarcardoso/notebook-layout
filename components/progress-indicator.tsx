@@ -1,52 +1,35 @@
-'use client';
-import { type FC, useMemo } from 'react';
+// notebook-layout/components/progress-indicator.tsx
+import { type ComponentProps, type FC } from 'react';
 import '../styles/components/progress-indicator.scss';
 import { generateClasses } from '../utils/utils';
+import { ProgressMeter } from './atoms/waiting';
 
-export interface ProgressIndicatorProps {
+export interface ProgressIndicatorProps extends ComponentProps<'div'> {
   current: number;
   total: number;
-  className?: string;
 }
 
 export const ProgressIndicator: FC<ProgressIndicatorProps> = ({
   current,
   total,
   className = '',
+  ...props
 }) => {
   const safeTotal = Math.max(total, 1);
   const clampedValue = Math.min(Math.max(current, 0), safeTotal);
-  const classes = useMemo(
-    () =>
-      generateClasses({
-        'progress-indicator': true,
-        [className]: !!className,
-      }),
-    [className],
-  );
 
   return (
-    <div className={classes}>
-      <div className="progress-meta">
-        <span>Etapa</span>
-        <span className="numeric">
-          {clampedValue} de {safeTotal}
-        </span>
-      </div>
-
-      <div
-        className="progress"
-        role="progressbar"
-        aria-label={`Etapa ${clampedValue} de ${safeTotal}`}
-        aria-valuenow={clampedValue}
-        aria-valuemin={0}
-        aria-valuemax={safeTotal}
-      >
-        <div
-          className="progress-bar"
-          style={{ width: `${(clampedValue / safeTotal) * 100}%` }}
-        />
-      </div>
-    </div>
+    <ProgressMeter
+      {...props}
+      className={generateClasses({
+        'progress-indicator': true,
+        [className]: Boolean(className),
+      })}
+      label="Etapa"
+      valueText={`${clampedValue} de ${safeTotal}`}
+      accessibleLabel={`Etapa ${clampedValue} de ${safeTotal}`}
+      value={clampedValue}
+      max={safeTotal}
+    />
   );
 };

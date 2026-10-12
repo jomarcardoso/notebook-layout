@@ -48,12 +48,12 @@ export const IndiceEConteudo: Story = {
           <div className="col-md-8">
             <div className="l-stack">
               <h3 className="title-md">Ingredientes</h3>
-              <p className="p">
+              <p className="body">
                 Duas xicaras de farinha de trigo peneirada, uma xicara de
                 acucar, tres ovos e duzentos gramas de queijo ralado na hora.
               </p>
               <h3 className="title-md">Modo de preparo</h3>
-              <p className="p">
+              <p className="body">
                 Bata as claras em neve e reserve. Misture a farinha com o
                 fermento e junte as gemas, mexendo devagar ate a massa ficar
                 lisa.

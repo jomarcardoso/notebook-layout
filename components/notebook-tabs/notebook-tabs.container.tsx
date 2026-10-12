@@ -1,5 +1,6 @@
+// notebook-layout/components/notebook-tabs/notebook-tabs.container.tsx
 import './notebook-tabs.container.scss';
-import { FC } from 'react';
+import { type FC } from 'react';
 import { generateClasses } from '../../utils/utils';
 import { NotebookTabs, NotebookTabsProps } from './notebook-tabs';
 

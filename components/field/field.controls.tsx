@@ -1,15 +1,7 @@
 'use client';
 // notebook-layout/components/field/field.controls.tsx
-import {
-  type ChangeEventHandler,
-  type FC,
-  type FocusEventHandler,
-  type InputHTMLAttributes,
-  type SelectHTMLAttributes,
-  type TextareaHTMLAttributes,
-} from 'react';
-import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
-import { Icon } from '../atoms/icon';
+import { type ComponentProps, type FC } from 'react';
+import { Select, type SelectProps } from '../atoms/select';
 import { Textarea } from '../atoms/textarea';
 
 export interface FieldOption {
@@ -27,7 +19,7 @@ export interface FieldControlProps {
 export const FieldInput: FC<FieldControlProps> = (props) => (
   <input
     type="text"
-    {...(props as InputHTMLAttributes<HTMLInputElement>)}
+    {...(props as ComponentProps<'input'>)}
     className="form-control"
   />
 );
@@ -36,36 +28,13 @@ export const FieldTextarea: FC<
   FieldControlProps & { minRows?: number | string }
 > = ({ minRows, ...props }) => (
   <Textarea
-    {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
+    {...(props as ComponentProps<'textarea'>)}
     minRows={minRows}
   />
 );
 
 export const FieldSelect: FC<
   FieldControlProps & { options: FieldOption[] }
-> = ({ options, ...props }) => {
-  const select = props as SelectHTMLAttributes<HTMLSelectElement> & {
-    onChange?: unknown;
-    onBlur?: unknown;
-    onFocus?: unknown;
-  };
-
-  return (
-    <span className="select-field">
-      <select
-        {...select}
-        className="form-select"
-        onChange={select.onChange as ChangeEventHandler<HTMLSelectElement>}
-        onBlur={select.onBlur as FocusEventHandler<HTMLSelectElement>}
-        onFocus={select.onFocus as FocusEventHandler<HTMLSelectElement>}
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <Icon icon={CaretDownIcon} className="select-field-caret" />
-    </span>
-  );
-};
+> = ({ options, ...props }) => (
+  <Select {...(props as SelectProps)} options={options} />
+);

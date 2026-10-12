@@ -1,11 +1,6 @@
 // notebook-layout/styles/atoms/_progress.scss
 
 .spinner-border {
-  --cui-spinner-animation-speed: 0.9s;
-  --cui-spinner-border-width: var(--app-icon-stroke);
-  --cui-spinner-height: var(--app-size-icon);
-  --cui-spinner-width: var(--app-size-icon);
-
   color: inherit;
 }
 
@@ -15,16 +10,6 @@
   justify-content: center;
   opacity: 0;
   padding-block: var(--app-rhythm-1);
-}
-
-.progress,
-.progress-stacked {
-  --cui-progress-bar-bg: var(--app-bg-neutral-solid);
-  --cui-progress-bar-transition: width var(--app-duration-fast) linear;
-  --cui-progress-bg: var(--app-rule);
-  --cui-progress-border-radius: 0;
-  --cui-progress-box-shadow: none;
-  --cui-progress-height: 4px;
 }
 
 .progress-meta {

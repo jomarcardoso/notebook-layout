@@ -94,7 +94,6 @@
   --cui-btn-disabled-opacity: var(--app-opacity-disabled);
 }
 
-.btn-secondary,
 .btn-outline-secondary {
   --cui-btn-bg: transparent;
   --cui-btn-border-color: var(--app-border-default);
@@ -217,6 +216,12 @@
 
 .btn-flush {
   margin-inline: calc(-1 * var(--btn-pad-x));
+}
+
+.btn-block {
+  inline-size: 100%;
+  justify-content: flex-start;
+  max-inline-size: none;
 }
 
 .btn[aria-busy='true'] {
