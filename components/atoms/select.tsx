@@ -4,7 +4,6 @@ import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
 import { generateClasses } from '../../utils/utils';
 import { Icon } from './icon';
 
-/** Uma escolha num campo que oferece um conjunto fechado delas. */
 export interface SelectOption {
   value: string;
   label: string;

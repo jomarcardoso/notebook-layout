@@ -1,16 +1,16 @@
-// notebook-layout/stories/compositions/GrupoDeCampos.stories.tsx
+// notebook-layout/stories/compositions/FieldGroup.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { Field } from '@components/field';
 import { Group, Sheet } from '../atoms/specimen';
 
 const meta = {
-  title: 'Composicoes/Grupo de campos',
+  title: 'Compositions/Field group',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'A pagina de composicao divide o formulario em grupos com .fieldset: legenda em label e fg-muted, uma linha de apoio em caption, e os campos empilhados em l-stack. Entre grupos, uma unidade de ritmo. Quem governa a largura e o campo, na medida estreita. O sistema marca o opcional, nunca o obrigatorio.',
+          'The composition page splits the form into groups with .fieldset: legend in label and fg-muted, a supporting line in caption, and the fields stacked in l-stack. Between groups, one rhythm unit. The field governs the width, at the narrow measure. The system marks the optional, never the required.',
       },
     },
   },
@@ -19,13 +19,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const DoisGrupos: Story = {
-  name: 'Dois grupos',
+export const TwoGroups: Story = {
+  name: 'Two groups',
   render: () => (
     <Sheet>
       <Group
-        title="Dois grupos"
-        note="Frase do leitor em manuscrita (titulo, nota) e dado em fonte de corpo (numero). A legenda nomeia o grupo; ela nao repete o rotulo de nenhum campo."
+        title="Two groups"
+        note="The reader's phrase in handwriting (title, note) and data in body type (number). The legend names the group; it does not repeat any field's label."
       >
         <form className="l-measure -narrow" onSubmit={(event) => event.preventDefault()}>
           <fieldset className="fieldset">

@@ -49,7 +49,7 @@ const ControlledField: FC<FieldProps> = ({
 };
 
 const meta = {
-  title: 'Moleculas/Campo completo',
+  title: 'Molecules/Complete field',
   component: Field,
   tags: ['autodocs'],
   parameters: {
@@ -57,7 +57,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A primeira molecula: rotulo, controle, ajuda e erro, com a ligacao de aria-describedby feita num lugar so. Ela nao inventa pintura nenhuma — cada peca e um atomo, e o que esta escrito e o arranjo. Para a matriz de estados completa, veja Atomos/Campos.',
+          'The first molecule: label, control, hint and error, with the aria-describedby wiring done in a single place. It invents no paint of its own — each piece is an atom, and what is written here is the arrangement. For the full state matrix, see Atoms/Fields.',
       },
     },
   },
@@ -77,35 +77,36 @@ const meta = {
     className: { control: false },
     hint: {
       control: 'text',
-      description: 'Texto de ajuda abaixo do campo. Diz o que preencher.',
+      description: 'Hint text below the field. It says what to fill in.',
     },
     error: {
       control: 'text',
       description:
-        'A mensagem de erro. Ela diz o que FAZER, nao o que deu errado: "Escreva um titulo" e melhor que "Campo obrigatorio". Renderizada, ela poe o controle em aria-invalid e troca o fio de base para danger.',
+        'The error message. It says what to DO, not what went wrong: "Escreva um titulo" is better than "Campo obrigatorio". When rendered, it sets the control to aria-invalid and switches the base rule to danger.',
     },
     optional: {
       control: 'boolean',
       description:
-        'O sistema marca o campo OPCIONAL, nunca o obrigatorio: asterisco vermelho e marca de formulario, nao de livro.',
+        'The system marks the OPTIONAL field, never the required one: a red asterisk is a form mark, not a book mark.',
     },
     label: {
       control: 'text',
-      description: 'Titulo associado ao campo.',
+      description: 'Title tied to the field.',
     },
     multiline: {
       control: 'boolean',
-      description: 'Alterna entre input tradicional e textarea auto ajustavel.',
+      description:
+        'Switches between a regular input and a self-sizing textarea.',
     },
     breakline: {
       control: 'boolean',
       description:
-        'Quando falso, forca o uso de input de linha unica mesmo com multiline true.',
+        'When false, forces a single-line input even with multiline true.',
     },
     size: {
       control: 'radio',
       options: [undefined, 'large'],
-      description: 'Define o espaco vertical especial do layout "grande".',
+      description: 'Sets the special vertical spacing of the "large" layout.',
       table: {
         type: {
           summary: "'large' | undefined",
@@ -160,7 +161,7 @@ export const WithEraseAction: Story = {
     docs: {
       description: {
         story:
-          'Ao fornecer `onErase`, o componente exibe um botao contextual que limpa o campo e dispara a acao informada.',
+          'When `onErase` is given, the component shows a contextual button that clears the field and fires the given action.',
       },
     },
   },
@@ -184,7 +185,7 @@ export const WithoutLabel: Story = {
     docs: {
       description: {
         story:
-          'Quando nenhum `label` e fornecido o espaco e ajustado automaticamente, mantendo o layout consistente.',
+          'When no `label` is given the space adjusts automatically, keeping the layout consistent.',
       },
     },
   },

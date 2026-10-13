@@ -10,12 +10,12 @@ Quase tudo aqui e composicao: primitivos `l-*`, grade do CoreUI, tipografia e co
 
 | peca | classe | camada | Storybook |
 | --- | --- | --- | --- |
-| boxe | `.box` | atom `styles/atoms/_box.scss` | Atomos/Boxe |
-| ficha e dado | `.description-list`, `.description-list__item`, `.description-list__term`, `.description-list__details` | molecula `styles/molecules/_description-list.scss` | Moleculas/Ficha |
-| folio | `.folio` | atom `styles/atoms/_folio.scss` | Composicoes/Folio |
+| boxe | `.box` | atom `styles/atoms/_box.scss` | Atoms/Box |
+| ficha e dado | `.description-list`, `.description-list__item`, `.description-list__term`, `.description-list__details` | molecula `styles/molecules/_description-list.scss` | Molecules/Fact sheet |
+| folio | `.folio` | atom `styles/atoms/_folio.scss` | Compositions/Folio |
 | aparato | `.apparatus` | molecula `styles/molecules/_apparatus.scss` | — |
 | modal | `.modal`, `.modal__body`, `.modal__footer` | componente `styles/components/modal.scss` | — |
-| doca | `.dock`, `.dock__list`, `.dock__item`, `.dock__label`, pelo `Dock` | componente `styles/components/dock.scss` | Componentes/Avisos, revelacao e midia |
+| doca | `.dock`, `.dock__list`, `.dock__item`, `.dock__label`, pelo `Dock` | componente `styles/components/dock.scss` | Components/Notices, disclosure and media |
 | ladrilho de midia | `.media-tile`, `.media-tile__media`, `.media-tile__status`, `.media-tile__actions`, `.media-tile__error`, pelo `MediaTile` | componente `styles/components/media-tile.scss` | — |
 
 ### Boxe
@@ -64,12 +64,12 @@ O que o corpo reserva no fim nao e calha: e o teclado do telefone e a faixa de g
 
 | composicao | com o que | Storybook |
 | --- | --- | --- |
-| abertura | `.opening`, `display`, `.description-list`, `.app-image`, `ExpandableText`, `Button` | Composicoes/Abertura |
-| destaque de vitrine | `row` 7/5, `.section-title`, `ThumbItem` com `variant` `featured` e `brief` | Composicoes/Destaque de vitrine |
-| secao com acao | `l-cluster -between -baseline`, `.section-title.-plain`, link, `IndexList` | Composicoes/Secao com acao |
-| vazio | `l-measure -narrow`, `l-stack -block`, `.state-illustration`, `title-sm`, `Button` | Composicoes/Vazio |
-| grupo de campos | `.fieldset`, `l-stack`, `Field` | Composicoes/Grupo de campos |
-| montagem de leitura | `l-regions`, `sticky-top`, `LineList`, `.table` | Composicoes/Montagem de leitura |
+| abertura | `.opening`, `display`, `.description-list`, `.app-image`, `ExpandableText`, `Button` | Compositions/Opening |
+| destaque de vitrine | `row` 7/5, `.section-title`, `ThumbItem` com `variant` `featured` e `brief` | Compositions/Showcase highlight |
+| secao com acao | `l-cluster -between -baseline`, `.section-title.-plain`, link, `IndexList` | Compositions/Section with action |
+| vazio | `l-measure -narrow`, `l-stack -block`, `.state-illustration`, `title-sm`, `Button` | Compositions/Empty |
+| grupo de campos | `.fieldset`, `l-stack`, `Field` | Compositions/Field group |
+| montagem de leitura | `l-regions`, `sticky-top`, `LineList`, `.table` | Compositions/Reading assembly |
 
 ### Abertura
 

@@ -1,7 +1,7 @@
 // notebook-layout/styles/_coreui-utilities.scss
 
-// O mapa `$utilities` do CoreUI: as familias que nao compilam (null) e os
-// utilitarios de ritmo e de texto que o sistema acrescenta.
+// CoreUI's `$utilities` map: the families that do not compile (null) and the
+// rhythm and text utilities the system adds.
 
 $rhythm-values: (
   half: var(--app-rhythm-half),

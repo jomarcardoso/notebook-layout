@@ -10,7 +10,7 @@
   display: inline-flex;
   font: var(--app-text-label);
   gap: 6px;
-  // O alvo e a caixa; o que e pintado fica centrado dentro dela.
+  // The target is the box; what is painted stays centred inside it.
   isolation: isolate;
   min-block-size: var(--app-size-control);
   min-inline-size: var(--app-size-control);
@@ -123,7 +123,7 @@ button.chip {
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
-  // Aproxima o X do texto e da borda pintada.
+  // Brings the X closer to the text and to the painted border.
   margin-inline: -8px -6px;
   min-block-size: var(--app-size-control);
   min-inline-size: var(--app-size-control);

@@ -11,8 +11,8 @@ export interface FileButtonProps extends Omit<ButtonProps, 'onChange'> {
 }
 
 /**
- * Um botao na frente de um input de arquivo escondido. No telefone, o input
- * abre a camera ou a galeria.
+ * A button in front of a hidden file input. On a phone, the input
+ * opens the camera or the gallery.
  */
 export const FileButton: FC<FileButtonProps> = ({
   accept = '',
@@ -24,8 +24,8 @@ export const FileButton: FC<FileButtonProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    // O React solta `currentTarget` quando o handler retorna; sem limpar o
-    // valor antes do await, o mesmo arquivo escolhido de novo nao dispara nada.
+    // React releases `currentTarget` when the handler returns; without clearing the
+    // value before the await, picking the same file again fires nothing.
     const input = event.currentTarget;
     const files = Array.from(input.files ?? []);
 

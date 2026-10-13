@@ -713,15 +713,15 @@ de caderno.
 
 O peso do botao comunica **o custo de desfazer**, nao a importancia da acao.
 
-1. **Compromisso** — preenchido com accent. Um por tela, no maximo. So o ato que
+1. **Compromisso** (`commitment`) — preenchido com accent. Um por tela, no maximo. So o ato que
    produz ou destroi algo: salvar, publicar, excluir.
-2. **Estruturante** — contorno com BORDA (`border-default`), sem preenchimento.
+2. **Estruturante** (`structural`) — contorno com BORDA (`border-default`), sem preenchimento.
    Adicionar, cancelar, duplicar. E o botao do dia a dia. Borda e nao fio porque,
    pela definicao do §2, o que contorna um objeto e borda.
-3. **Navegacao e edicao leve** — texto com accent, sem borda e sem fundo.
+3. **Navegacao e edicao leve** (`text`) — texto com accent, sem borda e sem fundo.
    Editar, ver mais, trocar unidade, filtrar.
-4. **Destrutiva secundaria** — texto em danger. Preenchido em danger apenas na
-   confirmacao final dentro do modal.
+4. **Destrutiva secundaria** (`destructive`) — texto em danger. Preenchido em danger apenas na
+   confirmacao final dentro do modal (`destructive-confirm`).
 
 Icone no botao so no estruturante, e so com desenho universal; o compromisso e
 sempre um verbo, e ele ja e o unico preenchido da tela.

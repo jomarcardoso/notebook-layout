@@ -72,12 +72,12 @@ export const ConfirmProvider: FC<ConfirmProviderProps> = ({
         onClose={() => settle(false)}
         footer={
           <>
-            <Button weight="estruturante" onClick={() => settle(false)}>
+            <Button weight="structural" onClick={() => settle(false)}>
               {options.cancelLabel}
             </Button>
             <Button
               weight={
-                options.destructive ? 'confirmacao-destrutiva' : 'compromisso'
+                options.destructive ? 'destructive-confirm' : 'commitment'
               }
               onClick={() => settle(true)}
             >

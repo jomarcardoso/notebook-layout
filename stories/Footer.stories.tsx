@@ -6,7 +6,7 @@ import { TrashIcon } from '@phosphor-icons/react/dist/ssr/Trash';
 import { Footer } from '@components/footer';
 
 const meta = {
-  title: 'Componentes/Rodape',
+  title: 'Components/Footer',
   component: Footer,
   tags: ['autodocs'],
   parameters: {

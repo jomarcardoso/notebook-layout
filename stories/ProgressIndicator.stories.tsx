@@ -1,8 +1,9 @@
+// notebook-layout/stories/ProgressIndicator.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { ProgressIndicator } from '@components/progress-indicator';
 
 const meta = {
-  title: 'Componentes/Indicador de progresso',
+  title: 'Components/Progress indicator',
   component: ProgressIndicator,
   tags: ['autodocs'],
   parameters: {
@@ -10,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'Indicador de etapa com a mesma forma do atomo Progress: “Etapa” e “X de Y” em caption e fg-muted, o numero em algarismos tabulares no fim da linha, e abaixo a barra do CoreUI (.progress) com trilho em rule e avanco em neutral-solid.',
+          'Step indicator with the same shape as the Progress atom: “Etapa” and “X de Y” in caption and fg-muted, the number in tabular figures at the end of the line, and below it the CoreUI bar (.progress) with the track in rule and the advance in neutral-solid.',
       },
     },
   },
@@ -22,11 +23,11 @@ const meta = {
   argTypes: {
     current: {
       control: { type: 'range', min: 0, max: 10, step: 1 },
-      description: 'Etapa atual (clampado entre 0 e total).',
+      description: 'Current step (clamped between 0 and total).',
     },
     total: {
       control: { type: 'number', min: 1, max: 20, step: 1 },
-      description: 'Quantidade total de etapas.',
+      description: 'Total number of steps.',
     },
     className: { control: false },
   },
@@ -53,7 +54,8 @@ export const LastStep: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Mostra o indicador quando a jornada já está na etapa final.',
+        story:
+          'Shows the indicator when the journey is already at the final step.',
       },
     },
   },
@@ -68,7 +70,7 @@ export const EarlyStep: Story = {
     docs: {
       description: {
         story:
-          'Visual de início do fluxo, útil para validar contraste da linha e da barra com pouco preenchimento.',
+          'The start of the flow, useful to check the contrast of the line and of the bar with little fill.',
       },
     },
   },

@@ -22,8 +22,8 @@ export interface DockProps extends ComponentProps<'nav'> {
 }
 
 /**
- * Os destinos principais numa fileira presa a borda da tela, para o polegar:
- * icone e rotulo curto. O atual fica em tinta cheia e com o icone preenchido.
+ * The main destinations in a row pinned to the screen edge, for the thumb:
+ * icon and short label. The current one is in full ink with the filled icon.
  */
 export const Dock: FC<DockProps> = ({
   items = [],

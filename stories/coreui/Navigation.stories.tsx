@@ -1,4 +1,4 @@
-// notebook-layout/stories/coreui/Navegacao.stories.tsx
+// notebook-layout/stories/coreui/Navigation.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { BookOpenIcon } from '@phosphor-icons/react/dist/ssr/BookOpen';
@@ -11,13 +11,13 @@ import { Breadcrumbs } from '@components/breadcrumbs';
 import { Group, Row, Sheet } from '../atoms/specimen';
 
 const meta = {
-  title: 'CoreUI/Navegacao',
+  title: 'CoreUI/Navigation',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'Trilha, paginacao, menu suspenso e barra lateral: as classes do CoreUI com a configuracao do entry e do adapter, sem CSS proprio. As abas ficam em Navegacao/Abas.',
+          "Breadcrumb, pagination, dropdown and sidebar: CoreUI's classes with the entry and adapter configuration, without CSS of our own. The tabs are in Navigation/Tabs.",
       },
     },
   },
@@ -26,12 +26,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Trilha: Story = {
+export const Breadcrumb: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Trilha"
-        note="O componente Breadcrumbs sobre o CBreadcrumb. O ultimo item e a pagina atual, em fg-emphasis e sem link."
+        title="Breadcrumb"
+        note="The Breadcrumbs component over CBreadcrumb. The last item is the current page, in fg-emphasis and without a link."
       >
         <Breadcrumbs
           items={[
@@ -43,8 +43,8 @@ export const Trilha: Story = {
       </Group>
 
       <Group
-        title="Trilha compacta"
-        note="Num container mais estreito que a trilha, so o pai aparece, como voltar. Quem decide e a largura do container, nao a da tela."
+        title="Compact breadcrumb"
+        note="In a container narrower than the trail, only the parent appears, as a way back. The container width decides, not the screen width."
       >
         <div style={{ maxWidth: 320 }}>
           <Breadcrumbs
@@ -60,12 +60,12 @@ export const Trilha: Story = {
   ),
 };
 
-export const Paginacao: Story = {
+export const Pagination: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Paginacao"
-        note="Itens sem borda em fg-muted. A pagina atual e o lavado de selecionado com tinta de enfase; hover so em aparelho com hover."
+        title="Pagination"
+        note="Items without a border in fg-muted. The current page is the selected wash with emphasis ink; hover only on devices with hover."
       >
         <nav aria-label="Paginas de receitas">
           <ul className="pagination">
@@ -98,24 +98,24 @@ export const Paginacao: Story = {
 };
 
 const MenuDemo = () => {
-  const [aberto, setAberto] = useState(true);
+  const [open, setOpen] = useState(true);
 
   return (
     <Sheet>
       <Group
-        title="Menu suspenso"
-        note="A acao repetida em cada linha vira menu. O menu e papel da pagina com fio; o item escolhido e o lavado de selecionado. Raio e sombra da folha ainda nao sao emitidos: ver as pendencias do inventario."
+        title="Dropdown"
+        note="The action repeated on every line becomes a menu. The menu is page paper with a rule; the chosen item is the selected wash. The sheet radius and shadow are not emitted yet: see the inventory's open items."
       >
-        <Row label="aberto">
+        <Row label="open">
           <div className="dropdown" style={{ minBlockSize: '17rem' }}>
             <IconButton
               icon={DotsThreeIcon}
               label="Mais opcoes"
               aria-haspopup="menu"
-              aria-expanded={aberto}
-              onClick={() => setAberto(!aberto)}
+              aria-expanded={open}
+              onClick={() => setOpen(!open)}
             />
-            <ul className={`dropdown-menu${aberto ? ' show' : ''}`} role="menu">
+            <ul className={`dropdown-menu${open ? ' show' : ''}`} role="menu">
               <li>
                 <span className="dropdown-header">Esta receita</span>
               </li>
@@ -160,25 +160,25 @@ const MenuDemo = () => {
   );
 };
 
-export const MenuSuspenso: Story = {
-  name: 'Menu suspenso',
+export const Dropdown: Story = {
+  name: 'Dropdown',
   render: () => <MenuDemo />,
 };
 
-const ITENS_DA_BARRA = [
-  { rotulo: 'Minhas receitas', icone: BookOpenIcon, ativo: true },
-  { rotulo: 'Listas', icone: ListBulletsIcon, ativo: false },
-  { rotulo: 'Buscar', icone: MagnifyingGlassIcon, ativo: false },
-  { rotulo: 'Ajustes', icone: GearIcon, ativo: false },
+const SIDEBAR_ITEMS = [
+  { label: 'Minhas receitas', icon: BookOpenIcon, active: true },
+  { label: 'Listas', icon: ListBulletsIcon, active: false },
+  { label: 'Buscar', icon: MagnifyingGlassIcon, active: false },
+  { label: 'Ajustes', icon: GearIcon, active: false },
 ];
 
-export const BarraLateral: Story = {
-  name: 'Barra lateral',
+export const SidebarMarkup: Story = {
+  name: 'Sidebar',
   render: () => (
     <Sheet>
       <Group
-        title="Barra lateral"
-        note="A marcacao que o CSidebar do www renderiza, com a configuracao atual do adapter: fundo da pagina, hover e ativo com lavado. A barra tem a altura da janela, como no www. O DESIGN_LANGUAGE pede ativo em fg-emphasis; a divergencia esta nas pendencias do inventario."
+        title="Sidebar"
+        note="The markup www's CSidebar renders, with the current adapter configuration: page background, hover and active with a wash. The bar is the height of the window, as in www. DESIGN_LANGUAGE asks for active in fg-emphasis; the divergence is in the inventory's open items."
       >
         <div style={{ display: 'flex' }}>
           <nav className="sidebar" aria-label="Navegacao primaria">
@@ -187,15 +187,15 @@ export const BarraLateral: Story = {
             </div>
             <ul className="sidebar-nav">
               <li className="nav-title">Caderno</li>
-              {ITENS_DA_BARRA.map(({ rotulo, icone, ativo }) => (
-                <li className="nav-item" key={rotulo}>
+              {SIDEBAR_ITEMS.map(({ label, icon, active }) => (
+                <li className="nav-item" key={label}>
                   <a
-                    className={`nav-link${ativo ? ' active' : ''}`}
+                    className={`nav-link${active ? ' active' : ''}`}
                     href="#"
-                    aria-current={ativo ? 'page' : 'false'}
+                    aria-current={active ? 'page' : 'false'}
                   >
-                    <Icon icon={icone} className="nav-icon" />
-                    {rotulo}
+                    <Icon icon={icon} className="nav-icon" />
+                    {label}
                   </a>
                 </li>
               ))}

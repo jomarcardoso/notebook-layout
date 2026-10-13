@@ -79,13 +79,13 @@
   opacity: 1;
 }
 
-// A biblioteca pinta o rotulo de vermelho no erro. Isso e desfeito: o erro
-// aparece no contorno e na mensagem abaixo do grupo, e o rotulo continua legivel.
+// The library paints the label red on error. That is undone: the error
+// shows on the outline and in the message below the group, and the label stays legible.
 .form-check-input.is-invalid ~ .form-check-label {
   color: var(--app-fg-default);
 }
 
-// ============================================================ a caixa
+// ============================================================== the box
 
 .check-box {
   block-size: var(--app-size-icon);

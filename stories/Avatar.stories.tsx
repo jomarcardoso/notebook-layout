@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Avatar, type AvatarProps } from '@components/avatar';
 
 const meta = {
-  title: 'Componentes/Avatar',
+  title: 'Components/Avatar',
   component: Avatar,
   tags: ['autodocs'],
   parameters: {

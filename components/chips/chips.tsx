@@ -21,7 +21,7 @@ const ChipConfigContext = createContext<{ name: string; type: ChipInputType }>({
 });
 
 /**
- * O chip de ESCOLHA: um `input` dentro de um grupo nomeado.
+ * The CHOICE chip: an `input` inside a named group.
  */
 export const Chip: FC<ComponentProps<'input'>> = ({
   children,
@@ -77,9 +77,6 @@ export interface FilterChipProps extends Omit<
   className?: string;
 }
 
-/**
- * O chip de FILTRO liga e desliga um filtro.
- */
 export const FilterChip: FC<FilterChipProps> = ({
   selected,
   children,
@@ -103,7 +100,7 @@ export interface RemovableChipProps extends ComponentProps<'span'> {
 }
 
 /**
- * Um valor ja escolhido, com o X de remover no fim.
+ * A value already chosen, with the remove X at the end.
  */
 export const RemovableChip: FC<RemovableChipProps> = ({
   children,

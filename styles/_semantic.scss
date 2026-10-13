@@ -12,10 +12,10 @@
     --app-radius-overlay: 4px;
     --app-ratio-media: 1;
     --app-ratio-thumb: 1;
-    // ESTA E A UNICA MEDIDA DO SISTEMA EM `rem`, e e em `rem` porque a unidade
-    // E uma linha de texto: quem aumenta a fonte ganha linha maior, e um ritmo
-    // parado em px desfaria o alinhamento que justifica a unidade justamente
-    // para quem mais precisa dele. `2rem` da 32px no default.
+    // THIS IS THE ONLY MEASURE OF THE SYSTEM IN `rem`, and it is in `rem` because the unit
+    // IS a line of text: whoever enlarges the font gets a taller line, and a rhythm
+    // frozen in px would undo the alignment that justifies the unit precisely
+    // for those who need it most. `2rem` gives 32px by default.
     --app-rhythm-unit: 2rem;
     --app-rhythm-half: calc(var(--app-rhythm-unit) / 2);
     --app-rhythm-1: var(--app-rhythm-unit);
@@ -23,8 +23,8 @@
     --app-rhythm-3: calc(var(--app-rhythm-unit) * 3);
     --app-rhythm-4: calc(var(--app-rhythm-unit) * 4);
 
-    // Folga que prende um texto ao que vem logo depois dele, o fio ou o corpo.
-    // Em `em`, resolve na fonte de quem a usa.
+    // Clearance that ties a text to what comes right after it, the rule or the body.
+    // In `em`, it resolves in the font of whoever uses it.
     --app-gap-text: 0.2em;
 
     --app-gutter: #{metrics.$gutter};
@@ -80,7 +80,7 @@
     --app-text-script: var(--weight-regular) var(--size-6) /
       var(--leading-normal) var(--font-script);
 
-    // `font` reseta o tracking e o variant, entao estes vao depois dele.
+    // `font` resets tracking and variant, so these go after it.
     --app-text-display-tracking: var(--tracking-tight);
     --app-text-title-lg-tracking: var(--tracking-snug);
     --app-numeric-tabular: tabular-nums;
@@ -88,8 +88,8 @@
     --app-size-control-sm: calc(var(--app-space-unit) * 7);
     --app-size-control-lg: calc(var(--app-space-unit) * 11);
     --app-size-icon: 20px;
-    // MEDIDA. E do texto, nunca da regiao. O aparato tem a sua propria, e e o
-    // que impede que ele leia como um segundo conteudo.
+    // MEASURE. It belongs to the text, never to the region. The apparatus has its own, and it is
+    // what keeps it from reading as a second content.
     --app-measure-body: 68ch;
     --app-measure-narrow: 45ch;
     --app-measure-apparatus: 34ch;
@@ -111,7 +111,7 @@
     --app-z-toast: 1080;
     --app-z-tooltip: 1090;
     --app-opacity-disabled: 0.45;
-    // Entre secoes de uma pagina: espaco de FLUXO, entao le a unidade de ritmo.
+    // Between sections of a page: FLOW space, so it reads the rhythm unit.
     --app-gap-section: var(--app-rhythm-1);
   }
 }
@@ -159,7 +159,7 @@
     --app-fg-warning: var(--warning-a11);
     --app-bg-warning-subtle: var(--warning-a3);
 
-    // A unica sombra do sistema, exclusiva da folha sobreposta.
+    // The only shadow in the system, reserved for the overlaid sheet.
     --app-shadow-overlay: var(--shadow-overlay);
   }
 }

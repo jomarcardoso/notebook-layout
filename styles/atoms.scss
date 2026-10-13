@@ -1,10 +1,10 @@
 // notebook-layout/styles/atoms.scss
 
 @layer ds-overrides {
-  // etapa 0 — fundacoes
+  // foundations
   @import './atoms/focus';
 
-  // etapa 1 — marcas de leitura
+  // reading marks
   @import './atoms/icon';
   @import './atoms/label';
   @import './atoms/field-message';
@@ -15,24 +15,24 @@
   @import './atoms/box';
   @import './atoms/overlay';
 
-  // etapa 2 — acao
+  // action
   @import './atoms/button';
   @import './atoms/link';
   @import './atoms/breadcrumb';
   @import './atoms/accordion';
   @import './atoms/sidebar';
 
-  // etapa 3 — lugares de escrever e marcas do leitor
+  // places to write and reader marks
   @import './atoms/field';
   @import './atoms/reader-marks';
   @import './atoms/chip';
 
-  // etapa 4 — retorno
+  // feedback
   @import './atoms/skeleton';
   @import './atoms/progress';
   @import './atoms/image';
 
-  // dados
+  // data
   @import './atoms/table';
   @import './atoms/tooltip';
 }

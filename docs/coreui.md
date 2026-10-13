@@ -51,29 +51,29 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 
 | parcial | configurado em | quem usa | Storybook |
 | --- | --- | --- | --- |
-| `root`, `containers`, `grid`, `utilities/api` | entry (`$spacers`, `$grid-gutter-width`, `$enable-cssgrid`) e `_coreui-utilities.scss` (`$utilities`) | `www` (`row`, `col-*`, `.grid`, `container`, utilitarios de mecanica) | CoreUI/Grade, CoreUI/Mecanica |
-| `helpers/clearfix`, `position`, `ratio`, `text-truncation`, `visually-hidden` | entry, um a um | `www` (`visually-hidden`, `ratio`) | CoreUI/Mecanica |
-| `breadcrumb` | entry (`$breadcrumb-margin-bottom`, `$breadcrumb-item-padding-x`), atom `_breadcrumb.scss` (tinta, papel, link e modo compacto por container query) | `Breadcrumbs` | CoreUI/Navegacao |
-| `nav` | entry (`$nav-*`, `$nav-tabs-*`) | `Tabs` | Navegacao/Abas |
-| `buttons` | entry (`$btn-*`), atom `_button.scss` | `Button`, `IconButton` | Atomos/Acao |
-| `accordion` | knobs `$accordion-*` de `_component.scss`, lidos pelo entry, pelo adapter e pelo atom `_accordion.scss` (o aberto pelo `[open]` do `details`) | `Accordion` e `AccordionItem`, usados pelo `FiledRecipes` do `www` | CoreUI/Revelacao |
-| `transitions` | entry (`$transition-*`) | `.collapse` do acordeao | CoreUI/Revelacao |
-| `images` | — | `.app-image` e atom proprio | Moleculas/Indice e grade |
-| `sidebar` | entry (`$sidebar-toggler-*`), adapter, atom `_sidebar.scss` | `Sidebar` sobre `CSidebar` | CoreUI/Navegacao |
-| `badge` | entry, atom `_tag.scss` | `Tag` | Atomos/Marcas de leitura |
-| `forms/*` (labels, form-text, form-control, form-select, form-check, validation) | entry (`$input-*`, `$form-*`), atoms `_field`, `_label`, `_field-message`, `_reader-marks` | `Select`, `Textarea`, `Field`, `LineListCheck` | Atomos/Campos, Atomos/Marcas do leitor, Moleculas/Campo completo |
-| `spinners`, `progress` | entry (`$spinner-*`, `$progress-*`), atom `_progress.scss` (cor herdada do spinner, linha de rotulo da barra) | `Waiting`, `Progress`, `ProgressIndicator`, `Button` carregando | Atomos/Retorno |
-| `dropdown` | entry (`$dropdown-*`), adapter | — | CoreUI/Navegacao |
-| `pagination` | entry (`$pagination-*`), adapter | — | CoreUI/Navegacao |
-| `callout` | entry (`$callout-*`), adapter | — | CoreUI/Avisos |
-| `alert` | entry (`$alert-*`), cores pelo adapter | `www` `.alert` na revisao de alimento do admin | CoreUI/Avisos |
-| `offcanvas` | entry (`$offcanvas-*`) | — | CoreUI/Folha lateral |
-| `tables` | knobs `$table-*` de `_component.scss`, lidos pelo entry (`$table-*`) e pelo atom `_table.scss` (fonte da celula, cabecalho, legenda e grupo de linhas, que o CoreUI nao configura), e `resets.scss` | `www` `AminoAcidsTable` e a revisao de alimento do admin | CoreUI/Tabela |
-| `tooltip` | entry (`$tooltip-*`), atom `_tooltip.scss` | — | CoreUI/Dica |
+| `root`, `containers`, `grid`, `utilities/api` | entry (`$spacers`, `$grid-gutter-width`, `$enable-cssgrid`) e `_coreui-utilities.scss` (`$utilities`) | `www` (`row`, `col-*`, `.grid`, `container`, utilitarios de mecanica) | CoreUI/Grid, CoreUI/Mechanics |
+| `helpers/clearfix`, `position`, `ratio`, `text-truncation`, `visually-hidden` | entry, um a um | `www` (`visually-hidden`, `ratio`) | CoreUI/Mechanics |
+| `breadcrumb` | entry (`$breadcrumb-margin-bottom`, `$breadcrumb-item-padding-x`), atom `_breadcrumb.scss` (tinta, papel, link e modo compacto por container query) | `Breadcrumbs` | CoreUI/Navigation |
+| `nav` | entry (`$nav-*`, `$nav-tabs-*`) | `Tabs` | Navigation/Tabs |
+| `buttons` | entry (`$btn-*`), atom `_button.scss` | `Button`, `IconButton` | Atoms/Action |
+| `accordion` | knobs `$accordion-*` de `_component.scss`, lidos pelo entry, pelo adapter e pelo atom `_accordion.scss` (o aberto pelo `[open]` do `details`) | `Accordion` e `AccordionItem`, usados pelo `FiledRecipes` do `www` | CoreUI/Disclosure |
+| `transitions` | entry (`$transition-*`) | `.collapse` do acordeao | CoreUI/Disclosure |
+| `images` | — | `.app-image` e atom proprio | Molecules/Index and grid |
+| `sidebar` | entry (`$sidebar-toggler-*`), adapter, atom `_sidebar.scss` | `Sidebar` sobre `CSidebar` | CoreUI/Navigation |
+| `badge` | entry, atom `_tag.scss` | `Tag` | Atoms/Reading marks |
+| `forms/*` (labels, form-text, form-control, form-select, form-check, validation) | entry (`$input-*`, `$form-*`), atoms `_field`, `_label`, `_field-message`, `_reader-marks` | `Select`, `Textarea`, `Field`, `LineListCheck` | Atoms/Fields, Atoms/Reader marks, Molecules/Complete field |
+| `spinners`, `progress` | entry (`$spinner-*`, `$progress-*`), atom `_progress.scss` (cor herdada do spinner, linha de rotulo da barra) | `Waiting`, `Progress`, `ProgressIndicator`, `Button` carregando | Atoms/Feedback |
+| `dropdown` | entry (`$dropdown-*`), adapter | — | CoreUI/Navigation |
+| `pagination` | entry (`$pagination-*`), adapter | — | CoreUI/Navigation |
+| `callout` | entry (`$callout-*`), adapter | — | CoreUI/Notices |
+| `alert` | entry (`$alert-*`), cores pelo adapter | `www` `.alert` na revisao de alimento do admin | CoreUI/Notices |
+| `offcanvas` | entry (`$offcanvas-*`) | — | CoreUI/Side sheet |
+| `tables` | knobs `$table-*` de `_component.scss`, lidos pelo entry (`$table-*`) e pelo atom `_table.scss` (fonte da celula, cabecalho, legenda e grupo de linhas, que o CoreUI nao configura), e `resets.scss` | `www` `AminoAcidsTable` e a revisao de alimento do admin | CoreUI/Table |
+| `tooltip` | entry (`$tooltip-*`), atom `_tooltip.scss` | — | CoreUI/Tooltip |
 
 ### Como cada um e usado
 
-**Botao.** Pela prop `weight` do `Button`, nunca por `btn-*` escrito a mao no `www`: `compromisso` e `btn-primary`, `estruturante` e `btn-outline-secondary`, `texto` e `btn-ghost-primary`, `destrutiva` e `btn-ghost-danger`, `confirmacao-destrutiva` e `btn-danger`. O pressionado de 1px e o 0.45 do solido desabilitado ja estao no atom. A linha de apoio sob o rotulo e a prop `description`, que vira o `small` irmao do `.btn-label`; `.btn-secondary` nao tem estilo neste sistema. Link com cara de botao usa `btn btn-primary` ou `btn btn-outline-secondary`.
+**Botao.** Pela prop `weight` do `Button`, nunca por `btn-*` escrito a mao no `www`: `commitment` e `btn-primary`, `structural` e `btn-outline-secondary`, `text` e `btn-ghost-primary`, `destructive` e `btn-ghost-danger`, `destructive-confirm` e `btn-danger`. O pressionado de 1px e o 0.45 do solido desabilitado ja estao no atom. A linha de apoio sob o rotulo e a prop `description`, que vira o `small` irmao do `.btn-label`; `.btn-secondary` nao tem estilo neste sistema. Link com cara de botao usa `btn btn-primary` ou `btn btn-outline-secondary`.
 
 **Campo, select, caixa de marcar e interruptor.** O fio de base, a pauta da textarea, a seta Phosphor do select (`.select-field-caret`) e o interruptor quadrado ja estao nos atoms. `$form-select-indicator`, `$form-check-input-checked-bg-image` e `$form-switch-*-bg-image` estao em `none` no entry, entao nenhum SVG com cor literal da biblioteca chega ao CSS. O rotulo flutuante e os tamanhos `sm` e `lg` nao sao usados.
 
@@ -81,7 +81,7 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 
 **Acordeao.** `AccordionItem` e um `<details class="accordion-item">` com `<summary class="accordion-button">`: abrir, fechar e o teclado sao do elemento, e o titulo pode ser um heading (`titleAs`). As medidas, as cores e o movimento vem dos knobs `$accordion-*` de `_component.scss`: o `.accordion` do CoreUI e o `AccordionItem` leem os mesmos, e outro projeto que use so o do CoreUI ja recebe a configuracao. O atom `_accordion.scss` le o aberto pelo `[open]`, e nao pela ausencia de `.collapsed`, e anima a altura por `::details-content`, que some com `prefers-reduced-motion`. Um fio por item, desenhado pelo adapter em `.accordion-item`. O indicador e um `Icon` Phosphor com a classe `accordion-indicator`; a seta SVG da biblioteca esta desligada. A variante `accordion-flush` nao muda nada aqui: o adapter ja tira as bordas laterais, e a regra dele vence o `last-child` sem borda da variante.
 
-**Dobra.** `.collapse` com `.show`, controlada por um botao de peso `texto` com `aria-expanded`. A altura anima com `--app-duration-base` quando o `CCollapse` usa `.collapsing`, e o movimento some com `prefers-reduced-motion`. A dobra esconde o bloco inteiro; quando o que se protege sao as linhas que sobram de um texto, o componente e `ExpandableText`, que corta em quatro linhas com reticencias — `.collapse` nao corta nada e `text-truncate` so vale para uma linha.
+**Dobra.** `.collapse` com `.show`, controlada por um botao de peso `text` com `aria-expanded`. A altura anima com `--app-duration-base` quando o `CCollapse` usa `.collapsing`, e o movimento some com `prefers-reduced-motion`. A dobra esconde o bloco inteiro; quando o que se protege sao as linhas que sobram de um texto, o componente e `ExpandableText`, que corta em quatro linhas com reticencias — `.collapse` nao corta nada e `text-truncate` so vale para uma linha.
 
 **Menu suspenso.** `.dropdown-menu` em `bg-page` com fio `rule`, raio e sombra de folha pelo atom `_overlay.scss`; item no hover em `bg-hover`, escolhido em `bg-selected` com `fg-emphasis`. O gatilho e um `IconButton` com `aria-haspopup`; a classe `dropdown-toggle` nao e usada, porque o triangulo dela e desenhado por borda.
 

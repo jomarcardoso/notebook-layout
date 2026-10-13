@@ -1,6 +1,6 @@
 // notebook-layout/styles/atoms/_link.scss
 
-// Fino e deslocado, respeitando o descendente.
+// Thin and offset, respecting the descender.
 @mixin link-line {
   text-decoration-skip-ink: auto;
   text-decoration-thickness: 1px;

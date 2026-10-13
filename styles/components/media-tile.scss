@@ -30,7 +30,7 @@
     text-align: center;
   }
 
-  // So aparece num estado passageiro, por isso pode cobrir a imagem.
+  // Only appears in a transient state, which is why it may cover the image.
   &__status {
     background-color: component.$media-tile-status-bg;
     bottom: var(--app-space-2xs);

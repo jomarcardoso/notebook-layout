@@ -36,8 +36,8 @@ export interface SidebarProps extends ComponentProps<'div'> {
 }
 
 /**
- * O trilho de navegacao do app. Recolhe para os icones, e a escolha do leitor
- * vale para todas as paginas.
+ * The app navigation rail. It collapses to the icons, and the reader's choice
+ * holds for every page.
  */
 export const Sidebar: FC<SidebarProps> = ({
   items = [],

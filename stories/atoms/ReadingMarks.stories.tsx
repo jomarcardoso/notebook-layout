@@ -1,4 +1,4 @@
-// notebook-layout/stories/atoms/MarcasDeLeitura.stories.tsx
+// notebook-layout/stories/atoms/ReadingMarks.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
 import { HeartIcon } from '@phosphor-icons/react/dist/ssr/Heart';
@@ -12,7 +12,7 @@ import { Group, Row, Sheet } from './specimen';
 const HeartFillIcon = withWeight(HeartIcon, 'fill');
 
 const meta = {
-  title: 'Atomos/Marcas de leitura',
+  title: 'Atoms/Reading marks',
   parameters: {
     layout: 'padded',
   },
@@ -21,13 +21,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const RotuloAjudaErro: Story = {
-  name: 'Rotulo, ajuda e erro',
+export const LabelHintError: Story = {
+  name: 'Label, hint and error',
   render: () => (
     <Sheet>
       <Group
-        title="Rotulo de campo"
-        note="Papel label, peso 500, em tinta de apoio: o peso firme compensa a tinta suave, e o que foi digitado continua sendo o que mais pesa no campo. O sistema marca o OPCIONAL, nunca o obrigatorio — asterisco vermelho e marca de formulario, nao de livro."
+        title="Field label"
+        note="Label role, weight 500, in supporting ink: the firm weight makes up for the soft ink, and what was typed is still what weighs most in the field. The system marks the OPTIONAL, never the required — a red asterisk is a form mark, not a book mark."
       >
         <div>
           <label className="form-label" htmlFor="a">
@@ -44,8 +44,8 @@ export const RotuloAjudaErro: Story = {
       </Group>
 
       <Group
-        title="Ajuda e erro"
-        note="Os dois em caption, abaixo do campo, ligados por aria-describedby. Nenhum leva icone: icone colorido para transmitir estado e antipadrao, e o campo ja mudou de fio. A mensagem de erro diz o que FAZER, nao o que deu errado."
+        title="Hint and error"
+        note="Both in caption, below the field, linked by aria-describedby. Neither carries an icon: a coloured icon to convey state is an anti-pattern, and the field has already changed its rule. The error message says what to DO, not what went wrong."
       >
         <div>
           <label className="form-label" htmlFor="c">
@@ -75,15 +75,15 @@ export const RotuloAjudaErro: Story = {
   ),
 };
 
-export const TagEContador: Story = {
-  name: 'Tag, contador e numero',
+export const TagAndCounter: Story = {
+  name: 'Tag, counter and number',
   render: () => (
     <Sheet>
       <Group
         title="Tag"
-        note="Marcador estatico: lavado fraco, tinta de apoio, caption, raio zero. Ela nao reage ao ponteiro e nao leva icone — um icone de 20px ao lado de um texto de 14px pesa mais que a palavra. Tag e lavada e chip e contornado, e e assim que os dois se distinguem pela aparencia."
+        note="Static marker: faint wash, supporting ink, caption, zero radius. It does not react to the pointer and carries no icon — a 20px icon next to 14px text weighs more than the word. A tag is washed and a chip is outlined, and that is how the two are told apart by look."
       >
-        <Row label="categoria">
+        <Row label="category">
           <Tag>Doces</Tag>
           <Tag>Sem gluten</Tag>
         </Row>
@@ -92,16 +92,16 @@ export const TagEContador: Story = {
           <Tag status="warning">Rascunho</Tag>
           <Tag status="danger">Removida</Tag>
         </Row>
-        <Row label="contador">
+        <Row label="counter">
           <Tag count>12</Tag>
         </Row>
       </Group>
 
       <Group
-        title="Contador em linha"
-        note="Dentro de outro controle o contador perde o lavado e vira so o numero em tinta fraca: um lavado dentro de um contorno seria uma caixa dentro de outra caixa."
+        title="Inline counter"
+        note="Inside another control the counter loses its wash and becomes just the number in faint ink: a wash inside an outline would be a box inside another box."
       >
-        <Row label="numa aba">
+        <Row label="in a tab">
           <span className="label">
             Minhas receitas <span className="count">28</span>
           </span>
@@ -109,8 +109,8 @@ export const TagEContador: Story = {
       </Group>
 
       <Group
-        title="Numero"
-        note="O papel numeric e tabular: numa coluna, os algarismos alinham. Ele nao fala do dominio — serve a quantidade de um ingrediente, a um valor nutricional e a uma celula de tabela."
+        title="Number"
+        note="The numeric role is tabular: in a column, the figures line up. It does not speak of the domain — it serves the amount of an ingredient, a nutrition value and a table cell."
       >
         <div
           style={{
@@ -123,13 +123,13 @@ export const TagEContador: Story = {
             ['Farinha', '250 g'],
             ['Acucar', '80 g'],
             ['Leite', '1 000 ml'],
-          ].map(([nome, medida]) => (
+          ].map(([name, amount]) => (
             <div
-              key={nome}
+              key={name}
               style={{ display: 'flex', justifyContent: 'space-between' }}
             >
-              <span>{nome}</span>
-              <span className="numeric">{medida}</span>
+              <span>{name}</span>
+              <span className="numeric">{amount}</span>
             </div>
           ))}
         </div>
@@ -138,23 +138,23 @@ export const TagEContador: Story = {
   ),
 };
 
-export const Iconografia: Story = {
+export const Iconography: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Icone de sistema"
-        note="Um tamanho so, 20px. Na Phosphor a espessura vem presa ao peso, entao dois tamanhos na mesma tela seriam duas espessuras de tinta. Ele nunca tem cor propria: herda a tinta do elemento que o contem."
+        title="System icon"
+        note="A single size, 20px. In Phosphor the stroke is tied to the weight, so two sizes on the same screen would be two ink thicknesses. It never has a colour of its own: it inherits the ink of the element that contains it."
       >
-        <Row label="na tinta do corpo">
+        <Row label="in body ink">
           <Icon icon={PlusIcon} />
           <Icon icon={MagnifyingGlassIcon} />
           <Icon icon={CaretDownIcon} />
         </Row>
-        <Row label="contorno e preenchido">
+        <Row label="outline and filled">
           <Icon icon={HeartIcon} iconMarked={HeartFillIcon} />
           <Icon icon={HeartIcon} iconMarked={HeartFillIcon} marked />
         </Row>
-        <Row label="herdando a tinta">
+        <Row label="inheriting ink">
           <span style={{ color: 'var(--app-fg-muted)' }}>
             <Icon icon={PlusIcon} />
           </span>
@@ -167,22 +167,22 @@ export const Iconografia: Story = {
         </Row>
       </Group>
       <p className="caption">
-        Preenchido nao e decoracao: mais tinta significa mais destaque. Contorno
-        e o padrao e preenchido significa MARCADO — salvo, favorito, o item
-        ativo da navegacao. Um coracao de favoritar e tinta neutra, nunca
-        vermelho: a cor &ldquo;do que o desenho representa&rdquo; pertence a
-        figura de conteudo.
+        Filled is not decoration: more ink means more emphasis. Outline is the
+        default and filled means MARKED — saved, favourite, the active
+        navigation item. A favourite heart is neutral ink, never red: the colour
+        &ldquo;of what the drawing represents&rdquo; belongs to the content
+        figure.
       </p>
     </Sheet>
   ),
 };
 
-export const Ornamento: Story = {
+export const Ornament: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="O losango"
-        note="Uma forma de ornamento so, em dois papeis. Marca de secao: maior, em accent, porque e rubricacao e pertence ao documento. Marcador da lista de prosa: pequeno, em tinta terciaria, na mesma coluna de margem. As listas estao em Moleculas/Listas."
+        title="The lozenge"
+        note="A single ornament shape, in two roles. Section mark: larger, in accent, because it is rubrication and belongs to the document. Prose list marker: small, in tertiary ink, in the same margin column. The lists are in Molecules/Lists."
       >
         <div>
           <h3 className="title-md">
@@ -198,9 +198,9 @@ export const Ornamento: Story = {
       </Group>
 
       <p className="caption">
-        Uma marca por linha: nunca marcador junto com figura, nunca losango
-        junto com vinheta. A regra da marca de secao e por documento — ou todas
-        as secoes tem, ou nenhuma tem.
+        One mark per line: never a marker together with a figure, never a
+        lozenge together with a vignette. The section mark rule is per document
+        — either every section has it, or none does.
       </p>
     </Sheet>
   ),

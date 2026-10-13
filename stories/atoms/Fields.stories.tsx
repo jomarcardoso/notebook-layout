@@ -1,4 +1,4 @@
-// notebook-layout/stories/atoms/Campos.stories.tsx
+// notebook-layout/stories/atoms/Fields.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { EyeIcon } from '@phosphor-icons/react/dist/ssr/Eye';
@@ -9,13 +9,13 @@ import { Field } from '@components/field';
 import { Group, Row, Sheet } from './specimen';
 
 const meta = {
-  title: 'Atomos/Campos',
+  title: 'Atoms/Fields',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'Clique num campo para ver o foco: o fio de base engrossa e escurece, o texto NAO se mexe, e o anel do navegador contorna a caixa inteira.',
+          'Click a field to see focus: the base rule thickens and darkens, the text does NOT move, and the browser ring outlines the whole box.',
       },
     },
   },
@@ -24,19 +24,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Bloco = ({ children }: { children: React.ReactNode }) => (
+const Block = ({ children }: { children: React.ReactNode }) => (
   <div style={{ display: 'grid', gap: 'var(--app-rhythm-1)' }}>{children}</div>
 );
 
-export const LinhaUnica: Story = {
-  name: 'Linha unica',
+export const SingleLine: Story = {
+  name: 'Single line',
   render: () => (
     <Sheet>
       <Group
-        title="Estados"
-        note="A tinta do fio cresce do repouso ao foco. O texto pousa perto do fio e a sobra da caixa de 44px fica acima dele — se o texto flutuasse no meio da caixa, input e textarea deixariam de ser a mesma familia."
+        title="States"
+        note="The rule's ink grows from rest to focus. The text sits close to the rule and the rest of the 44px box stays above it — if the text floated in the middle of the box, input and textarea would stop being the same family."
       >
-        <Bloco>
+        <Block>
           <Field label="Repouso" placeholder="Bolo de cenoura" />
           <Field label="Com texto" defaultValue="Bolo de cenoura" />
           <Field label="Com ajuda" hint="O nome que voce daria em casa." />
@@ -48,21 +48,21 @@ export const LinhaUnica: Story = {
             readOnly
             defaultValue="Bolo de cenoura"
           />
-        </Bloco>
+        </Block>
       </Group>
     </Sheet>
   ),
 };
 
-export const Folha: Story = {
-  name: 'Folha pautada',
+export const RuledSheet: Story = {
+  name: 'Ruled sheet',
   render: () => (
     <Sheet>
       <Group
         title="Textarea"
-        note="A ULTIMA linha da pauta e o fio de base, desenhada mais forte: o rotulo marca o inicio, o fio marca o fim, e a pauta fraca preenche o meio. Nao ha fio duplo porque nao ha duas linhas no mesmo lugar."
+        note="The LAST line of the ruling is the base rule, drawn stronger: the label marks the start, the rule marks the end, and the faint ruling fills the middle. There is no double rule because there are never two lines in the same place."
       >
-        <Bloco>
+        <Block>
           <Field
             label="Modo de preparo"
             multiline
@@ -77,19 +77,19 @@ export const Folha: Story = {
               'Bata as claras em neve.\nMisture a farinha.\nLeve ao forno.'
             }
           />
-        </Bloco>
+        </Block>
       </Group>
 
       <Group
-        title="A manuscrita e de todo campo de texto"
-        note="A manuscrita nao e um modificador: ela e a letra de todo campo de texto, e e o que faz o caderno ser o caderno de alguem. O select fica de fora, porque ali se mostra um valor escolhido de uma lista que o produto escreveu — nao uma frase que a pessoa digitou."
+        title="Handwriting belongs to every text field"
+        note="Handwriting is not a modifier: it is the lettering of every text field, and it is what makes the notebook somebody's notebook. The select stays out, because it shows a value chosen from a list the product wrote — not a phrase the person typed."
       >
         <div>
-          <label className="form-label" htmlFor="ms">
+          <label className="form-label" htmlFor="handwritten">
             Uma nota sua
           </label>
           <Textarea
-            id="ms"
+            id="handwritten"
             rows={3}
             defaultValue={
               'A do jeito da vovo leva\numa colher a mais de acucar.'
@@ -99,8 +99,8 @@ export const Folha: Story = {
       </Group>
 
       <Group
-        title="Uma linha so"
-        note="Uma textarea de uma linha fica identica a um input. E o que faz dos dois uma familia de verdade, em vez de dois componentes parecidos."
+        title="A single line"
+        note="A one-line textarea looks identical to an input. That is what makes the two a real family, instead of two similar components."
       >
         <div
           style={{
@@ -122,13 +122,13 @@ export const Folha: Story = {
   ),
 };
 
-export const ComMarcadores: Story = {
-  name: 'Com coluna de margem',
+export const WithMarkers: Story = {
+  name: 'With margin column',
   render: () => (
     <Sheet>
       <Group
-        title="Folha com marcadores"
-        note="Uma marca por linha, na coluna de margem, cada uma com a altura de uma linha do ritmo. A pauta e a coluna batem porque as duas leem a mesma unidade."
+        title="Sheet with markers"
+        note="One mark per line, in the margin column, each the height of one rhythm line. The ruling and the column line up because both read the same unit."
       >
         <Field
           label="Ingredientes desta parte"
@@ -143,23 +143,23 @@ export const ComMarcadores: Story = {
   ),
 };
 
-const SelectEAdornos = () => {
-  const [termo, setTermo] = useState('cenoura');
-  const [visivel, setVisivel] = useState(false);
+const SelectAndAdornments = () => {
+  const [term, setTerm] = useState('cenoura');
+  const [visible, setVisible] = useState(false);
 
   return (
     <Sheet>
       <Group
         title="Select"
-        note="A lista de opcoes continua sendo a do sistema: no telefone, o seletor nativo e melhor que qualquer lista recriada, e ele ja e acessivel. O que muda e a caixa fechada, que e a do campo de texto com a seta no fim."
+        note="The options list is still the system's: on a phone, the native picker is better than any recreated list, and it is already accessible. What changes is the closed box, which is the text field's with the arrow at the end."
       >
-        <Bloco>
+        <Block>
           <Field
             label="Unidade"
             options={[
               { value: 'g', label: 'Gramas' },
               { value: 'ml', label: 'Mililitros' },
-              { value: 'xic', label: 'Xicaras' },
+              { value: 'cup', label: 'Xicaras' },
             ]}
           />
           <Field
@@ -167,32 +167,32 @@ const SelectEAdornos = () => {
             disabled
             options={[{ value: 'g', label: 'Gramas' }]}
           />
-        </Bloco>
+        </Block>
       </Group>
 
       <Group
-        title="Adornos"
-        note="So tres existem. A lupa e decorativa — diz que tipo de campo e aquele, mas nao e clicavel, e por isso fica em tinta de apoio. Limpar e mostrar senha sao botoes de verdade, com nome acessivel e tinta cheia."
+        title="Adornments"
+        note="Only three exist. The magnifier is decorative — it says what kind of field this is, but it is not clickable, which is why it stays in supporting ink. Clear and show password are real buttons, with an accessible name and full ink."
       >
         <div>
-          <label className="form-label" htmlFor="busca">
+          <label className="form-label" htmlFor="search">
             Buscar
           </label>
           <div className="field-adorned">
             <Icon icon={MagnifyingGlassIcon} className="field-adorned-lead" />
             <input
-              id="busca"
+              id="search"
               className="form-control"
               type="search"
-              value={termo}
-              onChange={(event) => setTermo(event.currentTarget.value)}
+              value={term}
+              onChange={(event) => setTerm(event.currentTarget.value)}
             />
-            {termo && (
+            {term && (
               <div className="field-adorned-trail">
                 <IconButton
                   icon={XIcon}
                   label="Limpar busca"
-                  onClick={() => setTermo('')}
+                  onClick={() => setTerm('')}
                 />
               </div>
             )}
@@ -200,14 +200,14 @@ const SelectEAdornos = () => {
         </div>
 
         <div>
-          <label className="form-label" htmlFor="senha">
+          <label className="form-label" htmlFor="password">
             Senha
           </label>
           <div className="field-adorned">
             <input
-              id="senha"
+              id="password"
               className="form-control"
-              type={visivel ? 'text' : 'password'}
+              type={visible ? 'text' : 'password'}
               defaultValue="segredo"
               autoComplete="current-password"
             />
@@ -215,8 +215,8 @@ const SelectEAdornos = () => {
               <IconButton
                 icon={EyeIcon}
                 label="Mostrar senha"
-                pressed={visivel}
-                onClick={() => setVisivel((v) => !v)}
+                pressed={visible}
+                onClick={() => setVisible((v) => !v)}
               />
             </div>
           </div>
@@ -224,15 +224,15 @@ const SelectEAdornos = () => {
       </Group>
 
       <Group
-        title="Campo com acao ao lado"
-        note="Um campo tem no maximo um adorno no inicio e um botao no fim. Quando a acao e um verbo, ela sai do campo e vira botao na linha."
+        title="Field with an action beside it"
+        note="A field has at most one adornment at the start and one button at the end. When the action is a verb, it leaves the field and becomes a button on the line."
       >
-        <Row label="busca com botao">
+        <Row label="search with button">
           <Select
             aria-label="Onde buscar"
             options={[
-              { value: 'minhas', label: 'Minhas receitas' },
-              { value: 'todas', label: 'Todas' },
+              { value: 'mine', label: 'Minhas receitas' },
+              { value: 'all', label: 'Todas' },
             ]}
           />
         </Row>
@@ -241,7 +241,7 @@ const SelectEAdornos = () => {
   );
 };
 
-export const SelectEAdornosStory: Story = {
-  name: 'Select e adornos',
-  render: () => <SelectEAdornos />,
+export const SelectAndAdornmentsStory: Story = {
+  name: 'Select and adornments',
+  render: () => <SelectAndAdornments />,
 };

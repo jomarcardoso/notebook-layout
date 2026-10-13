@@ -11,7 +11,7 @@ export interface TextareaProps extends Omit<
 }
 
 /**
- * O INPUT E UMA LINHA, A TEXTAREA E UMA FOLHA.
+ * THE INPUT IS A LINE, THE TEXTAREA IS A SHEET.
  */
 export const Textarea: FC<TextareaProps> = ({
   className = '',

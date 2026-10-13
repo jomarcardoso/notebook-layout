@@ -1,16 +1,16 @@
-// notebook-layout/stories/coreui/Grade.stories.tsx
+// notebook-layout/stories/coreui/Grid.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { LineList, LineListItem } from '@components/molecules';
 import { Group, Sheet } from '../atoms/specimen';
 
 const meta = {
-  title: 'CoreUI/Grade',
+  title: 'CoreUI/Grid',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'A grade de 12 colunas do CoreUI usada direto, porque e mecanica. A calha e --app-gutter, 32px, a mesma de l-regions: o token e $grid-gutter-width leem o mesmo valor de _metrics.scss.',
+          'CoreUI\'s 12-column grid used directly, because it is mechanics. The gutter is --app-gutter, 32px, the same as l-regions: the token and $grid-gutter-width read the same value from _metrics.scss.',
       },
     },
   },
@@ -19,15 +19,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const SECOES = ['Ingredientes', 'Modo de preparo', 'Nutricional', 'Relacionadas'];
+const SECTIONS = ['Ingredientes', 'Modo de preparo', 'Nutricional', 'Relacionadas'];
 
-export const IndiceEConteudo: Story = {
-  name: 'Indice e conteudo',
+export const IndexAndContent: Story = {
+  name: 'Index and content',
   render: () => (
     <Sheet>
       <Group
         title="4 e 8"
-        note="col-md-4 para o indice ancorado e col-md-8 para o conteudo. O indice e uma line-list de links, e position-sticky o prende enquanto o conteudo rola. Abaixo de md as duas colunas viram sequencia, na ordem indice e conteudo."
+        note="col-md-4 for the anchored index and col-md-8 for the content. The index is a line-list of links, and position-sticky holds it while the content scrolls. Below md the two columns become a sequence, in the order index then content."
       >
         <div className="row">
           <div className="col-md-4">
@@ -37,9 +37,9 @@ export const IndiceEConteudo: Story = {
               aria-label="Nesta receita"
             >
               <LineList>
-                {SECOES.map((secao, index) => (
-                  <LineListItem key={secao} href="#" selected={index === 0}>
-                    {secao}
+                {SECTIONS.map((section, index) => (
+                  <LineListItem key={section} href="#" selected={index === 0}>
+                    {section}
                   </LineListItem>
                 ))}
               </LineList>

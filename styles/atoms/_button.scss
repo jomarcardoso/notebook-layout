@@ -117,7 +117,7 @@
   --cui-btn-disabled-color: var(--app-fg-disabled);
 }
 
-// ------------------------------------------- texto, destrutiva e so de icone
+// --------------------------------------------- text, destructive and icon-only
 
 .btn-ghost-primary,
 .btn-ghost-danger,
@@ -146,13 +146,13 @@
   );
 }
 
-// O HOVER DA ACAO DESTRUTIVA E VERMELHO LAVADO, e nao o lavado neutro.
+// THE DESTRUCTIVE ACTION HOVER IS A RED WASH, not the neutral wash.
 //
-// O §9 diz que hover e alfa sobre o que estiver embaixo, e o neutro e a regra
-// geral. A acao destrutiva e a excecao, por um motivo que nao e decorativo: ela
-// e a unica acao cujo custo de desfazer e infinito, e a unica em que o ponteiro
-// parado ja devia estar avisando. O lavado sai de um token que ja existe — o
-// mesmo da tag de status — entao isto nao cria hover por componente.
+// §9 says hover is alpha over whatever is underneath, and neutral is the general
+// rule. The destructive action is the exception, for a reason that is not decorative: it
+// is the only action whose cost of undoing is infinite, and the only one where the resting
+// pointer should already be warning. The wash comes from a token that already exists — the
+// same as the status tag — so this does not create a per-component hover.
 .btn-ghost-danger {
   --cui-btn-active-bg: var(--app-bg-danger-subtle);
   --cui-btn-active-color: var(--app-fg-danger);

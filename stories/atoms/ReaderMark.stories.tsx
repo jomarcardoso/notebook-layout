@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Checkbox, Radio, Switch } from '@components/reader-marks';
 
 const meta = {
-  title: 'Atomos/Marca do leitor',
+  title: 'Atoms/Reader mark',
   component: Checkbox,
   tags: ['autodocs'],
   args: {
@@ -30,28 +30,31 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Caixa: Story = {};
+export const CheckboxStory: Story = {
+  name: 'Checkbox',
+};
 
-export const SemDescricao: Story = {
-  name: 'Sem descricao',
+export const WithoutDescription: Story = {
+  name: 'Without description',
   args: { description: '' },
 };
 
-export const Radio_: Story = {
+export const RadioStory: Story = {
   name: 'Radio',
   render: (args) => (
     <div>
-      <Radio {...args} name="porcao" label="One portion" defaultChecked />
-      <Radio {...args} name="porcao" label="Two portions" description="" />
+      <Radio {...args} name="portion" label="One portion" defaultChecked />
+      <Radio {...args} name="portion" label="Two portions" description="" />
     </div>
   ),
 };
 
-export const Interruptor: Story = {
+export const SwitchStory: Story = {
+  name: 'Switch',
   render: (args) => <Switch {...args} label="Notify me by e-mail" />,
 };
 
-export const SoAMarca: Story = {
-  name: 'So a marca',
+export const MarkOnly: Story = {
+  name: 'Mark only',
   args: { label: '', description: '', 'aria-label': 'Select row' },
 };

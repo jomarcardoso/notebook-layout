@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Group, Sheet } from '../atoms/specimen';
 
 const meta = {
-  title: 'Composicoes/Folio',
+  title: 'Compositions/Folio',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'O folio (.folio) e o texto de pe e cabeca que orienta sem pedir leitura: titulo corrido, posicao numa sequencia, numero de pagina. Tinta fg-subtle em caption, com algarismos tabulares. Separa-se do conteudo por espaco, sem fio.',
+          'The folio (.folio) is the header and footer text that orients without asking to be read: running title, position in a sequence, page number. fg-subtle ink in caption, with tabular figures. It is set apart from the content by space, without a rule.',
       },
     },
   },
@@ -18,13 +18,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const PeDePagina: Story = {
-  name: 'Pe de pagina',
+export const Footer: Story = {
+  name: 'Footer',
   render: () => (
     <Sheet>
       <Group
-        title="Pe de pagina"
-        note="O titulo corrido no inicio e a posicao no fim, na mesma linha de base. O espaco acima e uma unidade de ritmo inteira."
+        title="Footer"
+        note="The running title at the start and the position at the end, on the same baseline. The space above is one whole rhythm unit."
       >
         <div className="l-measure l-stack">
           <p className="body">
@@ -41,13 +41,13 @@ export const PeDePagina: Story = {
   ),
 };
 
-export const PosicaoNaSequencia: Story = {
-  name: 'Posicao na sequencia',
+export const PositionInSequence: Story = {
+  name: 'Position in sequence',
   render: () => (
     <Sheet>
       <Group
-        title="Posicao na sequencia"
-        note="Acima do passo, dizendo onde o leitor esta. O numero muda de largura sem mover o texto ao lado, porque os algarismos sao tabulares."
+        title="Position in sequence"
+        note="Above the step, telling the reader where they are. The number changes width without moving the text beside it, because the figures are tabular."
       >
         <div className="l-measure l-stack -block">
           <p className="folio">Passo 7 de 12</p>

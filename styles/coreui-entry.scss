@@ -233,9 +233,9 @@
   $sidebar-toggler-padding-x: var(--app-space-sm),
   $sidebar-toggler-padding-y: var(--app-space-sm),
 
-  // Card: configurado mesmo sem o parcial importado (ver o import comentado
-  // abaixo). Serve a outros projetos que usam esta fundacao; nao remover.
-  // spacer e cap-padding sao metrics porque o CoreUI faz conta com eles.
+  // Card: configured even without the partial imported (see the commented import
+  // below). It serves other projects that use this foundation; do not remove.
+  // spacer and cap-padding are metrics because CoreUI does arithmetic with them.
   $card-spacer-y: metrics.space('md'),
   $card-spacer-x: metrics.space('md'),
   $card-title-spacer-y: metrics.space('xs'),
@@ -287,8 +287,8 @@
 @import '@coreui/coreui/scss/sidebar.import';
 
 @import '@coreui/coreui/scss/badge.import';
-// Card fica fora: este sistema nao tem card (docs/coreui.md, Nao importados).
-// A configuracao $card-* acima ja esta pronta; descomente para outro projeto.
+// Card stays out: this system has no card (docs/coreui.md, section "Nao importados").
+// The $card-* configuration above is ready; uncomment it for another project.
 // @import '@coreui/coreui/scss/card.import';
 
 @import '@coreui/coreui/scss/forms/labels.import';

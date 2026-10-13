@@ -7,7 +7,7 @@ export interface AlertProps extends ComponentProps<'div'> {
 }
 
 /**
- * Um aviso que interrompe: lavado de status, sem borda e sem raio.
+ * A notice that interrupts: status wash, no border and no radius.
  */
 export const Alert: FC<AlertProps> = ({
   status,

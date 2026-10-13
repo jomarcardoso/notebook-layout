@@ -1,4 +1,4 @@
-// notebook-layout/stories/components/Componentes.stories.tsx
+// notebook-layout/stories/components/Components.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { CompassIcon } from '@phosphor-icons/react/dist/ssr/Compass';
 import { FolderSimpleIcon } from '@phosphor-icons/react/dist/ssr/FolderSimple';
@@ -19,19 +19,19 @@ import { Group, Row, Sheet } from '../atoms/specimen';
 import { photos } from '../molecules/figures';
 
 const meta = {
-  title: 'Componentes/Avisos, revelacao e midia',
+  title: 'Components/Notices, disclosure and media',
   parameters: { layout: 'padded' },
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Aviso: Story = {
+export const Notice: Story = {
   render: () => (
     <Sheet>
       <Group
         title="Alert"
-        note="Lavado e tinta de status, sem borda e sem raio. success anuncia como status; warning e danger, como alert."
+        note="Status wash and ink, no border and no radius. success announces as status; warning and danger, as alert."
       >
         <Alert status="success">Receita guardada na lista Doces.</Alert>
         <Alert status="warning">Tres ingredientes ainda nao foram reconhecidos.</Alert>
@@ -41,12 +41,13 @@ export const Aviso: Story = {
   ),
 };
 
-export const Acordeao: Story = {
+export const AccordionStory: Story = {
+name: 'Accordion',
   render: () => (
     <Sheet>
       <Group
         title="Accordion"
-        note="Cada item e um details nativo: abre e fecha sem estado em JS, com teclado do proprio elemento. Um fio por item; o titulo pode ser heading (titleAs)."
+        note="Each item is a native details: it opens and closes without JS state, with the element's own keyboard. One rule per item; the title may be a heading (titleAs)."
       >
         <Accordion>
           <AccordionItem
@@ -66,32 +67,32 @@ export const Acordeao: Story = {
   ),
 };
 
-export const LadrilhoDeMidia: Story = {
-  name: 'Ladrilho de midia',
+export const MediaTileStory: Story = {
+  name: 'Media tile',
   render: () => (
     <Sheet>
       <Group
         title="MediaTile"
-        note="Imagem quadrada, sem raio e sem borda. A palavra por cima aparece so enquanto o estado e passageiro; o erro vem embaixo, em caption."
+        note="Square image, no radius and no border. The word on top only appears while the state is transient; the error comes below, in caption."
       >
-        <Row label="pronta">
+        <Row label="ready">
           <div style={{ inlineSize: '7rem' }}>
             <MediaTile
               compact
-              media={<img src={photos.bolo} alt="Bolo de cenoura" />}
+              media={<img src={photos.cake} alt="Bolo de cenoura" />}
               actions={<IconButton icon={TrashIcon} label="Remover" />}
             />
           </div>
         </Row>
-        <Row label="enviando">
+        <Row label="uploading">
           <div style={{ inlineSize: '7rem' }}>
             <MediaTile
-              media={<img src={photos.torta} alt="Torta" />}
+              media={<img src={photos.pie} alt="Torta" />}
               status="Enviando..."
             />
           </div>
         </Row>
-        <Row label="falhou">
+        <Row label="failed">
           <div style={{ inlineSize: '7rem' }}>
             <MediaTile
               tone="danger"
@@ -106,15 +107,15 @@ export const LadrilhoDeMidia: Story = {
   ),
 };
 
-export const BotaoDeArquivo: Story = {
-  name: 'Botao de arquivo',
+export const FileButtonStory: Story = {
+  name: 'File button',
   render: () => (
     <Sheet>
       <Group
         title="FileButton"
-        note="Um Button na frente de um input de arquivo escondido. No telefone, abre a camera ou a galeria."
+        note="A Button in front of a hidden file input. On a phone, it opens the camera or the gallery."
       >
-        <Row label="estruturante">
+        <Row label="structural">
           <FileButton icon={UploadSimpleIcon} accept="image/*" onFiles={() => {}}>
             Do aparelho
           </FileButton>
@@ -124,13 +125,13 @@ export const BotaoDeArquivo: Story = {
   ),
 };
 
-export const CampoComIcone: Story = {
-  name: 'Campo com icone',
+export const FieldWithIcon: Story = {
+  name: 'Field with icon',
   render: () => (
     <Sheet>
       <Group
-        title="Field com icon"
-        note="O icone fica no inicio do campo, em fg-muted, e o texto comeca depois dele."
+        title="Field with icon"
+        note="The icon sits at the start of the field, in fg-muted, and the text starts after it."
       >
         <Field
           label="Buscar receitas"
@@ -143,8 +144,8 @@ export const CampoComIcone: Story = {
   ),
 };
 
-export const BarraLateral: Story = {
-  name: 'Barra lateral',
+export const SidebarStory: Story = {
+  name: 'Sidebar',
   render: () => (
     <div style={{ blockSize: '24rem', display: 'flex' }}>
       <Sidebar
@@ -159,13 +160,13 @@ export const BarraLateral: Story = {
   ),
 };
 
-export const Doca: Story = {
+export const DockStory: Story = {
   name: 'Dock',
   render: () => (
     <Sheet>
       <Group
         title="Dock"
-        note="Os destinos principais numa fileira presa a borda da tela, no telefone. Tom da pagina e fio em cima; o atual em fg-emphasis com o icone preenchido, os outros em fg-muted, sem fundo e sem accent."
+        note="The main destinations in a row pinned to the screen edge, on the phone. Page tone and a rule on top; the current one in fg-emphasis with the filled icon, the others in fg-muted, no background and no accent."
       >
         <div style={{ inlineSize: '23rem' }}>
           <Dock

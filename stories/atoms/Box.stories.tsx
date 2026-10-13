@@ -1,15 +1,15 @@
-// notebook-layout/stories/atoms/Boxe.stories.tsx
+// notebook-layout/stories/atoms/Box.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { Group, Row, Sheet } from './specimen';
 
 const meta = {
-  title: 'Atomos/Boxe',
+  title: 'Atoms/Box',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'O boxe (.box) e a unica superficie de conteudo do sistema: o lavado forte, bg-muted, sem raio, sem borda e sem sombra. Guarda um aparte ou um conjunto que se le junto. Nao e clicavel: um boxe que leva a algum lugar e um card com outro nome. O espaco em volta e fluxo e vem da pagina; o de dentro e escala interna.',
+          'The box (.box) is the only content surface of the system: the strong wash, bg-muted, no radius, no border and no shadow. It holds an aside or a set that is read together. It is not clickable: a box that leads somewhere is a card by another name. The space around it is flow and comes from the page; the space inside is the inner scale.',
       },
     },
   },
@@ -18,12 +18,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Aparte: Story = {
+export const Aside: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Aparte"
-        note="Dentro da prosa, na medida do corpo. O texto de dentro continua em body; o link dentro dele usa o hover de alfa, que escurece sobre o lavado sem token novo."
+        title="Aside"
+        note="Inside the prose, at the body measure. The text inside stays in body; the link inside it uses the alpha hover, which darkens over the wash without a new token."
       >
         <div className="l-measure l-stack">
           <p className="body">
@@ -48,13 +48,13 @@ export const Aparte: Story = {
   ),
 };
 
-export const BoxeOuMarcaDeMargem: Story = {
-  name: 'Boxe ou callout',
+export const BoxOrCallout: Story = {
+  name: 'Box or callout',
   render: () => (
     <Sheet>
       <Group
-        title="Boxe ou callout"
-        note="Os dois separam um aparte, com forcas diferentes. O callout e um fio na borda e nao tem superficie; o boxe e material de outra natureza. Pela escada de separacao, o callout vem antes: use o boxe quando o aparte tem mais de um bloco ou precisa ser lido como um conjunto."
+        title="Box or callout"
+        note="Both set an aside apart, with different strengths. The callout is a rule on the edge and has no surface; the box is material of another kind. By the separation ladder, the callout comes first: use the box when the aside has more than one block or must be read as a set."
       >
         <Row label="callout">
           <div className="callout l-measure">
@@ -63,7 +63,7 @@ export const BoxeOuMarcaDeMargem: Story = {
             </p>
           </div>
         </Row>
-        <Row label="boxe">
+        <Row label="box">
           <div className="box l-measure l-stack -block">
             <p className="label">Antes de comecar</p>
             <p className="body">

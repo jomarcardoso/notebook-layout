@@ -1,15 +1,16 @@
+// notebook-layout/.storybook/preview.tsx
 import type { Preview } from '@storybook/react-vite';
 import { useEffect } from 'react';
 import '../styles/app.scss';
 
 export const globalTypes = {
   theme: {
-    name: 'Tema',
-    description: 'O papel em que o componente esta impresso',
+    name: 'Theme',
+    description: 'The paper the component is printed on',
     defaultValue: 'light',
     toolbar: {
       icon: 'mirror',
-      items: [{ value: 'light', title: 'Claro' }],
+      items: [{ value: 'light', title: 'Light' }],
       showName: true,
     },
   },

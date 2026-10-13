@@ -1,15 +1,15 @@
-// notebook-layout/stories/coreui/Avisos.stories.tsx
+// notebook-layout/stories/coreui/Notices.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { Group, Row, Sheet } from '../atoms/specimen';
 
 const meta = {
-  title: 'CoreUI/Avisos',
+  title: 'CoreUI/Notices',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'O alerta (.alert) nas tres cores de status e o callout (.callout). As cores vem do adapter; info, primary, light e dark nao fazem parte do sistema.',
+          'The alert (.alert) in the three status colours and the callout (.callout). The colours come from the adapter; info, primary, light and dark are not part of the system.',
       },
     },
   },
@@ -18,12 +18,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Alerta: Story = {
+export const AlertStory: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Alerta"
-        note="Lavado de status e tinta de status, sem borda e sem raio. O alerta nao tem margem propria: o espaco entre ele e o resto vem do fluxo da pagina."
+        title="Alert"
+        note="Status wash and status ink, no border and no radius. The alert has no margin of its own: the space between it and the rest comes from the page flow."
       >
         <Row label="success">
           <div className="alert alert-success" role="status">
@@ -48,13 +48,13 @@ export const Alerta: Story = {
   ),
 };
 
-export const MarcaDeMargem: Story = {
+export const Callout: Story = {
   name: 'Callout',
   render: () => (
     <Sheet>
       <Group
         title="Callout"
-        note="O .callout sem modificador: o fio de sempre na borda inicial, em rule-strong, e mais nada. Separa um aparte sem cor: nao tem fundo, raio nem variante."
+        note="The .callout without a modifier: the usual rule on the start edge, in rule-strong, and nothing else. It sets an aside apart without colour: it has no background, radius or variant."
       >
         <div className="l-measure">
           <p className="body">

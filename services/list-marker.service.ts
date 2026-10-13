@@ -3,7 +3,7 @@
 import { toAlpha, toRoman } from './number.service';
 
 /**
- * O marcador de uma posicao, escrito como TEXTO.
+ * The marker of a position, written as TEXT.
  */
 export function formatListMarker(style: string, position: number): string {
   switch (style.trim().toLowerCase()) {

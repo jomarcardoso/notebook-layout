@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Group, Row, Sheet } from './atoms/specimen';
 
 const meta = {
-  title: 'Tipografia/Titulo de secao',
+  title: 'Typography/Section title',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'O titulo de secao e uma classe, .section-title, no heading do nivel que a pagina pedir: papel title-md com um fio embaixo. Os modificadores mudam o tamanho, o alinhamento e o fio.',
+          'The section title is a class, .section-title, on the heading of whatever level the page asks for: title-md role with a rule underneath. The modifiers change the size, the alignment and the rule.',
       },
     },
   },
@@ -18,11 +18,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Variantes: Story = {
+export const Variants: Story = {
   render: () => (
     <Sheet>
       <Group title=".section-title">
-        <Row label="padrao">
+        <Row label="default">
           <h2 className="section-title">Ingredientes</h2>
         </Row>
         <Row label="-sub">

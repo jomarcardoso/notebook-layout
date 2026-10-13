@@ -25,7 +25,7 @@
   font: var(--app-text-title-sm);
 }
 
-// O headnote: a voz autoral entre o titulo e os ingredientes.
+// The headnote: the author's voice between the title and the ingredients.
 .subtitle {
   color: var(--app-fg-muted);
   font: var(--app-text-subtitle);
@@ -59,7 +59,7 @@
   font-variant-numeric: lining-nums var(--app-numeric-tabular);
 }
 
-// Meta, categoria, credito, rodape. Em caixa e baixa, sem tracking.
+// Meta, category, credit, footer. Lowercase, no tracking.
 .caption {
   color: var(--app-fg-muted);
   font: var(--app-text-caption);

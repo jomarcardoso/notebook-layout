@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { Tabs } from '@components/tabs';
 
 const meta = {
-  title: 'Navegacao/Abas',
+  title: 'Navigation/Tabs',
   component: Tabs,
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'As abas do CoreUI (.nav-tabs), configuradas por variavel: um fio sob a fila, a escolhida com o contorno na mesma cor do fio e o fundo da pagina apagando o fio no pedaco dela. O que e nosso: o fundo das nao escolhidas e o radio por dentro do rotulo. Passe o ponteiro numa aba para ver a caixa dela.',
+          "CoreUI's tabs (.nav-tabs), configured by variable: a rule under the row, the chosen one outlined in the rule's colour with the page background erasing the rule under it. What is ours: the background of the unchosen ones and the radio inside the label. Move the pointer over a tab to see its box.",
       },
     },
   },
@@ -20,66 +20,66 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const ABAS = [
-  { label: 'Ingredientes', value: 'ingredientes' },
-  { label: 'Modo de preparo', value: 'preparo' },
-  { label: 'Nutricional', value: 'nutricional' },
+const TABS = [
+  { label: 'Ingredientes', value: 'ingredients' },
+  { label: 'Modo de preparo', value: 'method' },
+  { label: 'Nutricional', value: 'nutrition' },
 ];
 
-const PAINEL: Record<string, string> = {
-  ingredientes:
+const PANEL: Record<string, string> = {
+  ingredients:
     'Duas xicaras de farinha de trigo peneirada, uma xicara de acucar, tres ovos e duzentos gramas de queijo ralado na hora.',
-  preparo:
+  method:
     'Bata as claras em neve e reserve. Misture a farinha com o fermento e junte as gemas, mexendo devagar ate a massa ficar lisa.',
-  nutricional:
+  nutrition:
     'Os valores sao por porcao e vem da tabela de composicao dos alimentos, nao de uma analise desta receita.',
 };
 
-const Fichario = ({ abas = ABAS }: { abas?: typeof ABAS }) => {
-  const [aba, setAba] = useState(abas[0]?.value ?? '');
+const TabbedPanel = ({ tabs = TABS }: { tabs?: typeof TABS }) => {
+  const [tab, setTab] = useState(tabs[0]?.value ?? '');
 
   return (
     <div style={{ maxInlineSize: '40rem' }}>
-      <Tabs tabs={abas} value={aba} onChange={setAba} />
+      <Tabs tabs={tabs} value={tab} onChange={setTab} />
       <p className="body" style={{ paddingBlockStart: 'var(--app-rhythm-1)' }}>
-        {PAINEL[aba] ?? ''}
+        {PANEL[tab] ?? ''}
       </p>
     </div>
   );
 };
 
 export const Playground: Story = {
-  args: { tabs: ABAS },
-  render: () => <Fichario />,
+  args: { tabs: TABS },
+  render: () => <TabbedPanel />,
 };
 
-export const DuasAbas: Story = {
-  name: 'Duas abas',
-  args: { tabs: ABAS.slice(0, 2) },
-  render: () => <Fichario abas={ABAS.slice(0, 2)} />,
+export const TwoTabs: Story = {
+  name: 'Two tabs',
+  args: { tabs: TABS.slice(0, 2) },
+  render: () => <TabbedPanel tabs={TABS.slice(0, 2)} />,
 };
 
-export const ComDesabilitada: Story = {
-  name: 'Com uma desabilitada',
-  args: { tabs: ABAS },
+export const WithDisabled: Story = {
+  name: 'With one disabled',
+  args: { tabs: TABS },
   render: () => (
     <div style={{ maxInlineSize: '40rem' }}>
       <Tabs
-        tabs={[...ABAS, { label: 'Em breve', value: 'breve', disabled: true }]}
+        tabs={[...TABS, { label: 'Em breve', value: 'soon', disabled: true }]}
         defaultValue="ingredientes"
       />
     </div>
   ),
 };
 
-export const ReferenciaCoreUI: Story = {
-  name: 'Referencia CoreUI',
-  args: { tabs: ABAS },
+export const CoreUIReference: Story = {
+  name: 'CoreUI reference',
+  args: { tabs: TABS },
   parameters: {
     docs: {
       description: {
         story:
-          'Em cima, a marcacao crua do .nav-tabs da biblioteca com a nossa configuracao; embaixo, o componente. As bordas, a descida sobre o fio e a junta tem que ser as mesmas; as diferencas esperadas sao o fundo da fila, o hover so de fundo e o raio de controle.',
+          "On top, the raw markup of the library's .nav-tabs with our configuration; below, the component. The borders, the drop over the rule and the joint must be the same; the expected differences are the row background, the background-only hover and the control radius.",
       },
     },
   },
@@ -103,13 +103,13 @@ export const ReferenciaCoreUI: Story = {
         </li>
         <li className="nav-item">
           <a className="nav-link disabled" aria-disabled="true">
-            Em breve
+            Em soon
           </a>
         </li>
       </ul>
       <Tabs
         data-reference="component"
-        tabs={[...ABAS, { label: 'Em breve', value: 'breve', disabled: true }]}
+        tabs={[...TABS, { label: 'Em breve', value: 'soon', disabled: true }]}
         defaultValue="ingredientes"
       />
     </div>

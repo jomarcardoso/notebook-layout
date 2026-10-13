@@ -3,8 +3,8 @@
 @use 'sass:map';
 @use './metrics';
 
-// Camada 3: o contrato de componente. Cada knob e o ponto onde o nome de um
-// componente encontra um papel da camada 2.
+// Layer 3: the component contract. Each knob is the point where a component's
+// name meets a layer-2 role.
 
 $sidebar-narrow-width: var(--app-size-bar) !default;
 $sidebar-rule-width: var(--app-border-width) !default;
@@ -48,7 +48,7 @@ $nav-bg-hover: var(--app-bg-hover) !default;
 $nav-indicator-bg: var(--app-bg-accent-solid) !default;
 $nav-font-weight-active: var(--app-font-weight-strong) !default;
 
-// Badge: lido pelo `$badge-*` do coreui-entry. Aqui o atom `_tag.scss` decide a Tag.
+// Badge: read by coreui-entry's `$badge-*`. Here the `_tag.scss` atom decides the Tag.
 $badge-radius: var(--app-radius-control) !default;
 $badge-fg: var(--app-fg-muted) !default;
 
@@ -110,8 +110,8 @@ $tabs-bg-hover: var(--app-bg-hover) !default;
 $tabs-sticky-bg: var(--app-bg-page) !default;
 $tabs-sticky-pad-block: var(--app-space-2xs) !default;
 
-// Card: lido pelo `$card-*` do coreui-entry. Este sistema nao usa card, mas a
-// configuracao fica pronta para outros projetos; nao remover.
+// Card: read by coreui-entry's `$card-*`. This system does not use card, but the
+// configuration stays ready for other projects; do not remove.
 $card-fg: var(--app-fg-default) !default;
 $card-gap: var(--app-space-xs) !default;
 $card-meta-fg: var(--app-fg-muted) !default;
@@ -134,7 +134,7 @@ $modal-radius: var(--app-radius-overlay) !default;
 $modal-footer-min-height: var(--app-size-control) !default;
 $modal-border: var(--app-border) !default;
 $field-border: var(--app-border-width) solid var(--app-border-default) !default;
-// Card, junto dos demais `$card-*` acima.
+// Card, alongside the other `$card-*` above.
 $card-radius: 0 !default;
 
 $dialog-width-desktop: 560px !default;

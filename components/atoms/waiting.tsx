@@ -16,7 +16,7 @@ export const SkeletonText: FC<SkeletonTextProps> = ({
       <span
         key={index}
         className="skeleton skeleton-line"
-        // A ultima linha de um bloco e mais curta, como um paragrafo de verdade.
+        // The last line of a block is shorter, like a real paragraph.
         style={
           index === lines - 1 && lines > 1
             ? ({ '--skeleton-width': '60%' } as CSSProperties)
@@ -32,7 +32,7 @@ export interface WaitingProps extends ComponentProps<'div'> {
 }
 
 /**
- * ESPERA SEM FORMA CONHECIDA, numa regiao.
+ * WAITING WITH NO KNOWN SHAPE, in a region.
  */
 export const Waiting: FC<WaitingProps> = ({
   label = 'Carregando',
@@ -95,7 +95,7 @@ export interface ProgressProps extends ComponentProps<'div'> {
 }
 
 /**
- * UM FIO QUE SE ENCHE DE TINTA.
+ * A RULE THAT FILLS WITH INK.
  */
 export const Progress: FC<ProgressProps> = ({ label, value, ...props }) => {
   const rounded = Math.round(value);

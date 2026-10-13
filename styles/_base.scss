@@ -261,8 +261,8 @@
     --leading-snug: #{metrics.$leading-snug};
     --leading-normal: #{metrics.$leading-normal};
     --leading-loose: #{metrics.$leading-loose};
-    // 1.778 e o que faz uma linha de `body` (1.125rem) medir os 32px da unidade
-    // de ritmo. O numero e derivado da unidade, nao escolhido por gosto.
+    // 1.778 is what makes a `body` line (1.125rem) measure the 32px of the rhythm
+    // unit. The number is derived from the unit, not chosen by taste.
     --leading-prose: #{metrics.$leading-prose};
 
     --tracking-tight: -0.02em;

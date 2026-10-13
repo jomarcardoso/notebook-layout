@@ -95,7 +95,7 @@ export const ExpandableText: FC<ExpandableTextProps> = ({
 
       {(clamped || expanded) && (
         <Button
-          weight="texto"
+          weight="text"
           className="btn-flush"
           aria-expanded={expanded}
           aria-controls={textId}

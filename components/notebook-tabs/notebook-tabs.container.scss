@@ -41,9 +41,9 @@
       z-index: 1;
     }
 
-    // A lombada e do estreito. Numa pagina larga que ja tem indice ao lado ela
-    // repete uma navegacao que existe, e cobra por isso a coluna de 20px e o
-    // fio da direita.
+    // The spine belongs to the narrow screen. On a wide page that already has an index
+    // beside it, it repeats existing navigation and costs the 20px column and the
+    // right-hand rule.
     &--narrow {
       border-inline-end: 0;
       display: block;

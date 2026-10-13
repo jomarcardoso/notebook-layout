@@ -4,21 +4,17 @@ import { generateClasses } from '../../utils/utils';
 import { Icon, type IconGlyph } from './icon';
 
 /**
- * O peso comunica O CUSTO DE DESFAZER, nao a importancia da acao.
+ * The weight communicates THE COST OF UNDOING, not the importance of the action.
  */
 export type ButtonWeight =
-  | 'compromisso'
-  | 'estruturante'
-  | 'texto'
-  | 'destrutiva'
-  | 'confirmacao-destrutiva';
+  'commitment' | 'structural' | 'text' | 'destructive' | 'destructive-confirm';
 
 const CLASS_BY_WEIGHT: Record<ButtonWeight, string> = {
-  compromisso: 'btn-primary',
-  estruturante: 'btn-outline-secondary',
-  texto: 'btn-ghost-primary',
-  destrutiva: 'btn-ghost-danger',
-  'confirmacao-destrutiva': 'btn-danger',
+  commitment: 'btn-primary',
+  structural: 'btn-outline-secondary',
+  text: 'btn-ghost-primary',
+  destructive: 'btn-ghost-danger',
+  'destructive-confirm': 'btn-danger',
 };
 
 export interface ButtonProps extends Omit<
@@ -35,7 +31,7 @@ export interface ButtonProps extends Omit<
 }
 
 export const Button: FC<ButtonProps> = ({
-  weight = 'estruturante',
+  weight = 'structural',
   icon,
   loading = false,
   block = false,

@@ -27,9 +27,9 @@ $_map: (
   danger: 'danger',
 );
 
-// A lib fala solido, hover, active e subtle por papel de marca. A camada 2 tem
-// menos: um solido por familia, um hover, e o estado em alfa. Esta e a unica
-// traducao entre os dois vocabularios.
+// The library speaks solid, hover, active and subtle per brand role. Layer 2 has
+// less: one solid per family, one hover, and state as alpha. This is the only
+// translation between the two vocabularies.
 $_token: (
   'bg-action': 'bg-accent-solid',
   'bg-action-hover': 'bg-accent-solid-hover',

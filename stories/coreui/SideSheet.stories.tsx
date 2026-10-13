@@ -1,4 +1,4 @@
-// notebook-layout/stories/coreui/FolhaLateral.stories.tsx
+// notebook-layout/stories/coreui/SideSheet.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useId, useState } from 'react';
 import { XIcon } from '@phosphor-icons/react/dist/ssr/X';
@@ -6,13 +6,13 @@ import { Button, IconButton } from '@components/atoms';
 import { Group, Sheet } from '../atoms/specimen';
 
 const meta = {
-  title: 'CoreUI/Folha lateral',
+  title: 'CoreUI/Side sheet',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'O .offcanvas do CoreUI com a configuracao do entry. Folha sobreposta so para ato irreversivel ou para contexto que precisa ser esquecido enquanto se decide; escolher, filtrar e editar um campo continuam no lugar.',
+          "CoreUI's .offcanvas with the entry configuration. An overlaid sheet only for an irreversible act or for context that must be set aside while deciding; choosing, filtering and editing a field stay in place.",
       },
     },
   },
@@ -21,55 +21,55 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const FolhaDemo = () => {
-  const [aberta, setAberta] = useState(false);
+const SideSheetDemo = () => {
+  const [open, setOpen] = useState(false);
   const id = useId();
 
   useEffect(() => {
-    if (!aberta) {
+    if (!open) {
       return () => {};
     }
 
-    const fecharNoEscape = (event: KeyboardEvent) => {
+    const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setAberta(false);
+        setOpen(false);
       }
     };
 
-    window.addEventListener('keydown', fecharNoEscape);
+    window.addEventListener('keydown', closeOnEscape);
 
-    return () => window.removeEventListener('keydown', fecharNoEscape);
-  }, [aberta]);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [open]);
 
   return (
     <Sheet>
       <Group
-        title="Folha lateral"
-        note="Papel da pagina com fio na borda que encosta no conteudo, sobre o veu bg-backdrop. O X e o IconButton com Phosphor, e nao o .btn-close da biblioteca. A sombra da folha ainda nao e emitida: ver as pendencias do inventario."
+        title="Side sheet"
+        note="Page paper with a rule on the edge that touches the content, over the bg-backdrop veil. The X is the IconButton with Phosphor, not the library's .btn-close. The sheet shadow is not emitted yet: see the inventory's open items."
       >
         <div>
-          <Button weight="estruturante" onClick={() => setAberta(true)}>
+          <Button weight="structural" onClick={() => setOpen(true)}>
             Ver o historico de edicoes
           </Button>
         </div>
       </Group>
 
       <div
-        className={`offcanvas offcanvas-end${aberta ? ' show' : ''}`}
+        className={`offcanvas offcanvas-end${open ? ' show' : ''}`}
         tabIndex={-1}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={`${id}-titulo`}
+        aria-labelledby={`${id}-title`}
       >
         <div className="offcanvas-header">
-          <h2 className="offcanvas-title title-sm" id={`${id}-titulo`}>
+          <h2 className="offcanvas-title title-sm" id={`${id}-title`}>
             Historico de edicoes
           </h2>
           <IconButton
             icon={XIcon}
             label="Fechar"
             style={{ marginInlineStart: 'auto' }}
-            onClick={() => setAberta(false)}
+            onClick={() => setOpen(false)}
           />
         </div>
         <div className="offcanvas-body">
@@ -79,10 +79,10 @@ const FolhaDemo = () => {
           </p>
         </div>
       </div>
-      {aberta && (
+      {open && (
         <div
           className="offcanvas-backdrop fade show"
-          onClick={() => setAberta(false)}
+          onClick={() => setOpen(false)}
         />
       )}
     </Sheet>
@@ -90,5 +90,5 @@ const FolhaDemo = () => {
 };
 
 export const Playground: Story = {
-  render: () => <FolhaDemo />,
+  render: () => <SideSheetDemo />,
 };

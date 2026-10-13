@@ -1,16 +1,16 @@
-// notebook-layout/stories/coreui/Mecanica.stories.tsx
+// notebook-layout/stories/coreui/Mechanics.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { Group, Row, Sheet } from '../atoms/specimen';
 import { photos } from '../molecules/figures';
 
 const meta = {
-  title: 'CoreUI/Mecanica',
+  title: 'CoreUI/Mechanics',
   parameters: {
     layout: 'padded',
     docs: {
       description: {
         component:
-          'O que o CoreUI entrega como mecanica e se usa direto, sem CSS proprio: grade, grade CSS, sticky-top, visually-hidden, ratio e text-truncate. Os utilitarios que carregam valor — cor, fundo, borda, raio, sombra, tipografia — nao sao compilados, e os helpers text-bg-*, link-*, icon-link, focus-ring, vr, vstack, hstack e stretched-link tambem nao. A lista completa esta em CoreUI/Inventario.',
+          'What CoreUI delivers as mechanics and is used directly, without CSS of our own: grid, CSS grid, sticky-top, visually-hidden, ratio and text-truncate. The utilities that carry a value — colour, background, border, radius, shadow, typography — are not compiled, and neither are the text-bg-*, link-*, icon-link, focus-ring, vr, vstack, hstack and stretched-link helpers. The full list is in CoreUI/Inventory.',
       },
     },
   },
@@ -19,12 +19,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Grades: Story = {
+export const Grids: Story = {
   render: () => (
     <Sheet>
       <Group
-        title="Grade de 12 colunas"
-        note="row e col-* em flex. A calha e --app-gutter, 32px. Abaixo de md as colunas viram sequencia: e remontagem, nao restyle."
+        title="12-column grid"
+        note="row and col-* in flex. The gutter is --app-gutter, 32px. Below md the columns become a sequence: it is reassembly, not restyling."
       >
         <div className="row">
           <div className="col-md-4">
@@ -37,15 +37,15 @@ export const Grades: Story = {
       </Group>
 
       <Group
-        title="Grade CSS"
-        note=".grid e g-col-* em CSS grid, a mesma calha. Para colecao sem prosa em varias colunas; item com prosa e lista vertical unica."
+        title="CSS grid"
+        note=".grid and g-col-* in CSS grid, the same gutter. For a collection without prose in several columns; an item with prose is a single vertical list."
       >
         <div className="grid">
-          {Object.values(photos).map((foto) => (
+          {Object.values(photos).map((photo) => (
             <img
-              key={foto}
+              key={photo}
               className="app-image g-col-6 g-col-md-4"
-              src={foto}
+              src={photo}
               alt=""
             />
           ))}
@@ -55,19 +55,19 @@ export const Grades: Story = {
   ),
 };
 
-export const Acessibilidade: Story = {
+export const Accessibility: Story = {
   render: () => (
     <Sheet>
       <Group
         title="visually-hidden"
-        note="Texto que so o leitor de tela le. A versao -focusable aparece quando recebe foco: e o link de pular para o conteudo. Aperte Tab dentro do quadro para ve-lo."
+        note="Text only the screen reader reads. The -focusable version appears when it receives focus: it is the skip-to-content link. Press Tab inside the frame to see it."
       >
-        <Row label="pular">
-          <a className="visually-hidden-focusable" href="#conteudo">
+        <Row label="skip">
+          <a className="visually-hidden-focusable" href="#content">
             Pular para o conteudo
           </a>
         </Row>
-        <Row label="rotulo oculto">
+        <Row label="hidden label">
           <span className="caption">
             3 823 <span className="visually-hidden">quilocalorias</span>
             <span aria-hidden="true">kcal</span>
@@ -78,13 +78,13 @@ export const Acessibilidade: Story = {
   ),
 };
 
-export const ProporcaoETruncamento: Story = {
-  name: 'Proporcao e truncamento',
+export const RatioAndTruncation: Story = {
+  name: 'Ratio and truncation',
   render: () => (
     <Sheet>
       <Group
         title="ratio"
-        note="Para video e embed na proporcao da imagem do sistema, 1:1. A foto continua em .app-image, que ja carrega a proporcao pelo token."
+        note="For video and embeds at the system image ratio, 1:1. The photo stays in .app-image, which already carries the ratio through the token."
       >
         <div className="ratio ratio-1x1" style={{ maxInlineSize: '12rem' }}>
           <span className="app-image" />
@@ -93,7 +93,7 @@ export const ProporcaoETruncamento: Story = {
 
       <Group
         title="text-truncate"
-        note="Uma linha so, com reticencias. Serve a um rotulo curto num lugar estreito; nunca a prosa, que respeita a medida e quebra."
+        note="A single line, with an ellipsis. It serves a short label in a narrow place; never prose, which respects the measure and wraps."
       >
         <p className="label text-truncate" style={{ maxInlineSize: '16rem' }}>
           Torta de frango de liquidificador com massa que nao precisa de sova

@@ -44,7 +44,7 @@ const ToastItem: FC<{
     <div className={entry.tone === 'danger' ? 'toast -danger' : 'toast'}>
       <p className="toast__message">{entry.message}</p>
       <Button
-        weight="texto"
+        weight="text"
         className="toast__close"
         onClick={() => onDismiss(entry.id)}
       >

@@ -14,8 +14,8 @@ export interface MediaTileProps extends ComponentProps<'div'> {
 }
 
 /**
- * Uma imagem quadrada com o que acontece com ela: uma palavra por cima quando
- * o estado e passageiro, as acoes embaixo e o erro, quando houver.
+ * A square image with what is happening to it: a word on top when the
+ * state is transient, the actions below and the error, when there is one.
  */
 export const MediaTile: FC<MediaTileProps> = ({
   media = '',

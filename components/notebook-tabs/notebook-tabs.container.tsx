@@ -5,7 +5,7 @@ import { generateClasses } from '../../utils/utils';
 import { NotebookTabs, NotebookTabsProps } from './notebook-tabs';
 
 export interface NotebookTabsContainerProps extends NotebookTabsProps {
-  /** A lombada so entra na tela estreita. */
+  /** The spine only enters on the narrow screen. */
   narrowOnly?: boolean;
 }
 

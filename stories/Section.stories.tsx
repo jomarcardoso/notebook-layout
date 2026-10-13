@@ -17,14 +17,14 @@ const textBlock = (
 );
 
 const meta = {
-  title: 'Componentes/Secao',
+  title: 'Components/Section',
   component: Section,
   tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
         component:
-          'Uma secao da pagina: cabecalho conforme a escada de secao, corpo empilhado em multiplos da unidade de ritmo. Nunca troca superficie e nunca leva faixa.',
+          'A section of the page: header following the section ladder, body stacked in multiples of the rhythm unit. It never changes surface and never carries a band.',
       },
     },
   },
@@ -58,7 +58,8 @@ export const WithoutTitle: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'O componente aceita conteudo sem titulo mantendo o espaco.',
+        story:
+          'The component accepts content without a title while keeping the space.',
       },
     },
   },
@@ -92,7 +93,7 @@ export const WithInteractiveContent: Story = {
     docs: {
       description: {
         story:
-          'Mostra como aninhar secoes e Fields para construir um fluxo completo de formulario.',
+          'Shows how to nest sections and Fields to build a complete form flow.',
       },
     },
   },

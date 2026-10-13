@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { LineList, LineListItem } from '@components/molecules';
 
 const meta = {
-  title: 'Composicoes/Montagem de leitura',
+  title: 'Compositions/Reading assembly',
   parameters: {
     layout: 'fullscreen',
     docs: {
