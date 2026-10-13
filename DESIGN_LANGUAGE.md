@@ -251,7 +251,7 @@ A pauta pertence a TODO campo multilinha: e ela que mostra onde se escreve num
 campo sem fundo e sem contorno.
 
 **Manuscrita e o que o LEITOR escreve; impressa e o que o PRODUTO escreve.** A
-Caveat e a letra de quem usa o caderno, entao ela e de todo campo de frase —
+Playpen Sans e a letra de quem usa o caderno, entao ela e de todo campo de frase —
 `text`, `search` e a textarea — e e ela que faz o caderno ser o caderno de
 alguem. Tudo o que o produto escreve fica na familia de corpo: rotulo, ajuda,
 opcao de select, valor calculado.
@@ -425,7 +425,7 @@ O peso faz parte do papel: o 500 e dos papeis de INTERFACE, e so deles.
 | `label-sm` | 0.889 | **500** | serif | 1.4 | rotulo curto, titulo de aparato |
 | `numeric` | 1.125 | 400 | serif tabular | 1.4 | qualquer coluna de numero |
 | `caption` | 0.889 | 400 | serif | 1.4 | meta, legenda, tag, credito, rodape |
-| `script` | 1.563 | 400 | Caveat | 1.4 | o que o leitor escreve: campo de frase |
+| `script` | 1 | 400 | Playpen Sans | 1.4 | o que o leitor escreve: campo de frase |
 
 **Titulo separa conteudo; ele nao rotula um item.** Os papeis `title-*` marcam
 onde uma parte da pagina comeca. Numa colecao — indice, grade, relacionadas — os
