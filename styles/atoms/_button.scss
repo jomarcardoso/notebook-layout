@@ -23,6 +23,7 @@
   justify-content: center;
   max-inline-size: 256px;
   min-block-size: var(--app-size-control);
+  text-wrap: balance;
   transition-duration: var(--app-duration-fast);
   transition-property: color, background-color, border-color;
   transition-timing-function: var(--app-ease);

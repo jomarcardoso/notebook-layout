@@ -1,4 +1,4 @@
-// notebook-layout/stories/compositions/MontagemDeLeitura.stories.tsx
+// notebook-layout/stories/compositions/ReadingAssembly.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { LineList, LineListItem } from '@components/molecules';
 
@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A pagina de leitura nas tres regioes de l-regions. PROPOSTA EM ABERTO: o indice ancorado mora na margem, preso por sticky-top, e o aparato fica com o que acompanha o conteudo, nutricional e relacionadas. Ela so fecha com tres regioes se o trilho de navegacao do app for moldura e nao regiao; contando o trilho, a tela tem quatro e passa do teto. A decisao esta em docs/composition.md. Estreitando a tela, as regioes viram sequencia: margem, conteudo, aparato.',
+          'The reading page across the three regions of l-regions. OPEN PROPOSAL: the anchored index lives in the margin, held by sticky-top, and the apparatus keeps what accompanies the content, nutrition and related recipes. It only closes with three regions if the app navigation rail is a frame and not a region; counting the rail, the screen has four and goes over the ceiling. The decision is in docs/composition.md. As the screen narrows, the regions become a sequence: margin, content, apparatus.',
       },
     },
   },
@@ -18,43 +18,40 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const SECOES = [
+const SECTIONS = [
   {
     id: 'ingredientes',
-    titulo: 'Ingredientes',
-    texto:
-      'Tres cenouras medias, tres ovos, uma xicara de oleo, duas xicaras de acucar, duas xicaras e meia de farinha de trigo e uma colher de fermento.',
+    title: 'Ingredientes',
+    text: 'Tres cenouras medias, tres ovos, uma xicara de oleo, duas xicaras de acucar, duas xicaras e meia de farinha de trigo e uma colher de fermento.',
   },
   {
     id: 'preparo',
-    titulo: 'Modo de preparo',
-    texto:
-      'Bata as cenouras com os ovos e o oleo ate ficar liso. Junte o acucar e a farinha aos poucos e, por ultimo, o fermento. Asse a 180 graus por quarenta minutos.',
+    title: 'Modo de preparo',
+    text: 'Bata as cenouras com os ovos e o oleo ate ficar liso. Junte o acucar e a farinha aos poucos e, por ultimo, o fermento. Asse a 180 graus por quarenta minutos.',
   },
   {
     id: 'cobertura',
-    titulo: 'Cobertura',
-    texto:
-      'Leve ao fogo o chocolate, a manteiga e o leite, mexendo ate engrossar. Despeje quente sobre o bolo ainda morno, para escorrer pelos lados.',
+    title: 'Cobertura',
+    text: 'Leve ao fogo o chocolate, a manteiga e o leite, mexendo ate engrossar. Despeje quente sobre o bolo ainda morno, para escorrer pelos lados.',
   },
 ];
 
-const NUTRICIONAL = [
+const NUTRITION = [
   ['Energia', '255 kcal'],
   ['Carboidratos', '34,1 g'],
   ['Proteinas', '4,9 g'],
   ['Gorduras', '10,9 g'],
 ];
 
-export const Receita: Story = {
+export const Recipe: Story = {
   render: () => (
     <div className="l-regions" style={{ padding: 'var(--app-gutter)' }}>
       <nav className="l-regions__margin" aria-label="Nesta receita">
         <div className="sticky-top">
           <LineList family="data">
-            {SECOES.map(({ id, titulo }, index) => (
+            {SECTIONS.map(({ id, title }, index) => (
               <LineListItem key={id} href={`#${id}`} selected={index === 0}>
-                {titulo}
+                {title}
               </LineListItem>
             ))}
           </LineList>
@@ -63,10 +60,10 @@ export const Receita: Story = {
 
       <article className="l-regions__content">
         <div className="l-stack -container">
-          {SECOES.map(({ id, titulo, texto }) => (
+          {SECTIONS.map(({ id, title, text }) => (
             <section key={id} id={id}>
-              <h2 className="section-title">{titulo}</h2>
-              <p className="body">{texto}</p>
+              <h2 className="section-title text-center">{title}</h2>
+              <p className="body">{text}</p>
             </section>
           ))}
         </div>
@@ -78,10 +75,10 @@ export const Receita: Story = {
             <h2 className="label-sm">Nutricional por porcao</h2>
             <table className="table">
               <tbody>
-                {NUTRICIONAL.map(([nome, valor]) => (
-                  <tr key={nome}>
-                    <th scope="row">{nome}</th>
-                    <td className="text-end">{valor}</td>
+                {NUTRITION.map(([name, value]) => (
+                  <tr key={name}>
+                    <th scope="row">{name}</th>
+                    <td className="text-end">{value}</td>
                   </tr>
                 ))}
               </tbody>
