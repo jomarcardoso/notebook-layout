@@ -16,3 +16,18 @@
   mix-blend-mode: multiply;
   object-fit: contain;
 }
+
+.placeholder-figure {
+  mix-blend-mode: normal;
+
+  &__filter {
+    block-size: 0;
+    inline-size: 0;
+    position: absolute;
+  }
+
+  &__ink {
+    flood-color: var(--app-fg-disabled);
+    flood-opacity: 0.7;
+  }
+}

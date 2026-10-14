@@ -36,6 +36,8 @@ export interface ThumbItemProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   children: ReactNode;
   image?: ComponentProps<'img'>;
+  /** Content figure drawn in the image place when there is no image. */
+  figure?: string;
   description?: string[];
   linkComponent?: ElementType;
   variant?: ThumbItemVariant;
@@ -51,6 +53,38 @@ interface LinkedItemProps extends IndexItemProps {
   variant?: ThumbItemVariant;
 }
 
+/**
+ * The figure inked in the neutral: how dark each pixel is becomes how much
+ * neutral it carries, so the drawing keeps its detail and loses its colour.
+ */
+const PlaceholderFigure: FC<{ src: string }> = ({ src }) => {
+  const filterId = `placeholder-figure-${useId().replace(/[^\w-]/g, '')}`;
+
+  return (
+    <>
+      <svg className="placeholder-figure__filter" aria-hidden="true">
+        <filter id={filterId} colorInterpolationFilters="sRGB">
+          <feColorMatrix
+            in="SourceGraphic"
+            type="matrix"
+            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.2126 -0.7152 -0.0722 0 1"
+            result="ink"
+          />
+          <feComposite in="ink" in2="SourceAlpha" operator="in" result="shape" />
+          <feFlood className="placeholder-figure__ink" />
+          <feComposite in2="shape" operator="in" />
+        </filter>
+      </svg>
+      <img
+        className="content-figure placeholder-figure"
+        src={src}
+        alt=""
+        style={{ filter: `url(#${filterId})` }}
+      />
+    </>
+  );
+};
+
 const LinkedItem: FC<LinkedItemProps> = ({
   block,
   listClassName,
@@ -58,6 +92,7 @@ const LinkedItem: FC<LinkedItemProps> = ({
   onClick,
   children,
   image = {},
+  figure = '',
   excerpt = '',
   description = [],
   linkComponent = 'a',
@@ -80,7 +115,16 @@ const LinkedItem: FC<LinkedItemProps> = ({
             alt=""
           />
         ) : (
-          <span className={`app-image ${block}__image`} aria-hidden="true" />
+          <span
+            className={generateClasses({
+              'app-image': true,
+              [`${block}__image`]: true,
+              [`${block}__image--figure`]: Boolean(figure),
+            })}
+            aria-hidden="true"
+          >
+            {figure ? <PlaceholderFigure src={figure} /> : null}
+          </span>
         )}
         <span className={`${block}__text`} id={textId}>
           {children}

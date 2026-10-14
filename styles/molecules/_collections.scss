@@ -17,6 +17,11 @@
   }
 }
 
+@mixin image-figure {
+  display: grid;
+  place-items: center;
+}
+
 .index-list {
   list-style: none;
   margin: 0;
@@ -94,6 +99,10 @@
     align-self: center;
     grid-area: image;
     inline-size: var(--index-item-image);
+
+    &--figure {
+      @include image-figure;
+    }
   }
 }
 
@@ -107,6 +116,15 @@
     color: var(--app-fg-muted);
     font: var(--app-text-caption);
     margin: 0;
+  }
+
+  &__image--figure {
+    @include image-figure;
+
+    .content-figure {
+      block-size: 64px;
+      inline-size: 64px;
+    }
   }
 
   &__text {

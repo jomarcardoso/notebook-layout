@@ -7,7 +7,7 @@ import {
   ThumbItem,
 } from '@components/molecules';
 import { Group, Sheet } from '../atoms/specimen';
-import { photos } from './figures';
+import { figures, photos } from './figures';
 
 const meta = {
   title: 'Molecules/Index and grid',
@@ -51,6 +51,7 @@ const recipes = [
       'Polvilho azedo e doce meio a meio. Congela bem cru e vai direto ao forno.',
     description: ['35 min', '30 unidades'],
     photo: '',
+    figure: figures.cheese,
   },
 ];
 
@@ -59,16 +60,17 @@ export const Index: Story = {
     <Sheet>
       <Group
         title="Index"
-        note="The image column exists on every item, with or without a photo, so the text always starts at the same point. Without an excerpt the item is short: a two-unit image with the text centred on it. With an excerpt on any item, the whole list raises the image to three units, without a variant. The fourth recipe has no photo and stays aligned."
+        note="The image column exists on every item, with or without a photo, so the text always starts at the same point. Without an excerpt the item is short: a two-unit image with the text centred on it. With an excerpt on any item, the whole list raises the image to three units, without a variant. The fourth recipe has no photo: its content figure holds the image place and the text stays aligned."
       >
         <IndexList>
-          {recipes.map(({ title, excerpt, description, photo }) => (
+          {recipes.map(({ title, excerpt, description, photo, figure = '' }) => (
             <IndexItem
               key={title}
               href="#"
               excerpt={excerpt}
               description={description}
               image={{ src: photo }}
+              figure={figure}
             >
               {title}
             </IndexItem>
@@ -84,7 +86,7 @@ export const Grid: Story = {
     <Sheet>
       <Group
         title="Grid"
-        note="Thumbnail and text, no prose. The grid takes as many columns as fit; when it narrows, it only reassembles the number of columns — the item stays the same, with the same roles."
+        note="Thumbnail and text, no prose. The grid takes as many columns as fit; when it narrows, it only reassembles the number of columns — the item stays the same, with the same roles. An item without a photo shows its content figure in the image place."
       >
         <ThumbGrid>
           {[
@@ -94,11 +96,13 @@ export const Grid: Story = {
             ['Pao caseiro', photos.bread, '3 h'],
             ['Salada de graos', photos.salad, '20 min'],
             ['Pudim de leite', photos.pudding, '1 h 30'],
-          ].map(([title, photo, time]) => (
+            ['Torta de tomate', '', '1 h', figures.tomato],
+          ].map(([title, photo, time, figure = '']) => (
             <ThumbItem
               key={title}
               href="#"
               image={{ src: photo }}
+              figure={figure}
               description={[time]}
             >
               {title}

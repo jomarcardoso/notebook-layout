@@ -161,6 +161,8 @@ deviations:
     revisit: virar modal se o guardrail for mantido como esta
   - decision: a trilha compacta leva o icone `‹` dentro do link do pai
     because: o §8 proibe icone em link, mas ali o icone nao decora, ele e o verbo; sozinho e em caption, o nome do pai no topo da pagina nao se le como voltar
+  - decision: item de colecao sem imagem mostra a figura de conteudo centralizada no lugar da imagem, tingida de neutro, e no grid em 64px
+    because: a figura mora na coluna de margem e mede uma linha, mas o item de colecao nao tem coluna de margem, e o lugar da imagem vazio nao diz o que e a receita; a figura no papel diz, sem passar por foto que o autor nao escolheu. Numa linha so ela some no tamanho do cartao. Ela e placeholder e nao conteudo: um filtro faz o quanto cada ponto e escuro virar o quanto de fg-disabled ele leva, entao o desenho guarda o detalhe, perde a cor e fica no neutro quente da folha, sem concorrer com as fotos dos itens vizinhos. Cinza destoa desse neutro e ganha destaque; a cor impressa fica para a figura na coluna de margem
 
 overrides:
   - decision: size-control em 44px
