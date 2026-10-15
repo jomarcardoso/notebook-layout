@@ -76,6 +76,8 @@ the apparatus beside the content and the apparatus inside it — shows up in one
 them at a time. It reads orientation because that is what `l-regions` reads; a
 width-based `d-md-*` would show both copies on a tablet held upright.
 
+`l-stack` spaces children by markup order, so it skips one hidden child on its own: after a heading, a hidden `l-only-wide`, `l-only-narrow`, `d-none` or `[hidden]` child passes the heading's spacing to the next one, and a hidden first child gives the next one no top margin. Two hidden children in a row, or one hidden by another component's CSS, are not seen; group what changes with the screen into a single child instead.
+
 Modifiers use the repository's `.-modifier` form: `.l-stack.-block`,
 `.l-measure.-apparatus`.
 

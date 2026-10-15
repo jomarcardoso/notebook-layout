@@ -26,6 +26,73 @@
   &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
     margin-block-start: var(--app-gap-text);
   }
+
+  > *:where(h1, h2, h3, h4, h5, h6, header, nav) + :is([hidden], .d-none) + * {
+    margin-block-start: var(--app-rhythm-half);
+  }
+
+  &.-container
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+    + :is([hidden], .d-none)
+    + * {
+    margin-block-start: var(--app-rhythm-1);
+  }
+
+  &.-block
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+    + :is([hidden], .d-none)
+    + * {
+    margin-block-start: var(--app-gap-text);
+  }
+
+  > :is([hidden], .d-none):first-child + * {
+    margin-block-start: 0;
+  }
+
+  @media (orientation: portrait) {
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
+      margin-block-start: var(--app-rhythm-half);
+    }
+
+    &.-container
+      > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+      + .l-only-wide
+      + * {
+      margin-block-start: var(--app-rhythm-1);
+    }
+
+    &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
+      margin-block-start: var(--app-gap-text);
+    }
+
+    > .l-only-wide:first-child + * {
+      margin-block-start: 0;
+    }
+  }
+
+  @media (orientation: landscape) {
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-narrow + * {
+      margin-block-start: var(--app-rhythm-half);
+    }
+
+    &.-container
+      > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+      + .l-only-narrow
+      + * {
+      margin-block-start: var(--app-rhythm-1);
+    }
+
+    &.-block
+      > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+      + .l-only-narrow
+      + * {
+      margin-block-start: var(--app-gap-text);
+    }
+
+    > .l-only-narrow:first-child + * {
+      margin-block-start: 0;
+    }
+  }
 }
 
 .l-measure {
