@@ -20,6 +20,7 @@
   align-items: center;
   display: inline-flex;
   gap: var(--app-space-xs);
+  inline-size: 100%;
   justify-content: center;
   max-inline-size: 256px;
   min-block-size: var(--app-size-control);
@@ -30,6 +31,10 @@
 
   &:active {
     translate: 0 1px;
+  }
+
+  :has(> .field) > & {
+    inline-size: auto;
   }
 
   &:has(> .btn-label > .app-icon:first-child) {
@@ -63,6 +68,7 @@
   --cui-btn-hover-color: var(--app-fg-accent);
   --btn-pad-x: 8px;
 
+  inline-size: auto;
   text-decoration: underline;
 }
 
@@ -130,6 +136,8 @@
   --cui-btn-disabled-border-color: transparent;
   --cui-btn-disabled-color: var(--app-fg-disabled);
   --btn-pad-x: 8px;
+
+  inline-size: auto;
 }
 
 .btn-ghost-primary {

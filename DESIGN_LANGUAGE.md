@@ -728,6 +728,12 @@ O peso do botao comunica **o custo de desfazer**, nao a importancia da acao.
 Icone no botao so no estruturante, e so com desenho universal; o compromisso e
 sempre um verbo, e ele ja e o unico preenchido da tela.
 
+**Botao com caixa tem uma largura so.** Compromisso, estruturante e destrutiva
+preenchida ocupam a linha ate 256px, entao botoes vizinhos dividem o espaco em
+partes iguais e um botao sozinho cresce ate o mesmo teto, qualquer que seja o
+rotulo. Ao lado de um campo o botao termina a linha do campo e fica com a
+largura do rotulo. Botao de texto e de icone tem sempre a largura do conteudo.
+
 **PALAVRA PRIMEIRO.** O icone e a lingua da sinalizacao e existe para ser
 entendido sem leitura; o livro supoe um leitor e fala com palavras. O icone de
 sistema entra em tres casos: quando nao ha espaco para a palavra, quando a acao e
