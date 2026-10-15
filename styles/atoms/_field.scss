@@ -205,8 +205,9 @@ textarea.form-control[readonly] {
 }
 
 .field-adorned-trail {
+  align-items: end;
   display: flex;
-  inset-block: 0;
+  inset-block-end: 0;
   inset-inline-end: 0;
   position: absolute;
 

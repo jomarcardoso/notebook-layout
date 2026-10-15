@@ -6,3 +6,4 @@ export * from './tag';
 export * from './textarea';
 export * from './select';
 export * from './waiting';
+export * from './placeholder-figure';

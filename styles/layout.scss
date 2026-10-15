@@ -7,7 +7,7 @@
     margin-block-start: var(--app-rhythm-1);
   }
 
-  > *:where(h1, h2, h3, h4, h5, h6, header) + * {
+  > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
     margin-block-start: var(--app-rhythm-half);
   }
 
@@ -15,7 +15,7 @@
     margin-block-start: var(--app-rhythm-2);
   }
 
-  &.-container > *:where(h1, h2, h3, h4, h5, h6, header) + * {
+  &.-container > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
     margin-block-start: var(--app-rhythm-1);
   }
 
@@ -23,7 +23,7 @@
     margin-block-start: var(--app-rhythm-half);
   }
 
-  &.-block > *:where(h1, h2, h3, h4, h5, h6, header) + * {
+  &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
     margin-block-start: var(--app-gap-text);
   }
 }

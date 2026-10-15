@@ -8,6 +8,21 @@
   display: block;
   inline-size: 100%;
   object-fit: cover;
+
+  &--thumb {
+    aspect-ratio: var(--app-ratio-thumb);
+  }
+
+  &--figure {
+    display: grid;
+    place-items: center;
+
+    .content-figure {
+      block-size: 50%;
+      inline-size: auto;
+      aspect-ratio: 1;
+    }
+  }
 }
 
 figure > figcaption {

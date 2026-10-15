@@ -12,6 +12,21 @@
     margin-block: 0 var(--app-rhythm-half);
   }
 
+  .table {
+    --cui-table-bg: transparent;
+    --cui-table-color: currentcolor;
+
+    font: inherit;
+
+    > :not(caption) > * > * {
+      border-block-end-width: 0;
+      color: inherit;
+      font: inherit;
+      padding-block: 0;
+      padding-inline: 0;
+    }
+  }
+
   table + a {
     display: inline-block;
     margin-block-start: var(--app-rhythm-half);

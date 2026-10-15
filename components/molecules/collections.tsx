@@ -8,6 +8,7 @@ import {
   useId,
 } from 'react';
 import { generateClasses } from '../../utils/utils';
+import { PlaceholderFigure } from '../atoms/placeholder-figure';
 
 export interface CollectionProps extends ComponentProps<'ul'> {
   children: ReactNode;
@@ -52,38 +53,6 @@ interface LinkedItemProps extends IndexItemProps {
   listClassName: string;
   variant?: ThumbItemVariant;
 }
-
-/**
- * The figure inked in the neutral: how dark each pixel is becomes how much
- * neutral it carries, so the drawing keeps its detail and loses its colour.
- */
-const PlaceholderFigure: FC<{ src: string }> = ({ src }) => {
-  const filterId = `placeholder-figure-${useId().replace(/[^\w-]/g, '')}`;
-
-  return (
-    <>
-      <svg className="placeholder-figure__filter" aria-hidden="true">
-        <filter id={filterId} colorInterpolationFilters="sRGB">
-          <feColorMatrix
-            in="SourceGraphic"
-            type="matrix"
-            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -0.2126 -0.7152 -0.0722 0 1"
-            result="ink"
-          />
-          <feComposite in="ink" in2="SourceAlpha" operator="in" result="shape" />
-          <feFlood className="placeholder-figure__ink" />
-          <feComposite in2="shape" operator="in" />
-        </filter>
-      </svg>
-      <img
-        className="content-figure placeholder-figure"
-        src={src}
-        alt=""
-        style={{ filter: `url(#${filterId})` }}
-      />
-    </>
-  );
-};
 
 const LinkedItem: FC<LinkedItemProps> = ({
   block,
