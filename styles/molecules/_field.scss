@@ -46,6 +46,10 @@
   &__item {
     min-block-size: var(--field-line);
     position: relative;
+
+    &--empty .field-markers__glyph {
+      color: var(--app-fg-subtle);
+    }
   }
 
   &__line {

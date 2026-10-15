@@ -29,4 +29,22 @@ describe('FieldMarkers', () => {
       '/icons/rice.svg',
     );
   });
+
+  it('marks the items whose line is still empty', () => {
+    const container = document.createElement('div');
+
+    container.innerHTML = renderToStaticMarkup(
+      <FieldMarkers listStyle="disc" text={'3 ovos\n  '} />,
+    );
+
+    const items = Array.from(
+      container.querySelectorAll('.field-markers__item'),
+    );
+
+    expect(
+      items.map((item) =>
+        item.classList.contains('field-markers__item--empty'),
+      ),
+    ).toEqual([false, true]);
+  });
 });

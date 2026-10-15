@@ -18,7 +18,7 @@
 }
 
 .placeholder-figure {
-  mix-blend-mode: normal;
+  display: contents;
 
   &__filter {
     block-size: 0;
@@ -29,5 +29,9 @@
   &__ink {
     flood-color: var(--app-fg-disabled);
     flood-opacity: 0.7;
+  }
+
+  &__image {
+    mix-blend-mode: normal;
   }
 }

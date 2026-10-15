@@ -1,0 +1,80 @@
+// notebook-layout/styles/molecules/_storyboard.scss
+
+.storyboard {
+  column-gap: var(--app-gap-grid);
+  container-type: inline-size;
+  counter-reset: storyboard;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  row-gap: var(--app-rhythm-1);
+
+  // A figure draws with `currentColor` and its secondary lines with
+  // `--storyboard-ink-faint`, so it follows the neutral ramp.
+  &__figure {
+    --storyboard-ink-faint: var(--app-fg-subtle);
+
+    block-size: 72px;
+    color: var(--app-fg-muted);
+    display: grid;
+    grid-area: figure;
+    inline-size: 72px;
+    place-items: center;
+
+    svg {
+      block-size: 100%;
+      inline-size: 100%;
+    }
+  }
+
+  &__title {
+    font: var(--app-text-label);
+    grid-area: title;
+
+    &::before {
+      color: var(--app-fg-muted);
+      content: counter(storyboard) '. ';
+    }
+  }
+
+  &__description {
+    color: var(--app-fg-muted);
+    font: var(--app-text-body-sm);
+    grid-area: description;
+  }
+
+  &__frame {
+    align-content: start;
+    column-gap: var(--app-space-md);
+    counter-increment: storyboard;
+    display: grid;
+    flex: 1 1 100%;
+    grid-template-areas:
+      'figure title'
+      'figure description';
+    grid-template-columns: 72px 1fr;
+    grid-template-rows: auto 1fr;
+    row-gap: var(--app-space-2xs);
+  }
+
+  @container (min-width: 480px) {
+    .storyboard__figure {
+      block-size: 96px;
+      inline-size: 96px;
+      justify-self: center;
+    }
+
+    .storyboard__frame {
+      flex: 1 1 0;
+      grid-template-areas:
+        'figure'
+        'title'
+        'description';
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto 1fr;
+      text-align: center;
+    }
+  }
+}

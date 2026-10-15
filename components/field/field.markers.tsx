@@ -2,6 +2,7 @@
 import { type FC } from 'react';
 import { formatListMarker } from '../../services/list-marker.service';
 import { unwrapUrl } from '../../services/url.service';
+import { generateClasses } from '../../utils/utils';
 
 interface Marker {
   image: string;
@@ -79,7 +80,13 @@ export const FieldMarkers: FC<FieldMarkersProps> = ({
   return (
     <ul className="field-markers" aria-hidden="true">
       {markers.map((marker, index) => (
-        <li className="field-markers__item" key={index}>
+        <li
+          className={generateClasses({
+            'field-markers__item': true,
+            'field-markers__item--empty': !lines[index]?.trim(),
+          })}
+          key={index}
+        >
           <span className="field-markers__mark">
             {marker.image ? (
               <img className="content-figure" src={marker.image} alt="" />

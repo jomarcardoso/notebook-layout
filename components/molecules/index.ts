@@ -2,3 +2,4 @@
 export * from './line-list';
 export * from './collections';
 export * from './expandable-text';
+export * from './storyboard';

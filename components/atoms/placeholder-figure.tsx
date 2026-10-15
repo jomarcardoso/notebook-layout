@@ -13,7 +13,7 @@ export const PlaceholderFigure: FC<PlaceholderFigureProps> = ({ src }) => {
   const filterId = `placeholder-figure-${useId().replace(/[^\w-]/g, '')}`;
 
   return (
-    <>
+    <span className="placeholder-figure">
       <svg className="placeholder-figure__filter" aria-hidden="true">
         <filter id={filterId} colorInterpolationFilters="sRGB">
           <feColorMatrix
@@ -28,11 +28,11 @@ export const PlaceholderFigure: FC<PlaceholderFigureProps> = ({ src }) => {
         </filter>
       </svg>
       <img
-        className="content-figure placeholder-figure"
+        className="placeholder-figure__image content-figure"
         src={src}
         alt=""
         style={{ filter: `url(#${filterId})` }}
       />
-    </>
+    </span>
   );
 };
