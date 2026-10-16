@@ -1,15 +1,18 @@
 @use '../../styles/component' as component;
 
-@use '../../styles/helpers/media.scss' as *;
 @use '../../styles/utils.scss' as *;
 
 .tabs-layout {
   &__mobile {
-    @extend .portrait-only;
+    @media (orientation: landscape) {
+      display: none;
+    }
   }
 
   &__desktop {
-    @extend .landscape-only;
+    @media (orientation: portrait) {
+      display: none;
+    }
   }
 
   &__content {
