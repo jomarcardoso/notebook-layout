@@ -3,9 +3,11 @@
 .breadcrumb {
   --cui-breadcrumb-divider-color: var(--app-fg-muted);
   --cui-breadcrumb-item-active-color: var(--app-fg-muted);
-  container: breadcrumb / inline-size;
+  align-items: center;
   color: var(--app-fg-muted);
+  container: breadcrumb / inline-size;
   font: var(--app-text-caption);
+  min-block-size: var(--app-size-control);
 
   .app-icon {
     display: none;
