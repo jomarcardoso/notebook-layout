@@ -26,6 +26,18 @@
     margin-block-start: var(--app-rhythm-1);
   }
 
+  &__placeholder {
+    .content-figure {
+      aspect-ratio: 1;
+      block-size: 50%;
+      inline-size: auto;
+    }
+
+    aspect-ratio: var(--app-ratio-media);
+    display: grid;
+    place-items: center;
+  }
+
   &__actions {
     align-items: center;
     column-gap: var(--app-space-xs);
@@ -58,6 +70,10 @@
         grid-row: 1 / -1;
         margin-block-start: 0;
         background-color: transparent;
+      }
+
+      .opening__placeholder {
+        background-color: var(--app-bg-subtle);
       }
 
       .opening__figure + * {
