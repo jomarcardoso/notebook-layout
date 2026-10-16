@@ -16,6 +16,7 @@
   .nav-link {
     border-start-end-radius: component.$tabs-radius;
     border-start-start-radius: component.$tabs-radius;
+    line-height: var(--app-line-height-compact);
     position: relative;
     white-space: nowrap;
   }
