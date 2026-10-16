@@ -2,103 +2,144 @@
 @use "../utils.scss";
 
 .dialog {
-  --dialog-visual-viewport-height: 100dvh;
   --dialog-keyboard-inset: 0px;
-  background-color: transparent;
-  display: none;
-  border: none;
-  padding-block: 0;
-  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
-  max-width: 100%; // reset
-  max-height: 100%; // reset
-  min-height: 0;
-  overflow: hidden;
+  --dialog-visual-viewport-height: 100dvh;
+  --dialog-visual-viewport-top: 0px;
+
   align-items: flex-end;
+  background-color: transparent;
+  border: none;
+  display: none;
+  inset: 0;
+  margin-block: auto;
+  max-block-size: 100%;
+  max-inline-size: 100%;
+  min-block-size: 0;
+  overflow: clip;
   overscroll-behavior: contain;
+  padding-block: 0;
+  position: fixed;
+  padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
 
   .modal {
-    width: 100%;
+    inline-size: 100%;
+    transition:
+      opacity var(--app-duration-base) var(--app-ease),
+      translate var(--app-duration-base) var(--app-ease);
   }
 
-  @media (orientation: portrait) {
-    inline-size: auto;
-    margin-inline: 4px;
-    height: calc(var(--dialog-visual-viewport-height, 100dvh) - 8px);
+  &::backdrop {
+    background: var(--app-bg-backdrop);
+    overscroll-behavior: none;
+    transition: opacity var(--app-duration-base) var(--app-ease);
+  }
+
+  &[open] {
+    display: grid;
+
+    @starting-style {
+      .modal {
+        opacity: 0;
+        translate: 0 8px;
+      }
+
+      &::backdrop {
+        opacity: 0;
+      }
+    }
+  }
+
+  &--closing {
+    .modal {
+      opacity: 0;
+      translate: 0 8px;
+    }
+
+    &::backdrop {
+      opacity: 0;
+    }
+  }
+
+  &--dense {
+    max-block-size: 92dvh;
+  }
+
+  &--wide {
+    --dialog-width: #{component.$dialog-width-wide};
+  }
+
+  @include utils.isMobile {
+    @media (orientation: portrait) {
+      block-size: calc(var(--dialog-visual-viewport-height) - 8px);
+      inline-size: auto;
+      margin-inline: 4px;
+
+      inset-block: calc(var(--dialog-visual-viewport-top) + 4px) auto;
+      margin-block: 0;
+
+      .modal {
+        max-block-size: min(
+          88dvh,
+          calc(var(--dialog-visual-viewport-height) - 16px)
+        );
+      }
+
+      &[open] {
+        @starting-style {
+          .modal {
+            opacity: 1;
+            translate: 0 100%;
+          }
+        }
+      }
+
+      &--closing .modal {
+        opacity: 1;
+        translate: 0 100%;
+      }
+    }
+  }
+
+  @include utils.isDesktop {
+    align-items: center;
+    block-size: fit-content;
+    inline-size: min(
+      var(--dialog-width, #{component.$dialog-width-desktop}),
+      calc(100% - var(--app-gutter) * 2)
+    );
+    justify-content: center;
+    margin: auto;
+    max-block-size: calc(100% - var(--app-gutter) * 2);
 
     .modal {
-      max-height: min(
-        88dvh,
-        calc(var(--dialog-visual-viewport-height, 100dvh) - 16px)
-      );
+      max-block-size: calc(100dvh - var(--app-gutter) * 2);
+    }
+
+    &[open] {
+      display: block;
+    }
+
+    &--dense {
+      max-block-size: 92dvh;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &::backdrop,
+    .modal {
+      transition: none;
     }
   }
 }
 
-.dialog[open] {
-  display: grid;
-  margin-block: auto;
-}
-
-@keyframes dialog-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.dialog::backdrop {
-  background: var(--app-bg-backdrop);
-  animation: backdrop-in 180ms ease-out forwards;
-  overscroll-behavior: none;
-}
-
-@keyframes backdrop-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.dialog.-dense {
-  max-height: 92dvh;
-}
-
-.dialog.-wide {
-  --dialog-width: #{component.$dialog-width-wide};
-}
-
 @include utils.isMobile {
   html.scroll-blocked {
-    overflow: hidden;
     height: 100%;
+    overflow: hidden;
     overscroll-behavior: none;
   }
 
   body.scroll-blocked {
     overscroll-behavior: none;
-  }
-}
-
-@include utils.isDesktop {
-  .dialog {
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    inline-size: min(
-      var(--dialog-width, #{component.$dialog-width-desktop}),
-      calc(100% - var(--app-gutter) * 2)
-    );
-    block-size: fit-content;
-    max-block-size: calc(100% - var(--app-gutter) * 2);
-
-    .modal {
-      max-height: calc(100dvh - var(--app-gutter) * 2);
-    }
-  }
-
-  .dialog[open] {
-    display: block;
   }
 }

@@ -210,6 +210,10 @@ export function useDialogFieldReveal({
         `${viewportHeight}px`,
       );
       dialog.style.setProperty(
+        '--dialog-visual-viewport-top',
+        `${viewport?.offsetTop ?? 0}px`,
+      );
+      dialog.style.setProperty(
         '--dialog-keyboard-inset',
         `${keyboardInset}px`,
       );
@@ -287,6 +291,7 @@ export function useDialogFieldReveal({
       dialog.removeEventListener('input', handleInput);
       document.removeEventListener('selectionchange', handleSelectionChange);
       dialog.style.removeProperty('--dialog-visual-viewport-height');
+      dialog.style.removeProperty('--dialog-visual-viewport-top');
       dialog.style.removeProperty('--dialog-keyboard-inset');
     };
   }, [dialogRef, open]);

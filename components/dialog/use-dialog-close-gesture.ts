@@ -9,6 +9,7 @@ const DRAG_INTERACTIVE_SELECTOR =
 interface UseDialogCloseGestureOptions {
   dialogRef: RefObject<HTMLDialogElement | null>;
   open?: boolean;
+  onClose: () => void;
 }
 
 const shouldStartDrag = (
@@ -25,6 +26,7 @@ const shouldStartDrag = (
 export function useDialogCloseGesture({
   dialogRef,
   open,
+  onClose,
 }: UseDialogCloseGestureOptions) {
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -106,8 +108,9 @@ export function useDialogCloseGesture({
       const threshold = Math.min(180, modal.clientHeight * 0.22);
 
       if (dragging && offsetY >= threshold) {
-        resetModalStyles();
-        dialog.close();
+        modal.style.transition = '';
+        modal.style.willChange = '';
+        onClose();
       } else if (dragging) {
         restoreModalPosition();
       } else {
@@ -128,7 +131,7 @@ export function useDialogCloseGesture({
       dialog.removeEventListener('touchmove', handleTouchMove);
       dialog.removeEventListener('touchend', finishDrag);
       dialog.removeEventListener('touchcancel', finishDrag);
-      resetModalStyles();
+      clearResetTimer();
     };
-  }, [dialogRef, open]);
+  }, [dialogRef, open, onClose]);
 }
