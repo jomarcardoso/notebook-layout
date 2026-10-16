@@ -24,7 +24,7 @@
   }
 
   &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
-    margin-block-start: var(--app-gap-text);
+    margin-block-start: calc(var(--app-gap-text) * 2);
   }
 
   > *:where(h1, h2, h3, h4, h5, h6, header, nav) + :is([hidden], .d-none) + * {
@@ -42,7 +42,7 @@
     > *:where(h1, h2, h3, h4, h5, h6, header, nav)
     + :is([hidden], .d-none)
     + * {
-    margin-block-start: var(--app-gap-text);
+    margin-block-start: calc(var(--app-gap-text) * 2);
   }
 
   > :is([hidden], .d-none):first-child + * {
@@ -62,7 +62,7 @@
     }
 
     &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
-      margin-block-start: var(--app-gap-text);
+      margin-block-start: calc(var(--app-gap-text) * 2);
     }
 
     > .l-only-wide:first-child + * {
@@ -86,7 +86,7 @@
       > *:where(h1, h2, h3, h4, h5, h6, header, nav)
       + .l-only-narrow
       + * {
-      margin-block-start: var(--app-gap-text);
+      margin-block-start: calc(var(--app-gap-text) * 2);
     }
 
     > .l-only-narrow:first-child + * {
