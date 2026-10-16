@@ -163,6 +163,12 @@ deviations:
     because: o §8 proibe icone em link, mas ali o icone nao decora, ele e o verbo; sozinho e em caption, o nome do pai no topo da pagina nao se le como voltar
   - decision: item de colecao sem imagem mostra a figura de conteudo centralizada no lugar da imagem, tingida de neutro, e no grid em 64px
     because: a figura mora na coluna de margem e mede uma linha, mas o item de colecao nao tem coluna de margem, e o lugar da imagem vazio nao diz o que e a receita; a figura no papel diz, sem passar por foto que o autor nao escolheu. Numa linha so ela some no tamanho do cartao. Ela e placeholder e nao conteudo: um filtro faz o quanto cada ponto e escuro virar o quanto de fg-disabled ele leva, entao o desenho guarda o detalhe, perde a cor e fica no neutro quente da folha, sem concorrer com as fotos dos itens vizinhos. Cinza destoa desse neutro e ganha destaque; a cor impressa fica para a figura na coluna de margem
+  - decision: a figura que representa uma receita sem foto vai tingida de neutro tambem na coluna de margem e na marca do campo de nome
+    because: ali ela tambem e placeholder da receita e nao conteudo do item, como no item de colecao sem imagem; impressa, ela concorre com o texto que a pessoa escreveu
+  - decision: lista de linha com coluna de margem so na tela deitada (`marginColumn="wide"`)
+    because: em retrato os 40px da margem fazem o titulo quebrar a mais, e ali a figura e so reconhecimento, sem informacao que falte ao texto
+  - decision: as acoes de cada rascunho sao icone com palavra na tela deitada e so icone (lapis e lixeira) em retrato, inclusive nos pesos texto e destrutivo
+    because: em retrato duas palavras ao lado do titulo espremem o nome da receita; lapis e lixeira se leem sem palavra e o rotulo acessivel nomeia a receita
 
 overrides:
   - decision: size-control em 44px

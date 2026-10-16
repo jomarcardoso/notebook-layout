@@ -96,6 +96,21 @@
     white-space: nowrap;
   }
 
+  &__actions {
+    align-items: center;
+    align-self: center;
+    display: flex;
+    gap: var(--app-space-xs);
+    grid-column: 3;
+    grid-row: 1;
+    justify-content: end;
+    padding-inline-start: var(--app-space-md);
+  }
+
+  &__item:has(&__description) &__actions {
+    grid-row: 1 / span 2;
+  }
+
   &__text {
     grid-column: 2;
     grid-row: 1;
@@ -176,6 +191,26 @@
 
     .line-list__text {
       grid-column: 1;
+    }
+  }
+
+  &--margin-wide {
+    @media (orientation: portrait) {
+      grid-template-columns: minmax(0, var(--app-measure-body));
+
+      .line-list__mark {
+        display: none;
+      }
+
+      .line-list__description,
+      .line-list__text {
+        grid-column: 1;
+      }
+
+      .line-list__actions,
+      .line-list__trailing {
+        grid-column: 2;
+      }
     }
   }
 

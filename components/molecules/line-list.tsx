@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import { generateClasses } from '../../utils/utils';
+import { PlaceholderFigure } from '../atoms/placeholder-figure';
 import { Checkbox, type CheckboxProps } from '../reader-marks';
 
 export type LineListFamily = 'plain' | 'prose' | 'steps' | 'data';
@@ -14,12 +15,14 @@ export type LineListFamily = 'plain' | 'prose' | 'steps' | 'data';
 export interface LineListProps extends Omit<ComponentProps<'ul'>, 'ref'> {
   family?: LineListFamily;
   ruled?: boolean;
+  marginColumn?: 'always' | 'wide';
   children: ReactNode;
 }
 
 export const LineList: FC<LineListProps> = ({
   family = 'plain',
   ruled = false,
+  marginColumn = 'always',
   className = '',
   children,
   ...props
@@ -29,6 +32,7 @@ export const LineList: FC<LineListProps> = ({
     'line-list': true,
     [`line-list--${family}`]: family !== 'plain',
     'line-list--ruled': ruled,
+    'line-list--margin-wide': marginColumn === 'wide',
     [className]: Boolean(className),
   });
 
@@ -42,20 +46,28 @@ export const LineList: FC<LineListProps> = ({
 interface LineContentProps {
   children: ReactNode;
   figure?: string;
+  placeholder?: boolean;
   description?: ReactNode;
   trailing?: ReactNode;
+  actions?: ReactNode;
 }
 
 const LineContent: FC<LineContentProps> = ({
   children,
   figure = '',
+  placeholder = false,
   description = '',
   trailing = '',
+  actions = '',
 }) => (
   <>
     {figure ? (
       <span className="line-list__mark">
-        <img className="content-figure" src={figure} alt="" />
+        {placeholder ? (
+          <PlaceholderFigure src={figure} />
+        ) : (
+          <img className="content-figure" src={figure} alt="" />
+        )}
       </span>
     ) : null}
     <span className="line-list__text">{children}</span>
@@ -63,6 +75,7 @@ const LineContent: FC<LineContentProps> = ({
       <span className="line-list__description">{description}</span>
     ) : null}
     {trailing ? <span className="line-list__trailing">{trailing}</span> : null}
+    {actions ? <span className="line-list__actions">{actions}</span> : null}
   </>
 );
 
