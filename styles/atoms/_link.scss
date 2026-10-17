@@ -19,14 +19,23 @@
   }
 }
 
-a:not([class]):not(nav *) {
+.link {
   @include link-line;
   color: var(--app-fg-accent);
+  text-decoration-color: var(--app-fg-accent);
   text-decoration-line: none;
 
   &:hover {
     color: var(--app-fg-accent);
     text-decoration-line: underline;
+  }
+
+  &.-discreet {
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+    }
   }
 }
 

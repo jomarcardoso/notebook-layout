@@ -169,6 +169,8 @@ deviations:
     because: em retrato os 40px da margem fazem o titulo quebrar a mais, e ali a figura e so reconhecimento, sem informacao que falte ao texto
   - decision: as acoes de cada rascunho sao icone com palavra na tela deitada e so icone (lapis e lixeira) em retrato, inclusive nos pesos texto e destrutivo
     because: em retrato duas palavras ao lado do titulo espremem o nome da receita; lapis e lixeira se leem sem palavra e o rotulo acessivel nomeia a receita
+  - decision: link discreto (`link -discreet`) fica na tinta em volta e so o hover desenha o sublinhado em accent
+    because: numa lista de links que ja se le como navegacao, como as listas no aparato, o accent em cada item compete com o titulo da regiao; o hover mantem a resposta ao ponteiro e o accent aparece na linha
 
 overrides:
   - decision: size-control em 44px
@@ -759,7 +761,7 @@ lugar (a linha de acao, nao a coluna de margem) e a resposta ao ponteiro.
 presente em link dentro de texto corrido: ali o texto fica na tinta do corpo e so
 o sublinhado leva accent, porque em prosa ninguem distingue cor de enfase de cor
 de link, e com o sublinhado presente pintar tambem o texto e redundante. Fora de
-prosa, o texto e accent e o sublinhado so aparece no hover — todo link tem accent
+prosa o link leva a classe `link`, nunca um estilo de todo `a`: o texto e accent e o sublinhado so aparece no hover — todo link tem accent
 em algum lugar, ou no texto ou na linha. No hover o sublinhado engrossa, o mesmo
 gesto do fio do campo no foco. Sublinhado fino e deslocado para baixo,
 respeitando o descendente. Enfase e italico ou peso, jamais sublinhado. Link

@@ -169,7 +169,18 @@ export const Link: Story = {
         note="The text is accent and the underline only appears on hover. Every link has accent somewhere: in prose it is the line, outside it is the text."
       >
         <Row label="metadata">
-          <a href="#nowhere">Ver todas as receitas</a>
+          <a className="link" href="#nowhere">Ver todas as receitas</a>
+        </Row>
+      </Group>
+
+      <Group
+        title="Discreet"
+        note="link -discreet keeps the text in the ink around it and only the hover draws the accent underline: for a list of links that is already read as navigation, such as the lists in the apparatus."
+      >
+        <Row label="navigation">
+          <a className="link -discreet" href="#nowhere">
+            Bolos de domingo
+          </a>
         </Row>
       </Group>
 

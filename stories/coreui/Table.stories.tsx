@@ -149,6 +149,7 @@ const ActionRowsDemo = () => {
               >
                 <th scope="row">
                   <a
+                    className="link"
                     href="#"
                     aria-current={chosen === name ? 'true' : 'false'}
                     onClick={(event) => {

@@ -37,7 +37,7 @@ export const SeeAll: Story = {
         <section className="l-measure">
           <div className="l-cluster -between -baseline">
             <h2 className="section-title -plain">Relacionadas</h2>
-            <a href="#">Ver todas</a>
+            <a className="link" href="#">Ver todas</a>
           </div>
           <IndexList>
             {RECIPES.map(({ title, meta: description, photo }) => (
