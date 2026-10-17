@@ -54,7 +54,7 @@
     grid-template-areas:
       'figure title'
       'figure description';
-    grid-template-columns: 72px 1fr;
+    grid-template-columns: 72px minmax(0, 1fr);
     grid-template-rows: auto 1fr;
     row-gap: var(--app-space-2xs);
   }
@@ -72,7 +72,7 @@
         'figure'
         'title'
         'description';
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       grid-template-rows: auto auto 1fr;
       text-align: center;
     }

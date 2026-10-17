@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'CoreUI\'s 12-column grid used directly, because it is mechanics. The gutter is --app-gutter, 32px, the same as l-regions: the token and $grid-gutter-width read the same value from _metrics.scss.',
+          'CoreUI\'s 12-column grid used directly, because it is mechanics. The gutter is --app-gutter, 32px, the same as l-regions: the token and $grid-gutter-width read the same value from _metrics.scss. Its breakpoints measure the window, so they only fit where nothing around changes the room: inside a region, where the room follows orientation, columns are l-columns or l-split (Layout/Columns and split).',
       },
     },
   },

@@ -8,7 +8,7 @@
   flex-shrink: 0;
   min-height: component.$heading-min-height;
   padding: 8px;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
 
   h1,

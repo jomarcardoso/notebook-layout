@@ -58,6 +58,8 @@ never rewrite one in a third-party utility grammar.
 | `l-measure` | the text measure — body, narrow or apparatus | `--l-measure` |
 | `l-rule` | the rule as a separator between blocks | — |
 | `l-cluster` | horizontal grouping on the inner space axis | `--l-cluster-gap` |
+| `l-columns` | as many columns as fit, each at least the minimum, stacked when none fit | `--l-columns-min`, `--l-columns-gap` (both axes), `--l-columns-row-gap` |
+| `l-split` | parts stacked and centred in a narrow container, side by side from 560px of its own width; each part grows by its `--l-grow`, or keeps its content's width with `flex-grow-0` | `--l-grow` (on a part), `--l-split-gap` |
 | `l-regions` | margin, content and apparatus, unequal widths | `--l-regions-*` |
 | `l-target` | 44px touch area on the element's own box | `--l-target-size` |
 | `l-only-wide`, `l-only-narrow` | which copy of a piece enters the screen, by orientation | — |
@@ -81,6 +83,16 @@ width-based `d-md-*` would show both copies on a tablet held upright.
 Modifiers use the repository's `.-modifier` form: `.l-stack.-block`,
 `.l-measure.-apparatus`.
 
+Columns are decided by the space the piece has, never by the window. The regions change with orientation, so inside a region the window width says nothing about the room left: the grid's breakpoint classes (`col-md-*`, `row-cols-md-*`, `text-md-*`, `offset-md-*`) are not used there. Columns that fit by room are `l-columns`; a pair that changes its arrangement is `l-split`, or a container query when the arrangement is the component's own.
+
+`l-columns` is for peers of the same kind whose count per line only depends on room: the ingredients beside the method, photo thumbnails, cards. It has no breakpoint: each column takes at least `--l-columns-min`, and the items stack when two no longer fit. Its rows are flow, so they keep the rhythm unit until a gap is given; `--l-columns-gap` sets both axes, and `--l-columns-row-gap` is only for rows that differ from columns.
+
+`l-split` is for different parts that are read side by side when there is room and in sequence when there is not, such as a drawing beside its text or a heading beside its action: stacked they are centred, side by side they start at the start of each part. Each part says its own size, so the rule is the same whichever side and however many parts. By default every part grows by an equal share; `--l-grow` on a part sets its share as a whole number, so `5` and `7` split the line like `col-5` and `col-7`. CoreUI's `flex-grow-0` on a part keeps it at its content's width, up to half the line, and the parts that grow take the rest: a title with its action is `<h2/>` and `<div class="flex-grow-0">`. `--l-grow` is registered as not inherited, so a split inside a part does not take its parent's share.
+
+`l-columns` is a grid, so an item stretches to the height of its row: a `position: sticky` child needs `align-self: start` to have room to slide. `l-split` is its own size container (`container-type: inline-size`), so its width cannot come from its content: inside a box that shrinks to fit (an auto-width flex item, an inline block, an absolutely positioned element without a width) it collapses. Both give every item `min-inline-size: 0`, so a long word, a table or a `<pre>` does not push its column past its parent, and no ancestor needs `overflow: hidden` to hide it.
+
+**A grid track is `minmax(0, 1fr)`, never a bare `1fr`.** A bare `1fr` is `minmax(auto, 1fr)`: its minimum is the widest thing inside, at any depth. One image of fixed width, table, carousel or unbroken word several levels down widens the column past its grid, and the page past the screen, through every grid between them. The usual cure, `overflow: hidden` on an ancestor, then breaks `position: sticky` below it. A track that should hold its content's width is `auto` only when that content is short by nature (an icon, a label), and `fit-content(<share>)` when it is not.
+
 Two rules that decide most questions:
 
 - **Flow space comes from `--app-rhythm-*`, inner space from `--app-space-*`.**
@@ -95,8 +107,8 @@ Two rules that decide most questions:
   property cannot carry the gap, because nested stacks would inherit it.
 - **A component of this package is used with one class, or a few.** Its block and its modifiers carry everything it looks like: `.accordion`, `.alert`, `.btn` and the like never ask the consumer for a second set of classes to look right. Its own markup carries no utility class (`d-flex`, `gap-*`, `m*-*`, `justify-content-*`): the layout of its parts is written in its CSS, where a consumer cannot forget it. The 12-column grid (`row`, `col-*`, `.grid`) and the `l-*` primitives may appear inside a composition that is a layout by nature.
 - **Mechanics come from the library, values come from us.** `d-flex`,
-  `order-*`, `position-*`, `overflow-*`, `d-md-none` and the 12-column grid are
-  used directly. Colour, radius, shadow and typography utilities are not used at
+  `order-*`, `position-*`, `overflow-*` and the 12-column grid without
+  breakpoint suffixes are used directly. Colour, radius, shadow and typography utilities are not used at
   all — either they resolve to a token by configuration, or they leak.
 
 The library's own configuration lives in `styles/coreui-entry.scss`. Spacing

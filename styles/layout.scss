@@ -141,6 +141,55 @@
   }
 }
 
+.l-columns {
+  column-gap: var(--l-columns-gap, var(--app-gutter));
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--l-columns-min, 280px), 100%), 1fr)
+  );
+  row-gap: var(
+    --l-columns-row-gap,
+    var(--l-columns-gap, var(--app-rhythm-1))
+  );
+
+  > * {
+    min-inline-size: 0;
+  }
+}
+
+@property --l-grow {
+  inherits: false;
+  initial-value: 1;
+  syntax: '<number>';
+}
+
+.l-split {
+  align-items: center;
+  container-type: inline-size;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--l-split-gap, var(--app-gutter));
+
+  > * {
+    flex: 1 1 100%;
+    min-inline-size: 0;
+    text-align: center;
+  }
+
+  @container (min-width: 560px) {
+    > * {
+      flex: var(--l-grow) 1 0;
+      text-align: start;
+    }
+
+    > .flex-grow-0 {
+      flex-basis: auto;
+      max-inline-size: 50%;
+    }
+  }
+}
+
 .l-regions {
   display: grid;
   grid-template-areas:

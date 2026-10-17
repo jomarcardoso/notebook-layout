@@ -97,7 +97,7 @@ A regra para escolher entre os dois: `metrics.*` quando o CoreUI faz conta Sass 
 
 **Tabela.** A marcacao e `.table`, e `.table-responsive` em volta quando a tabela e larga: a largura rola sem mexer na pagina. Nenhuma variante nossa entra na marcacao; o resto se ajusta pela estrutura e pela configuracao do entry. `.table` e a pagina de dados: fios horizontais em `rule`, nenhuma superficie, celula no papel `numeric` (1.125rem com entrelinha 1.4) com algarismos tabulares na tabela inteira. A legenda (`<caption>`) e `caption` em `fg-muted`. O cabecalho e `label-sm` em `fg-muted`, com o fio de baixo em `--app-rule-strong`: um degrau mais escuro, na mesma espessura. O nome da linha e `<th scope="row">`. Grupo de linhas e um `<tbody>` por grupo, aberto por `<th scope="rowgroup">` em `label`, separado por espaco acima e nunca por faixa. Das classes do CoreUI entram so as que dizem algo que a estrutura nao diz: `text-end` na coluna de numero, `table-active` na celula ou linha marcada (`bg-selected`) e `table-hover` quando a linha leva a algum lugar, pintado so em aparelho com hover. O zebrado nao pinta nada (`$table-striped-bg: transparent`), `$table-variants` esta vazio, e `table-sm`, `table-bordered`, `table-borderless`, `table-dark` e `table-group-divider` nao sao usados; o `$table-*-sm` continua configurado no entry. O reset zera a borda de cada celula; `resets.scss` devolve so o estilo e a cor herdada que o reboot do CoreUI daria, com `:where` para a largura da biblioteca vencer.
 
-**Grade.** Usada direto, e mecanica: `row` e `col-*` em flex, `.grid` e `g-col-*` em CSS grid. A calha e a de `--app-gutter` (32px): `$grid-gutter-width` le o mesmo valor de `_metrics.scss`, porque o CoreUI faz conta com ela; o padding do `container` e a metade dela. A secao Utilitarios e helpers diz o que mais se usa assim.
+**Grade.** Usada direto, e mecanica: `row` e `col-*` em flex, `.grid` e `g-col-*` em CSS grid. A calha e a de `--app-gutter` (32px): `$grid-gutter-width` le o mesmo valor de `_metrics.scss`, porque o CoreUI faz conta com ela; o padding do `container` e a metade dela. A secao Utilitarios e helpers diz o que mais se usa assim. Os pontos de quebra da grade (`col-md-*`, `row-cols-md-*`, `text-md-*`) medem a janela, e as regioes mudam com a orientacao, entao dentro de uma regiao eles nao dizem quanto espaco sobrou: ali as colunas sao `l-columns` ou `l-split`.
 
 **Barra lateral.** `Sidebar` sobre `CSidebar`, em `bg-page`, com os links do nav pelo adapter. Recebe os itens, o cabecalho e o `linkComponent`; recolhe para os icones, e a escolha do leitor vale para todas as paginas, porque o estado fica fora delas (`sidebar-fold.ts`). Comeca recolhido abaixo de 1024px. Cabecalho e rodape ficam a duas unidades de ritmo dos links.
 
@@ -137,7 +137,9 @@ O CoreUI entrega mecanica pronta, e ela se usa direto. Ela nao se embrulha num p
 | grupo lado a lado que quebra | `l-cluster` |
 | margem, conteudo e aparato | `l-regions` |
 | medida de texto | `l-measure` |
-| colunas dentro de uma regiao, ou uma colecao em grade | `row` e `col-*`, ou `.grid` e `g-col-*` |
+| colunas que cabem pelo espaco que a peca tem | `l-columns` |
+| partes lado a lado que empilham quando falta espaco | `l-split`; `flex-grow-0` na parte que fica com a largura do conteudo, `--l-grow` para a proporcao |
+| colunas fixas, que nao mudam com o espaco | `row` e `col-*` sem ponto de quebra, ou `.grid` e `g-col-*` |
 | alvo de toque de 44px | `l-target` |
 | alvo inteiro de um item | o link e o item: `IndexItem`, `ThumbItem`, `LineListItem` com `href` |
 
