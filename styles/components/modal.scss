@@ -20,14 +20,14 @@
   }
 
   &__body {
-    --tabs-sticky-inset: #{component.$modal-gutter};
+    --tabs-sticky-inset: #{component.$modal-body-pad-top};
 
     flex: 1 1 auto;
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
     padding-inline: component.$modal-gutter;
-    padding-top: var(--app-rhythm-2);
+    padding-top: component.$modal-body-pad-top;
     padding-bottom: max(
       component.$modal-body-pad-bottom,
       var(--dialog-keyboard-inset, 0px),
