@@ -71,7 +71,7 @@ export const Columns: Story = {
         <Frames>
           <div className="l-columns">
             <section className="l-stack -block">
-              <h3 className="section-title -center">Ingredientes</h3>
+              <h3 className="section-title">Ingredientes</h3>
               <LineList>
                 {INGREDIENTS.map(({ text, figure }) => (
                   <LineListItem key={text} figure={figure}>
@@ -81,7 +81,7 @@ export const Columns: Story = {
               </LineList>
             </section>
             <section className="l-stack -block">
-              <h3 className="section-title -center">Modo de preparo</h3>
+              <h3 className="section-title">Modo de preparo</h3>
               <LineList family="steps">
                 {STEPS.map((step) => (
                   <LineListItem key={step}>{step}</LineListItem>

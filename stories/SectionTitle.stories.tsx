@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'The section title is a class, .section-title, on the heading of whatever level the page asks for: title-md role with a rule underneath. The modifiers change the size, the alignment and the rule.',
+          'The section title is a class, .section-title, on the heading of whatever level the page asks for: title-md role with a rule underneath. Its only modifier is -sub, the title-sm size. A heading that needs another look uses one of the title roles (display, title-lg, title-md, title-sm), never a new section-title variant.',
       },
     },
   },
@@ -27,12 +27,6 @@ export const Variants: Story = {
         </Row>
         <Row label="-sub">
           <h3 className="section-title -sub">Massa</h3>
-        </Row>
-        <Row label="-center">
-          <h2 className="section-title -center">Modo de preparo</h2>
-        </Row>
-        <Row label="-plain">
-          <h2 className="section-title -plain">Relacionadas</h2>
         </Row>
       </Group>
     </Sheet>

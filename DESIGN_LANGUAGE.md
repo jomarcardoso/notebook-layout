@@ -915,7 +915,8 @@ primeira linha do passo. Com dois algarismos ele continua cabendo na coluna. Mei
 unidade entre passos. Texto em `fg-default` respeitando a medida.
 
 **Tabela.** Fios horizontais apenas. Cabecalho em `fg-muted` com fio mais forte
-abaixo.
+abaixo. A primeira e a ultima coluna encostam na borda do conteudo, como o texto
+e as listas ao redor; o espaco interno so separa uma coluna da outra.
 
 **Acordeao.** Um fio por item, titulo na linha com o indicador ao fim, corpo
 revelado respeitando a medida. Sem caixa, sem raio, sem fundo. Dois itens
@@ -1017,6 +1018,12 @@ Nao resolva largura de tela com aparencia. Estreitar remonta, nao repinta.
 Nao misture os dois eixos de espaco. Espaco de fluxo consome a unidade de ritmo;
 padding e gap interno consomem a escala interna. Um `gap` de fluxo escrito na
 escala interna e um ritmo quebrado que ninguem consegue apontar.
+
+Nao crie titulo novo nem variante de titulo. O titulo de secao e `.section-title`,
+com fio, e a unica variante dele e `-sub`, no tamanho de `title-sm`. Um titulo que
+precisa de outra aparencia usa um dos papeis que ja existem (`display`,
+`title-lg`, `title-md`, `title-sm`), sem fio. Cada variante a mais e um titulo que
+ninguem sabe quando usar.
 
 ### Antipadroes
 

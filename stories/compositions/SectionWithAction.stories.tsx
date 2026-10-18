@@ -11,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'The section header with an action at the end of the line: l-cluster -between -baseline with the title and a link. The action is a link, not a button, because it leads somewhere else. The title drops its rule (.section-title.-plain), because the link beside it already marks the start of the section and a rule running only under the title would look cut off.',
+          'The section header with an action at the end of the line: l-cluster -between -baseline with the title and a link. The action is a link, not a button, because it leads somewhere else. The title is title-md, with no rule: the link beside it already marks the start of the section, and a rule running only under the title would look cut off.',
       },
     },
   },
@@ -36,7 +36,7 @@ export const SeeAll: Story = {
       >
         <section className="l-measure">
           <div className="l-cluster -between -baseline">
-            <h2 className="section-title -plain">Relacionadas</h2>
+            <h2 className="title-md">Relacionadas</h2>
             <a className="link" href="#">Ver todas</a>
           </div>
           <IndexList>

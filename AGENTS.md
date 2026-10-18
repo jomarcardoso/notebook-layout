@@ -93,6 +93,8 @@ Columns are decided by the space the piece has, never by the window. The regions
 
 **A scroller that pads its top declares `--tabs-sticky-inset` from the same value as that padding.** Sticky offsets measure from the scroll container's content box, so `.tabs.-sticky` sits at `top: calc(-1 * var(--tabs-sticky-inset))` to land flush on the edge; an inset that differs from the padding leaves the row hanging below the top with the content scrolling through the gap. The modal body takes both from `$modal-body-pad-top`.
 
+**No new title and no new title variant.** The section title is `.section-title`, with its rule, and its only modifier is `-sub`; a heading that needs another look uses an existing role (`display`, `title-lg`, `title-md`, `title-sm`) without a rule.
+
 **A grid track is `minmax(0, 1fr)`, never a bare `1fr`.** A bare `1fr` is `minmax(auto, 1fr)`: its minimum is the widest thing inside, at any depth. One image of fixed width, table, carousel or unbroken word several levels down widens the column past its grid, and the page past the screen, through every grid between them. The usual cure, `overflow: hidden` on an ancestor, then breaks `position: sticky` below it. A track that should hold its content's width is `auto` only when that content is short by nature (an icon, a label), and `fit-content(<share>)` when it is not.
 
 Two rules that decide most questions:

@@ -93,17 +93,4 @@
     @extend .title-sm;
   }
 
-  &.-center {
-    margin-inline: auto;
-    text-align: center;
-  }
-
-  &.-plain {
-    border-bottom: 0;
-  }
-
-  &.-offset {
-    border-bottom: 0;
-    margin-inline-start: calc(-1 * var(--app-gutter));
-  }
 }

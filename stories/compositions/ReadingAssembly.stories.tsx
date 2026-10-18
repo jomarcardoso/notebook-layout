@@ -62,7 +62,7 @@ export const Recipe: Story = {
         <div className="l-stack -container">
           {SECTIONS.map(({ id, title, text }) => (
             <section key={id} id={id}>
-              <h2 className="section-title text-center">{title}</h2>
+              <h2 className="section-title">{title}</h2>
               <p className="body">{text}</p>
             </section>
           ))}

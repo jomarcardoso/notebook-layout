@@ -19,6 +19,14 @@
     font: component.$table-head-font;
   }
 
+  > :not(caption) > tr > :first-child {
+    padding-inline-start: 0;
+  }
+
+  > :not(caption) > tr > :last-child {
+    padding-inline-end: 0;
+  }
+
   > tbody > tr > th[scope='rowgroup'] {
     color: component.$table-group-fg;
     font: component.$table-group-font;

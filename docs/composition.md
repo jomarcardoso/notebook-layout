@@ -66,7 +66,7 @@ O que o corpo reserva no fim nao e calha: e o teclado do telefone e a faixa de g
 | --- | --- | --- |
 | abertura | `.opening`, `display`, `.description-list`, `.app-image`, `ExpandableText`, `Button` | Compositions/Opening |
 | destaque de vitrine | `row` 7/5, `.section-title`, `ThumbItem` com `variant` `featured` e `brief` | Compositions/Showcase highlight |
-| secao com acao | `l-cluster -between -baseline`, `.section-title.-plain`, link, `IndexList` | Compositions/Section with action |
+| secao com acao | `l-cluster -between -baseline`, `.title-md`, link, `IndexList` | Compositions/Section with action |
 | vazio | `l-measure -narrow`, `l-stack -block`, `.state-illustration`, `title-sm`, `Button` | Compositions/Empty |
 | grupo de campos | `.fieldset`, `l-stack`, `Field` | Compositions/Field group |
 | montagem de leitura | `l-regions`, `sticky-top`, `LineList`, `.table` | Compositions/Reading assembly |
@@ -89,7 +89,7 @@ Em todo item o link E o item, como no resto das colecoes: a area de clique, o ho
 
 ### Secao com acao
 
-Quando a secao tem uma acao de secao — "ver todas" —, titulo e link dividem a linha de base num `l-cluster -between -baseline`. A acao e link, porque leva a outro lugar. O titulo usa `.section-title.-plain`: o fio correria so sob o titulo, cortado pelo link, e o link ja marca o comeco da secao.
+Quando a secao tem uma acao de secao — "ver todas" —, titulo e link dividem a linha de base num `l-cluster -between -baseline`. A acao e link, porque leva a outro lugar. O titulo usa `.title-md`, sem fio: o fio correria so sob o titulo, cortado pelo link, e o link ja marca o comeco da secao.
 
 ### Vazio
 
