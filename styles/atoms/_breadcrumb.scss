@@ -13,10 +13,6 @@
     display: none;
   }
 
-  .breadcrumb-item > a {
-    @include link-in-text;
-  }
-
   @container breadcrumb (width < 480px) {
     .breadcrumb-item {
       --cui-breadcrumb-divider: '';

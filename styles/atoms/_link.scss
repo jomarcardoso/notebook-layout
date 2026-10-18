@@ -1,17 +1,14 @@
 // notebook-layout/styles/atoms/_link.scss
 
-// Thin and offset, respecting the descender.
-@mixin link-line {
-  text-decoration-skip-ink: auto;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.22em;
-}
-
-@mixin link-in-text {
-  @include link-line;
+.link,
+.prose a,
+.body a {
   color: inherit;
   text-decoration-color: var(--app-fg-accent);
   text-decoration-line: underline;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
 
   &:hover {
     color: inherit;
@@ -20,26 +17,21 @@
 }
 
 .link {
-  @include link-line;
-  color: var(--app-fg-accent);
-  text-decoration-color: var(--app-fg-accent);
-  text-decoration-line: none;
-
-  &:hover {
-    color: var(--app-fg-accent);
-    text-decoration-line: underline;
+  &:where(button) {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-align: inherit;
   }
 
   &.-discreet {
-    color: inherit;
+    text-decoration-line: none;
 
     &:hover {
-      color: inherit;
+      text-decoration-line: underline;
+      text-decoration-thickness: 1px;
     }
   }
-}
-
-.prose a,
-.body a {
-  @include link-in-text;
 }

@@ -49,7 +49,7 @@ export const Breadcrumbs = ({
             aria-current={current ? 'page' : undefined}
           >
             {!current && item.href ? (
-              <Link href={item.href}>{content}</Link>
+              <Link className="link" href={item.href}>{content}</Link>
             ) : (
               content
             )}
