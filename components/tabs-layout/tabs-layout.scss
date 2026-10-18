@@ -25,7 +25,7 @@
 
   @media (orientation: portrait) {
     &__content > * + * {
-      margin-block-start: var(--app-rhythm-2);
+      margin-block-start: var(--app-rhythm-4);
     }
 
     &__content {
@@ -38,7 +38,7 @@
     &__content {
       color: component.$tabs-layout-content-fg;
       height: 100%;
-      padding-block-start: var(--app-rhythm-half);
+      padding-block-start: var(--app-rhythm-1);
       padding-inline: var(--app-space-md);
       position: relative;
     }

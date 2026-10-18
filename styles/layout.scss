@@ -4,45 +4,45 @@
   display: block;
 
   > * + * {
-    margin-block-start: var(--app-rhythm-1);
-  }
-
-  > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
-    margin-block-start: var(--app-rhythm-half);
-  }
-
-  &.-container > * + * {
     margin-block-start: var(--app-rhythm-2);
   }
 
-  &.-container > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
+  > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
     margin-block-start: var(--app-rhythm-1);
   }
 
+  &.-container > * + * {
+    margin-block-start: var(--app-rhythm-4);
+  }
+
+  &.-container > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
+    margin-block-start: var(--app-rhythm-2);
+  }
+
   &.-block > * + * {
-    margin-block-start: var(--app-rhythm-half);
+    margin-block-start: var(--app-rhythm-1);
   }
 
   &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
-    margin-block-start: calc(var(--app-gap-text) * 2);
+    margin-block-start: var(--app-rhythm-half);
   }
 
   > *:where(h1, h2, h3, h4, h5, h6, header, nav) + :is([hidden], .d-none) + * {
-    margin-block-start: var(--app-rhythm-half);
+    margin-block-start: var(--app-rhythm-1);
   }
 
   &.-container
     > *:where(h1, h2, h3, h4, h5, h6, header, nav)
     + :is([hidden], .d-none)
     + * {
-    margin-block-start: var(--app-rhythm-1);
+    margin-block-start: var(--app-rhythm-2);
   }
 
   &.-block
     > *:where(h1, h2, h3, h4, h5, h6, header, nav)
     + :is([hidden], .d-none)
     + * {
-    margin-block-start: calc(var(--app-gap-text) * 2);
+    margin-block-start: var(--app-rhythm-half);
   }
 
   > :is([hidden], .d-none):first-child + * {
@@ -51,18 +51,18 @@
 
   @media (orientation: portrait) {
     > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
-      margin-block-start: var(--app-rhythm-half);
+      margin-block-start: var(--app-rhythm-1);
     }
 
     &.-container
       > *:where(h1, h2, h3, h4, h5, h6, header, nav)
       + .l-only-wide
       + * {
-      margin-block-start: var(--app-rhythm-1);
+      margin-block-start: var(--app-rhythm-2);
     }
 
     &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
-      margin-block-start: calc(var(--app-gap-text) * 2);
+      margin-block-start: var(--app-rhythm-half);
     }
 
     > .l-only-wide:first-child + * {
@@ -72,21 +72,21 @@
 
   @media (orientation: landscape) {
     > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-narrow + * {
-      margin-block-start: var(--app-rhythm-half);
+      margin-block-start: var(--app-rhythm-1);
     }
 
     &.-container
       > *:where(h1, h2, h3, h4, h5, h6, header, nav)
       + .l-only-narrow
       + * {
-      margin-block-start: var(--app-rhythm-1);
+      margin-block-start: var(--app-rhythm-2);
     }
 
     &.-block
       > *:where(h1, h2, h3, h4, h5, h6, header, nav)
       + .l-only-narrow
       + * {
-      margin-block-start: calc(var(--app-gap-text) * 2);
+      margin-block-start: var(--app-rhythm-half);
     }
 
     > .l-only-narrow:first-child + * {
@@ -148,10 +148,7 @@
     auto-fit,
     minmax(min(var(--l-columns-min, 280px), 100%), 1fr)
   );
-  row-gap: var(
-    --l-columns-row-gap,
-    var(--l-columns-gap, var(--app-rhythm-1))
-  );
+  row-gap: var(--l-columns-row-gap, var(--l-columns-gap, var(--app-rhythm-2)));
 
   > * {
     min-inline-size: 0;
@@ -197,7 +194,7 @@
     'l-regions-content'
     'l-regions-apparatus';
   grid-template-columns: minmax(0, 1fr);
-  row-gap: var(--app-rhythm-2);
+  row-gap: var(--app-rhythm-4);
 
   &__margin {
     grid-area: l-regions-margin;

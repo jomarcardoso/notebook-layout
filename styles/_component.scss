@@ -143,7 +143,7 @@ $opening-figure-max: 320px !default;
 
 $modal-gutter: map.get(metrics.$spacers, 3) !default;
 $modal-gutter-block: map.get(metrics.$spacers, 2) !default;
-$modal-body-pad-bottom: var(--app-rhythm-1) !default;
+$modal-body-pad-bottom: var(--app-rhythm-2) !default;
 
 $modal-footer-gap: var(--app-gap-inline) !default;
 $modal-divider-width: var(--app-border-width) !default;
@@ -161,7 +161,7 @@ $choice-title-radius: var(--app-radius-control) !default;
 $choice-title-bg: var(--app-bg-page) !default;
 $choice-img-fg-hover: var(--app-fg-accent) !default;
 $choice-title-bg-hover: var(--app-bg-selected) !default;
-$intro-gap: var(--app-rhythm-half) !default;
+$intro-gap: var(--app-rhythm-1) !default;
 $notebook-tabs-font: var(--app-text-label-sm) !default;
 $notebook-tabs-font-size: 0.75rem !default;
 $notebook-tabs-gap: var(--app-space-xs) !default;

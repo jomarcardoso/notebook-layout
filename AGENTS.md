@@ -54,7 +54,7 @@ never rewrite one in a third-party utility grammar.
 
 | primitive | what it resolves | knob |
 | --- | --- | --- |
-| `l-stack` | vertical flow, space on the joint, named by what the element is: `-container` wraps sections (2 units), plain `l-stack` is a section (1 unit), `-block` is an element of a section with parts of its own (half a unit) | — |
+| `l-stack` | vertical flow, space on the joint, named by what the element is: `-container` wraps sections (4 units, two lines), plain `l-stack` is a section (2 units, one line), `-block` is an element of a section with parts of its own (1 unit, half a line) | — |
 | `l-measure` | the text measure — body, narrow or apparatus | `--l-measure` |
 | `l-rule` | the rule as a separator between blocks | — |
 | `l-cluster` | horizontal grouping on the inner space axis | `--l-cluster-gap` |

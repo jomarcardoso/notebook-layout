@@ -20,7 +20,21 @@
   }
 }
 
-input.form-control:is([type='text'], [type='search'], :not([type])),
+input.form-control,
+.form-select {
+  --field-line: var(--app-rhythm-2);
+
+  block-size: var(--field-line);
+  border-block-end: var(--field-rule-width) solid var(--field-rule-color);
+  line-height: calc(var(--field-line) - var(--field-rule-width));
+  padding-block: 0;
+}
+
+input.form-control:is([type='text'], [type='search'], :not([type])) {
+  font: var(--app-text-script);
+  line-height: calc(var(--field-line) - var(--field-rule-width));
+}
+
 textarea.form-control {
   font: var(--app-text-script);
 }
@@ -28,13 +42,7 @@ textarea.form-control {
 input.form-control[type='number'] {
   font: var(--app-text-numeric);
   font-variant-numeric: lining-nums var(--app-numeric-tabular);
-}
-
-input.form-control,
-.form-select {
-  border-block-end: var(--field-rule-width) solid var(--field-rule-color);
-  line-height: 1.3;
-  padding-block: 0;
+  line-height: calc(var(--field-line) - var(--field-rule-width));
 }
 
 input.form-control:is(:autofill, :-webkit-autofill) {
@@ -75,7 +83,7 @@ input.form-control[type='search'] {
 }
 
 .field-sheet {
-  --field-line: var(--app-rhythm-1);
+  --field-line: var(--app-rhythm-2);
   --field-rule-color: var(--app-border-default);
   --field-rule-offset: 2px;
   --field-rule-width: var(--app-border-width);
@@ -86,7 +94,7 @@ input.form-control[type='search'] {
 }
 
 textarea.form-control {
-  --field-line: var(--app-rhythm-1);
+  --field-line: var(--app-rhythm-2);
   --field-rule-offset: 2px;
 
   min-block-size: calc(var(--field-line) * var(--field-min-rows, 3));

@@ -9,7 +9,7 @@
     border-block-end: 0;
     color: var(--app-fg-muted);
     font: var(--app-text-label-sm);
-    margin-block: 0 var(--app-rhythm-half);
+    margin-block: 0 var(--app-rhythm-1);
   }
 
   .table {
@@ -29,6 +29,6 @@
 
   table + a {
     display: inline-block;
-    margin-block-start: var(--app-rhythm-half);
+    margin-block-start: var(--app-rhythm-1);
   }
 }

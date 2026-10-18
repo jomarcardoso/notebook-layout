@@ -9,10 +9,8 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  row-gap: var(--app-rhythm-1);
+  row-gap: var(--app-rhythm-2);
 
-  // A figure draws with `currentColor` and its secondary lines with
-  // `--storyboard-ink-faint`, so it follows the neutral ramp.
   &__figure {
     --storyboard-ink-faint: var(--app-fg-subtle);
 

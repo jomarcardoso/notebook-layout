@@ -13,8 +13,9 @@
   }
 
   &--large {
-    .form-control {
-      --field-line: calc(var(--app-rhythm-1) * 1.5);
+    .form-control,
+    input.form-control:is([type='text'], [type='search'], :not([type])) {
+      --field-line: var(--app-rhythm-3);
       --field-rule-offset: 9px;
 
       font: var(--app-text-body-lg);
@@ -22,7 +23,7 @@
     }
 
     .field-markers {
-      --field-line: calc(var(--app-rhythm-1) * 1.5);
+      --field-line: var(--app-rhythm-3);
 
       font: var(--app-text-body-lg);
       line-height: var(--field-line);
@@ -31,7 +32,7 @@
 }
 
 .field-markers {
-  --field-line: var(--app-rhythm-1);
+  --field-line: var(--app-rhythm-2);
 
   font: var(--app-text-script);
   inset-block-start: 0;

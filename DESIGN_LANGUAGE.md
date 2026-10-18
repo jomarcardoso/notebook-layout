@@ -101,13 +101,13 @@ tabsPolicy: exclusive-sets-only
 collapseModel: reflow-not-restyle
 
 # Ritmo. A unidade e infraestrutura, a entrelinha se ajusta a ela: uma linha de
-# corpo mede exatamente uma unidade. Espaco de fluxo consome a unidade; espaco
+# corpo mede exatamente duas unidades. Espaco de fluxo consome a unidade; espaco
 # interno de componente tem escala propria.
 #
-# `rhythmUnit` e a unica medida em rem, porque ela E uma linha. Padding, gap,
+# `rhythmUnit` e a unica medida em rem, porque ela E meia linha. Padding, gap,
 # calha, largura de regiao e area de toque ficam em px: nao sao medidas de
 # texto, e cresce-las com a fonte espreme o conteudo.
-rhythmUnit: 2rem
+rhythmUnit: 1rem
 lengthUnit: px
 # `1rem` e o tamanho de texto que o leitor escolheu no sistema: a meta
 # `text-scale` no Chromium, `-apple-system-body` no iOS e a fonte padrao do
@@ -150,8 +150,8 @@ deviations:
     because: pedido explicito; o §10 (Barra superior) ja abria excecao de sombra e o documento se contradiz entre guardrail, §2 e §10. Fio mais sombra sao dois degraus da escada de separacao dizendo a mesma coisa; fica a sombra, que e a que diz levantado e nao apenas separado
   - decision: figura de conteudo em px, revogando o override que a media em unidades de ritmo
     because: coisa que nao e texto nao deve crescer com a fonte do leitor; em rem a figura deixa de caber na coluna que a abriga e leva o layout junto
-  - decision: campo sem sobra acima do texto; o alvo de 44px e rotulo mais caixa somados
-    because: §11 diz que size-control e area de toque e nunca tamanho pintado; a sobra acima separava o rotulo do proprio campo. O input nao leva min-block-size nem padding para chegar a 44px sozinho; uma auditoria automatica de alvo (axe target-size) mede so a caixa do input e acusa esse campo, e isso nao e motivo para mudar. O §10 descreve a regra original; vale esta entrada
+  - decision: campo de uma linha mede uma linha da pauta, como cada linha do textarea; o alvo de 44px e rotulo mais caixa somados
+    because: §11 diz que size-control e area de toque e nunca tamanho pintado; o campo e uma linha escrita e nao uma caixa, e uma linha mais baixa que a do textarea quebra a pauta entre campos vizinhos. O input nao leva min-block-size nem padding para chegar a 44px sozinho; uma auditoria automatica de alvo (axe target-size) mede so a caixa do input e acusa esse campo, e isso nao e motivo para mudar. O §10 descreve a regra original; vale esta entrada
   - decision: item de lista com entrelinha compacta e um ritmo-meio entre itens
     because: a entrelinha de prosa deixava as duas linhas do mesmo item mais longe entre si do que de itens vizinhos, e a proximidade parava de agrupar
   - decision: a figura de abertura em retrato ganha superficie entintada ocupando a medida inteira, com a imagem centralizada ate o maximo em px
@@ -177,7 +177,7 @@ overrides:
     because: multiplataforma; 40px erra o alvo num telefone apoiado na bancada
   - decision: corpo de leitura em 1.125rem e interface em 1rem
     because: se le de longe, com as maos ocupadas
-  - decision: linha de acao e linha de marcar em uma unidade e meia (48px), e nao em multiplo inteiro da unidade
+  - decision: linha de acao e linha de marcar em uma linha e meia (48px), e nao em linhas inteiras
     because: o alvo de 44px nao cabe numa linha de 32px; em 48px a linha fica na meia pauta e nenhum alvo vizinho se cruza
   - decision: imagem de indice medida em unidades de ritmo (rem), e nao em px
     because: elas existem para pousar na pauta; em px sairiam dela quando o leitor aumenta a fonte
@@ -459,8 +459,8 @@ O contraste entre o texto de um item e a descricao dele nao e de peso: os dois
 sao 400. E tamanho e tinta — `body-lg` em `fg-emphasis` contra `caption` em
 `fg-muted`.
 
-As entrelinhas de prosa nao sao gosto: elas sao o que faz uma linha medir uma
-unidade de ritmo. `body` e 1.125rem × 1.778 = 2rem; `body-lg` e 1.25rem × 1.6 =
+As entrelinhas de prosa nao sao gosto: elas sao o que faz uma linha medir duas
+unidades de ritmo. `body` e 1.125rem × 1.778 = 2rem; `body-lg` e 1.25rem × 1.6 =
 2rem. Os dois papeis da coluna de conteudo pousam na mesma pauta, com razoes
 diferentes porque os corpos sao diferentes.
 
@@ -488,16 +488,17 @@ icone e rotulo — se mede pelo proprio elemento e tem escala propria. A regua: 
 dois elementos empilhados fazem o olho descer a pagina, e fluxo; se o espaco
 esta dentro de uma coisa so, e interno.
 
-A unidade de ritmo e 32px, e uma linha de corpo mede exatamente isso. A ordem da
-derivacao importa: a unidade vem primeiro e a entrelinha do corpo se ajusta para
-bater com ela. Entrelinha e preferencia; unidade de ritmo e infraestrutura, e o
+A unidade de ritmo e 16px, meia linha: uma linha de corpo mede exatamente duas
+unidades, 32px. A meia linha da ao fluxo passos mais finos sem sair da pauta. A
+ordem da derivacao importa: a unidade vem primeiro e a entrelinha do corpo se
+ajusta para bater com ela. Entrelinha e preferencia; unidade de ritmo e infraestrutura, e o
 que todo empilhamento consome.
 
 ### px ou rem
 
 **A unidade de ritmo e a unica medida do sistema em `rem`. Todo o resto e px.**
 
-A unidade E uma linha de texto, e quem aumenta a fonte ganha linha maior. Um
+A unidade E meia linha de texto, e quem aumenta a fonte ganha linha maior. Um
 ritmo parado em px enquanto o texto cresce desfaz o alinhamento que justifica a
 unidade — e desfaz justamente para quem mais precisa dele.
 
@@ -852,7 +853,7 @@ endereco mostra sempre a mesma trilha, e o caminho percorrido e do voltar do
 navegador. E meta e nao disputa com o titulo: `caption` em `fg-muted` inteira,
 links, separador e pagina atual. O link se distingue pelo sublinhado em accent,
 sempre presente, como o link em prosa; a pagina atual e o unico item sem ele, e
-nada mais a diferencia, porque o titulo logo abaixo ja diz o nome dela. Meia
+nada mais a diferencia, porque o titulo logo abaixo ja diz o nome dela. Uma
 unidade separa a trilha do titulo. Num container mais estreito que a trilha, so o
 pai aparece, como `‹ Pai`, com alvo de 44px: e o voltar da pagina, com o destino
 escrito. Raiz de aba nao leva trilha.
@@ -901,7 +902,7 @@ comeca na mesma borda em qualquer largura.
 coluna de margem no lugar dele. A medida tem dois lugares, e o texto decide qual.
 Quando o texto ja diz a quantidade — "duas xicaras de farinha" —, a medida
 calculada repete o que esta escrito: ela vai como descricao, em `caption` abaixo
-do texto, o texto fica com a linha inteira e o item mede uma unidade e meia. Uma
+do texto, o texto fica com a linha inteira e o item mede uma linha e meia. Uma
 terceira coluna ali disputaria largura com a frase justamente no item que mais
 precisa dela. Quando o valor e o proprio dado da linha — um nutriente e a sua
 quantidade —, ele e coluna, em `numeric`, alinhada entre os itens. Numa lista de
@@ -909,7 +910,7 @@ marcar, a caixa ocupa a coluna, e o item marcado recua para `fg-muted` — sem r
 sobre o texto, que atrapalha quem ainda confere a lista.
 
 **Lista de passos.** Numeral arabico em `numeric` e `fg-muted`, centrado na coluna
-de margem, com a entrelinha da unidade para dividir a linha de base com a
+de margem, com a entrelinha de uma linha para dividir a linha de base com a
 primeira linha do passo. Com dois algarismos ele continua cabendo na coluna. Meia
 unidade entre passos. Texto em `fg-default` respeitando a medida.
 

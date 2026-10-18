@@ -12,16 +12,14 @@
     --app-radius-overlay: 4px;
     --app-ratio-media: 1;
     --app-ratio-thumb: 1;
-    // THIS IS THE ONLY MEASURE OF THE SYSTEM IN `rem`, and it is in `rem` because the unit
-    // IS a line of text: whoever enlarges the font gets a taller line, and a rhythm
-    // frozen in px would undo the alignment that justifies the unit precisely
-    // for those who need it most. `2rem` gives 32px by default.
-    --app-rhythm-unit: 2rem;
-    --app-rhythm-half: calc(var(--app-rhythm-unit) / 2);
-    --app-rhythm-1: var(--app-rhythm-unit);
-    --app-rhythm-2: calc(var(--app-rhythm-unit) * 2);
-    --app-rhythm-3: calc(var(--app-rhythm-unit) * 3);
-    --app-rhythm-4: calc(var(--app-rhythm-unit) * 4);
+    --app-rhythm-half: calc(var(--app-rhythm-1) / 2);
+    --app-rhythm-1: 1rem;
+    --app-rhythm-1-and-a-half: calc(
+      var(--app-rhythm-1) + var(--app-rhythm-half)
+    );
+    --app-rhythm-2: calc(var(--app-rhythm-1) * 2);
+    --app-rhythm-3: calc(var(--app-rhythm-1) * 3);
+    --app-rhythm-4: calc(var(--app-rhythm-1) * 4);
 
     // Clearance that ties a text to what comes right after it, the rule or the body.
     // In `em`, it resolves in the font of whoever uses it.
@@ -111,8 +109,6 @@
     --app-z-toast: 1080;
     --app-z-tooltip: 1090;
     --app-opacity-disabled: 0.45;
-    // Between sections of a page: FLOW space, so it reads the rhythm unit.
-    --app-gap-section: var(--app-rhythm-1);
   }
 }
 
@@ -166,12 +162,6 @@
 
 :root {
   --app-size-bar: var(--app-size-control);
-}
-
-@media screen and (min-width: 768px) {
-  :root {
-    --app-gap-section: var(--app-rhythm-2);
-  }
 }
 
 @media (orientation: landscape) {

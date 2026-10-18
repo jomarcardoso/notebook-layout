@@ -1,10 +1,10 @@
 // notebook-layout/styles/atoms/_content-figure.scss
 
 .content-figure {
-  block-size: var(--app-rhythm-1);
+  block-size: var(--app-rhythm-2);
   filter: saturate(0.75);
   flex-shrink: 0;
-  inline-size: var(--app-rhythm-1);
+  inline-size: var(--app-rhythm-2);
   mix-blend-mode: multiply;
   object-fit: contain;
 }

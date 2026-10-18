@@ -4,10 +4,7 @@
 @use '../atoms/lozenge' as *;
 
 .line-list {
-  --line-list-target: max(
-    var(--app-size-control),
-    calc(var(--app-rhythm-1) * 1.5)
-  );
+  --line-list-target: max(var(--app-size-control), var(--app-rhythm-3));
 
   color: var(--app-fg-default);
   counter-reset: line-list;
@@ -27,7 +24,7 @@
     display: grid;
     grid-column: span 3;
     grid-template-columns: subgrid;
-    min-block-size: var(--app-rhythm-1);
+    min-block-size: var(--app-rhythm-2);
     position: relative;
   }
 
@@ -120,7 +117,7 @@
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
-    padding: var(--app-space-unit) 0;
+    padding: var(--app-space-xs) 0;
 
     &:where(a, button) {
       align-content: center;
