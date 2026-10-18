@@ -120,6 +120,7 @@
     display: grid;
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
+    padding: var(--app-space-unit) 0;
 
     &:where(a, button) {
       align-content: center;
