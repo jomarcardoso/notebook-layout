@@ -26,7 +26,27 @@ const collection =
     </ul>
   );
 
-export const IndexList = collection('index-list');
+export interface IndexListProps extends CollectionProps {
+  ruled?: boolean;
+}
+
+const IndexCollection = collection('index-list');
+
+export const IndexList: FC<IndexListProps> = ({
+  ruled = true,
+  className = '',
+  ...props
+}) => {
+  return (
+    <IndexCollection
+      {...props}
+      className={generateClasses({
+        'index-list--unruled': !ruled,
+        [className]: !!className,
+      })}
+    />
+  );
+};
 
 export const ThumbGrid = collection('thumb-grid');
 

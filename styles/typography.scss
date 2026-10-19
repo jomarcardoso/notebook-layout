@@ -93,4 +93,14 @@
     @extend .title-sm;
   }
 
+  &:has(> .btn-icon) {
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  > .btn-icon {
+    margin-block-end: calc(var(--app-gap-text) * -1);
+  }
+
 }

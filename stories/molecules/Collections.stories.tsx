@@ -81,6 +81,31 @@ export const Index: Story = {
   ),
 };
 
+export const IndexUnruled: Story = {
+  render: () => (
+    <Sheet>
+      <Group
+        title="Index without rules"
+        note="The same item with `ruled={false}`: no rule between items, so a group of indexes under section titles reads as one block per title instead of a long ruled column."
+      >
+        <IndexList ruled={false}>
+          {recipes.map(({ title, description, photo, figure = '' }) => (
+            <IndexItem
+              key={title}
+              href="#"
+              description={description}
+              image={{ src: photo }}
+              figure={figure}
+            >
+              {title}
+            </IndexItem>
+          ))}
+        </IndexList>
+      </Group>
+    </Sheet>
+  ),
+};
+
 export const Grid: Story = {
   render: () => (
     <Sheet>

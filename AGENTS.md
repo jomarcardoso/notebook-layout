@@ -78,7 +78,7 @@ the apparatus beside the content and the apparatus inside it — shows up in one
 them at a time. It reads orientation because that is what `l-regions` reads; a
 width-based `d-md-*` would show both copies on a tablet held upright.
 
-`l-stack` spaces children by markup order, so it skips one hidden child on its own: after a heading, a hidden `l-only-wide`, `l-only-narrow`, `d-none` or `[hidden]` child passes the heading's spacing to the next one, and a hidden first child gives the next one no top margin. Two hidden children in a row, or one hidden by another component's CSS, are not seen; group what changes with the screen into a single child instead.
+`l-stack` gives the joint after a heading half the space of the others. A `.section-title` counts as a heading too, so the title keeps that joint when it is a line holding the heading and its action. An icon button inside `.section-title` goes to the end of the line, aligned to the bottom so the gap between text and rule never changes, and discounts the title's bottom padding so the button sits on the rule. `l-stack` spaces children by markup order, so it skips one hidden child on its own: after a heading, a hidden `l-only-wide`, `l-only-narrow`, `d-none` or `[hidden]` child passes the heading's spacing to the next one, and a hidden first child gives the next one no top margin. Two hidden children in a row, or one hidden by another component's CSS, are not seen; group what changes with the screen into a single child instead.
 
 Modifiers use the repository's `.-modifier` form: `.l-stack.-block`,
 `.l-measure.-apparatus`.

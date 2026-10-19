@@ -83,7 +83,7 @@ A linha de acao mede uma unidade e meia, com acoes em palavra e nenhuma preenchi
 
 ### Destaque de vitrine
 
-Uma secao de vitrine: o item principal (`ThumbItem variant="featured"`) com imagem e texto em `title-md`, e tres ou quatro secundarios (`variant="brief"`) sem imagem, em `label` com o detalhe em `caption`. A hierarquia e de tamanho, e o §5 registra essa escala como a unica excecao das colecoes. O titulo da secao e o unico heading; os itens nao sao partes da pagina.
+Uma secao de vitrine: o item principal (`ThumbItem variant="featured"`) com imagem e texto em `title-sm`, um degrau abaixo do titulo da secao e sem o fio dele, e tres ou quatro secundarios (`variant="brief"`) sem imagem, em `label` com o detalhe em `caption`. A hierarquia e de tamanho, e o §5 registra essa escala como a unica excecao das colecoes. O titulo da secao e o unico heading; os itens nao sao partes da pagina.
 
 Em todo item o link E o item, como no resto das colecoes: a area de clique, o hover e o anel de foco sao a mesma caixa, como o §11 pede. `stretched-link` nao e usado, porque ele estica o clique e deixa o anel no texto.
 

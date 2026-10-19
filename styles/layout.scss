@@ -7,7 +7,7 @@
     margin-block-start: var(--app-rhythm-2);
   }
 
-  > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
+  > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + * {
     margin-block-start: var(--app-rhythm-1);
   }
 
@@ -15,7 +15,7 @@
     margin-block-start: var(--app-rhythm-4);
   }
 
-  &.-container > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
+  &.-container > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + * {
     margin-block-start: var(--app-rhythm-2);
   }
 
@@ -23,23 +23,23 @@
     margin-block-start: var(--app-rhythm-1);
   }
 
-  &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + * {
+  &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + * {
     margin-block-start: var(--app-rhythm-half);
   }
 
-  > *:where(h1, h2, h3, h4, h5, h6, header, nav) + :is([hidden], .d-none) + * {
+  > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + :is([hidden], .d-none) + * {
     margin-block-start: var(--app-rhythm-1);
   }
 
   &.-container
-    > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title)
     + :is([hidden], .d-none)
     + * {
     margin-block-start: var(--app-rhythm-2);
   }
 
   &.-block
-    > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title)
     + :is([hidden], .d-none)
     + * {
     margin-block-start: var(--app-rhythm-half);
@@ -50,18 +50,18 @@
   }
 
   @media (orientation: portrait) {
-    > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + .l-only-wide + * {
       margin-block-start: var(--app-rhythm-1);
     }
 
     &.-container
-      > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+      > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title)
       + .l-only-wide
       + * {
       margin-block-start: var(--app-rhythm-2);
     }
 
-    &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-wide + * {
+    &.-block > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + .l-only-wide + * {
       margin-block-start: var(--app-rhythm-half);
     }
 
@@ -71,19 +71,19 @@
   }
 
   @media (orientation: landscape) {
-    > *:where(h1, h2, h3, h4, h5, h6, header, nav) + .l-only-narrow + * {
+    > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title) + .l-only-narrow + * {
       margin-block-start: var(--app-rhythm-1);
     }
 
     &.-container
-      > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+      > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title)
       + .l-only-narrow
       + * {
       margin-block-start: var(--app-rhythm-2);
     }
 
     &.-block
-      > *:where(h1, h2, h3, h4, h5, h6, header, nav)
+      > *:where(h1, h2, h3, h4, h5, h6, header, nav, .section-title)
       + .l-only-narrow
       + * {
       margin-block-start: var(--app-rhythm-half);

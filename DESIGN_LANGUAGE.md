@@ -171,6 +171,8 @@ deviations:
     because: em retrato duas palavras ao lado do titulo espremem o nome da receita; lapis e lixeira se leem sem palavra e o rotulo acessivel nomeia a receita
   - decision: o nome do alimento dentro de uma frase, como na dica do titulo da receita, e `link` e abre o modal do alimento sem sair da pagina
     because: o modal e a ficha desse alimento, que se le como outro lugar; um botao no meio da frase quebraria a frase que ele completa
+  - decision: editar uma lista de receitas e icone (lapis) no fim da linha do titulo de secao, embora a area tenha figuras de conteudo
+    because: pedido explicito; como palavra, a acao ocupava uma linha inteira entre o titulo e a capa da lista. O lapis e acao universal, fica na linha do titulo e nao entre as receitas, e o rotulo acessivel nomeia a lista
   - decision: o botao estruturante tem borda e texto em accent, como o botao de texto, e nao tinta neutra
     because: com o estruturante neutro e o de texto em accent, a forma dizia que o de texto pesa menos e a cor dizia que pesa mais; com os tres pesos de acao em accent a hierarquia vem so da forma (preenchido, contorno, texto). O accent passa a marcar toda acao, o que gasta mais do orcamento de rubrica
   - decision: o hover e o pressionado dos botoes estruturante e de texto lavam o fundo com accent, e nao com neutro
@@ -454,8 +456,9 @@ receitas numa lista nao sao dezesseis secoes, nem para o olho nem para o leitor
 de tela.
 
 A secao de vitrine (§7) e a unica colecao que muda a escala dos itens: o item
-principal sobe para `title-md` e os secundarios descem para `label`. Continuam
-sendo texto dentro do link, e nao heading.
+principal sobe para `title-sm` e os secundarios descem para `label`. O principal
+fica um degrau abaixo do titulo de secao e sem o fio dele, para nunca disputar
+com o titulo que o abriga. Continuam sendo texto dentro do link, e nao heading.
 
 `numeric` nao fala do dominio de proposito: ele serve a uma coluna de dados — um
 valor nutricional, uma celula de tabela — e ao campo onde se digita uma
@@ -630,7 +633,7 @@ colunas.
 
 Vitrine e primeira pagina de jornal: secoes empilhadas e, dentro de cada secao,
 itens de tamanhos diferentes. Um item principal, com imagem maior e titulo em
-`title-md`, e tres ou quatro secundarios em `label` e `caption`. A hierarquia e
+`title-sm`, e tres ou quatro secundarios em `label` e `caption`. A hierarquia e
 de tamanho, jamais de embalagem. Densidade vem do numero de secoes, nao do
 numero de caixas.
 

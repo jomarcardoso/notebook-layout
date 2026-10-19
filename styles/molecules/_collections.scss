@@ -35,6 +35,10 @@
     border-block-start: var(--app-border-width) var(--app-border-style)
       var(--app-rule);
   }
+
+  &--unruled &__item + &__item {
+    border-block-start: 0;
+  }
 }
 
 .thumb-grid {
@@ -135,7 +139,7 @@
 
   &--featured {
     .thumb-item__text {
-      font: var(--app-text-title-md);
+      font: var(--app-text-title-sm);
     }
   }
 
