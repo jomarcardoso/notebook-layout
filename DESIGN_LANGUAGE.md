@@ -171,6 +171,10 @@ deviations:
     because: em retrato duas palavras ao lado do titulo espremem o nome da receita; lapis e lixeira se leem sem palavra e o rotulo acessivel nomeia a receita
   - decision: o nome do alimento dentro de uma frase, como na dica do titulo da receita, e `link` e abre o modal do alimento sem sair da pagina
     because: o modal e a ficha desse alimento, que se le como outro lugar; um botao no meio da frase quebraria a frase que ele completa
+  - decision: o botao estruturante tem borda e texto em accent, como o botao de texto, e nao tinta neutra
+    because: com o estruturante neutro e o de texto em accent, a forma dizia que o de texto pesa menos e a cor dizia que pesa mais; com os tres pesos de acao em accent a hierarquia vem so da forma (preenchido, contorno, texto). O accent passa a marcar toda acao, o que gasta mais do orcamento de rubrica
+  - decision: o hover e o pressionado dos botoes estruturante e de texto lavam o fundo com accent, e nao com neutro
+    because: texto accent sobre lavagem neutra troca de cor no gesto, e o destrutivo ja lava com a propria tinta; contraria a regra do §1 de que estado efemero e neutro, que segue valendo para selecao, foco e tudo que nao e botao
 
 overrides:
   - decision: size-control em 44px
@@ -275,7 +279,10 @@ para os algarismos alinharem numa coluna.
 **A segunda tinta e do autor, o realce e do leitor.** O accent marca o que
 pertence ao documento: acao e link. Estado efemero — hover,
 selecionado, foco — usa neutro, e nunca accent: uma selecao pintada na cor da
-acao disputa atencao com o que se clica.
+acao disputa atencao com o que se clica. A excecao e o hover e o pressionado de
+um botao em tinta de cor: eles lavam o fundo com a tinta do proprio botao, como o
+destrutivo ja faz com danger, porque uma lavagem neutra sob texto accent troca de
+cor no meio do gesto.
 
 **A receita e a protagonista.** Entre dois layouts, ganha o que da mais tela a
 receita, mesmo quando o outro esta melhor organizado.
@@ -381,7 +388,8 @@ Papel e tinta usam o mesmo eixo de proeminencia: `muted` e mais entintado que
 mesmo papel da pagina, distinguida por sombra e fio.
 
 **Fio e borda:** `--app-rule` (a6), `--app-rule-strong` (a9),
-`--app-border-default` (a9), `--app-border-strong` (a10). `--app-rule-strong` e o
+`--app-border-default` (a9), `--app-border-strong` (a10), `--app-border-accent`
+(accent a9, a borda do botao estruturante). `--app-rule-strong` e o
 fio que fecha um cabecalho de tabela e o fio do aparte (`.callout`): o mesmo passo
 da borda, com papel de fio.
 
@@ -397,8 +405,9 @@ um com seu `-hover` no degrau 10. A rampa tem dois degraus solidos: o
 pressionado repete o hover e se diferencia por outra propriedade.
 
 **Estado**, o territorio nativo de tela: `--app-bg-hover` (a3),
-`--app-bg-active` (a4), `--app-bg-selected` (a5). O foco nao tem token: ele e o
-anel do navegador.
+`--app-bg-active` (a4), `--app-bg-selected` (a5). O botao em accent tem o par
+`--app-bg-accent-hover` (accent a3) e `--app-bg-accent-active` (accent a4). O foco
+nao tem token: ele e o anel do navegador.
 
 **Status:** `--app-fg-danger`, `--app-bg-danger-subtle`, `--app-border-danger`,
 `--app-fg-success`, `--app-bg-success-subtle`, `--app-fg-warning`,
@@ -726,9 +735,9 @@ O peso do botao comunica **o custo de desfazer**, nao a importancia da acao.
 
 1. **Compromisso** (`commitment`) — preenchido com accent. Um por tela, no maximo. So o ato que
    produz ou destroi algo: salvar, publicar, excluir.
-2. **Estruturante** (`structural`) — contorno com BORDA (`border-default`), sem preenchimento.
-   Adicionar, cancelar, duplicar. E o botao do dia a dia. Borda e nao fio porque,
-   pela definicao do §2, o que contorna um objeto e borda.
+2. **Estruturante** (`structural`) — contorno com BORDA em accent (`border-accent`) e texto
+   com accent, sem preenchimento. Adicionar, cancelar, duplicar. E o botao do dia a dia.
+   Borda e nao fio porque, pela definicao do §2, o que contorna um objeto e borda.
 3. **Navegacao e edicao leve** (`text`) — texto com accent, sem borda e sem fundo.
    Editar, ver mais, trocar unidade, filtrar.
 4. **Destrutiva secundaria** (`destructive`) — texto em danger. Preenchido em danger apenas na
@@ -1004,7 +1013,8 @@ Nao acesse passo da rampa direto.
 Nao crie superficie nova. Existem tres e cada uma tem significado. Se nenhuma
 serve, o elemento provavelmente nao precisa de superficie.
 
-Nao crie `-hover` por componente na camada 2. Hover e um token so.
+Nao crie `-hover` por componente na camada 2. Hover e um token por tinta: neutro,
+accent e danger.
 
 Nao crie segunda cor de marca. Nao crie `info`.
 

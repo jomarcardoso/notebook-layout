@@ -103,21 +103,21 @@
 
 .btn-outline-secondary {
   --cui-btn-bg: transparent;
-  --cui-btn-border-color: var(--app-border-default);
-  --cui-btn-color: var(--app-fg-default);
+  --cui-btn-border-color: var(--app-border-accent);
+  --cui-btn-color: var(--app-fg-accent);
 
   @include btn-hover(
-    var(--app-fg-emphasis),
-    var(--app-bg-hover),
-    var(--app-border-strong),
-    var(--app-fg-default),
+    var(--app-fg-accent),
+    var(--app-bg-accent-hover),
+    var(--app-border-accent),
+    var(--app-fg-accent),
     transparent,
-    var(--app-border-default)
+    var(--app-border-accent)
   );
 
-  --cui-btn-active-bg: var(--app-bg-active);
-  --cui-btn-active-border-color: var(--app-border-strong);
-  --cui-btn-active-color: var(--app-fg-emphasis);
+  --cui-btn-active-bg: var(--app-bg-accent-active);
+  --cui-btn-active-border-color: var(--app-border-accent);
+  --cui-btn-active-color: var(--app-fg-accent);
   --cui-btn-disabled-bg: transparent;
   --cui-btn-disabled-border-color: var(--app-rule);
   --cui-btn-disabled-color: var(--app-fg-disabled);
@@ -140,13 +140,15 @@
   inline-size: auto;
 }
 
+// An action's hover is a wash of its own ink: accent over accent, danger over danger.
 .btn-ghost-primary {
+  --cui-btn-active-bg: var(--app-bg-accent-active);
   --cui-btn-active-color: var(--app-fg-accent);
   --cui-btn-color: var(--app-fg-accent);
 
   @include btn-hover(
     var(--app-fg-accent),
-    var(--app-bg-hover),
+    var(--app-bg-accent-hover),
     transparent,
     var(--app-fg-accent),
     transparent,
@@ -154,13 +156,6 @@
   );
 }
 
-// THE DESTRUCTIVE ACTION HOVER IS A RED WASH, not the neutral wash.
-//
-// §9 says hover is alpha over whatever is underneath, and neutral is the general
-// rule. The destructive action is the exception, for a reason that is not decorative: it
-// is the only action whose cost of undoing is infinite, and the only one where the resting
-// pointer should already be warning. The wash comes from a token that already exists — the
-// same as the status tag — so this does not create a per-component hover.
 .btn-ghost-danger {
   --cui-btn-active-bg: var(--app-bg-danger-subtle);
   --cui-btn-active-color: var(--app-fg-danger);

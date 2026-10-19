@@ -135,6 +135,7 @@
     --app-rule-strong: var(--neutral-a9);
     --app-border-default: var(--neutral-a9);
     --app-border-strong: var(--neutral-a10);
+    --app-border-accent: var(--accent-a9);
 
     --app-bg-accent-solid: var(--accent-9);
     --app-bg-accent-solid-hover: var(--accent-10);
@@ -144,6 +145,8 @@
     --app-bg-hover: var(--neutral-a3);
     --app-bg-active: var(--neutral-a4);
     --app-bg-selected: var(--neutral-a5);
+    --app-bg-accent-hover: var(--accent-a3);
+    --app-bg-accent-active: var(--accent-a4);
 
     --app-fg-danger: var(--danger-a11);
     --app-bg-danger-subtle: var(--danger-a3);
