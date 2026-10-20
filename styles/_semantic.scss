@@ -38,6 +38,7 @@
     --app-pad-control-x: var(--app-space-sm);
     --app-pad-control-y: var(--app-space-xs);
     --app-pad-surface: var(--app-space-md);
+    --app-pad-nav: var(--app-space-xs);
     --app-gap-inline: var(--app-space-xs);
     --app-gap-stack: var(--app-space-md);
     --app-gap-grid: var(--app-space-lg);
@@ -86,6 +87,7 @@
     --app-size-control-sm: calc(var(--app-space-unit) * 7);
     --app-size-control-lg: calc(var(--app-space-unit) * 11);
     --app-size-icon: 20px;
+    --app-size-button: 224px;
     // MEASURE. It belongs to the text, never to the region. The apparatus has its own, and it is
     // what keeps it from reading as a second content.
     --app-measure-body: 68ch;
@@ -93,7 +95,9 @@
     --app-measure-apparatus: 34ch;
     --app-marker-column: 40px;
 
-    --app-region-margin: 240px;
+    --app-region-margin: calc(
+      var(--app-size-button) + 2 * var(--app-pad-nav) + var(--app-border-width)
+    );
     --app-region-apparatus: clamp(var(--app-region-margin), 22vw, 352px);
     --app-icon-stroke: 1.25px;
     --app-ring-offset: 3px;

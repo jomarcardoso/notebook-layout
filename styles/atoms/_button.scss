@@ -14,7 +14,7 @@
 
 .btn {
   --btn-pad-x: 24px;
-  --btn-size: 224px;
+  --btn-size: var(--app-size-button);
   --cui-btn-padding-x: var(--btn-pad-x);
   border-radius: var(--app-radius-control);
 

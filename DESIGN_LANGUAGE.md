@@ -138,10 +138,10 @@ voice: action-oriented
 ctaMood: imperative
 
 deviations:
-  - decision: diagonal do aparato entre 240px e 352px, e nao fixa em 352px
+  - decision: diagonal do aparato entre a largura da margem (241px) e 352px, e nao fixa em 352px
     because: as duas colunas de fora sao fixas, entao a janela que encolhe sai toda da coluna do meio; abaixo de ~1200px o conteudo ficava mais estreito que a nota de margem
   - decision: abaixo de 1024px a pagina tem duas regioes e o aparato nao entra
-    because: 240 + 352 + duas calhas tomam 656px antes de o conteudo comecar; o colapso em sequencia do §7 nao foi implementado e o aparato apenas some
+    because: a margem (241px) + 352 + duas calhas tomam 657px antes de o conteudo comecar; o colapso em sequencia do §7 nao foi implementado e o aparato apenas some
     revisit: implementar o colapso do §7 no lugar do display none
   - decision: todo dialogo no desktop e folha sobreposta, e nao encaixe na coluna
     because: pedido explicito e declarado como 'por enquanto'; contraria overlayPolicy irreversible-or-context-break
@@ -596,7 +596,7 @@ aparato se organizam conforme o tipo.
 
 | regiao | o que e | largura | tinta e escala |
 | --- | --- | --- | --- |
-| margem | navegacao, indice do caderno | fixa, estreita | `fg-muted`, ativo em `fg-emphasis` |
+| margem | navegacao, indice do caderno | fixa: a largura de um botao (`size-button`), o respiro da navegacao (`pad-nav`) dos dois lados e o fio, para o item da navegacao medir o mesmo que um botao | `fg-muted`, ativo em `fg-emphasis` |
 | conteudo | o assunto da pagina | conforme o tipo | `fg-default`, `body` |
 | aparato | nutricional, meta, notas, relacionadas | `--app-measure-apparatus` | `fg-muted`, `body-sm` |
 

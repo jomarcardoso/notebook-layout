@@ -214,6 +214,7 @@ $_token: (
   }
 
   .sidebar-nav {
+    --cui-sidebar-nav-padding-x: #{component.$sidebar-nav-pad};
     --cui-sidebar-nav-link-color: #{component.$nav-fg};
     --cui-sidebar-nav-link-border-radius: #{component.$nav-radius};
     --cui-sidebar-nav-link-hover-color: #{component.$nav-fg-hover};
