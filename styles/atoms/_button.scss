@@ -14,15 +14,16 @@
 
 .btn {
   --btn-pad-x: 24px;
+  --btn-size: 224px;
   --cui-btn-padding-x: var(--btn-pad-x);
   border-radius: var(--app-radius-control);
 
   align-items: center;
   display: inline-flex;
   gap: var(--app-space-xs);
-  inline-size: 100%;
+  inline-size: var(--btn-size);
   justify-content: center;
-  max-inline-size: 224px;
+  max-inline-size: min(100%, var(--btn-size));
   min-block-size: var(--app-size-control);
   text-wrap: balance;
   transition-duration: var(--app-duration-fast);
